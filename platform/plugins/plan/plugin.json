@@ -1,0 +1,10 @@
+{
+    "id": "botble/plan",
+    "name": "Plan",
+    "namespace": "Botble\\Plan\\",
+    "provider": "Botble\\Plan\\Providers\\PlanServiceProvider",
+    "author": "Botble Technologies",
+    "url": "https://botble.com",
+    "version": "2.0.0",
+    "description": "Manage plans"
+}
