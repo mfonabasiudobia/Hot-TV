@@ -12,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 class AuthenticatableBaseModel extends Authenticatable 
 {
 
-   use HasApiTokens, HasFactory, Notifiable, HasUuids;
+   use HasApiTokens, HasFactory, Notifiable;
 
    protected $guarded = [];
    
@@ -28,13 +28,6 @@ class AuthenticatableBaseModel extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
    }
 
-   public function scopeActive($q){
-        return $q->where('is_active', 1);
-    }
-
-    public function scopeInactive($q){
-        return $q->where('is_active', 0);
-    }
 
 
 }
