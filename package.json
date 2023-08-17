@@ -6,13 +6,8 @@
         ]
     },
     "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production"
+        "dev": "vite",
+        "build": "vite build"
     },
     "devDependencies": {
         "@fullhuman/postcss-purgecss": "^5.0.0",
@@ -25,7 +20,8 @@
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.63.6",
         "sass-loader": "^13.3.2",
-        "vue-loader": "^17.2.2"
+        "vue-loader": "^17.2.2",
+        "vite": "^4.0.0"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",

@@ -1,0 +1,175 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,500;1,600;1,700;1,800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply font-['Poppins'] text-gray-900 overflow-x-hidden overflow-y-auto
+}
+
+@layer components {
+
+    .container {
+        @apply md:w-[960px] lg:w-[1140px] px-5 mx-auto;
+    }
+
+    .error {
+        @apply text-xs text-danger;
+    }
+
+    .page-wrapper {
+        @apply min-h-[100vh] w-full relative top-0;
+    }
+
+    .sidebar {
+        @apply pt-5 overflow-y-auto h-screen transition-all z-50 scrollbar border relative md:sticky top-0;
+    }
+
+    .sidebar-wrapper {
+        @apply bg-light fixed bg-opacity-50 top-0 left-0 w-screen md:w-0 min-h-screen z-[100];
+    }
+
+
+    .sidebar a {
+        @apply block px-4 py-3 text-sm relative hover:bg-blue-100 hover:bg-opacity-50 space-x-2;
+    }
+
+    .sidebar-bottom a {
+        @apply block px-4 py-3 text-sm relative hover:bg-blue-100 hover:bg-opacity-50 space-x-2;
+    }
+
+    /*.sidebar a .las {
+        @apply text-xs;
+    }*/
+
+    .content-wrapper {
+        @apply space-y-5 bg-white p-3 md:px-5 dark:bg-dark dark:border dark:border-gray-500 dark:text-white;
+    }
+
+    .content-wrapper .title {
+        @apply text-xl font-light;
+    }
+
+    .arrow-right {
+        @apply absolute right-3 top-4 transition-all inline-block;
+    }
+
+    .action-btn {
+        @apply cursor-pointer text-white px-3 py-2.5 mx-1 rounded text-xs;
+    }
+
+    table .action-btn {
+        @apply cursor-pointer text-white px-3 py-1 rounded text-xs my-2;
+    }
+
+    table td {
+        @apply text-sm py-2;
+    }
+
+    .sidebar-title {
+        @apply py-2 px-4 text-sm text-gray-400;
+    }
+
+    .sidebar .active {
+        @apply bg-opacity-50 bg-blue-100;
+    }
+
+    .sidebar .active>a {
+        @apply bg-opacity-70 bg-blue-100;
+    }
+
+    .sidebar .list-2 a {
+        @apply pl-5 md:pl-7;
+    }
+
+    .sidebar .list-3 a {
+        @apply pl-5 md:pl-9;
+    }
+
+    .scrollbar::-webkit-scrollbar {
+        @apply w-[5px];
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        @apply bg-purple-300 rounded-full;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .btn {
+        @apply text-center rounded inline-block;
+    }
+
+    .btn-sq {
+        @apply rounded-none;
+    }
+
+    .btn-block {
+        @apply w-full block;
+    }
+
+    .btn-xl {
+        @apply py-4 px-7 text-sm;
+    }
+
+    .btn-danger {
+        @apply text-white bg-danger;
+    }
+
+    .btn-lg {
+        @apply py-2 px-5 text-sm;
+    }
+
+    .btn-sm {
+        @apply py-2 text-sm px-5;
+    }
+
+    .btn-xs {
+        @apply py-1 text-xs px-2;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white hover:bg-opacity-70;
+    }
+
+    .btn-danger {
+        @apply bg-red-500 text-white hover:bg-opacity-70;
+    }
+
+    .form-control {
+        @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-[#878787] text-white transition text-sm focus:outline-0 bg-transparent ;
+    }
+
+    label {
+        @apply text-sm font-light;
+    }
+
+    .form-group {
+        @apply relative;
+    }
+
+    .modal-wrapper {
+        @apply overflow-hidden z-[500] overflow-y-auto fixed top-0 h-screen w-full left-0 bg-black bg-opacity-70;
+    }
+
+    .modal-inner-wrapper {
+        @apply flex flex-col items-center sticky top-0 z-[200] justify-center min-h-[100vh] w-full p-5
+    }
+
+    .modal-body {
+        @apply rounded-xl bg-white p-3 relative z-[300];
+    }
+
+    .image-preview {
+        @apply w-[100px] h-[100px] object-cover p-2;
+    }
+
+    .link {
+        @apply text-primary;
+    }
+
+
+}
