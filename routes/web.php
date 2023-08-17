@@ -13,6 +13,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
         Route::group(['namespace' => 'Auth'], function() {
             Route::get('login',"Login")->name('login');
+            Route::get('signup',"Register")->name('register');
         });
 
 

@@ -24,10 +24,10 @@
 <body>
     <livewire:toasts />
     <section class="page-wrapper h-screen overflow-y-auto" x-data="{ toggleSidebar : true}">
+        @livewire("partials.header")
         {{$slot}}
+        @livewire("partials.footer")
     </section>
-
-
 
 
     @livewireScripts

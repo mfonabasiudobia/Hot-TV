@@ -1,8 +1,10 @@
 <footer class="w-full">
     <section class="bg-[#0F0000] text-light w-full py-10">
-        <div class="container grid md:grid-cols-5 2xl:grid-cols-6 gap-5 py-5">
+        <div class="container grid md:grid-cols-5 2xl:grid-cols-6 gap-10 py-5">
             <section class="md:col-span-2 space-y-5">
-                <img src="{{ asset('images/logo-white.png') }}" />
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('images/logo-white.png') }}" />
+                </a>
     
                 <p>HTS is video streaming lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                     incididunt ut

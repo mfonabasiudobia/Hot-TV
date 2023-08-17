@@ -1,6 +1,8 @@
 <nav class="bg-[#0F0000] text-white">
     <div class="container flex items-center justify-between py-2">
-        <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
+        <a href="{{ route('home') }}">
+            <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
+        </a>
 
         <form class="flex items-center">
             <i class="las la-search"></i>
@@ -35,7 +37,7 @@
             </li>
         
             <li>
-                <a href="#" class="btn btn-xl rounded-2xl btn-danger">Register</a>
+                <a href="{{ route('register') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
             </li>
         </ul>
 
