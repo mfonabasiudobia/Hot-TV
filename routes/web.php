@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('jsdjsjjs', function(){
+    return 444;
+})->name('public.index');
+
+
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
@@ -18,6 +24,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
     });
+    
     
     
 });
