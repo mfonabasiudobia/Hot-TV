@@ -1,0 +1,83 @@
+{
+    "name": "usernotnull/tall-toasts",
+    "type": "library",
+    "description": "A Toast notification library for the Laravel TALL stack. You can push notifications from the backend or frontend to render customizable toasts with almost zero footprint on the published CSS/JS!",
+    "keywords": [
+        "usernotnull",
+        "tall-toasts",
+        "toast-notifications",
+        "ToastManager",
+        "ui-components",
+        "laravel-package",
+        "laravel",
+        "livewire",
+        "tailwindcss",
+        "alpinejs",
+        "tall-stack"
+    ],
+    "homepage": "https://github.com/usernotnull/tall-toasts",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John F (@usernotnull)",
+            "email": "15612814+usernotnull@users.noreply.github.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0|^8.1",
+        "illuminate/contracts": "^8.15 || 9.0 - 9.34 || ^9.36 || ^10.0",
+        "spatie/laravel-package-tools": "^1.15",
+        "livewire/livewire": "^v2.12"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^v3.17",
+        "pestphp/pest": "^v1.23",
+        "nunomaduro/larastan": "^2.6",
+        "laravel/pint": "^1.10",
+        "nunomaduro/collision": "^5.11.0|^6.3.0|^7.0",
+        "orchestra/testbench": "^8.5",
+        "pestphp/pest-plugin-laravel": "^v1.4",
+        "pestphp/pest-plugin-parallel": "^1.2",
+        "phpmd/phpmd": "^2.13",
+        "squizlabs/php_codesniffer": "^3.7",
+        "vimeo/psalm": "^5.12.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {
+            "Usernotnull\\Toast\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Usernotnull\\Toast\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest --no-coverage",
+        "workflow": "./vendor/bin/php-cs-fixer fix && ./vendor/bin/phpcs && ./vendor/bin/phpcbf && ./vendor/bin/psalm --output-format=github && ./vendor/bin/phpstan && ./vendor/bin/phpmd src github phpmd-ruleset.xml.dist && XDEBUG_MODE=coverage vendor/bin/pest --parallel --coverage --min=100",
+        "test-coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --parallel --coverage --min=100"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "composer/package-versions-deprecated": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Usernotnull\\Toast\\ToastServiceProvider"
+            ],
+            "aliases": {
+                "Toast": "ToastManager"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
