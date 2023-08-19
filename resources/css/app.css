@@ -127,6 +127,10 @@ body {
         @apply py-2 text-sm px-5;
     }
 
+    .btn-md {
+        @apply py-3 text-sm px-6;
+    }
+
     .btn-xs {
         @apply py-1 text-xs px-2;
     }
@@ -169,6 +173,15 @@ body {
 
     .link {
         @apply text-primary;
+    }
+
+     ::-webkit-scrollbar {
+        width: 6px; /* Set the width of the scrollbar */
+    }
+        
+    ::-webkit-scrollbar-thumb {
+        background-color: #ccc; /* Color of the scrollbar thumb */
+        border-radius: 3px; /* Rounded corners for the thumb */
     }
 
 

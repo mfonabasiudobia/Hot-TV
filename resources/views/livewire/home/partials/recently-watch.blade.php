@@ -66,7 +66,7 @@
 @push('script')
     <script>
         var swiper = new Swiper(".recently-watched", {
-          slidesPerView: 4,
+          slidesPerView: 2,
           spaceBetween: 30,
           pagination: {
             el: ".swiper-paginations",

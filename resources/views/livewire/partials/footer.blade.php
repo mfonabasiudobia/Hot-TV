@@ -148,7 +148,7 @@
         </div>
     </section>
     <section class="bg-danger text-sm py-5 text-white">
-        <div class="container flex justify-between items-center">
+        <div class="container flex text-center md:text-left flex-col md:flex-row justify-between items-center">
             <ul>
                 <li>
                     HTS VIDEO STREAMING - © 2020 All Rights Reserved

@@ -11,11 +11,11 @@
 
         <ul class="flex items-center space-x-5">
             <li>
-                <a href="#">Home</a>
+                <a href="{{ route('home') }}">Home</a>
             </li>
 
             <li>
-                <a href="#">Tv Shows</a>
+                <a href="{{ route('tv-shows.home') }}">Tv Shows</a>
             </li>
 
             <li>

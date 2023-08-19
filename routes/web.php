@@ -22,6 +22,15 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('signup',"Register")->name('register');
         });
 
+        Route::group(['namespace' => 'LiveChannel'], function() {
+            Route::get('live-channel',"Show")->name('live-channel.show');
+        });
+
+        Route::group(['namespace' => 'TvShows'], function() {
+            Route::get('tv-shows',"Home")->name('tv-shows.home');
+            Route::get('{slug}',"Show")->name('tv-shows.show');
+        });
+
 
     });
     

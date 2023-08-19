@@ -15,10 +15,10 @@ module.exports = {
       colors: {
         'primary' : '#1565EA',
         'light' : '#F8F8FA',
-        'dark' : '#2A2E37',
+        'dark' : '#151515',
         'link' : '#0a66c2',
         'success' : '#00C292',
-        'danger' : '#BB0004',
+        'danger' : '#FF0207', //#BB0004
         'warning' : '#FEC107',
         'info' : '#03a9f3'
     },
