@@ -61,10 +61,10 @@
                         <a href="#">Products</a>
                     </li>
                     <li>
-                        <a href="#">Login</a>
+                        <a href="{{ route('login') }}">Login</a>
                     </li>
                     <li>
-                        <a href="#">Sign Up</a>
+                        <a href="{{ route('register') }}">Sign Up</a>
                     </li>
                 </ul>
             </section>

@@ -20,7 +20,8 @@ module.exports = {
         'success' : '#00C292',
         'danger' : '#FF0207', //#BB0004
         'warning' : '#FEC107',
-        'info' : '#03a9f3'
+        'info' : '#03a9f3',
+        'secondary' : '#434343'
     },
   },
   },

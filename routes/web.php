@@ -26,10 +26,35 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('live-channel',"Show")->name('live-channel.show');
         });
 
-        Route::group(['namespace' => 'TvShows'], function() {
-            Route::get('tv-shows',"Home")->name('tv-shows.home');
-            Route::get('{slug}',"Show")->name('tv-shows.show');
+        Route::group(['namespace' => 'TvShows', 'prefix' => 'tv-shows'], function() {
+            Route::get('/',"Home")->name('tv-shows.home');
+            Route::get('tv-shows/{slug}',"Show")->name('tv-shows.show');
         });
+
+
+        Route::group(['namespace' => 'PedicabStream'], function() {
+            Route::get('pedicab-streams',"Home")->name('pedicab-streams.home');
+        });
+
+        Route::group(['namespace' => 'Testimonials'], function() {
+            Route::get('testimonials',"Home")->name('testimonials.home');
+        });
+
+        Route::group(['namespace' => 'ShoutOuts'], function() {
+            Route::get('celebrity-shoutout',"Home")->name('celebrity-shoutout.home');
+        });
+
+        Route::group(['namespace' => 'Gallery'], function() {
+            Route::get('gallery',"Home")->name('gallery.home');
+        });
+
+        Route::group(['namespace' => 'Blog', 'as' => 'blog.', 'prefix' => 'blog'], function() {
+            Route::get('/',"Home")->name('home');
+            Route::get('{slug}',"Show")->name('show');
+        });
+
+        Route::get('faqs',"Faqs")->name('faqs');
+        Route::get('privacy-policy',"PrivacyPolicy")->name('privacy_policy');
 
 
     });
