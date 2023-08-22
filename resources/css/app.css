@@ -13,7 +13,7 @@ body {
 @layer components {
 
     .container {
-        @apply md:w-[960px] lg:w-[1140px] px-5 mx-auto;
+        @apply md:w-[960px] lg:w-[1140px] xl:w-[1280px] 2xl:w-[1920px] px-5 mx-auto;
     }
 
     .racing-sans {
