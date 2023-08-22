@@ -1,6 +1,6 @@
-<div class="py-5 bg-black text-white">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[['title' => 'Tv Shows', 'route' => null ]]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[['title' => 'Tv Shows', 'route' => null ]]" />
 
         <section class="space-y-7">
             <header class="space-y-3">
@@ -10,7 +10,7 @@
                 como desenvolvedores e desenvolvedoras web.</p>
             </header>
 
-            <div class="rounded-2xl px-7 flex justify-between items-center bg-dark text-sm py-3">
+            <div class="rounded-2xl px-7 hidden md:flex justify-between items-center bg-dark text-sm py-3">
                 <button class="flex items-center space-x-3">
                     <span>Shows Title</span>
 
@@ -28,11 +28,11 @@
                 </div>
             </div>
 
-            <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
                @foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $item)
-                   <a class="relative space-y-5 p-5" href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
-                        <img src="{{ asset('images/people-on-point.png') }}" alt="" />
+                   <a class="relative space-y-5 p-5 bg-dark rounded-xl group" href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
+                        <img src="{{ asset('images/people-on-point.png') }}" alt="" class="rounded-lg group-hover:scale-125 transition-all" />
                     
                         <div class="space-y-3">
                             <h2 class="text-center font-semibold">SECONDS</h2>
@@ -50,21 +50,21 @@
             </section>
 
 
-            <div class="flex justify-end text-sm">
-                <div class="flex items-center space-x-7">
+            <div class="flex justify-center md:justify-end text-sm">
+                <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-7">
                     <span class="opacity-60">Showing 10 from 10 data</span>
-
-                    <div class="space-x-1">
-                        <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl">
+            
+                    <div class="space-x-1 flex items-center">
+                        <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">
                             <i class="las la-angle-double-left"></i>
                             <span>Previous</span>
                         </a>
-
+            
                         <a href="#" class="space-x-1 btn btn-sm bg-danger rounded-xl">
                             1
                         </a>
-                        
-                        <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl">
+            
+                        <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">
                             <span>Next</span>
                             <i class="las la-angle-double-right"></i>
                         </a>

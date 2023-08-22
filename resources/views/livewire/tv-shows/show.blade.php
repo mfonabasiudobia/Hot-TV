@@ -1,17 +1,17 @@
-<div class="py-5 bg-black text-white">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[
+                ['title' => 'Tv Shows', 'route' => route('tv-shows.home') ],
+                ['title' => 'Christian show - Talking about Jesus', 'route' => null]
+    ]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[
-            ['title' => 'Tv Shows', 'route' => route('tv-shows.home') ],
-            ['title' => 'Christian show - Talking about Jesus', 'route' => null]
-        ]" 
-        />
+        
 
         <section class="grid md:grid-cols-3 gap-10">
             <div class="md:col-span-2 space-y-7">
                 <img src="{{ asset('images/frameVideo.png') }}" alt="">
 
 
-                <header class="flex items-center justify-between">
+                <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="space-y-1">
                         <h2 class="font-semibold text-xl">Christian show - Talking about Jesus.</h2>
                         <p>Published on June 4, 2020</p>
@@ -68,7 +68,7 @@
 
                 <section class="space-y-5">
                     <h1 class="font-semibold text-2xl">Cast</h1>
-                    <section class="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-10">
+                    <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-10">
                         <div class="flex space-x-2">
                             <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
                             <div>

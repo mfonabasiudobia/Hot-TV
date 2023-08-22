@@ -33,11 +33,11 @@ class="py-16">
                 
                         <div class="flex items-center space-x-3 justify-between">
                             <div class="space-x-3 flex items-center">
-                                <button class="btn btn-danger btn-lg rounded-xl py-3">
+                                <a href="{{ route('tv-shows.show', ['slug' => 'love-of-the-street']) }}" class="btn btn-danger btn-lg rounded-xl py-3">
                                     Watch Now
-                                </button>
+                                </a>
                 
-                                <button class="btn border rounded-xl py-1 px-2 text-3xl text-danger">
+                                <button class="btn border rounded-xl py-1 px-2 text-3xl text-danger hover:bg-danger hover:text-white">
                                     <i class="las la-heart"></i>
                                 </button>
                             </div>
@@ -56,11 +56,11 @@ class="py-16">
             <div class="flex justify-center mt-7">
                 <div class="flex items-center space-x-2">
                     <span
-                        class="most-viewed-swiper-button-prev border border-white bg-white text-dark rounded-full text-md flex items-center justify-center h-[30px] w-[30px]">
+                        class="most-viewed-swiper-button-prev border border-white hover:bg-white hover:text-dark rounded-full text-md flex items-center justify-center h-[30px] w-[30px]">
                         <i class="las la-arrow-left"></i>
                     </span>
                     <span
-                        class="most-viewed-swiper-button-next border border-white bg-white text-dark rounded-full text-md flex items-center justify-center h-[30px] w-[30px]">
+                        class="most-viewed-swiper-button-next border border-white hover:bg-white hover:text-dark rounded-full text-md flex items-center justify-center h-[30px] w-[30px]">
                         <i class="las la-arrow-right"></i>
                     </span>
                 </div>
@@ -72,17 +72,17 @@ class="py-16">
 @push('header')
 <style>
     /* Change color for active swiper buttons */
-    .most-viewed-swiper-button-next.swiper-button-disabled,
+    /* .most-viewed-swiper-button-next.swiper-button-disabled,
     .most-viewed-swiper-button-prev.swiper-button-disabled {
         background-color: transparent;
         color: #fff !important;
-    }
+    } */
 
     /* Change color for disabled swiper buttons */
-    .most-viewed-swiper-button-next.swiper-button-active,
+    /* .most-viewed-swiper-button-next.swiper-button-active,
     .most-viewed-swiper-button-prev.swiper-button-active {
         background-color: #fff !important;
-    }
+    } */
 </style>
 @endpush
 @push('script')

@@ -1,8 +1,9 @@
 <div class="py-5 bg-black text-white space-y-7">
+    <x-atoms.breadcrumb :routes="[
+                ['title' => 'Privacy Policy', 'route' => null]
+            ]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[
-            ['title' => 'Privacy Policy', 'route' => null]
-        ]" />
+       
 
         <section class="space-y-7">
             <h1 class="font-semibold text-xl md:text-3xl">Our Cookies Policy - Privacy Policy</h1>

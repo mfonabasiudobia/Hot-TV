@@ -1,10 +1,8 @@
-<div class="py-5 bg-black text-white space-y-7">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[
+                ['title' => 'Blog', 'route' => null]
+            ]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[
-            ['title' => 'Blog', 'route' => null]
-        ]" />
-
-
         <section class="space-y-16">
 
             <section class="min-h-[50vh] rounded-2xl relative"
@@ -34,7 +32,7 @@
                         <section class="space-y-2 p-2">
                             <span class="text-danger text-xs">Technology</span>
             
-                            <h3 class="font-semibold">The Impact of Technology on the Workplace: How Technology is Changing</h3>
+                            <a href="{{ route('blog.show', ['slug' => 'the-impact-technology']) }}" class="font-semibold block">The Impact of Technology on the Workplace: How Technology is Changing</a>
             
                             <span class="text-secondary text-sm inline-block">August 20, 2022</span>
                         </section>

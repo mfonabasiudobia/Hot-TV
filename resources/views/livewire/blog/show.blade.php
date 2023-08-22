@@ -1,11 +1,9 @@
-<div class="py-5 bg-black text-white space-y-7">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[
+                ['title' => 'Blog', 'route' => route('blog.home')],
+                ['title' => 'The Impact of Technology on the Workplace: How Technology is Changing', 'route' => null]
+            ]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[
-            ['title' => 'Blog', 'route' => route('blog.home')],
-            ['title' => 'The Impact of Technology on the Workplace: How Technology is Changing', 'route' => null]
-        ]" />
-
-
         <section class="space-y-10">
 
             <div class="space-y-3 md:w-3/4">

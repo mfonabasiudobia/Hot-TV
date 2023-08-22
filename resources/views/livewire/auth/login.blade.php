@@ -32,7 +32,7 @@
             </form>
 
             <div class="text-center">
-                <span class="font-thin">Don’t have an Account ?</span> <a href="#" class="semibold">Register</a>
+                <span class="font-thin">Don’t have an Account ?</span> <a href="{{ route('register') }}" class="semibold">Register</a>
             </div>
         </div>
     

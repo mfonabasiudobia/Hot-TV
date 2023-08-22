@@ -44,12 +44,12 @@
                 </div>
 
                 <div class="form-group">
-                    <x-atoms.loading-button text="Log in" target="submit" class="btn btn-lg btn-danger btn-block" />
+                    <x-atoms.loading-button text="Register" target="submit" class="btn btn-lg btn-danger btn-block" />
                 </div>
             </form>
 
             <div class="text-center">
-                <span class="font-thin">Already have an Account ? </span> <a href="#" class="semibold">Login</a>
+                <span class="font-thin">Already have an Account ? </span> <a href="{{ route('login') }}" class="semibold">Login</a>
             </div>
         </div>
 </div>

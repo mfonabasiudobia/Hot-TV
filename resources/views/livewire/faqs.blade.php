@@ -1,9 +1,8 @@
 <div class="py-5 bg-black text-white space-y-7">
+    <x-atoms.breadcrumb :routes="[
+                ['title' => 'FAQ', 'route' => null]
+            ]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[
-            ['title' => 'FAQ', 'route' => null]
-        ]" />
-
         <section class="space-y-7">
             <header class="md:w-3/4 text-center mx-auto space-y-3">
                 <span class="barlow-font text-xl md:text-3xl">Pre-Sale Questions</span>

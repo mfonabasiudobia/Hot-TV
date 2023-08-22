@@ -1,16 +1,16 @@
-<section class="text-sm py-5">
-    <div class="flex items-center space-x-2">
-        <span>
+<section class="text-sm py-5 border-t border-b border-secondary">
+    <div class="flex items-center container flex-wrap whitespace-nowrap">
+        <span class="mr-2">
             Home 
         </span>
 
         @foreach ($routes as $key => $route)
-            <span>/</span>
+            <span class="mr-2">/</span>
 
             @if(!is_null($route['route']))
-                <a href="{{ $route['route'] }}">{{ $route['title'] }}</a>
+                <a href="{{ $route['route'] }}" class="py-1 mr-2">{{ $route['title'] }}</a>
             @else
-                <span class="{{ $key === count($routes) - 1 ? 'opacity-50' : null }}">
+                <span class="{{ $key === count($routes) - 1 ? 'opacity-50' : null }} py-1 mr-2">
                     {{ $route['title'] }}
                 </span>
             @endIf

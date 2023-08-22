@@ -4,7 +4,7 @@
             <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
         </a>
 
-        <form class="flex items-center">
+        <form class="hidden md:flex items-center">
             <i class="las la-search"></i>
             <input type="text" placeholder="Search titles here..." class="form-control bg-transparent border-0" />
         </form>

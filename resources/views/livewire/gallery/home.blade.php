@@ -1,7 +1,6 @@
-<div class="py-5 bg-black text-white">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[['title' => 'Our Gallery', 'route' => null ]]" />
     <div class="container space-y-7">
-        <x-atoms.breadcrumb :routes="[['title' => 'Our Gallery', 'route' => null ]]" />
-
         <section class="space-y-7">
             <header class="space-y-3">
                 <h2 class="font-semibold text-xl md:text-3xl">Our Gallery</h2>
@@ -37,7 +36,7 @@
         </section>
 
 
-        <section class="grid grid-cols-2 md:grid-cols-3 gap-7">
+        <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
             @foreach (range(1, 6) as $item)
             <a href="#">
                 <img src="{{ asset('images/placeholder-05.png') }}" alt="" />

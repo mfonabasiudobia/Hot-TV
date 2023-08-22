@@ -1,8 +1,7 @@
-<div class="py-5 bg-black text-white">
+<div class="py-5 bg-black text-white space-y-5">
+    <x-atoms.breadcrumb :routes="[['title' => 'HTS Live Channel', 'route' => null ]]" />
     <div class="container">
-        <x-atoms.breadcrumb 
-            :routes="[['title' => 'HTS Live Channel', 'route' => null ]]" 
-        />
+       
 
         <section>
             <img src="{{ asset('images/live-video.png') }}" alt="">
