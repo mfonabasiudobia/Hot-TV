@@ -23,12 +23,12 @@
 
 
                     <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
-                        class="absolute top-0 bottom-0 m-auto left-0 right-0 md:right-auto md:left-[15%] w-[70px] h-[70px]">
+                        class="absolute top-0 bottom-0 m-auto left-0 right-0 md:right-auto md:left-[15%] w-[70px] h-[70px] invisible group-hover:visible">
                         <img src="{{ asset('svg/btn-play.svg') }}" alt="" class="animate-pulse" />
                     </a>
 
                     <div
-                        class="absolute p-5 right-0 md:top-0 -bottom-[200px] group-hover:bottom-0 flex flex-col justify-center space-y-3 md:space-y-7 md:h-full w-full md:w-[400px] transition-all bg-gradient-to-t from-[#000] md:from-[transparent] to-[rgba(0,0,0,0.5)] md:to-[transparent] shadow-2xl">
+                        class="invisible group-hover:visible absolute p-5 right-0 md:top-0 -bottom-[200px] group-hover:bottom-0 flex flex-col justify-center space-y-3 md:space-y-7 md:h-full w-full md:w-[400px] transition-all bg-gradient-to-t from-[#000] md:from-[transparent] to-[rgba(0,0,0,0.5)] md:to-[transparent] shadow-2xl">
                         <section class="space-y-2">
                             <h2 class="md:racing-sans md:text-6xl ">
                                 Ana Moldova
