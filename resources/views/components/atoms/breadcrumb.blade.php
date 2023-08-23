@@ -1,8 +1,8 @@
-<section class="text-sm py-5 border-t border-b border-secondary">
+<section class="text-sm py-5 border-t border-b border-secondary bg-[#141414]">
     <div class="flex items-center container flex-wrap whitespace-nowrap">
-        <span class="mr-2">
+        <a class="mr-2" href="{{ route('home') }}">
             Home 
-        </span>
+        </a>
 
         @foreach ($routes as $key => $route)
             <span class="mr-2">/</span>

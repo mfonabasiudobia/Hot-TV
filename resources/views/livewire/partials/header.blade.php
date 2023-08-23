@@ -1,32 +1,34 @@
-<nav class="bg-[#0F0000] text-white">
+<nav class="bg-black text-white">
     <div class="container flex items-center justify-between py-2">
-        <a href="{{ route('home') }}">
-            <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
-        </a>
-
-        <form class="hidden md:flex items-center">
-            <i class="las la-search"></i>
-            <input type="text" placeholder="Search titles here..." class="form-control bg-transparent border-0" />
-        </form>
+        <div class="flex items-center space-x-10">
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
+            </a>
+            
+            <form class="hidden md:flex items-center">
+                <i class="las la-search"></i>
+                <input type="text" placeholder="Search titles here..." class="form-control bg-transparent border-0 bg-[#141414]" />
+            </form>
+        </div>
 
         <ul class="hidden lg:flex items-center space-x-5">
             <li>
-                <a href="{{ route('home') }}">Home</a>
+                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>
             </li>
 
             <li>
-                <a href="{{ route('tv-shows.home') }}">Tv Shows</a>
+                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">Tv Shows</a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="{{ route('live-channel.show') }}" class="hover:text-danger">
                     <span class="text-danger">&bull;</span>
                     Live
                 </a>
             </li>
 
             <li>
-                <a href="{{ route('pedicab-streams.home') }}">Pedicab Streams</a>
+                <a href="{{ route('pedicab-streams.home') }}" class="hover:text-danger">Pedicab Streams</a>
             </li>
         </ul>
 
@@ -50,7 +52,7 @@
     </div>
 
 
-    <section x-cloak x-data="{ show : false }" @toggle-mobile-nav.window="show = !show" :class="show ? 'top-0' : '-top-[1000px]'"
+    <section x-cloak x-data="{ show : false }" @toggle-mobile-nav.window="show = !show" :class="show ? 'top-0' : '-top-[5000px]'"
         class="transition-all duration-700 ease-in-out w-screen fixed z-[1000] h-screen p-7 bg-dark">
         <section class="space-y-10 min-h-screen overflow-y-auto">
             <header class="flex justify-between items-center">
@@ -71,7 +73,7 @@
                 </li>
             
                 <li>
-                    <a href="#" class="hover:text-secondary">
+                    <a href="{{ route('live-channel.show') }}" class="hover:text-secondary">
                         <span class="text-danger">&bull;</span>
                         Live
                     </a>

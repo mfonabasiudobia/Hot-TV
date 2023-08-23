@@ -33,7 +33,7 @@ class="py-16">
                 
                         <div class="flex items-center space-x-3 justify-between">
                             <div class="space-x-3 flex items-center">
-                                <a href="{{ route('tv-shows.show', ['slug' => 'love-of-the-street']) }}" class="btn btn-danger btn-lg rounded-xl py-3">
+                                <a href="{{ route('tv-shows.show', ['slug' => 'love-of-the-street']) }}" class="btn border rounded-xl btn-lg py-3 text-danger hover:bg-danger hover:text-white">
                                     Watch Now
                                 </a>
                 

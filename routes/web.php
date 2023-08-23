@@ -28,7 +28,12 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
         Route::group(['namespace' => 'TvShows', 'prefix' => 'tv-shows'], function() {
             Route::get('/',"Home")->name('tv-shows.home');
-            Route::get('tv-shows/{slug}',"Show")->name('tv-shows.show');
+            Route::get('{slug}',"Show")->name('tv-shows.show');
+        });
+
+        Route::group(['namespace' => 'Product', 'prefix' => 'product', 'as' => 'product.'], function() {
+            Route::get('/',"Home")->name('home');
+            Route::get('{slug}',"Show")->name('show');
         });
 
 

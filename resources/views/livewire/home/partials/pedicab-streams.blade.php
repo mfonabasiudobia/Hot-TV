@@ -10,14 +10,15 @@
 
 
         <section class="grid md:grid-cols-3 gap-7">
-            <section
+            <a
+                href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
                 style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)), url('{{ asset('images/pedicab-image1.png') }}');"
                 class="md:col-span-2 h-[384px] rounded-2xl relative group">
 
 
-                <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}" class="absolute top-0 bottom-0 m-auto left-0 right-0 md:right-auto md:left-[15%] w-[70px] h-[70px] invisible group-hover:visible">
+                <button class="absolute top-0 bottom-0 m-auto left-0 right-0 md:right-auto md:left-[15%] w-[70px] h-[70px] invisible group-hover:visible">
                     <img src="{{ asset('svg/btn-play.svg') }}" alt="" class="animate-pulse" />
-                </a>
+                </button>
         
                 <div 
                 class="md:text-center absolute p-5 right-0 md:top-0 -bottom-[200px] group-hover:bottom-0 flex flex-col justify-center space-y-3 md:space-y-7 md:h-full w-full md:w-[300px] transition-all bg-gradient-to-t from-[#000] md:from-[transparent] to-[rgba(0,0,0,0.5)] md:to-[transparent] shadow-2xl invisible group-hover:visible">
@@ -38,15 +39,16 @@
                         <span class="font-light">30.5k</span>
                     </div>
                 </div>
-            </section>
+            </a>
         
-            <section 
+            <a
+                href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}" 
                 style="background-image: url('{{ asset('images/stream-02.png') }}');"
                 class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
-                <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
+                <button>
                     <img src="{{ asset('svg/btn-play.svg') }}" alt=""
                         class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                </a>
+                </button>
                 
                 <div
                     class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
@@ -61,19 +63,20 @@
                         <span class="font-light">30.5k</span>
                     </div>
                 </div>
-            </section>
+            </a>
         </section>
 
         <div class="grid md:grid-cols-3 gap-5">
                 @foreach (range(1,3) as $item)
-                    <section
+                    <a
+                        href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
                         style="background-image: url('{{ asset('images/stream-02.png') }}');"
                         class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-                            <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
+                            <button>
                                 <img src="{{ asset('svg/btn-play.svg') }}" alt=""
                                     class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                            </a>
+                            </button>
 
                             <div 
                                 class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
@@ -88,7 +91,7 @@
                                     <span class="font-light">30.5k</span>
                                 </div>
                             </div>
-                    </section>
+                        </a>
                 @endforeach
         </div>
     </div>

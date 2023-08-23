@@ -19,9 +19,9 @@
                 <a 
                     href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}" 
                     class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
-                    <img src="{{ asset('images/placeholder-02.png') }}" alt="" class="object-cover h-[210px] w-full rounded-lg" />
+                    <img src="{{ asset('images/placeholder-02.png') }}" alt="" class="object-cover h-[284px] w-full rounded-lg" />
 
-                    <section class="p-3 space-y-5 recommendation-item-details hidden group-hover:block">
+                    <section class="p-3 space-y-5 recommendation-item-details invisible group-hover:visible">
                         <div class="space-y-2">
                             <h2 class="text-md font-semibold">Cloak Dagger - Marvel</h2>
                             <span class="text-danger text-sm">Comedy</span>
