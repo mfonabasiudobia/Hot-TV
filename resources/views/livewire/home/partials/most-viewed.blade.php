@@ -107,6 +107,9 @@ class="py-16">
             },
             1024: {
                 slidesPerView: 3
+            },
+            1500: {
+                slidesPerView: 4
             }
         }
         });

@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center py-10"
         style="background-image: url('{{ asset('images/background-image-01.png') }}">
 
-        <div class="md:w-1/2 lg:w-1/3 border border-[#878787] rounded-xl bg-black text-white p-7 space-y-5">
+        <div class="md:w-1/2 lg:w-[430px] border border-[#878787] rounded-xl bg-black text-white p-7 space-y-5">
             <header class="space-y-3">
                 <h3 class="font-thin text-xl">Welcome !</h3>
                 <section class="space-y-2">
