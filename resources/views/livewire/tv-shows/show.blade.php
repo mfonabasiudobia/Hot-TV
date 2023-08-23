@@ -1,4 +1,4 @@
-<div class="py-5 bg-black text-white space-y-5">
+<div class="py-5 bg-black text-white space-y-5 min-h-screen">
     <x-atoms.breadcrumb :routes="[
                 ['title' => 'Tv Shows', 'route' => route('tv-shows.home') ],
                 ['title' => 'Christian show - Talking about Jesus', 'route' => null]

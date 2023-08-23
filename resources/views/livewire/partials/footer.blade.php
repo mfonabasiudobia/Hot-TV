@@ -58,7 +58,7 @@
                         <a href="#">Contact</a>
                     </li>
                     <li>
-                        <a href="#">Products</a>
+                        <a href="{{ route('product.home') }}">Products</a>
                     </li>
                     <li>
                         <a href="{{ route('login') }}">Login</a>

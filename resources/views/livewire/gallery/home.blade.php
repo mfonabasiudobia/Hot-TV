@@ -1,4 +1,4 @@
-<div class="py-5 bg-black text-white space-y-5">
+<div class="py-5 bg-black text-white space-y-5 min-h-screen">
     <x-atoms.breadcrumb :routes="[['title' => 'Our Gallery', 'route' => null ]]" />
     <div class="container space-y-7">
         <section class="space-y-7">
