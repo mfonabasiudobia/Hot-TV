@@ -1,4 +1,4 @@
-<nav class="bg-black text-white">
+<nav class="bg-[rgba(19, 19, 19, 0.42)] text-white">
     <div class="container flex items-center justify-between py-2">
         <div class="flex items-center space-x-10">
             <a href="{{ route('home') }}">
@@ -7,7 +7,7 @@
             
             <form class="hidden md:flex items-center">
                 <i class="las la-search"></i>
-                <input type="text" placeholder="Search titles here..." class="form-control bg-transparent border-0 bg-[#141414]" />
+                <input type="text" placeholder="Search titles here..." class="form-control bg-transparent border-0 bg-black" />
             </form>
         </div>
 
