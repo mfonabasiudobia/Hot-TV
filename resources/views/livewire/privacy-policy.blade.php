@@ -2,7 +2,7 @@
     <x-atoms.breadcrumb :routes="[
                 ['title' => 'Privacy Policy', 'route' => null]
             ]" />
-    <div class="container space-y-7">
+    <div class="container space-y-7 pb-10">
        
 
         <section class="space-y-7">
