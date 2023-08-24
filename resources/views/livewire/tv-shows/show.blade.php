@@ -6,8 +6,8 @@
     <div class="container space-y-7">
         
 
-        <section class="grid md:grid-cols-3 gap-10">
-            <div class="md:col-span-2 space-y-7">
+        <section class="grid lg:grid-cols-3 gap-10">
+            <div class="lg:col-span-2 space-y-7">
                 <img src="{{ asset('images/frameVideo.png') }}" alt="">
 
 
@@ -68,7 +68,7 @@
 
                 <section class="space-y-5">
                     <h1 class="font-semibold text-2xl">Cast</h1>
-                    <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-10">
+                    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10">
                         <div class="flex space-x-2">
                             <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
                             <div>
