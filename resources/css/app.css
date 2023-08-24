@@ -150,7 +150,7 @@ body {
     }
 
     .form-control {
-        @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-[#878787] text-white transition text-sm focus:outline-0 bg-transparent ;
+        @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-[#878787] text-white transition text-sm focus:outline-0 bg-transparent;
     }
 
     label {
