@@ -4,9 +4,9 @@
 
         <section class="space-y-7">
             <header class="space-y-2">
-                <h2 class="text-xl md:text-2xl font-semibold">Let’s get in touch.</h2>
-                <p>When it comes to questions about billing, your Plex Pass subscription, and more, we’re all ears. Simply select your type
-                of inquiry below and we’ll let the appropriate folks know.</p>
+                <h2 class="text-xl md:text-2xl font-semibold">Let's get in touch.</h2>
+                <p>When it comes to questions about billing, your Hot TV subscription, and more, we're all ears. Simply select your type
+                of inquiry below and we'll let the appropriate folks know.</p>
             </header>
             <form class="grid grid-cols-2 gap-5">
                 <div class="form-group">

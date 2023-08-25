@@ -23,7 +23,7 @@
                             </section>
                         </div>
 
-                        <button class="btn border rounded-xl py-1 px-2 text-3xl text-danger bg-white hover:text-white">
+                        <button class="invisible md:visible btn border rounded-xl py-1 px-2 text-3xl text-danger bg-white hover:text-white">
                             <i class="las la-heart text-danger"></i>
                         </button>
                     </div>

@@ -32,7 +32,7 @@
             </li>
 
             <li class="relative group">
-                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">
+                <a href="javascript:void(0)" class="hover:text-danger">
                     <span>More</span>
                     <i class="las la-caret-down"></i>
                 </a>

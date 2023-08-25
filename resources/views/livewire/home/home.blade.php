@@ -4,15 +4,15 @@
       <div class="container grid md:grid-cols-2 gap-10">
         <section class="space-y-7 md:order-1 order-2">
           <div class="hidden md:flex items-center space-x-5">
-            <button class="text-danger">
+            <a class="text-danger" href="{{ route('live-channel.show') }}">
               Live Channel
-            </button>
+            </a>
     
-            <button class="hover:text-danger">
+            <a class="hover:text-danger" href="{{ route('pedicab-streams.home') }}">
               Pedicab Streams
-            </button>
+            </a>
     
-            <button class="hover:text-danger">Tv Shows</button>
+            <a class="hover:text-danger" href="{{ route('tv-shows.home') }}">Tv Shows</a>
           </div>
           <h1 class="font-extrabold text-3xl md:text-5xl">HTS Live Channel</h1>
           <div class="space-y-5">
