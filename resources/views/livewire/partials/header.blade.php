@@ -6,7 +6,7 @@
             </a>
             
             <form class="hidden md:flex items-center bg-black h-5 w-100 rounded-2xl gap-2 py-1 px-5 flex max-[1750px]:hidden ">
-                <i class="fa-solid fa-magnifying-glass text-white"></i>
+                <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
                 <input type="text" placeholder="Search titles here..." class="bg-black form-control border-0" />
             </form>
         </div>
@@ -161,3 +161,4 @@
     </section>
 
 </nav>
+<script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
