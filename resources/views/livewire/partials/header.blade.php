@@ -16,8 +16,8 @@
                 <a href="{{ route('home') }}" class="hover:text-danger">Home</a>
             </li>
 
-            <li>
-                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">Tv Shows</a>
+            <li class="relative group">
+                <a href="{{ route('tv-shows.home') }}">Tv Shows</a>
             </li>
 
             <li>
@@ -29,6 +29,30 @@
 
             <li>
                 <a href="{{ route('pedicab-streams.home') }}" class="hover:text-danger">Pedicab Streams</a>
+            </li>
+
+            <li class="relative group">
+                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">More</a>
+            
+                <ul class="absolute whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
+                    <li>
+                        <a href="#" class="px-4 py-2 block">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#" class="px-4 py-2 block">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="#" class="px-4 py-2 block">Our Products</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="px-4 py-2 block">Celebritity shoutouts</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="px-4 py-2 block">Our Gallery</a>
+                    </li>
+                </ul>
             </li>
         </ul>
 

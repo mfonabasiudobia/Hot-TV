@@ -10,7 +10,7 @@
 
 
         <section class="grid md:grid-cols-3 gap-10">
-            <section class="space-y-5">
+            <section class="space-y-5 hover:border-danger hover:border-2 p-5 rounded-xl">
                 <header class="py-2 border-b space-y-3">
                     <span>Basic</span>
                     <div>
@@ -75,7 +75,7 @@
 
 
 
-            <section class="space-y-5">
+            <section class="space-y-5 hover:border-danger hover:border-2 p-5 rounded-xl">
                 <header class="py-2 border-b space-y-3">
                     <span>Premium</span>
                     <div>
