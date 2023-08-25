@@ -1,55 +1,30 @@
 <div class="py-5 bg-black text-white space-y-5">
-    <x-atoms.breadcrumb :routes="[['title' => 'Tv Shows', 'route' => null ]]" />
+    <x-atoms.breadcrumb :routes="[['title' => 'Products', 'route' => null ]]" />
     <div class="container space-y-7">
-
         <section class="space-y-7">
             <header class="space-y-3">
-                <h2 class="font-semibold text-xl md:text-3xl">Our Tv Shows</h2>
-                <p>Esse curso tem como objetivo de te dar os fundamentos da programação e entender um pouco mais sobre o
-                    web, precisamos
-                    desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que
-                    vamos encontrar
-                    como desenvolvedores e desenvolvedoras web.</p>
+                <h2 class="font-semibold text-xl md:text-3xl">Our Products</h2>
+                <p>The Impact of Technology on the Workplace: How Technology is Changing</p>
             </header>
-
-            <div class="rounded-2xl px-7 hidden md:flex justify-between items-center bg-dark text-sm py-3">
-                <button class="flex items-center space-x-3">
-                    <span>Shows Title</span>
-
-                    <img src="{{ asset('svg/ic_sort.svg') }}" alt="">
-                </button>
-
-                <div class="flex items-center space-x-7">
-                    <a href="#">Today</a>
-
-                    <a href="#">This Week</a>
-
-                    <a href="#">This Month</a>
-
-                    <a href="#" class="flex items-center space-x-1"><i class="las la-sort-amount-down-alt text-xl"></i>
-                        <span>Newest</span></a>
-                </div>
-            </div>
 
             <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
                 @foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $item)
-                <a class="relative space-y-5 p-5 bg-dark rounded-xl group"
+                <a class="relative space-y-5 p-5 bg-dark rounded-xl group border border-secondary rounded-xl"
                     href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
-                    <img src="{{ asset('images/people-on-point.png') }}" alt=""
-                        class="rounded-lg group-hover:scale-125 transition-all" />
+                    <img src="{{ asset('images/product/product-1.png') }}" alt="" class="rounded-lg" />
 
                     <div class="space-y-3">
-                        <h2 class="text-center font-semibold">SECONDS</h2>
+                        <h2 class="font-semibold text-sm">Mobile Phone</h2>
 
-                        <div class="flex items-center justify-between opacity-60 text-sm">
-                            <span>30.2k views</span>
-                            <span>1hr 2min</span>
-                        </div>
+                        <p>Prodcut one - Titles goes hereyou can change from backend</p>
                     </div>
 
-                    <span
-                        class="rounded-b-lg bg-danger py-1 px-5 absolute left-1/2 transform -translate-x-1/2 top-0">HORROR</span>
+                    <footer class="flex items-center justify-between">
+                        <span class="text-danger font-bold text-xl">$1,131.00</span>
+
+                        <button class="btn btn-sm btn-danger rounded-xl">Add</button>
+                    </footer>
                 </a>
                 @endforeach
 
@@ -79,12 +54,6 @@
             </div>
         </section>
     </div>
-
-
-
-
-    @livewire("home.partials.partners")
-
 
     @livewire("home.partials.newsletter")
 </div>

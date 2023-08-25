@@ -52,10 +52,10 @@
                 <h2 class="font-medium text-xl">Quick Links</h2>
                 <ul class="space-y-3">
                     <li>
-                        <a href="#">About us</a>
+                        <a href="{{ route('about') }}">About us</a>
                     </li>
                     <li>
-                        <a href="#">Contact</a>
+                        <a href="{{ route('contact') }}">Contact</a>
                     </li>
                     <li>
                         <a href="{{ route('product.home') }}">Products</a>

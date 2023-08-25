@@ -18,7 +18,7 @@
 
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" class="form-control" placeholder="Enter your user name" wire:model.defer="username" />
+                    <input type="text" class="form-control" placeholder="Enter your username" wire:model.defer="username" />
                 </div>
 
                 <div class="form-group" x-data="{ show : false}">

@@ -31,7 +31,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('{slug}',"Show")->name('tv-shows.show');
         });
 
-        Route::group(['namespace' => 'Product', 'prefix' => 'product', 'as' => 'product.'], function() {
+        Route::group(['namespace' => 'Product', 'prefix' => 'products', 'as' => 'product.'], function() {
             Route::get('/',"Home")->name('home');
             Route::get('{slug}',"Show")->name('show');
         });
@@ -60,6 +60,10 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
         Route::get('faqs',"Faqs")->name('faqs');
         Route::get('privacy-policy',"PrivacyPolicy")->name('privacy_policy');
+        Route::get('cart',"Cart")->name('cart');
+        Route::get('checkout',"Checkout")->name('checkout');
+        Route::get('about',"About")->name('about');
+        Route::get('contact',"Contact")->name('contact');
 
 
     });
