@@ -9,7 +9,31 @@
                 </header>
 
 
-                <img src="{{ asset('images/featured.png') }}" alt="" />
+                <section class="relative rounded-xl overflow-hidden">
+                    <div class="bg-danger flex flex-col md:flex-row justify-between items-start md:space-x-2 p-5">
+                        <div class="flex space-x-3">
+                            <img src="{{ asset('images/video-file.svg') }}" alt="">
+                            <section>
+                                <h2 class="font-semibold text-xl">Podcast with Andrew Tate about Islam</h2>
+                                <div class="flex items-center space-x-3 text-sm">
+                                    <span>26-07-2023</span>
+                                    <span>ENGLISH</span>
+                                    <span>1hr 2min</span>
+                                </div>
+                            </section>
+                        </div>
+
+                        <button class="btn border rounded-xl py-1 px-2 text-3xl text-danger bg-white hover:text-white">
+                            <i class="las la-heart text-danger"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <img src="{{ asset('images/featured.png') }}" alt="" />
+                        <img src="{{ asset('images/btnPlay.svg') }}" alt="" class="absolute top-0 left-0 right-0 bottom-0 m-auto" />
+                    </div>
+                </section>
+
+                
 
             </section>
 
