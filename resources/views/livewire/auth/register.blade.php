@@ -43,6 +43,11 @@
                     </div>
                 </div>
 
+                <div class="form-group flex items-start space-x-2">
+                    <input type="checkbox" id="agree" class="accent-danger mt-1 w-[20px] h-[20px]" />
+                    <label for="agree">I agree to Hot TV Station's terms and conditions, Learn more</label>
+                </div>
+
                 <div class="form-group">
                     <x-atoms.loading-button text="Register" target="submit" class="btn btn-lg btn-danger btn-block" />
                 </div>

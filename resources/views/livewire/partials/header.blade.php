@@ -32,25 +32,28 @@
             </li>
 
             <li class="relative group">
-                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">More</a>
+                <a href="{{ route('tv-shows.home') }}" class="hover:text-danger">
+                    <span>More</span>
+                    <i class="las la-caret-down"></i>
+                </a>
             
-                <ul class="absolute whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
+                <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
                     <li>
-                        <a href="#" class="px-4 py-2 block">About Us</a>
+                        <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
                     </li>
                     <li>
-                        <a href="#" class="px-4 py-2 block">Contact Us</a>
+                        <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
                     </li>
                     <li>
-                        <a href="#" class="px-4 py-2 block">Our Products</a>
-                    </li>
-
-                    <li>
-                        <a href="#" class="px-4 py-2 block">Celebritity shoutouts</a>
+                        <a href="{{ route('product.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
                     </li>
 
                     <li>
-                        <a href="#" class="px-4 py-2 block">Our Gallery</a>
+                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity shoutouts</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
                     </li>
                 </ul>
             </li>
