@@ -61,6 +61,12 @@
 
 
         <ul class="hidden lg:flex items-center space-x-5 ">
+              <li>
+                <a href="#" class="hover:text-danger text-lg">
+                    <i class="fa fa-solid fa-heart"></i>
+                    <span class="text-white hover:text-danger">Watchlist</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">Sign in</a>
             </li>
