@@ -34,7 +34,7 @@
             <li class="relative group">
                 <a href="javascript:void(0)" class="hover:text-danger">
                     <span>More</span>
-                    <i class="las la-caret-down"></i>
+                    <i class="far fa-angle-down"></i>
                 </a>
             
                 <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
