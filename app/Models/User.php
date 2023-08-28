@@ -19,7 +19,6 @@ class User extends AuthenticatableBaseModel
         'phone',
         'dob',
         'avatar_id',
-
         'super_user',
         'manage_supers',
         'permissions'

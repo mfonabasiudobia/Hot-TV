@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f617e05abf0e94224be6a7bb18fd6b3817d28351',
+        'reference' => '9fe02bdd9ed1b5f9331b9bb8d9522be0af1b2efb',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -801,7 +801,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f617e05abf0e94224be6a7bb18fd6b3817d28351',
+            'reference' => '9fe02bdd9ed1b5f9331b9bb8d9522be0af1b2efb',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -952,7 +952,7 @@
             'dev_requirement' => false,
         ),
         'maennchen/zipstream-php' => array(
-            'pretty_version' => 'v2.4.0',
+            'pretty_version' => '2.4.0',
             'version' => '2.4.0.0',
             'reference' => '3fa72e4c71a43f9e9118752a5c90e476a8dc9eb3',
             'type' => 'library',
@@ -1410,8 +1410,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0 || 2.0.0 || 3.0.0',
-                1 => '1.0|2.0|3.0',
+                0 => '1.0|2.0|3.0',
+                1 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'psr/simple-cache' => array(

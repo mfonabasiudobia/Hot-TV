@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Models\User;
 use App\Mail\SignupNotification;
 use App\Mail\OtpNotification;
+use App\Mail\forgotPasswordNotification;
 use Mail;
 use DB;
+use URL;
 use Hash;
 
 class AuthRepository {
@@ -15,21 +17,17 @@ class AuthRepository {
     public static function login($data)  {
             auth()->attempt($data, true);
 
-            $user = User::find(auth()->id());
-
-            return $user;
+            return auth()->user();
     }
 
     public static function register($data) : User {
-        $member = User::create(array_merge($data, 
+        $user = User::create(array_merge($data, 
         [
             'password' => bcrypt($data['password']),
             'temporary_token' => str()->random(15)
         ]));
 
-        // $member->assignRole('normal');
-
-        return $member->refresh();
+        return $user->refresh();
     }
 
 
@@ -59,14 +57,32 @@ class AuthRepository {
 
     public static function forgotPassword($email) : bool | int  {
 
-        $rand = rand(111111, 999999);
+        $code = rand(111111, 999999);
 
-        if($member = self::getMemberByEmail($email)){
-            DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
+        if($user = self::getMemberByEmail($email)){
 
-            DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $rand, 'created_at' => now() ]);
 
-            //Send Forgot token Mail to User here
+            if (request()->is('api/*')) {
+                DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
+
+                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $rand, 'created_at' => now() ]);
+
+                //Send Forgot token Mail to User here
+                Mail::to($email)->send(new forgotPasswordNotification($user, $code, 'api'));
+            }else{
+
+                //Send Forgot token Mail to User here
+                $code = URL::temporarySignedRoute('reset_password', now()->addMinutes(30), [ 'email' => $email ]);
+
+                // Mail::to($email)->send(new forgotPasswordNotification($user, $code, 'web'));
+
+                Mail::send('emails.forgot-password-notification', ['user' => $user, 'code' => $code ], function($q) use ($email){
+                    $q->from('noreply@uniskills.net', 'Uniskills Forgot Password');
+                    $q->to($email)->subject('Reset Password');
+                });
+
+            }
+            
 
             return $rand;
         }

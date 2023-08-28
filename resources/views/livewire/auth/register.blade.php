@@ -9,16 +9,18 @@
                     <p>Your Next Stop for Traveling and streaming Station</p>
                 </section>
             </header>
-            <form class="grid gap-5">
+            <form class="grid gap-5" wire:submit.prevent='submit'>
 
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control" placeholder="Enter your email" wire:model.defer="email" />
+                    @error('email') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" placeholder="Enter your username" wire:model.defer="username" />
+                    @error('username') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group" x-data="{ show : false}">
@@ -30,13 +32,14 @@
                             <i class="las" :class="show ? 'la-eye' : 'la-eye-slash'"></i>
                         </button>
                     </div>
+                    @error('password') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group" x-data="{ show : false}">
                     <label>Confirm Password</label>
                     <div class="relative">
                         <input :type="show ? 'text' : 'password'" class="form-control" placeholder="Confirm your Password"
-                            wire:model.defer="password" />
+                            wire:model.defer="password_confirmation" />
                         <button type='button' class="absolute top-3 right-3" x-on:click="show = !show">
                             <i class="las" :class="show ? 'la-eye' : 'la-eye-slash'"></i>
                         </button>
@@ -44,7 +47,7 @@
                 </div>
 
                 <div class="form-group flex items-start space-x-2">
-                    <input type="checkbox" id="agree" class="accent-danger mt-1 w-[20px] h-[20px]" />
+                    <input type="checkbox" id="agree" class="accent-danger mt-1 w-[20px] h-[20px]" required />
                     <label for="agree">I agree to Hot TV Station's terms and conditions, Learn more</label>
                 </div>
 

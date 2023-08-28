@@ -11,14 +11,16 @@ Route::get('jsdjsjjs', function(){
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
-    // Route::get('logout', "Auth\Login@logout")->name('logout');
+    Route::get('logout', "Auth\Login@logout")->name('logout');
 
     Route::group(['middleware'=> []], function() {
 
         Route::get('/',"Home\Home")->name('home');
 
-        Route::group(['namespace' => 'Auth'], function() {
+        Route::group(['namespace' => 'Auth', 'middleware' => ['UserAuth']], function() {
             Route::get('login',"Login")->name('login');
+            Route::get('forgot-password',"ForgotPassword")->name('forgot_password');
+            Route::get('reset-password',"ResetPassword")->name('reset_password');
             Route::get('signup',"Register")->name('register');
         });
 

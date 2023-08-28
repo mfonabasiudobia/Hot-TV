@@ -18,7 +18,7 @@ class AppHelper {
     }
 
     public static function isUserAuthRoute() : bool {
-        return in_array(self::routeName(), ['login', 'auth.register', 'forgot_password', 'reset_password', 'auth.redirect']);
+        return in_array(self::routeName(), ['login', 'register', 'forgot_password', 'reset_password', 'auth.redirect']);
     }
 
     public static function isAdminAuthRoute() : bool {
