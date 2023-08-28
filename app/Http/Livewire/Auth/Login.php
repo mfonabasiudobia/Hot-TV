@@ -13,7 +13,7 @@ class Login extends BaseComponent
     public function submit(){
 
         if(AuthRepository::login([ 'username' => $this->username, 'password' => $this->password])){
-            redirect()->route('user.dashboard');
+            redirect()->route('home');
         }else{
             toast()->danger('Invalid Login Credentials')->push();
         }

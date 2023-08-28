@@ -11,6 +11,20 @@
             </header>
             <form class="grid gap-5" wire:submit.prevent='submit'>
 
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" placeholder="First name" wire:model.defer="first_name" />
+                        @error('first_name') <span class="error"> {{ $message }}</span> @endError
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" placeholder="Last name" wire:model.defer="last_name" />
+                        @error('last_name') <span class="error"> {{ $message }}</span> @endError
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control" placeholder="Enter your email" wire:model.defer="email" />

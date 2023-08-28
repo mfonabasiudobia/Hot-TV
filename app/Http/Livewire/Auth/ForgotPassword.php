@@ -18,7 +18,7 @@ class ForgotPassword extends BaseComponent
 
         // try {
 
-            throw_unless($user = AuthRepository::forgotPassword($this->email), "Sorry an error occured. Please try again");
+            throw_unless($user = AuthRepository::forgotPassword($this->email), "The email must be valid email address");
 
             toast()->success("Thanks, a password reset link has been sent to your email")->push();
 

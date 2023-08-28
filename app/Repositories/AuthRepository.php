@@ -74,12 +74,12 @@ class AuthRepository {
                 //Send Forgot token Mail to User here
                 $code = URL::temporarySignedRoute('reset_password', now()->addMinutes(30), [ 'email' => $email ]);
 
-                // Mail::to($email)->send(new forgotPasswordNotification($user, $code, 'web'));
+                Mail::to($email)->send(new forgotPasswordNotification($user, $code, 'web'));
 
-                Mail::send('emails.forgot-password-notification', ['user' => $user, 'code' => $code ], function($q) use ($email){
-                    $q->from('noreply@uniskills.net', 'Uniskills Forgot Password');
-                    $q->to($email)->subject('Reset Password');
-                });
+                // Mail::send('emails.forgot-password-notification', ['user' => $user, 'code' => $code ], function($q) use ($email){
+                //     // $q->from('noreply@uniskills.net', 'Uniskills Forgot Password');
+                //     $q->to($email)->subject('Reset Password');
+                // });
 
             }
             

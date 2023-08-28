@@ -10,3 +10,7 @@ function gs(){
 function ac(){
     return "$";
 }
+
+function user(){
+    return auth()->user();
+}

@@ -31,9 +31,13 @@ class User extends AuthenticatableBaseModel
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['is_verified'];
+    protected $appends = ['is_verified', 'fullname'];
 
     public function getIsVerifiedAttribute(){
         return $this->email_verified_at ? true : false;
+    }
+
+    public function getFullnameAttribute(){
+        return "$this->first_name $this->last_name";
     }
 }

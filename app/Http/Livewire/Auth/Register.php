@@ -8,11 +8,13 @@ use App\Repositories\AuthRepository;
 class Register extends BaseComponent
 {
 
-    public $username, $email, $password, $password_confirmation;
+    public $username, $first_name, $last_name, $email, $password, $password_confirmation;
 
     public function submit(){
 
         $this->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
             'username' => 'required|unique:users,username',
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed|min:6|alpha_num'
@@ -22,7 +24,9 @@ class Register extends BaseComponent
         $data = [
             'username' => $this->username,
             'email' => $this->email,
-            'password' => $this->password
+            'password' => $this->password,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name
         ];
 
         try {
