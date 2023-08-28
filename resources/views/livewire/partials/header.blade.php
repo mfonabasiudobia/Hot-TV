@@ -5,8 +5,8 @@
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
             </a>
             
-            <form class="hidden md:flex items-center">
-                <i class="las la-search"></i>
+            <form class="hidden md:flex items-center bg-black h-5 w-100 rounded-2xl gap-2 py-1 px-5 flex max-[1750px]:hidden ">
+                <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
                 <input type="text" placeholder="Search titles here..." class="bg-black form-control border-0" />
             </form>
         </div>
@@ -34,7 +34,7 @@
             <li class="relative group">
                 <a href="javascript:void(0)" class="hover:text-danger">
                     <span>More</span>
-                    <i class="las la-caret-down"></i>
+                    <i class="fa-solid fa-angle-down"></i>
                 </a>
             
                 <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
@@ -61,6 +61,12 @@
 
 
         <ul class="hidden lg:flex items-center space-x-5 ">
+              <li>
+                <a href="#" class="hover:text-danger text-lg">
+                    <i class="fa fa-solid fa-heart"></i>
+                    <span class="text-white hover:text-danger">Watchlist</span>
+                </a>
+            </li>
             <li>
                 <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">Sign in</a>
             </li>
@@ -161,3 +167,4 @@
     </section>
 
 </nav>
+<script src="https://kit.fontawesome.com/4286a4e89d.js"></script>

@@ -151,7 +151,7 @@
         <div class="container flex text-center md:text-left flex-col md:flex-row justify-between items-center">
             <ul>
                 <li>
-                    HTS VIDEO STREAMING - © 2020 All Rights Reserved
+                    HTS VIDEO STREAMING - © 2023 All Rights Reserved
                 </li>
             </ul>
 
