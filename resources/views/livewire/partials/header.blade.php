@@ -5,9 +5,9 @@
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
             </a>
             
-            <form class="hidden xl:flex items-center bg-black h-5 w-100 rounded-2xl gap-2 py-1 px-5 flex max-[1750px]:hidden ">
+            <form class="hidden xl:flex items-center bg-dark w-100 rounded-2xl  px-5 flex max-[1750px]:hidden  ">
                 <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
-                <input type="text" placeholder="Search titles here..." class="bg-black form-control border-0" />
+                <input type="text" placeholder="Search titles here..." class="form-control border-0" />
             </form>
         </div>
 
