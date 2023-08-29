@@ -12,10 +12,6 @@
                     como desenvolvedores e desenvolvedoras web.</p>
             </header>
 
-
-
-
-
             <section class="grid md:grid-cols-3 gap-7">
                 <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
                     style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)), url('{{ asset('images/pedicab-image1.png') }}');"

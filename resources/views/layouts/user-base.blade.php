@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta_data')
 
+    {{--
+    <link rel="shortcut icon" href="{{ asset('storage/images/logo/logo.png') }}" type="image/x-icon"> --}}
+
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -24,7 +27,9 @@
 <body>
     <livewire:toasts />
     <section class="page-wrapper min-h-screen w-screen" x-data="{ toggleSidebar : true}">
+        @livewire("partials.header")
         {{$slot}}
+        @livewire("partials.footer")
     </section>
 
 

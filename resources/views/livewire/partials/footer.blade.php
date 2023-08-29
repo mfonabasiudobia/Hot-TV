@@ -147,7 +147,7 @@
     
         </div>
     </section>
-    <section class="bg-danger text-sm py-5 text-white">
+    <section class="bg-danger text-sm py-5 text-white text-sm md:text-base">
         <div class="container flex text-center md:text-left flex-col md:flex-row justify-between items-center">
             <ul>
                 <li>
