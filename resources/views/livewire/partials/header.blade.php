@@ -110,7 +110,7 @@
                             <span>Subscription</span>
                         </a>
 
-                        <a href="{{ route('user.dashboard') }}" 
+                        <a href="{{ route('user.profile') }}" 
                             class="px-4 py-1 space-x-3 flex items-center space-x-1 hover:text-danger">
                             <i class="las la-user-circle text-xl"></i>
                             <span>My Profile</span>
