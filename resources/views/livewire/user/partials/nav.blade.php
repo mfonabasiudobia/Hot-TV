@@ -28,9 +28,9 @@
                 </a>
             </li>
             <li>
-                <a href="#" wire:click.prevent="setNav('playlist')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'playlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Playlist
+                <a href="#" wire:click.prevent="setNav('wishlist')"
+                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    Wishlist
                 </a>
             </li>
             <li>
@@ -39,27 +39,40 @@
                     Watchlist
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="#" wire:click.prevent="setNav('videos')"
                     class="py-3 transition-all hover:text-danger {{ $currentNav === 'videos' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     Videos
                 </a>
+            </li> --}}
+            <li>
+                <a href="#" wire:click.prevent="setNav('screenshots')"
+                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'screenshots' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    Screenshots
+                </a>
+            </li>
+            <li>
+                <a href="#" wire:click.prevent="setNav('watch-history')"
+                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'watch-history' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    Watch History
+                </a>
             </li>
         </ul>
 
-    @if($currentNav === 'videos')
-        <button class="btn btn-danger btn-sm inline-block font-semibold">
-            <i class="las la-upload"></i>
-            <span>Upload Video</span>
-        </button>
-    @elseif($currentNav === 'watchlist')
+   @if($currentNav === 'watchlist')
         <button class="btn btn-danger btn-sm inline-block font-semibold">
             <i class="las la-edit"></i>
             <span>Edit</span>
         </button>
-    @elseif($currentNav === 'playlist')
-        <button class="btn btn-danger btn-sm inline-block font-semibold">
-           Create Playlist
+    @elseif($currentNav === 'screenshots')
+        <button class="btn btn-danger btn-sm inline-block font-semibold" x-on:click="$dispatch('trigger-upload-screenshot-modal')">
+            <i class="las la-camera"></i>
+            <span>Screenshots</span>
+        </button>
+    @else 
+        <button class="btn btn-danger btn-sm inline-block font-semibold" x-on:click="$dispatch('trigger-upload-video-modal')">
+            <i class="las la-upload"></i>
+            <span>Upload Video</span>
         </button>
     @endIf
     </section>

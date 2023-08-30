@@ -20,7 +20,7 @@ class MemberRepository {
     }
 
 
-    public static function updateMember(array $data, int $id) : User
+    public static function updateProfile(array $data, int $id) : User
     {
          $member = User::find($id);
          

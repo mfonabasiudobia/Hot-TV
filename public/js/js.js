@@ -29,6 +29,15 @@
 
 });
 
+window.addEventListener('load', function() {
+  const inputFields = document.querySelectorAll('input[type="password"]');
+  
+  inputFields.forEach(function(input) {
+    input.value = '';
+  });
+  
+});
+
 
 /* Toast Notification */
  window.addEventListener('toaster', event => {
@@ -95,5 +104,7 @@ inputField.addEventListener('input', (event) => {
     if (!regex.test(input.value)) {
       input.value = input.value.slice(0, 15).replace(/[^0-9]/g, ''); // removes any non-numeric characters and limits to 15 characters
     }
-  });
+ });
+
+
 

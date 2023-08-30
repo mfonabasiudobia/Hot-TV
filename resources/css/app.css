@@ -171,7 +171,11 @@ body {
     }
 
     .form-control {
-        @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-[#878787] text-white transition text-sm focus:outline-0 bg-transparent;
+        @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-secondary text-white transition text-sm focus:outline-0 bg-transparent;
+    }
+
+    .form-control-inline {
+        @apply  z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-secondary text-white transition text-sm focus:outline-0 bg-transparent;
     }
 
     label {
@@ -179,7 +183,7 @@ body {
     }
 
     .form-group {
-        @apply relative;
+        @apply relative space-y-1;
     }
 
     .modal-wrapper {
@@ -209,6 +213,11 @@ body {
     ::-webkit-scrollbar-thumb {
         background-color: #ccc; /* Color of the scrollbar thumb */
         border-radius: 3px; /* Rounded corners for the thumb */
+    }
+
+    /* Change the color for different states */
+    progress[value]::-webkit-progress-value {
+    background-color: #FF0207; /* Change this to your desired color */
     }
 
 

@@ -101,7 +101,9 @@
                             <i class="las la-thumbs-up text-xl"></i>
                             <span>Favourites</span>
                         </a>
-                        <a href="{{ route('about') }}" class="px-4 py-1 space-x-3 flex items-center space-x-1 hover:text-danger">
+                        <a href="javascript:void(0)" 
+                            x-on:click="$dispatch('trigger-upload-video-modal')"
+                            class="px-4 py-1 space-x-3 flex items-center space-x-1 hover:text-danger">
                             <i class="las la-cloud-upload-alt text-xl"></i>
                             <span>Upload</span>
                         </a>
@@ -110,10 +112,15 @@
                             <span>Subscription</span>
                         </a>
 
-                        <a href="{{ route('user.profile') }}" 
+                        <a href="{{ route('user.dashboard') }}" 
                             class="px-4 py-1 space-x-3 flex items-center space-x-1 hover:text-danger">
                             <i class="las la-user-circle text-xl"></i>
                             <span>My Profile</span>
+                        </a>
+
+                        <a href="{{ route('user.profile') }}" class="px-4 py-1 space-x-3 flex items-center space-x-1 hover:text-danger">
+                            <i class="las la-cog text-xl"></i>
+                            <span>Setting</span>
                         </a>
 
                         <a href="{{ route('logout') }}" 

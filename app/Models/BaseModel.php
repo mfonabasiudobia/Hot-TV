@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class BaseModel extends Model
 {
 
-    use HasFactory, HasUuids;
+    use HasFactory;
     
     protected $guarded = [];
 

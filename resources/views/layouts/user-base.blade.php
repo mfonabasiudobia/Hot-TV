@@ -30,6 +30,8 @@
         @livewire("partials.header")
         {{$slot}}
         @livewire("partials.footer")
+
+        @livewire("user.videos.modal.upload-video")
     </section>
 
 
@@ -39,7 +41,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
-    <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
+    <script src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
     @stack("script")
