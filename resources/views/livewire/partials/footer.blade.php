@@ -58,7 +58,7 @@
                         <a href="{{ route('contact') }}">Contact</a>
                     </li>
                     <li>
-                        <a href="{{ route('product.home') }}">Products</a>
+                        <a href="{{ route('merchandize.home') }}">Products</a>
                     </li>
                     <li>
                         <a href="{{ route('login') }}">Login</a>
@@ -154,12 +154,6 @@
                     HTS VIDEO STREAMING - © 2023 All Rights Reserved
                 </li>
             </ul>
-
-            {{-- <ul>
-                <li>
-                    Made with 🤍 by Saivra.co
-                </li>
-            </ul> --}}
         </div>
     </section>
 </footer>

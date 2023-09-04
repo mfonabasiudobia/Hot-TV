@@ -62,7 +62,7 @@
 
                 <div class="form-group flex items-center space-x-2">
                     <input type="checkbox" id="agree" class="accent-danger mt-1 w-[20px] h-[20px]" required />
-                    <label for="agree">I agree to Hot TV Station's terms and conditions, Learn more</label>
+                    <label for="agree">I agree to Hot TV Station's terms and conditions, <a href="{{ route('terms') }}" class="text-danger">Learn more</a></label>
                 </div>
 
                 <div class="form-group">

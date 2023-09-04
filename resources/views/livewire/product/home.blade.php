@@ -9,19 +9,19 @@
 
             <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
 
-                @foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $item)
-                <a class="relative space-y-5 p-5 bg-dark rounded-xl group border border-secondary rounded-xl"
+                @foreach ($products as $product)
+                <a class="relative space-y-5 p-5 bg-dark group border border-secondary rounded-xl"
                     href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}">
                     <img src="{{ asset('images/product/product-1.png') }}" alt="" class="rounded-lg" />
 
                     <div class="space-y-3">
                         <h2 class="font-semibold text-sm">Mobile Phone</h2>
 
-                        <p>Prodcut one - Titles goes hereyou can change from backend</p>
+                        <p>{{ Str::limit($product->name, 80)}}</p>
                     </div>
 
                     <footer class="flex items-center justify-between">
-                        <span class="text-danger font-bold text-xl">$1,131.00</span>
+                        <span class="text-danger font-bold text-xl">{{ ac() . $product->price }}</span>
 
                         <button class="btn btn-sm btn-danger rounded-xl">Add</button>
                     </footer>

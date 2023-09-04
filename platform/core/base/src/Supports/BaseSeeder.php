@@ -67,6 +67,8 @@ class BaseSeeder extends Seeder
                 $pluginService->activate($plugin);
             }
 
+            $this->command->call('migrate');
+
             return $plugins;
         } catch (Exception) {
             return [];

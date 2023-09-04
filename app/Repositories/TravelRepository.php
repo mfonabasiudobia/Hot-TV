@@ -13,9 +13,14 @@ class TravelRepository {
 
    public static function customImageUpload(array $data, int $userId){
         $path = "screenshots/$userId";
+        $images = [];
+
+        foreach($data['images'] as $image){
+            $images[] = upload_file($image, $path);
+        }
 
         return TravelPhoto::create(array_merge($data, [
-            'image' => upload_file($data['image'], $path),
+            'images' => $images,
             'user_id' => $userId
         ]));
    }

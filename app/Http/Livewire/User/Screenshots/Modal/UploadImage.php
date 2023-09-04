@@ -8,12 +8,12 @@ use App\Repositories\TravelRepository;
 class UploadImage extends BaseComponent
 {
 
-    public $title, $image;
+    public $title, $images = [];
 
      public function updatedImage()
      {
         $this->validate([
-            'image' => 'image|mimes:gif,jpg,jpeg,png|max:5120',
+            'images.*' => 'image|mimes:gif,jpg,jpeg,png|max:5120',
         ]);
      }
 
@@ -21,13 +21,13 @@ class UploadImage extends BaseComponent
 
         $this->validate([
             'title' => 'required',
-            'image' => 'required|image|mimes:gif,jpg,jpeg,png|max:5120',
+            'images.*' => 'required|image|mimes:gif,jpg,jpeg,png|max:5120',
         ]);
 
 
         $data = [
             'title' => $this->title,
-            'image' => $this->image
+            'images' => $this->images
         ];
 
         try {

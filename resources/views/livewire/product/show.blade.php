@@ -1,6 +1,6 @@
 <div class="py-5 bg-black text-white space-y-5">
     <x-atoms.breadcrumb :routes="[
-        ['title' => 'Products', 'route' => route('product.home')],
+        ['title' => 'Products', 'route' => route('merchandize.home')],
         ['title' => 'Smart Watch External (Digital)', 'route' => null]
     ]" />
     <div class="container space-y-7 py-7" x-data="{ quantity : 0 }">

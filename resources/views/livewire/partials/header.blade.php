@@ -39,21 +39,22 @@
             
                 <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
                     <li>
+                        <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity shoutouts</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
+                    </li>
+                    <li>
                         <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
                     </li>
                     <li>
                         <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('product.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity shoutouts</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
                     </li>
                 </ul>
             </li>
@@ -184,22 +185,23 @@
                     <ul
                         class="py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl  z-50 hidden group-hover:block">
                         <li>
-                            <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
+                            <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
                         </li>
                         <li>
-                            <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
+                            <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
                         </li>
-                        <li>
-                            <a href="{{ route('product.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                        </li>
-                
                         <li>
                             <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity
                                 shoutouts</a>
                         </li>
-                
                         <li>
                             <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
                         </li>
                     </ul>
                 </li>

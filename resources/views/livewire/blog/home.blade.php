@@ -3,20 +3,24 @@
                 ['title' => 'Blog', 'route' => null]
             ]" />
     <div class="container space-y-7">
+
         <section class="space-y-16">
 
-            <section class="min-h-[50vh] rounded-2xl relative"
-                style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('{{ asset('images/blog/blog-overlay.png') }}');">
-
-
+        @if(isset($posts[0]))
+            @php($post = $posts[0])
+            <a class="min-h-[50vh] rounded-2xl relative bg-center block"
+                href="{{ route('blog.show', ['slug' => $post->slug]) }}"
+                style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('{{ asset('storage') . '/' . $post->image }}');">
                 <div class="md:w-3/4 absolute bottom-0 left-0 p-5 space-y-3">
-                    <span class="btn btn-xs bg-danger">Technology</span>
-                    <h1 class="font-semibold text-xl md:text-3xl">The Impact of Technology on the Workplace: How Technology is Changing</h1>
+                    @if($post->firstCategory)
+                        <span class="text-danger text-xs">{{ $post->firstCategory->name }}</span>
+                    @endIf
+                    <h1 class="font-semibold text-xl md:text-3xl">{{ Str::limit($post->name, 80) }}</h1>
 
-                    <span class="inline-block text-sm">August 20, 2022</span>
+                    <span class="inline-block text-sm">{{ $post->createdAt() }}</span>
                 </div>
-            
-            </section>
+            </a>
+        @endIf
             
             <section class="space-y-10">
                 <header class="flex justify-center">
@@ -25,24 +29,30 @@
             
             
                 <section class="grid md:grid-cols-3 gap-5">
-                    @foreach (range(1, 9) as $item)
-                    <div class="p-3 border border-secondary rounded-2xl">
-                        <img src="{{ asset('images/blog/blog-1.png') }}" alt="" class="w-full" />
+                    @foreach ($posts as $post)
+                    <a href="{{ route('blog.show', ['slug' => $post->slug]) }}" class="block p-3 border border-secondary rounded-2xl">
+                        <img src="{{ asset('storage') }}/{{ $post->image }}" alt="" class="w-full h-[250px] rounded-xl" />
             
                         <section class="space-y-2 p-2">
-                            <span class="text-danger text-xs">Technology</span>
+                            @if($post->firstCategory)
+                                <span class="text-danger text-xs">{{ $post->firstCategory->name }}</span>
+                            @endIf
             
-                            <a href="{{ route('blog.show', ['slug' => 'the-impact-technology']) }}" class="font-semibold block">The Impact of Technology on the Workplace: How Technology is Changing</a>
+                            <h2 class="font-semibold block">{{ Str::limit($post->name, 80) }}</h2>
             
-                            <span class="text-secondary text-sm inline-block">August 20, 2022</span>
+                            <span class="text-secondary text-sm inline-block">{{ $post->createdAt() }}</span>
                         </section>
-                    </div>
+                    </a>
                     @endforeach
                 </section>
             
                 <footer class="flex justify-center">
-                    <a href="#" class="btn btn-md border border-secondary opacity-75">View All Post</a>
+                   @if ($posts->hasMorePages()) 
+                        <a href="{{ $posts->nextPageUrl() }}" class="btn btn-md border border-secondary opacity-75">View More Post</a>
+                    @endIf
                 </footer>
+
+                
             
             </section>
 

@@ -6,8 +6,6 @@ use Botble\Base\Facades\BaseHelper;
 use Botble\Media\Http\Resources\FileResource;
 use Botble\Media\Models\MediaFile;
 use Botble\Media\Models\MediaFolder;
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\Media\Repositories\Interfaces\MediaFolderInterface;
 use Botble\Media\Services\ThumbnailService;
 use Botble\Media\Services\UploadsManager;
 use Exception;
@@ -29,12 +27,8 @@ class RvMedia
 {
     protected array $permissions = [];
 
-    public function __construct(
-        protected MediaFileInterface $fileRepository,
-        protected MediaFolderInterface $folderRepository,
-        protected UploadsManager $uploadManager,
-        protected ThumbnailService $thumbnailService
-    ) {
+    public function __construct(protected UploadsManager $uploadManager, protected ThumbnailService $thumbnailService)
+    {
         $this->permissions = $this->getConfig('permissions', []);
     }
 
@@ -416,8 +410,6 @@ class RvMedia
         }
 
         try {
-            $file = $this->fileRepository->getModel();
-
             $fileExtension = $fileUpload->getClientOriginalExtension();
 
             if (! $skipValidation && ! in_array(strtolower($fileExtension), explode(',', $allowedMimeTypes))) {
@@ -438,14 +430,16 @@ class RvMedia
                 }
             }
 
-            $file->name = $this->fileRepository->createName(
+            $file = new MediaFile();
+
+            $file->name = MediaFile::createName(
                 File::name($fileUpload->getClientOriginalName()),
                 $folderId
             );
 
-            $folderPath = $this->folderRepository->getFullPath($folderId);
+            $folderPath = MediaFolder::getFullPath($folderId);
 
-            $fileName = $this->fileRepository->createSlug(
+            $fileName = MediaFile::createSlug(
                 $file->name,
                 $fileExtension,
                 Storage::path($folderPath ?: '')
@@ -784,23 +778,27 @@ class RvMedia
 
     public function createFolder(string $folderSlug, int|string|null $parentId = 0, bool $force = false): int|string
     {
-        $folder = $this->folderRepository->getFirstBy([
-            'slug' => $folderSlug,
-            'parent_id' => $parentId,
-        ]);
+        $folder = MediaFolder::query()
+            ->where([
+                'slug' => $folderSlug,
+                'parent_id' => $parentId,
+            ])
+            ->first();
 
         if (! $folder) {
             if ($force) {
-                $this->folderRepository->forceDelete([
-                    'slug' => $folderSlug,
-                    'parent_id' => $parentId,
-                ]);
+                MediaFolder::query()
+                    ->where([
+                        'slug' => $folderSlug,
+                        'parent_id' => $parentId,
+                    ])
+                    ->each(fn (MediaFolder $folder) => $folder->forceDelete());
             }
 
             $folder = MediaFolder::query()->create([
                 'user_id' => Auth::check() ? Auth::id() : 0,
-                'name' => $this->folderRepository->createName($folderSlug, 0),
-                'slug' => $this->folderRepository->createSlug($folderSlug, 0),
+                'name' => MediaFolder::createName($folderSlug, 0),
+                'slug' => MediaFolder::createSlug($folderSlug, 0),
                 'parent_id' => $parentId,
             ]);
         }

@@ -6,10 +6,16 @@
                 <p>There aren't any travel photos and experiences</p>
             @endIf
 
-            <section class="grid grid-cols-4 gap-5">
+            <section class="grid grid-cols-2 md:grid-cols-4 gap-5 ">
                 @foreach ($customPhotos as $photo)
-                    <div class="rounded-xl overflow-hidden border border-secondary hover:boder-danger">
-                        <img src="{{ asset($photo->image) }}" alt="" class="h-[160px] w-full object-cover" />
+                    <div class="rounded-xl border border-secondary hover:boder-danger overflow-hidden">
+                        <section class="swiper slider">
+                            <div class="swiper-wrapper">
+                                @foreach ($photo->images as $item)
+                                <img src="{{ asset($item) }}" alt="" class="h-[160px] w-full object-cover swiper-slide" />
+                                @endforeach
+                            </div>
+                        </section>
                         <div class="p-3 text-sm">
                             <h2>
                                 {{ $photo->title }}

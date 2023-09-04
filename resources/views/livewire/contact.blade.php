@@ -8,45 +8,45 @@
                 <p>When it comes to questions about billing, your Hot TV subscription, and more, we're all ears. Simply select your type
                 of inquiry below and we'll let the appropriate folks know.</p>
             </header>
-            <form class="grid grid-cols-2 gap-5">
+            <form class="grid grid-cols-2 gap-5" wire:submit.prevent="submit">
                 <div class="form-group">
                     <label>First Name</label>
                     <input type="text" class="form-control" placeholder="First Name" wire:model.defer="first_name" />
+                    @error('first_name') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
                     <label>Last Name</label>
                     <input type="text" class="form-control" placeholder="Last Name" wire:model.defer="last_name" />
+                    @error('last_name') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
                     <label>Email Address</label>
-                    <input type="text" class="form-control" placeholder="Email Address" wire:model.defer="email" />
-                </div>
-
-                <div class="form-group">
-                    <label>Company</label>
-                    <input type="text" class="form-control" placeholder="Company" wire:model.defer="company" />
-                </div>
-
-                <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" class="form-control" placeholder="Phone" wire:model.defer="phone" />
+                    <input type="email" class="form-control" placeholder="Email Address" wire:model.defer="email" />
+                    @error('email') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
                     <label>Mobile Phone Number</label>
-                    <input type="text" class="form-control" placeholder="Mobile Phone Number"
-                        wire:model.defer="mobile_number" />
+                    <input type="text" class="form-control" placeholder="Mobile Phone Number" wire:model.defer="mobile_number" />
+                    @error('mobile_number') <span class="error"> {{ $message }}</span> @endError
+                </div>
+
+                <div class="form-group md:col-span-2">
+                    <label>Subject</label>
+                    <input type="text" class="form-control" placeholder="Subject" wire:model.defer="subject" />
+                    @error('subject') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group md:col-span-2">
                     <label>Message</label>
-                    <textarea class="form-control" placeholder="Message" wire:model.defer="mobile_number" rows="5"></textarea>
+                    <textarea class="form-control" placeholder="Message" wire:model.defer="message" rows="5"></textarea>
+                    @error('message') <span class="error"> {{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-xl rounded-xl btn-danger">Submit</button>
+                    <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl rounded-xl btn-danger" />
                 </div>
 
             </form>

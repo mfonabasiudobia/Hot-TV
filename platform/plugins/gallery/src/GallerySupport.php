@@ -62,44 +62,44 @@ class GallerySupport
                 'reference_type' => get_class($data),
             ]);
 
-            $currentLanguage = Language::getRefLang();
+            // $currentLanguage = Language::getRefLang();
 
             $gallery = (string)$request->input('gallery');
 
-            if (defined(
-                'LANGUAGE_MODULE_SCREEN_NAME'
-            ) && $currentLanguage && $currentLanguage != Language::getDefaultLocaleCode()) {
-                $formRequest = new Request();
-                $formRequest->replace([
-                    'language' => $request->input('language'),
-                    Language::refLangKey() => $currentLanguage,
-                    'images' => $gallery,
-                ]);
+            // if (defined(
+            //     'LANGUAGE_MODULE_SCREEN_NAME'
+            // ) && $currentLanguage && $currentLanguage != Language::getDefaultLocaleCode()) {
+            //     $formRequest = new Request();
+            //     $formRequest->replace([
+            //         'language' => $request->input('language'),
+            //         Language::refLangKey() => $currentLanguage,
+            //         'images' => $gallery,
+            //     ]);
 
-                if (! $meta) {
-                    $meta = $this->galleryMetaRepository->getModel();
-                    $meta->reference_id = $data->id;
-                    $meta->reference_type = get_class($data);
-                    $meta->images = json_decode($gallery, true);
-                    $meta->save();
-                }
+            //     if (! $meta) {
+            //         $meta = $this->galleryMetaRepository->getModel();
+            //         $meta->reference_id = $data->id;
+            //         $meta->reference_type = get_class($data);
+            //         $meta->images = json_decode($gallery, true);
+            //         $meta->save();
+            //     }
 
-                LanguageAdvancedManager::save($meta, $formRequest);
-            } else {
-                if (empty($meta->images)) {
-                    $this->deleteGallery($data);
-                }
+            //     LanguageAdvancedManager::save($meta, $formRequest);
+            // } else {
+            //     if (empty($meta->images)) {
+            //         $this->deleteGallery($data);
+            //     }
 
-                if (! $meta) {
-                    $meta = $this->galleryMetaRepository->getModel();
-                    $meta->reference_id = $data->id;
-                    $meta->reference_type = get_class($data);
-                }
+            //     if (! $meta) {
+            //         $meta = $this->galleryMetaRepository->getModel();
+            //         $meta->reference_id = $data->id;
+            //         $meta->reference_type = get_class($data);
+            //     }
 
-                $meta->images = json_decode($gallery, true);
+            //     $meta->images = json_decode($gallery, true);
 
-                $this->galleryMetaRepository->createOrUpdate($meta);
-            }
+            //     $this->galleryMetaRepository->createOrUpdate($meta);
+            // }
         }
     }
 

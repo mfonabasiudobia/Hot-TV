@@ -78,7 +78,7 @@
             @if (isset($isOutdated) && isset($latestUpdate) && ! $isOutdated && $latestUpdate)
                 <div class="updater-box bg-transparent shadow-none border-0 p-0" dir="ltr">
                     <div class="mb-2 bold">Latest changelog: released on {{ $latestUpdate->releasedDate->toDateString() }}</div>
-                    <pre>{!! trim(strip_tags(str_replace('<li>', '<li>- ', $latestUpdate->changelog))) !!} </pre>
+                    <pre>{!! trim(str_replace(PHP_EOL . PHP_EOL, PHP_EOL, strip_tags((str_replace(['<li>', '</li>', '<ul>'], ['<li>- ', '</li>' . PHP_EOL, PHP_EOL . '<ul>'], $latestUpdate->changelog))))) !!}</pre>
                 </div>
             @endif
         </div>

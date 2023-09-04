@@ -48,6 +48,7 @@ use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Throwable;
@@ -177,6 +178,8 @@ class BaseServiceProvider extends ServiceProvider
             ->loadMigrations()
             ->publishAssets();
 
+        $this->app['blade.compiler']->anonymousComponentPath($this->getViewsPath() . '/components', 'core');
+
         Schema::defaultStringLength(191);
 
         $config = $this->app['config'];
@@ -205,6 +208,10 @@ class BaseServiceProvider extends ServiceProvider
             }, 99);
 
             add_filter(BASE_FILTER_FOOTER_LAYOUT_TEMPLATE, function ($html) {
+                if (! Auth::check()) {
+                    return $html;
+                }
+
                 return $html . view('core/base::notification.notification-content');
             }, 99);
 

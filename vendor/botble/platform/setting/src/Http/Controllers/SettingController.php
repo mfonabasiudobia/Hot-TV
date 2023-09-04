@@ -13,8 +13,8 @@ use Botble\Base\Supports\Core;
 use Botble\Base\Supports\Language;
 use Botble\JsValidation\Facades\JsValidator;
 use Botble\Media\Facades\RvMedia;
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\Media\Repositories\Interfaces\MediaFolderInterface;
+use Botble\Media\Models\MediaFile;
+use Botble\Media\Models\MediaFolder;
 use Botble\Setting\Facades\Setting;
 use Botble\Setting\Http\Requests\EmailSettingRequest;
 use Botble\Setting\Http\Requests\EmailTemplateRequest;
@@ -232,7 +232,7 @@ class SettingController extends BaseController
         }
     }
 
-    public function getMediaSetting(MediaFolderInterface $mediaFolderRepository)
+    public function getMediaSetting()
     {
         PageTitle::setTitle(trans('core/setting::setting.media.title'));
 
@@ -242,7 +242,7 @@ class SettingController extends BaseController
 
         $folderIds = json_decode((string)setting('media_folders_can_add_watermark'), true);
 
-        $folders = $mediaFolderRepository->pluck('name', 'id', ['parent_id' => 0]);
+        $folders = MediaFolder::query()->where('parent_id', 0)->pluck('name', 'id')->all();
 
         $jsValidation = JsValidator::formRequest(MediaSettingRequest::class);
 
@@ -369,11 +369,11 @@ class SettingController extends BaseController
         }
     }
 
-    public function generateThumbnails(MediaFileInterface $fileRepository, BaseHttpResponse $response)
+    public function generateThumbnails(BaseHttpResponse $response)
     {
         BaseHelper::maximumExecutionTimeAndMemoryLimit();
 
-        $files = $fileRepository->allBy([], [], ['url', 'mime_type', 'folder_id']);
+        $files = MediaFile::query()->select(['url', 'mime_type', 'folder_id'])->get();
 
         $errors = [];
 

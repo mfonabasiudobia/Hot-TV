@@ -60,9 +60,5 @@ return [
     'image' => 'Image',
     'bulk_changes' => 'Bulk changes',
     'submit' => 'Submit',
-    'price' => 'price',
-    'can_download' => 'Can Download',
-    'can_stream' => 'Can Stream',
     'please_select_record' => 'Please select at least one record to perform this action!',
-    'discount_type' => 'Discount Type'
 ];

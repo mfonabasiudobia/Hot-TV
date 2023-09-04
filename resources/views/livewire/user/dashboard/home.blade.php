@@ -14,4 +14,24 @@
     @elseif($currentNav === 'watch-history')
         @livewire("user.watch-history.home")
     @endIf
+
+    
 </section>
+
+@push('header')
+<script>
+    Livewire.on('setNav', function () {
+            var swiper = new Swiper(".slider", {
+                effect: "coverflow",
+                grabCursor: true,
+                pagination: {
+                    el: ".swiper-pagination",
+                },
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+            });
+    });
+</script>
+@endpush

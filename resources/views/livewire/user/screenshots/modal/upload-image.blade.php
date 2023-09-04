@@ -29,9 +29,9 @@
                         <label>Image</label>
                         <span class="text-secondary block text-xs">Support *.png, *.jpeg, *.gif, *.jpg. Maximun upload file size: 5mb.</span>
                         <x-atoms.progress-indicator>
-                            <input type="file" class="form-control" accept="image/*" wire:model.defer="image" />
+                            <input type="file" class="form-control" accept="image/*" wire:model.defer="images" multiple />
                         </x-atoms.progress-indicator>
-                        @error('image') <span class="error"> {{ $message }}</span> @endError
+                        @error('images.*') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
 

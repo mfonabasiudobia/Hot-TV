@@ -70,9 +70,9 @@ final class Core
 
     private string $minimumPhpVersion = '8.0.2';
 
-    private string $licenseUrl = 'https://license.botble.com';
+    private string $licenseUrl = 'https://license.codegood.net';
 
-    private string $licenseKey = 'CAF4B17F6D3F656125F9';
+    private string $licenseKey = 'E73DAB40EFB3FD68B0CD';
 
     private string $cacheLicenseKeyName = '45d0da541764682476f822028d945a46270ba404';
 
@@ -318,11 +318,12 @@ final class Core
 
             if ($zip->extract($filePath, $this->basePath)) {
                 $this->files->delete($filePath);
-                $this->files->delete($coreTempPath);
 
                 SystemUpdateExtractedFiles::dispatch();
 
                 $this->runMigrationFiles();
+
+                $this->files->delete($coreTempPath);
 
                 return true;
             }
@@ -404,11 +405,16 @@ final class Core
             core_path(),
             package_path(),
             plugin_path(),
+            theme_path(),
         ];
 
         foreach ($paths as $path) {
             foreach (BaseHelper::scanFolder($path) as $module) {
                 if ($path == plugin_path() && ! is_plugin_active($module)) {
+                    continue;
+                }
+
+                if ($path == theme_path() && $module !== Theme::getThemeName()) {
                     continue;
                 }
 
