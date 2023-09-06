@@ -2,13 +2,8 @@
 
 return [
     [
-        'name' => 'Stream',
-        'flag' => 'plugins.stream',
-    ],
-    [
-        'name' => 'Plans',
+        'name' => 'Streams',
         'flag' => 'stream.index',
-        'parent_flag' => 'plugins.stream',
     ],
     [
         'name' => 'Create',
@@ -24,5 +19,5 @@ return [
         'name' => 'Delete',
         'flag' => 'stream.destroy',
         'parent_flag' => 'stream.index',
-    ]
+    ],
 ];

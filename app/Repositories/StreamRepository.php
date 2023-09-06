@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Stream;
 use Carbon\Carbon;
+use AppHelper;
 
 class StreamRepository
 {
@@ -11,6 +12,28 @@ class StreamRepository
     public static function getStreamById(int $id){
         return Stream::findOrFail($id);
     }
+
+    public static function create(array $data){
+        $stream = Stream::create(array_merge($data, [
+            'recorded_video' => AppHelper::uploadFile($data['recorded_video'], 'streams'),
+            'thumbnail' => AppHelper::uploadFile($data['thumbnail'], 'thumbnail')
+        ]));
+
+        return $stream;
+    }
+
+    public static function update(int $id, array $data){
+
+        $stream = Stream::findOrFail($id);
+        
+        $stream->update(array_merge($data, [
+            'recorded_video' => $data['recorded_video'] ?  AppHelper::uploadFile($data['recorded_video'], 'streams') : $stream->recorded_video,
+            'thumbnail' => $data['thumbnail'] ? AppHelper::uploadFile($data['thumbnail'], 'streams') : $stream->thumbnail
+        ]));
+
+        return $stream;
+    }
+
 
     public static function getTimeRangeAlreadyScheduled($selectedDate){
         return Stream::whereDate('schedule_date', $selectedDate)->pluck('start_time', 'end_time')
@@ -52,21 +75,6 @@ class StreamRepository
          })
          ->values()
          ->toArray();
-    }
-
-     public static function isTimeInRange($time, $ranges) {
-        $givenTime = \DateTime::createFromFormat('H:i', $time);
-
-        foreach ($ranges as $range) {
-            $fromTime = \DateTime::createFromFormat('H:i', $range['from']);
-            $toTime = \DateTime::createFromFormat('H:i', $range['to']);
-
-            if ($givenTime >= $fromTime && $givenTime <= $toTime) { 
-                return true; // Time is within the range 
-            } 
-        } 
-        return false;
-        // Time is not within any of the ranges ` 
     }
 
 

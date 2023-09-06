@@ -16,9 +16,9 @@ class StreamRequest extends Request
             'title' => 'required|string|max:255',
             'description' => 'required',
             'schedule_date' => 'required|date|after_or_equal:today',
-            'start_time' => ['required', 'date_format:H:i', new AvailableTime(request('schedule_date'))],
+            'start_time' => ['required', new AvailableTime(request('schedule_date'))],
             'thumbnail' => 'required',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'end_time' => 'required|after:start_time',
             'recorded_video' => 'required',
             'stream_type' => Rule::in(['recorded_video', 'podcast']),
         ];

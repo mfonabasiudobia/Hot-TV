@@ -32,7 +32,7 @@ body {
         @apply min-h-[100vh] w-full relative top-0 overflow-x-hidden;
     }
 
-    .sidebar {
+      .sidebar {
         @apply pt-5 overflow-y-auto h-screen transition-all z-50 scrollbar border relative md:sticky top-0;
     }
 

@@ -2,34 +2,23 @@
 
 namespace Botble\Stream\Tables;
 
-use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\Html;
-use Botble\Stream\Exports\StreamExport;
+use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Stream\Models\Stream;
 use Botble\Table\Abstracts\TableAbstract;
-use Botble\Table\DataTables;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Botble\Table\DataTables;
 
 class StreamTable extends TableAbstract
 {
-    protected string $exportClass = StreamExport::class;
-
-    protected int $defaultSortColumn = 6;
-
-    public function __construct(
-        DataTables $table,
-        UrlGenerator $urlGenerator,
-        Stream $stream
-    ) {
+    public function __construct(DataTables $table, UrlGenerator $urlGenerator, Stream $stream)
+    {
         parent::__construct($table, $urlGenerator);
 
         $this->model = $stream;
@@ -37,7 +26,7 @@ class StreamTable extends TableAbstract
         $this->hasActions = true;
         $this->hasFilter = true;
 
-        if (! Auth::user()->hasAnyPermission(['stream.edit', 'stream.destroy'])) {
+        if (!Auth::user()->hasAnyPermission(['stream.edit', 'stream.destroy'])) {
             $this->hasOperations = false;
             $this->hasActions = false;
         }
@@ -47,30 +36,20 @@ class StreamTable extends TableAbstract
     {
         $data = $this->table
             ->eloquent($this->query())
-            ->editColumn('title', function (Stream $item) {
-                if (! Auth::user()->hasPermission('stream.edit')) {
-                    return BaseHelper::clean($item->title);
+            ->editColumn('name', function (Stream $item) {
+                if (!Auth::user()->hasPermission('stream.edit')) {
+                    return BaseHelper::clean($item->name);
                 }
-
-                return Html::link(route('stream.edit', $item->getKey()), BaseHelper::clean($item->title));
+                return Html::link(route('stream.edit', $item->getKey()), BaseHelper::clean($item->name));
             })
-            ->editColumn('schedule_date', function (Stream $item) {
-                return BaseHelper::formatDate($item->schedule_date, "d M Y");
-            })
-            ->editColumn('start_time', function (Stream $item) {
-                return BaseHelper::formatDate($item->start_time, "h: iA");
-            })
-             ->editColumn('end_time', function (Stream $item) {
-                return BaseHelper::formatDate($item->end_time, "h: iA");
-             })
-             ->editColumn('stream_type', function (Stream $item) {
-                return $item->stream_type;
-             })
             ->editColumn('checkbox', function (Stream $item) {
                 return $this->getCheckbox($item->getKey());
             })
             ->editColumn('created_at', function (Stream $item) {
-                return BaseHelper::formatDate($item->created_at, "d M Y");
+                return BaseHelper::formatDate($item->created_at);
+            })
+            ->editColumn('status', function (Stream $item) {
+                return $item->status->toHtml();
             })
             ->addColumn('operations', function (Stream $item) {
                 return $this->getOperations('stream.edit', 'stream.destroy', $item);
@@ -85,15 +64,11 @@ class StreamTable extends TableAbstract
             ->getModel()
             ->query()
             ->select([
-                'id',
-                'title',
-                'schedule_date',
-                'start_time',
-                'end_time',
-                'stream_type',
-                'created_at',
-                'updated_at'
-            ]);
+               'id',
+               'name',
+               'created_at',
+               'status',
+           ]);
 
         return $this->applyScopes($query);
     }
@@ -105,36 +80,18 @@ class StreamTable extends TableAbstract
                 'title' => trans('core/base::tables.id'),
                 'width' => '20px',
             ],
-            'title' => [
-                'title' => trans('Title'),
-                'class' => 'text-start',
-            ],
-            'schedule_date' => [
-                'title' => trans('Schedule Date'),
-                'class' => 'text-start',
-            ],
-            'start_time' => [
-                'title' => trans('Start Time'),
-                'class' => 'text-start',
-            ],
-            'end_time' => [
-                'title' => trans('End Time'),
-                'class' => 'text-start',
-            ],
-            'stream_type' => [
-                'title' => trans('Stream Type'),
+            'name' => [
+                'title' => trans('core/base::tables.name'),
                 'class' => 'text-start',
             ],
             'created_at' => [
                 'title' => trans('core/base::tables.created_at'),
                 'width' => '100px',
-                'class' => 'text-center',
             ],
-            // 'status' => [
-            //     'title' => trans('core/base::tables.status'),
-            //     'width' => '100px',
-            //     'class' => 'text-center',
-            // ],
+            'status' => [
+                'title' => trans('core/base::tables.status'),
+                'width' => '100px',
+            ],
         ];
     }
 
@@ -151,51 +108,26 @@ class StreamTable extends TableAbstract
     public function getBulkChanges(): array
     {
         return [
-            'title' => [
-                'title' => trans('Title'),
+            'name' => [
+                'title' => trans('core/base::tables.name'),
                 'type' => 'text',
                 'validate' => 'required|max:120',
             ],
-            'description' => [
-                'title' => trans('description'),
-                'type' => 'text',
-                'validate' => 'required|max:120',
+            'status' => [
+                'title' => trans('core/base::tables.status'),
+                'type' => 'select',
+                'choices' => BaseStatusEnum::labels(),
+                'validate' => 'required|in:' . implode(',', BaseStatusEnum::values()),
             ],
-            // 'status' => [
-            //     'title' => trans('core/base::tables.status'),
-            //     'type' => 'customSelect',
-            //     'choices' => BaseStatusEnum::labels(),
-            //     'validate' => 'required|in:' . implode(',', BaseStatusEnum::values()),
-            // ],
-            // 'category' => [
-            //     'title' => trans('plugins/Stream::stream.category'),
-            //     'type' => 'select-search',
-            //     'validate' => 'required|string',
-            //     'callback' => 'getCategories',
-            // ],
             'created_at' => [
                 'title' => trans('core/base::tables.created_at'),
-                'type' => 'datePicker',
-                'validate' => 'required|string|date',
+                'type' => 'date',
             ],
         ];
     }
 
-    public function applyFilterCondition(EloquentBuilder|QueryBuilder|EloquentRelation $query, string $key, string $operator, string|null $value): EloquentRelation|EloquentBuilder|QueryBuilder
+    public function getFilters(): array
     {
-        return parent::applyFilterCondition($query, $key, $operator, $value);
-    }
-
-    public function saveBulkChangeItem(Model|Stream $item, string $inputKey, string|null $inputValue): Model|bool
-    {
-        return parent::saveBulkChangeItem($item, $inputKey, $inputValue);
-    }
-
-    public function getDefaultButtons(): array
-    {
-        return [
-            'export',
-            'reload',
-        ];
+        return $this->getBulkChanges();
     }
 }
