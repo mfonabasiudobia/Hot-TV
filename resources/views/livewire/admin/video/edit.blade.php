@@ -1,6 +1,6 @@
 <section>
     <section class="space-y-5">
-        <h2 class="font-medium text-xl">Edit Video</h2>
+        <h2 class="font-medium text-xl">Edit Stream</h2>
 
         <section>
 
@@ -29,17 +29,17 @@
                     <label>Start time</label>
                     <input type="text" placeholder="Start Time" wire:model.defer='start_time'
                         class="form-control text-dark custom-time" />
-                    @error('start_time') <span class="error">{{ $message }}</span> @endError
-                </div>
+                    @error('start_time') <span class="err                                          or">{{ $message }}</span> @endError
+                </div> 
 
-                <div class="form-group" wire:ignore.self>
+                <div class="form-group" wire:ignore                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         .self>
                     <label>End time</label>
                     <input type="text" placeholder="End Time" wire:model.defer='end_time'
                         class="form-control text-dark custom-time" />
                     @error('end_time') <span class="error">{{ $message }}</span> @endError
                 </div>
 
-
+                                                                           
                 <div class="form-group" wire:ignore.self>
                     <label>Stream Type</label>
                     {{-- <input type="text" placeholder="End Time" wire:model.defer='end_time'
@@ -52,6 +52,20 @@
                     </select>
                     @error('stream_type') <span class="error">{{ $message }}</span> @endError
                 </div>
+
+                @if(in_array($stream_type, ['uploaded_video']))
+                <div class="form-group">
+                    <label>Uploaded Video Type</label>
+                    <select class="form-control text-dark" wire:model.defer="uploaded_video_type">
+                        <option value="">--Uploaded Video Type--</option>
+                        <option value="advertisement">Short Advertisement</option>
+                        <option value="show_episode">Episode of a show</option>
+                        <option value="pedicab_stream">Pedicab Stream</option>
+                        <option value="general">General</option>
+                    </select>
+                    @error('uploaded_video_type') <span class="error">{{ $message }}</span> @endError
+                </div>
+                @endIf
 
                 <div class="form-group">
                     <label>Thumbnail</label>

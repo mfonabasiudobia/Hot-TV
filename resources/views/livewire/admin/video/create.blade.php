@@ -1,11 +1,8 @@
 <section>
     <section class="space-y-5">
-        <h2 class="font-medium text-xl">Create Video</h2>
+        <h2 class="font-medium text-xl">Create Stream</h2>
 
-        {{ json_encode($errors->all()) }}
-    
         <section>
-    
             <form class="grid md:grid-cols-2 gap-5" wire:submit.prevent='submit'>
                 <div class="form-group">
                     <label>Title</label>
@@ -42,17 +39,29 @@
                 </div>
 
 
-                <div class="form-group" wire:ignore.self>
+                <div class="form-group">
                     <label>Stream Type</label>
-                    {{-- <input type="text" placeholder="End Time" wire:model.defer='end_time' class="form-control text-dark custom-time" /> --}}
-
-                    <select class="form-control text-dark" wire:model.defer="stream_type">
+                    <select class="form-control text-dark" wire:model="stream_type">
                         <option value="uploaded_video">Uploaded Video</option>
                         <option value="podcast">Podcast</option>
                         <option value="pedicab_stream">Pedicab Stream</option>
                     </select>
                     @error('stream_type') <span class="error">{{ $message }}</span> @endError
                 </div>
+
+                @if(in_array($stream_type, ['uploaded_video']))
+                    <div class="form-group">
+                        <label>Uploaded Video Type</label>
+                        <select class="form-control text-dark" wire:model.defer="uploaded_video_type">
+                            <option value="">--Uploaded Video Type--</option>
+                            <option value="advertisement">Short Advertisement</option>
+                            <option value="show_episode">Episode of a show</option>
+                            <option value="pedicab_stream">Pedicab Stream</option>
+                            <option value="general">General</option>
+                        </select>
+                        @error('uploaded_video_type') <span class="error">{{ $message }}</span> @endError
+                    </div>
+                @endIf
 
             
 

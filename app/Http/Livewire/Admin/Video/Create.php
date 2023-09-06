@@ -12,7 +12,7 @@ class Create extends BaseComponent
 
     public $timeRangedAlreadyScheduled = [];
 
-    public $stream_type = 'uploaded_video';
+    public $stream_type = 'uploaded_video', $uploaded_video_type;
 
     public function updatedScheduleDate($value){
         $this->timeRangedAlreadyScheduled = StreamRepository::getTimeRangeAlreadyScheduled($value);
@@ -30,7 +30,8 @@ class Create extends BaseComponent
             'thumbnail' => 'required|image',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'recorded_video' => 'required|file|mimetypes:video/*|max:204800',
-            'stream_type' => 'required|in:uploaded_video,podcast,pedicab_stream'
+            'stream_type' => 'required|in:uploaded_video,podcast,pedicab_stream',
+            'uploaded_video_type' => 'nullable'
         ],[
             'schedule_date.*' => 'Invalid Date Selected',
             'start_time.*' => 'Invalid Start Time Selected',
@@ -51,7 +52,8 @@ class Create extends BaseComponent
                 'end_time' => $this->end_time,
                 'recorded_video' => $this->recorded_video,
                 'thumbnail' => $this->thumbnail,
-                'stream_type' => $this->stream_type
+                'stream_type' => $this->stream_type,
+                'uploaded_video_type' => $this->uploaded_video_type
             ];
 
             throw_unless(StreamRepository::create($data), "Please try again");

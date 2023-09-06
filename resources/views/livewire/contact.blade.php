@@ -20,7 +20,7 @@
                     <input type="text" class="form-control" placeholder="Last Name" wire:model.defer="last_name" />
                     @error('last_name') <span class="error"> {{ $message }}</span> @endError
                 </div>
-
+      
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" class="form-control" placeholder="Email Address" wire:model.defer="email" />
