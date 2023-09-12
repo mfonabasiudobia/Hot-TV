@@ -14,21 +14,14 @@
                 </a>
             </li>
 
-            <li class="{{request()->routeIs('admin.live') ? 'active' : ''}}">
-                <a href="{{route('admin.dashboard')}}">
+            <li class="{{request()->routeIs('admin.live.*') ? 'active' : ''}}">
+                <a href="{{route('admin.live')}}">
                     <i class="las la-play"></i>
                     <span>Go Live</span>
                 </a>
             </li>
 
-            {{-- <li class="{{request()->routeIs('admin.plans.*') ? 'active' : ''}}">
-                <a href="{{route('admin.plans.list')}}">
-                    <i class="las la-box"></i>
-                    <span>Membership Plans</span>
-                </a>
-            </li> --}}
         </ul>
-
 
         <ul class="sidebar-bottom absolute left-0 bottom-0 border-t w-full bg-white z-20">
             {{-- <li>

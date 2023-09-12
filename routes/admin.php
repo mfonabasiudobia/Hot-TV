@@ -14,6 +14,7 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
         });
 
         Route::get('calendar-view',"Calendar\Home")->name('calendar');
+        Route::get('live-stream',"Live\Home")->name('live');
 
 
     });
