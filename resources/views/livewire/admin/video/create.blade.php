@@ -78,7 +78,7 @@
     
                 <x-atoms.progress-indicator>
                     <label>Upload Recorded Video</label>
-                    <input type="file" wire:model.defer='recorded_video' accept="video/*" class="form-control text-dark" />
+                    <input type="file" wire:model.defer='recorded_video' class="form-control text-dark" />
                     @error('recorded_video') <span class="error">{{ $message }}</span> @endError
 
                     @if($recorded_video)

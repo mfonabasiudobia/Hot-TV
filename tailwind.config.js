@@ -10,6 +10,7 @@ module.exports = {
     './vendor/usernotnull/tall-toasts/config/**/*.php',
     './vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php'
   ],
+  darkMode : 'class',
   theme: {
     extend: {
       colors: {
