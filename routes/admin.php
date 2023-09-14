@@ -16,6 +16,12 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
         Route::get('calendar-view',"Calendar\Home")->name('calendar');
         Route::get('live-stream',"Live\Home")->name('live');
 
+        Route::group(['prefix'=> 'show-categories', 'as' => 'show-category.'], function() {
+            Route::get('/',"ShowCategory\Home")->name('list');
+            Route::get('create',"ShowCategory\Create")->name('create');
+            Route::get('{id}/edit',"ShowCategory\Edit")->name('edit');
+        });
+
 
     });
     

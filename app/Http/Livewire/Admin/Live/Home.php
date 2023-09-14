@@ -11,7 +11,7 @@ use App\Jobs\UploadVideo;
 class Home extends BaseComponent
 {
     public $video, $videos;
-
+ 
     public function mount(){
         $this->video = Stream::latest()->first();
 

@@ -56,7 +56,7 @@
                 @if(in_array($stream_type, ['uploaded_video']))
                 <div class="form-group">
                     <label>Uploaded Video Type</label>
-                    <select class="form-control text-dark" wire:model.defer="uploaded_video_type">
+                    <select class="form-control text-dark" wire:model="uploaded_video_type">
                         <option value="">--Uploaded Video Type--</option>
                         <option value="advertisement">Short Advertisement</option>
                         <option value="show_episode">Episode of a show</option>
@@ -64,6 +64,19 @@
                         <option value="general">General</option>
                     </select>
                     @error('uploaded_video_type') <span class="error">{{ $message }}</span> @endError
+                </div>
+                @endIf
+
+                @if(in_array($uploaded_video_type, ['show_episode']))
+                <div class="form-group">
+                    <label>Show Category</label>
+                    <select class="form-control text-dark" wire:model.defer="show_category_id">
+                        <option value="">--Select Show Category--</option>
+                        @foreach (\App\Models\ShowCategory::all() as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('show_category_id') <span class="error">{{ $message }}</span> @endError
                 </div>
                 @endIf
 

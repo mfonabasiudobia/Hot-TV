@@ -83,6 +83,7 @@ return array(
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'ProtoneMedia\\LaravelFFMpeg\\' => array($vendorDir . '/pbmedia/laravel-ffmpeg/src'),
     'Predis\\' => array($vendorDir . '/predis/predis/src'),
+    'PowerComponents\\LivewirePowerGrid\\' => array($vendorDir . '/power-components/livewire-powergrid/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
     'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),

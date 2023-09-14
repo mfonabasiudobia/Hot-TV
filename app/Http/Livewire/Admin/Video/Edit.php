@@ -14,7 +14,7 @@ class Edit extends BaseComponent
 
      public $timeRangedAlreadyScheduled = [];
 
-     public $stream_type = 'uploaded_video', $uploaded_video_type;
+     public $stream_type = 'uploaded_video', $uploaded_video_type, $show_category_id;
 
      public function mount($id){
         $this->stream = StreamRepository::getStreamById($id);
@@ -49,7 +49,8 @@ class Edit extends BaseComponent
             'end_time' => 'required|date_format:H:i|after:start_time',
             'recorded_video' => 'nullable|file|mimetypes:video/*|max:204800',
             'stream_type' => 'required|in:uploaded_video,podcast,pedicab_stream',
-            'uploaded_video_type' => 'nullable'
+            'uploaded_video_type' => 'nullable',
+            'show_category_id' => 'nullable'
         ],[
             'schedule_date.*' => 'Invalid Date Selected',
             'start_time.*' => 'Invalid Start Time Selected',
@@ -71,7 +72,8 @@ class Edit extends BaseComponent
                 'recorded_video' => $this->recorded_video,
                 'thumbnail' => $this->thumbnail,
                 'stream_type' => $this->stream_type,
-                'uploaded_video_type' => $this->uploaded_video_type
+                'uploaded_video_type' => $this->uploaded_video_type,
+                'show_category_id' => $this->show_category_id
             ];
 
             throw_unless(StreamRepository::update($this->stream->id, $data), "Please try again");
