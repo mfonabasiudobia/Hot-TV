@@ -24,3 +24,7 @@ function upload_file($file, $filePath, $previousPath = null, $isupdating = false
 
     return 'storage/' . $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
 }
+
+function file_path($file = null){
+    return asset('storage') . '/' . $file;
+}

@@ -3,8 +3,7 @@
 namespace App\Http\Livewire\Admin\ShowCategory;
 
 use App\Http\Livewire\BaseComponent;
-use App\Repositories\CategoryRepository;
-use App\Models\ShowCategory;
+use App\Repositories\ShowCategoryRepository;
 
 class Create extends BaseComponent
 {
@@ -30,13 +29,11 @@ class Create extends BaseComponent
 
             try {
 
-                throw_unless(ShowCategory::create($data), 'An error occured, please try again');
-
-                $this->emit('refreshCategory');
-
-                $this->reset();
+                throw_unless(ShowCategoryRepository::createShowCategory($data), 'An error occured, please try again');
 
                 toast()->success('Category has been created')->push();
+
+                redirect()->route('admin.show-category.list');
 
             } catch (\Throwable $e) {
                 toast()->danger($e->getMessage())->push();

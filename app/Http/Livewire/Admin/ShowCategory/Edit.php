@@ -3,8 +3,7 @@
 namespace App\Http\Livewire\Admin\ShowCategory;
 
 use App\Http\Livewire\BaseComponent;
-use App\Repositories\CategoryRepository;
-use App\Models\ShowCategory;
+use App\Repositories\ShowCategoryRepository;
 
 class Edit extends BaseComponent
 {
@@ -13,7 +12,7 @@ class Edit extends BaseComponent
 
 
     public function mount($id){
-        $this->category = ShowCategory::findOrFail($id);
+        $this->category = ShowCategoryRepository::getShowCategoryById($id);
 
         $this->fill([
             'name' => $this->category->name,
@@ -42,7 +41,7 @@ class Edit extends BaseComponent
 
         try {
 
-            throw_unless(ShowCategory::find($this->category->id)->update($data), 'An error occured, please try again');
+            throw_unless(ShowCategoryRepository::updateShowCategory($data, $this->category->id), 'An error occured, please try again');
 
             toast()->success('Category has been updated')->push();
 

@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('show_categories', function (Blueprint $table) {
+        Schema::create('show_category_tv_show', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-             $table->string("slug");
-            $table->tinyInteger("order");
-            $table->enum('status', ['published', 'unpublished'])->default('published');
-            $table->softDeletes();
+            $table->foreignId('show_category_id')->references('id')->on('show_categories');
+            $table->foreignId('tv_show_id')->references('id')->on('tv_shows');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('show_categories');
+        Schema::dropIfExists('show_category_tv_show');
     }
 };

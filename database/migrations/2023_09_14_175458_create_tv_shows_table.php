@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('show_categories', function (Blueprint $table) {
+        Schema::create('tv_shows', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-             $table->string("slug");
-            $table->tinyInteger("order");
+            $table->string("title");
+            $table->string("slug");
+            $table->longText("description");
+            $table->string("thumbnail");
+            $table->dateTime("release_date")->nullable();
             $table->enum('status', ['published', 'unpublished'])->default('published');
             $table->softDeletes();
             $table->timestamps();
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('show_categories');
+        Schema::dropIfExists('tv_shows');
     }
 };

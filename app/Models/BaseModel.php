@@ -21,12 +21,5 @@ class BaseModel extends Model
      return $this->updated_at ? $this->updated_at->format('M d, Y') : null;
    }
 
-  //  public function scopeActive($q){
-  //       return $q->where('is_active', 1);
-  //   }
-
-  //   public function scopeInactive($q){
-  //       return $q->where('is_active', 0);
-  //   }
 
 }

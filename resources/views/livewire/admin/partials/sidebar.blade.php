@@ -21,18 +21,11 @@
                 </a>
             </li>
 
-            <li >
-                <a href="{{route('admin.show-category.list')}}">
-                    <i class="las la-play"></i>
-                    <span>Show Categories</span>
-                </a>
-            </li>
-
             <li class="{{$status = request()->routeIs('admin.show-category.*') ? 'active' : ''}}"
                 x-data="{ show : '{{$status ? true : false}}'}">
                 <a href="#" x-on:click="show = !show">
                     <i class="las la-tv"></i>
-                    <span>TV Shows</span>
+                    <span>TV Shows Section</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
             
@@ -42,6 +35,12 @@
                         <a href="{{ route('admin.show-category.list')  }}">
                             <i class="las la-circle"></i>
                             <span>Show Categories</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.tv-show.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>TV Shows</span>
                         </a>
                     </li>
                 </ul>

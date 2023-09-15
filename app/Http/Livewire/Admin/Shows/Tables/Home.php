@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Admin\ShowCategory\Tables;
+namespace App\Http\Livewire\Admin\Shows\Tables;
 
-use App\Models\ShowCategory;
+use App\Models\TvShow;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,11 +49,11 @@ final class Home extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\ShowCategory>
+     * @return Builder<\App\Models\TvShow>
      */
     public function datasource(): Builder
     {
-        return ShowCategory::query();
+        return TvShow::query();
     }
 
     /*
@@ -89,9 +89,11 @@ final class Home extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
-            ->addColumn('name')
-            ->addColumn('created_at')
-            ->addColumn('status_formatted', function(ShowCategory $model){
+            ->addColumn('title')
+            ->addColumn('created_at_formatted', function(TvShow $model){
+                return $model->createdAt();
+            })
+            ->addColumn('status_formatted', function(TvShow $model){
                 return $model->status == 'published' ? "<span class='px-3 py-1 rounded-full bg-green-200'>Published</span>" : "<span
                     class='px-3 py rounded-full bg-red-200'>Unpublished</span>";
             });
@@ -116,15 +118,13 @@ final class Home extends PowerGridComponent
         return [
             Column::make('SNO', '')->index(),
 
-            Column::make('Name', 'name')
-                ->searchable()
-                ->sortable(),
-
-            Column::make('Order', 'order')
+            Column::make('Title', 'title')
                 ->searchable()
                 ->sortable(),
             
             Column::make('Status', 'status_formatted'),
+
+            Column::make('Created At', 'created_at_formatted'),
         ];
     }
 
@@ -136,7 +136,7 @@ final class Home extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name'),
+            Filter::inputText('title'),
             Filter::datepicker('created_at_formatted', 'created_at'),
         ];
     }
@@ -150,7 +150,7 @@ final class Home extends PowerGridComponent
     */
 
     /**
-     * PowerGrid ShowCategory Action Buttons.
+     * PowerGrid TvShow Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -164,14 +164,14 @@ final class Home extends PowerGridComponent
                 ->caption("<i class='las la-pencil-alt'></i>")
                 ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
                 ->target('_self')
-                ->route('admin.show-category.edit', ['id' => 'id']),
+                ->route('admin.tv-show.edit', ['id' => 'id']),
 
            Button::add('destroy')
                 ->caption("<i class='las la-trash'></i>")
                 ->class('bg-red-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
                 ->dispatch('trigger-delete-modal', [
                     'id' => 'id',
-                    'model' => ShowCategory::class,
+                    'model' => TvShow::class,
                     'title' => 'Are you sure?',
                     'message' => 'Are you sure you want to delete this category?'
                 ])
@@ -188,7 +188,7 @@ final class Home extends PowerGridComponent
     */
 
     /**
-     * PowerGrid ShowCategory Action Rules.
+     * PowerGrid TvShow Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -200,7 +200,7 @@ final class Home extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($ShowCategory) => $ShowCategory->id === 1)
+                ->when(fn($TvShow) => $TvShow->id === 1)
                 ->hide(),
         ];
     }

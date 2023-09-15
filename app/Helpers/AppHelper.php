@@ -50,10 +50,8 @@ class AppHelper {
         if (file_exists($previousPath)) unlink($previousPath);
 
         if(!$file) return null;
-
-        $fullFilePath = $directory = date("Y")."/".date("m")."/".date("d"). '/' . $filePath;
         
-        return 'storage/' .$file->storeAs($fullFilePath, Str::uuid() . '.' .$file->extension());
+        return $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
     }
     
 
