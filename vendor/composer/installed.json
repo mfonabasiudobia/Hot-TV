@@ -2344,7 +2344,7 @@
             },
             "time": "2023-08-08T05:53:35+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Evenement\\": "src/"
@@ -3903,7 +3903,7 @@
             },
             "time": "2023-04-04T22:05:31+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "ArPHP\\I18N\\": "src"
@@ -6063,7 +6063,7 @@
                     }
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "src/helpers.php"
@@ -6155,7 +6155,7 @@
             },
             "time": "2023-07-31T15:37:46+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Mollie\\Api\\": "src/"
@@ -7313,7 +7313,7 @@
             },
             "time": "2021-09-21T20:57:38+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Sample\\": "samples/",
@@ -7370,7 +7370,7 @@
             },
             "time": "2021-09-14T21:35:26+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "PayPalHttp\\": "lib/PayPalHttp"
@@ -7434,7 +7434,7 @@
                     }
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "ProtoneMedia\\LaravelFFMpeg\\": "src"
@@ -7718,7 +7718,7 @@
             },
             "time": "2022-12-09T13:57:05+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "FFMpeg\\": "src/FFMpeg",
@@ -9595,7 +9595,7 @@
             },
             "time": "2023-09-11T08:31:26+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "Deprecated.php"
@@ -9675,7 +9675,7 @@
             },
             "time": "2023-09-11T08:27:57+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "library/Deprecated.php"
@@ -10932,7 +10932,7 @@
             },
             "time": "2022-01-19T22:36:48+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "classmap": [
                     "lib/Shippo/"
@@ -11437,7 +11437,7 @@
             },
             "time": "2023-04-28T07:47:42+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Spatie\\TemporaryDirectory\\": "src"

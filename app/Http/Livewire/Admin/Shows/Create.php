@@ -11,8 +11,9 @@ class Create extends BaseComponent
 
     public $title, $slug, $description, $release_date, $end_time, $schedule_date, $thumbnail;
 
-    public $categories = [], $categories_id = [];
+    public $categories = [], $categories_id = [], $trailer;
 
+    public $tags = [], $meta_title, $meta_description;
 
     public function mount(){
         $this->fill([
@@ -31,7 +32,11 @@ class Create extends BaseComponent
             'description' => 'required',
             'release_date' => 'required|date',
             'thumbnail' => 'required',
-            'categories_id' => 'required|array'
+            'categories_id' => 'required|array',
+            'trailer' => 'required',
+            'meta_title' => 'nullable',
+            'meta_description' => 'nullable',
+            'tags' => 'array',
         ],[
             'release_date.*' => 'Invalid Release Date Selected',
             'categories_id' => 'Select at least 1 category to continue'
@@ -42,9 +47,13 @@ class Create extends BaseComponent
             $data = [
                 'title' => $this->title,
                 'slug' => $this->slug,
+                'tags' => $this->tags,
                 'description' => $this->description,
                 'release_date' => $this->release_date,
-                'thumbnail' => $this->thumbnail
+                'thumbnail' => $this->thumbnail,
+                'trailer' => $this->trailer,
+                'meta_title' => $this->meta_title,
+                'meta_description' => $this->meta_description
             ];
 
             throw_unless(TvShowRepository::createTvShow($data, $this->categories_id), "Please try again");

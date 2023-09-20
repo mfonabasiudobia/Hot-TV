@@ -11,7 +11,9 @@ class Edit extends BaseComponent
 
     public $title, $slug, $description, $release_date, $thumbnail;
 
-    public $categories = [], $categories_id = [], $tvShow;
+    public $categories = [], $categories_id = [], $tvShow, $trailer;
+
+    public $tags = [], $meta_title, $meta_description;
 
 
     public function mount($id){
@@ -22,8 +24,12 @@ class Edit extends BaseComponent
             'title' => $this->tvShow->title,
             'description' => $this->tvShow->description,
             'slug' => $this->tvShow->slug,
+            'tags' => $this->tvShow->tags,
             'thumbnail' => $this->tvShow->thumbnail,
             'release_date' => $this->tvShow->release_date,
+            'trailer' => $this->tvShow->trailer,
+            'meta_title' => $this->tvShow->meta_title,
+            'meta_description' => $this->tvShow->meta_description,
             'categories_id' => $this->tvShow->categories()->get()->pluck('id')
         ]);
     }
@@ -39,7 +45,11 @@ class Edit extends BaseComponent
             'description' => 'required',
             'release_date' => 'required|date',
             'thumbnail' => 'required',
-            'categories_id' => 'required|array'
+            'categories_id' => 'required|array',
+            'trailer' => 'required',
+            'tags' => 'array',
+            'meta_title' => 'nullable',
+            'meta_description' => 'nullable',
         ],[
             'release_date.*' => 'Invalid Release Date Selected',
             'categories_id' => 'Select at least 1 category to continue'
@@ -50,9 +60,13 @@ class Edit extends BaseComponent
             $data = [
                 'title' => $this->title,
                 'slug' => $this->slug,
+                'tags' => $this->tags,
                 'description' => $this->description,
                 'release_date' => $this->release_date,
-                'thumbnail' => $this->thumbnail
+                'thumbnail' => $this->thumbnail,
+                'trailer' => $this->trailer,
+                'meta_title' => $this->meta_title,
+                'meta_description' => $this->meta_description
             ];
 
             throw_unless(TvShowRepository::updateTvShow($data, $this->categories_id, $this->tvShow->id), "Please try again");

@@ -26,6 +26,8 @@ return new class extends Migration
             $table->json("tags");
             $table->dateTime("release_date")->nullable();
             $table->foreignId('tv_show_id')->nullable()->references('id')->on('tv_shows')->onDelete('cascade');
+            $table->string("meta_title")->nullable();
+            $table->text("meta_description")->nullable();
             $table->enum('status', ['published', 'unpublished'])->default('published');
             $table->softDeletes();
             $table->timestamps();

@@ -26,7 +26,20 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
             Route::get('/',"Shows\Home")->name('list');
             Route::get('create',"Shows\Create")->name('create');
             Route::get('{id}/edit',"Shows\Edit")->name('edit');
+            Route::get('{slug}/show',"Shows\Show")->name('show');
+
+               Route::group(['prefix'=> 'episode', 'as' => 'episode.'], function() {
+                    Route::get('{tvslug}/create',"Episode\Create")->name('create');
+                    Route::get('{tvslug}/{slug}/edit',"Episode\Edit")->name('edit');
+               });   
+               
+               Route::group(['prefix'=> 'cast', 'as' => 'cast.'], function() {
+                    Route::get('{tvslug}/create',"Cast\Create")->name('create');
+                    Route::get('{tvslug}/{id}/edit',"Cast\Edit")->name('edit');
+               });
         });
+
+     
 
 
     });

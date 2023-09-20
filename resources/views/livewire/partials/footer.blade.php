@@ -72,62 +72,15 @@
     
             <section class="space-y-3 md:col-span-2">
                 <h2 class="font-medium text-xl">Movie Categories +</h2>
-                <section class="grid grid-cols-2 gap-5">
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="#">Christian Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Boxing Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Football Show</a>
-                        </li>
-                        <li>
-                            <a href="#">All Islam</a>
-                        </li>
-                        <li>
-                            <a href="#">Comedy Show</a>
-                        </li>
-    
-                        <li>
-                            <a href="#">Pop Show</a>
-                        </li>
-    
-                        <li>
-                            <a href="#">Jewish Show</a>
-                        </li>
-    
-                        <li>
-                            <a href="#">Bring 'em Home Bail Bonds</a>
-                        </li>
-                    </ul>
-    
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="#">Hip Hop Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Jazz Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Fishing Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Sports Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Caribbean Show</a>
-                        </li>
-                        <li>
-                            <a href="#">Women of Wealth</a>
-                        </li>
-                        <li>
-                            <a href="#">Pedicab</a>
-                        </li>
-                        <li>
-                            <a href="#">Community Affairs Show</a>
-                        </li>
+                <section>
+                    <ul class="grid grid-cols-2 gap-3">
+                        @foreach (\App\Models\ShowCategory::get() as $item)
+                                <li>
+                                    <a href="{{ route('search', ['q' => $item->name ]) }}">{{ $item->name }}</a>
+                                </li>
+                        @endforeach
+                       
+                        
                     </ul>
                 </section>
             </section>

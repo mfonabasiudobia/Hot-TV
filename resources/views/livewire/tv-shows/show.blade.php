@@ -1,20 +1,30 @@
 <div class="py-5 bg-black text-white space-y-5 min-h-screen">
     <x-atoms.breadcrumb :routes="[
                 ['title' => 'Tv Shows', 'route' => route('tv-shows.home') ],
-                ['title' => 'Christian show - Talking about Jesus', 'route' => null]
+                ['title' => $tvShow->title, 'route' => null]
     ]" />
     <div class="container space-y-7">
         
 
         <section class="grid lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-7">
-                <img src="{{ asset('images/frameVideo.png') }}" alt="">
+                
+                <div class="video-container">
+                    <video id="player" playsinline controls >
+                        <source src="{{ file_path($selectedEpisode->recorded_video ?? $tvShow->trailer) }}">
+                    </video>
+                </div>
 
 
                 <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="space-y-1">
-                        <h2 class="font-semibold text-xl">Christian show - Talking about Jesus.</h2>
-                        <p>Published on June 4, 2020</p>
+                        <h2 class="font-semibold text-xl">{{ $selectedEpisode->title ?? $tvShow->title }}</h2>
+
+                        @if($selectedEpisode)
+                            <p>Published on {{ $selectedEpisode->releaseAt() }}</p>
+                        @else
+                            <p>Published on {{ $tvShow->releaseAt() }}</p> 
+                        @endIf
                     </div>
 
                     <div class="flex flex-col items-end space-y-5">
@@ -25,103 +35,97 @@
                         <div class="flex items-center space-x-3">
                             <div>
                                 <i class="lar la-eye"></i>
-                                <span>567k viewers</span>
+                                @if($selectedEpisode)
+                                <span>{{ view_count($selectedEpisode->views->count()) }} viewers</span>
+                                @else 
+                                <span>{{ view_count($tvShow->views->count()) }} viewers</span>
+                                @endIf
                             </div>
 
-                            <span>167min</span>
+                            @if($selectedEpisode)
+                                <span>{{ convert_seconds_to_time($selectedEpisode->duration) }}</span>
+                            @else 
+                                <span>{{ convert_seconds_to_time($tvShow->episodes()->sum('duration')) }}</span>
+                            @endIf
                         </div>
                     </div>
                 </header>
-                <section class="space-y-5">
-                    <section class="space-y-7 text-sm">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis
-                            aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                            occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-                            aperiam,
-                            eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-                            ipsam
-                            voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                            adipisci velit,
-                            sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim
-                            ad minima
-                            veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
-                            consequatur? Quis
-                            autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui
-                            dolorem
-                            eum fugiat quo voluptas nulla pariatur?</p>
-                    </section>
-                    
-                    <div class="flex justify-center">
-                        <button class="text-sm text-[#0012B6] flex items-center">
-                            <span>Read More</span>
-                            <img src="{{ asset('svg/arrow-circle-down.svg') }}" alt="">
-                        </button>
-                    </div>
+                <section class="space-y-5" x-data="{ show : false }">
+                   <div x-show="!show">
+                        {!! Str::limit($selectedEpisode->description ?? $tvShow->description, 200, '...') !!}
+                   </div>
+
+                   @if(strlen($selectedEpisode->description ?? $tvShow->description) > 200)
+                        <div x-show="show">
+                                {!! $selectedEpisode->description ?? $tvShow->description !!}
+                        </div>
+                        
+                        <div class="flex justify-center" x-show="show === false">
+                            <button class="text-sm text-[#0012B6] flex items-center" x-on:click="show = !show">
+                                <span>Read More</span>
+                                <img src="{{ asset('svg/arrow-circle-down.svg') }}" alt="">
+                            </button>
+                        </div>
+                    @endIf
                 </section>
 
-
+            @if($casts->count() > 0)
                 <section class="space-y-5">
                     <h1 class="font-semibold text-2xl">Cast</h1>
                     <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-10">
-                        <div class="flex space-x-2">
-                            <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                            <div>
-                                <h3 class="font-semibold text-xl">Oliver Jons</h3>
-                                <span class="opacity-60 text-sm">Main Character (as Roberto)</span>
-                            </div>
-                        </div>
 
-                        <div class="flex space-x-2">
-                            <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                            <div>
-                                <h3 class="font-semibold text-xl">Jennifer Law</h3>
-                                <span class="opacity-60 text-sm">as Cindy Mamora</span>
+                        @foreach ($casts as $cast)
+                            <div class="flex space-x-2">
+                                <img src="{{ file_path($cast->image) }}" alt="" class="w-[93px] h-[115px] object-cover rounded-2xl" />
+                                <div>
+                                    <h3 class="font-semibold text-xl">{{ $cast->name }}</h3>
+                                    <span class="opacity-60 text-sm">{{ $cast->role }}</span>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="flex space-x-2">
-                            <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                            <div>
-                                <h3 class="font-semibold text-xl">Kevin Klee</h3>
-                                <span class="opacity-60 text-sm">as Mancii</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </section>
                 </section>
+            @endIf
             </div>
 
 
             <div class="space-y-7">
 
-                <section class="bg-dark p-5 rounded-2xl">
-                    <img src="{{ asset('images/coverFilm-02.png') }}" alt="" />
+                <section class="bg-dark p-5 rounded-2xl relative">
+                    <img src="{{ file_path($selectedEpisode->thumbnail ?? $tvShow->thumbnail) }}" alt="" class="h-[483px] w-full object-cover rounded-xl" />
+
+                    <button class="rounded-md absolute top-7 right-7 bg-white hover:bg-danger text-danger hover:text-white w-[40px] h-[40px]">
+                        <i class="las la-heart"></i>
+                    </button>
                 </section>
 
                 <section class="bg-dark p-5 rounded-2xl space-y-5">
-                    <h3 class="text-right opacity-50 text-sm space-x-2">
-                        <span>12 Episode</span>
-
-                        <i class="las la-caret-up"></i>
+                    <h3 class="text-right opacity-50 text-sm space-x-2 relative">
+                        <select class="text-white select-season-form appearance-none mr-2" wire:model='season_number'>
+                            @foreach ($seasons as $season)
+                                <option value="{{ $season }}" class="bg-black">Season {{ $season }}</option>
+                            @endforeach
+                        </select>
+                        <i class="las la-caret-down absolute top-3.5 right-0"></i>
                     </h3>
+
+                    <x-atoms.loading target="season_number" />
                 
-                    <section class="overflow-y-auto h-[70vh] space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        @foreach ([1,2,3,4,5,6,7,8,9,10,11,12] as $item)
-                        <div class="flex items-center space-x-3">
-                            <img src="{{ asset('images/play.png') }}" alt="" class="h-[80px]" />
+                    <section 
+                        wire:loading.class="hidden"  
+                        wire:target="season_number"
+                        class="overflow-y-auto min-h-[20vh] space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                        @foreach ($episodes as $key => $episode)
+                        <button class="flex items-center space-x-3 text-left" wire:click="selectEpisode({{ $episode->id }})">
+                            <img src="{{ file_path($episode->thumbnail) }}" alt="" class="h-[80px] w-[80px] rounded-xl" />
                             <div>
-                                <h2 class="font-semibold">THDST-S1EP1</h2>
+                                <h2 class="font-semibold">{{ $key + 1 }}. {{ $episode->title }}</h2>
                                 <div class="opacity-50 text-sm">
-                                    <span>36min</span>
-                                    <span>Published on June 29, 2020</span>
+                                    <span>{{ convert_seconds_to_time($episode->duration) }}</span><br />
+                                    <span>Published on {{ $episode->releaseAt() }}</span>
                                 </div>
                             </div>
-                        </div>
+                        </button>
                         @endforeach
                     </section>
                 </section>
@@ -131,41 +135,47 @@
                     <h3 class="font-semibold text-lg">Share</h3>
                 
                     <div class="flex flex-wrap  text-sm">
-                        <a href="#" class="mr-2 mb-1">
+                        <a x-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`" target="_blank" class="mr-2 mb-1">
                             <img src="{{ asset('images/facebook.png') }}" alt="" class="h-[40px]" />
                         </a>
-                        <a href="#" class="mr-2 mb-1">
+                        {{-- <a href="#" class="mr-2 mb-1">
                             <img src="{{ asset('images/youtube.png') }}" alt="" class="h-[40px]" />
-                        </a>
-                        <a href="#" class="mr-2 mb-1">
+                        </a> --}}
+                        <a x-bind:href="`https://twitter.com/intent/tweet?url=${window.location.href}`" target="_blank" class="mr-2 mb-1">
                             <img src="{{ asset('images/twitter.png') }}" alt="" class="h-[40px]" />
                         </a>
-                        <a href="#" class="mr-2 mb-1">
+                        <a x-bind:href="`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`" target="_blank" class="mr-2 mb-1">
                             <img src="{{ asset('images/linkedIn.png') }}" alt="" class="h-[40px]" />
                         </a>
-                        <a href="#" class="mr-2 mb-1">
+                        <a x-bind:href="`https://www.pinterest.com/pin/create/button/?url=${window.location.href}`" data-pin-do="buttonPin" target="_blank" class="mr-2 mb-1">
                             <img src="{{ asset('images/pinterest.png') }}" alt="" class="h-[40px]" />
                         </a>
-                        <a href="#" class="mr-2 mb-1">
+                        <a href="javascript:void(0)" class="mr-2 mb-1" x-on:click="() => {
+                            navigator.share({
+                                title: '{{ $selectedEpisode->title ?? $tvShow->title }}',
+                                text: 'Check out this video!',
+                                url: window.location.href,
+                            })
+                            .then(() => console.log('Shared successfully'))
+                            .catch((error) => console.error('Share failed', error));    
+                        }">
                             <img src="{{ asset('images/custom-link.png') }}" alt="" class="h-[40px]" />
                         </a>
                     </div>
                 </section>
 
 
-                <section class="bg-dark p-5 space-y-3 rounded-2xl">
-                    <h3 class="font-semibold text-lg">Tags</h3>
+                @if(count($tvShow->tags) > 0)
+                    <section class="bg-dark p-5 space-y-3 rounded-2xl">
+                        <h3 class="font-semibold text-lg">Tags</h3>
 
-                    <div class="flex flex-wrap  text-sm">
-                        <a href="#" class="mr-2 mb-1">#action</a>
-                        <a href="#" class="mr-2 mb-1">#advanture</a>
-                        <a href="#" class="mr-2 mb-1">#survival</a>
-                        <a href="#" class="mr-2 mb-1">#wars</a>
-                        <a href="#" class="mr-2 mb-1">#1980</a>
-                        <a href="#" class="mr-2 mb-1">#history</a>
-                        <a href="#" class="mr-2 mb-1">#documentary</a>
-                    </div>
-                </section>
+                        <div class="flex flex-wrap  text-sm">
+                            @foreach ($tvShow->tags as $tag)
+                                <a href="{{ route('search', ['q' => $tag ]) }}" class="mr-2 mb-1">#{{ $tag }}</a>
+                            @endforeach
+                        </div>
+                    </section>
+                @endIf
             </div>
         </section>
     </div>
@@ -178,3 +188,28 @@
 
     @livewire("home.partials.newsletter")
 </div>
+
+@push('script')
+<script>
+    const videoPlayer = document.getElementById('player');
+
+    document.addEventListener('DOMContentLoaded', () => {
+            const player = new Plyr('#player', {
+                autoplay: true, // Autoplay is initially set to false
+            });
+    });
+
+    document.addEventListener('change-episode', (event) => {
+        videoPlayer.src = event.detail.video_url;
+        videoPlayer.load(); // Load the new video source
+        videoPlayer.play(); // Play the new video
+
+        setTimeout(() => {
+            window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
+        }, 2000);
+
+
+        
+    })
+</script>
+@endPush

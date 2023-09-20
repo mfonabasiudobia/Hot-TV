@@ -174,6 +174,10 @@ body {
         @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-secondary text-white transition text-sm focus:outline-0 bg-transparent;
     }
 
+    .select-season-form {
+         @apply placeholder-[#ABABAB] bg-black py-3 px-3 rounded border-0 border-secondary text-white transition text-sm focus:outline-0 bg-transparent;
+    }
+
     .form-control-light {
         @apply w-full z-10 placeholder-[#ABABAB] py-3 px-3 rounded border border-gray-200 text-dark transition text-sm focus:outline-0 bg-transparent;
     }
@@ -222,6 +226,19 @@ body {
     /* Change the color for different states */
     progress[value]::-webkit-progress-value {
     background-color: #FF0207; /* Change this to your desired color */
+    }
+
+    .video-container {
+        @apply relative h-[600px];
+    }
+
+    /* Style the video element */
+    .video-container video {
+       @apply h-[600px]; 
+    }
+
+    .video-container video::poster {
+        @apply w-full h-full object-fill;
     }
 
 
