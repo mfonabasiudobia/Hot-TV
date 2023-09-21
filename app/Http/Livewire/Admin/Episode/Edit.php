@@ -11,13 +11,13 @@ class Edit extends BaseComponent
 
      public $title, $slug, $description, $release_date, $thumbnail;
 
-     public $recorded_video, $tvshow, $episode;
+     public $recorded_video, $tvshow, $episode, $tv_show_id;
 
      public $season_number, $episode_number, $duration;
 
-    public function mount($tvslug, $slug){
-        $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
-        $this->episode = EpisodeRepository::getEpisodeBySlug($slug, $this->tvshow->id);
+    public function mount($id){
+        // $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
+        $this->episode = EpisodeRepository::getEpisodeById($id);
 
         $this->fill([
             'title' => $this->episode->title,
@@ -29,6 +29,7 @@ class Edit extends BaseComponent
             'season_number' => $this->episode->season_number,
             'episode_number' => $this->episode->episode_number,
             'duration' => $this->episode->duration,
+            'tv_show_id' => $this->episode->tv_show_id
         ]);
     }
 
@@ -47,8 +48,10 @@ class Edit extends BaseComponent
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'recorded_video' => 'required',
+            'tv_show_id' => 'required|exists:tv_shows,id'
         ],[
-            'release_date.*' => 'Invalid Release Date Selected'
+            'release_date.*' => 'Invalid Release Date Selected',
+            'tv_show_id.*' => 'Select TV Show to proceed'
         ]);
 
         try {
@@ -60,17 +63,17 @@ class Edit extends BaseComponent
                 'release_date' => $this->release_date,
                 'thumbnail' => $this->thumbnail,
                 'recorded_video' => $this->recorded_video,
-                'tv_show_id' => $this->tvshow->id,
                 'season_number' => $this->season_number,
                 'episode_number' => $this->episode_number,
-                'duration' => $this->duration
+                'duration' => $this->duration,
+                'tv_show_id' => $this->tv_show_id
             ];
 
             throw_unless(EpisodeRepository::updateEpisode($data, $this->episode->id), "Please try again");
 
             toast()->success('Cheers!, Episode has been updated')->pushOnNextPage();
 
-            return redirect()->route('admin.tv-show.show', ['slug' => $this->tvshow->slug ]);
+            return redirect()->route('admin.tv-show.episode.list');
 
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();

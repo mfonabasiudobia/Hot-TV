@@ -161,11 +161,11 @@ final class Home extends PowerGridComponent
     {
        return [
 
-            Button::add('view')
-                ->caption("<i class='las la-eye'></i>")
-                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
-                ->target('_self')
-                ->route('admin.tv-show.show', ['slug' => 'slug']),
+            // Button::add('view')
+            //     ->caption("<i class='las la-eye'></i>")
+            //     ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+            //     ->target('_self')
+            //     ->route('admin.tv-show.show', ['slug' => 'slug']),
 
            Button::add('edit')
                 ->caption("<i class='las la-pencil-alt'></i>")

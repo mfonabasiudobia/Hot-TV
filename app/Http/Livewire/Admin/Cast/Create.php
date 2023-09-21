@@ -9,16 +9,15 @@ use App\Repositories\CastRepository;
 class Create extends BaseComponent
 {
 
-    public $name, $role, $image;
+    public $name, $image;
 
-    public function mount($tvslug){
-        $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
+    public function mount(){
+        // $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
     }
 
     public function submit(){
             $this->validate([
                 'name' => 'required|string',
-                'role' => 'required',
                 'image' => 'required'
             ]);
 
@@ -26,16 +25,14 @@ class Create extends BaseComponent
 
                 $data = [
                     'name' => $this->name,
-                    'role' => $this->role,
                     'image' => $this->image,
-                    'tv_show_id' => $this->tvshow->id
                 ];
 
                 throw_unless(CastRepository::createCast($data), "Please try again");
 
                 toast()->success('A new Cast has been added')->pushOnNextPage();
 
-                return redirect()->route('admin.tv-show.show', ['slug' => $this->tvshow->slug ]);
+                return redirect()->route('admin.tv-show.cast.list');
 
             } catch (\Throwable $e) {
                 toast()->danger($e->getMessage())->push();

@@ -10,4 +10,5 @@ class Home extends BaseComponent
     {
         return view('livewire.admin.episode.home')->layout('layouts.admin-base');
     }
+    
 }

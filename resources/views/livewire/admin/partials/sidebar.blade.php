@@ -1,8 +1,8 @@
 <section :class="toggleSidebar ? '' : 'sidebar-wrapper'" x-on:click="toggleSidebar = !toggleSidebar" x-cloak>
-    <div x-on:click="event.stopPropagation()" class=" h-screen bg-light relative overflow-hidden"
+    <div x-on:click="event.stopPropagation()" class=" h-screen relative overflow-hidden"
         :class="toggleSidebar ? 'w-0 md:w-[250px]' : 'w-[270px] md:w-0'">
         <div class="flex justify-center py-3">
-            <a href="/admin" class="btn btn-sm btn-primary">
+            <a href="/admin" class="btn btn-sm btn-danger">
                 Go Back
             </a>
         </div>
@@ -17,7 +17,7 @@
             <li class="{{request()->routeIs('admin.live.*') ? 'active' : ''}}">
                 <a href="{{route('admin.live')}}">
                     <i class="las la-play"></i>
-                    <span>Go Live</span>
+                    <span>Manage Channel Content</span>
                 </a>
             </li>
 
@@ -25,7 +25,7 @@
                 x-data="{ show : '{{$status ? true : false}}'}">
                 <a href="#" x-on:click="show = !show">
                     <i class="las la-tv"></i>
-                    <span>TV Shows Section</span>
+                    <span>Manage Shows Content</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
             
@@ -34,14 +34,46 @@
                     <li>
                         <a href="{{ route('admin.show-category.list')  }}">
                             <i class="las la-circle"></i>
-                            <span>Show Categories</span>
+                            <span>Manage Show Categories</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.tv-show.list')  }}">
                             <i class="las la-circle"></i>
-                            <span>TV Shows</span>
+                            <span>Shows List</span>
                         </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('admin.tv-show.cast.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Manage Casts</span>
+                        </a>
+                    </li>
+
+
+                    <li x-data="{ show : false}">
+                        <a href="#" x-on:click="show = !show">
+                            <i class="las la-video"></i>
+                            <span>Manage Episodes</span>
+                            <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                        </a>
+                    
+                    
+                        <ul class="list-3" x-show="show">
+                            <li>
+                                <a href="{{ route('admin.tv-show.episode.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Add New Episode</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.tv-show.episode.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Episode List</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

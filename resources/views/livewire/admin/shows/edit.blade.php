@@ -8,13 +8,13 @@
                 <section class="space-y-3 content-wrapper">
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" placeholder="Title" wire:model='title' class="form-control-light" />
+                        <input type="text" placeholder="Title" wire:model='title' class="form-control" />
                         @error('title') <span class="error">{{ $message }}</span> @endError
                     </div>
 
                     <div class="form-group">
                         <label>Slug</label>
-                        <input type="text" placeholder="Slug" wire:model.defer='slug' class="form-control-light" />
+                        <input type="text" placeholder="Slug" wire:model.defer='slug' class="form-control" />
                         @error('slug') <span class="error">{{ $message }}</span> @endError
                     </div>
 
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label>Show Categories</label>
                         <div class="relative" wire:ignore>
-                            <select class="form-control-light" wire:model.defer="categories_id" multiple id="categories"
+                            <select class="form-control" wire:model.defer="categories_id" multiple id="categories"
                                 data-placeholder="--Categories--">
                                 <option value="">--Select Categories--</option>
                                 @foreach ($categories as $category)
@@ -41,10 +41,23 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Casts</label>
+                        <div class="relative" wire:ignore>
+                            <select class="form-control" wire:model.defer="casts_id" multiple id="casts" data-placeholder="--Casts--">
+                                <option value="">--Select Cast--</option>
+                                @foreach ($casts as $cast)
+                                <option value="{{ $cast->id }}">{{ $cast->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('casts_id') <span class="error"> {{ $message }}</span> @endError
+                    </div>
+
+                    <div class="form-group">
                         <label>Release Date</label>
                         <div wire:ignore>
                             <input type="text" placeholder="Release Date" wire:model.defer='release_date'
-                                class="form-control-light custom-datetime" />
+                                class="form-control custom-datetime" />
                         </div>
                         @error('release_date') <span class="error">{{ $message }}</span> @endError
                     </div>
@@ -98,7 +111,7 @@
                     </div>
                     <div class="form-group">
                         <label>Meta Title</label>
-                        <input type="text" class="form-control-light" placeholder="Meta Title"
+                        <input type="text" class="form-control" placeholder="Meta Title"
                             wire:model.defer="meta_title" />
                         @error('meta_title') <span class="error"> {{ $message }}</span> @endError
                     </div>
@@ -106,14 +119,14 @@
 
                     <div class="form-group">
                         <label>Meta Description</label>
-                        <textarea class="form-control-light" placeholder="Meta Description"
+                        <textarea class="form-control" placeholder="Meta Description"
                             wire:model.defer="meta_description"></textarea>
                         @error('meta_description') <span class="error"> {{ $message }}</span> @endError
                     </div>
                 </div>
 
                 <div class="form-group flex justify-end">
-                    <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-primary" />
+                    <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-danger" />
                 </div>
 
             </form>
@@ -128,6 +141,8 @@
                 window.initSelectDrop = () => {
                     $("#categories").select2();
 
+                    $("#casts").select2();
+
                     $("#tags").select2({
                         tags: "true",
                         selectOnClose: true,
@@ -137,6 +152,10 @@
                 
                 $('#categories').on('change', function (e) {
                     @this.set('categories_id', $(this).val());             
+                });
+
+                $('#casts').on('change', function (e) {
+                    @this.set('casts_id', $(this).val());
                 });
                 
                 $('#tags').on('change', function (e) {

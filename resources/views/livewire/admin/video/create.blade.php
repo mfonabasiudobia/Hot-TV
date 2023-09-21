@@ -6,7 +6,7 @@
             <form class="grid md:grid-cols-2 gap-5" wire:submit.prevent='submit'>
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" placeholder="Title" wire:model.defer='title' class="form-control text-dark" />
+                    <input type="text" placeholder="Title" wire:model.defer='title' class="form-control" />
                     @error('title') <span class="error">{{ $message }}</span> @endError
                 </div>
     
@@ -23,28 +23,28 @@
                 <div class="form-group" wire:ignore>
                     <label>Schedule a Date</label>
                     <input type="text" placeholder="Date" wire:model='schedule_date'
-                        class="form-control text-dark custom-date-from-today" />
+                        class="form-control custom-date-from-today" />
                     @error('schedule_date') <span class="error">{{ $message }}</span> @endError
                 </div>
     
                 <div class="form-group" wire:ignore.self>
                     <label>Start time</label>
                     <input type="text" placeholder="Start Time" wire:model.defer='start_time'
-                        class="form-control text-dark custom-time" />
+                        class="form-control custom-time" />
                     @error('start_time') <span class="error">{{ $message }}</span> @endError
                 </div>
     
                 <div class="form-group" wire:ignore.self>
                     <label>End time</label>
                     <input type="text" placeholder="End Time" wire:model.defer='end_time'
-                        class="form-control text-dark custom-time" />
+                        class="form-control custom-time" />
                     @error('end_time') <span class="error">{{ $message }}</span> @endError
                 </div>
 
 
                 <div class="form-group">
                     <label>Stream Type</label>
-                    <select class="form-control text-dark" wire:model="stream_type">
+                    <select class="form-control" wire:model="stream_type">
                         <option value="uploaded_video">Uploaded Video</option>
                         <option value="podcast">Podcast</option>
                         <option value="pedicab_stream">Pedicab Stream</option>
@@ -55,7 +55,7 @@
                 @if(in_array($stream_type, ['uploaded_video']))
                     <div class="form-group">
                         <label>Uploaded Video Type</label>
-                        <select class="form-control text-dark" wire:model="uploaded_video_type">
+                        <select class="form-control" wire:model="uploaded_video_type">
                             <option value="">--Uploaded Video Type--</option>
                             <option value="advertisement">Short Advertisement</option>
                             <option value="show_episode">Episode of a show</option>
@@ -69,7 +69,7 @@
                 @if(in_array($uploaded_video_type, ['show_episode']))
                     <div class="form-group">
                         <label>Show Category</label>
-                        <select class="form-control text-dark" wire:model.defer="show_category_id">
+                        <select class="form-control" wire:model.defer="show_category_id">
                             <option value="">--Select Show Category--</option>
                             @foreach (\App\Models\ShowCategory::all() as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>     
@@ -83,7 +83,7 @@
 
                 <x-atoms.progress-indicator>
                     <label>Thumbnail</label>
-                    <input type="file" wire:model.defer='thumbnail' accept="image/*" class="form-control text-dark" />
+                    <input type="file" wire:model.defer='thumbnail' accept="image/*" class="form-control" />
                     @error('thumbnail') <span class="error">{{ $message }}</span> @endError
 
                     @if($thumbnail)
@@ -94,7 +94,7 @@
     
                 <x-atoms.progress-indicator>
                     <label>Upload Recorded Video</label>
-                    <input type="file" wire:model.defer='recorded_video' class="form-control text-dark" />
+                    <input type="file" wire:model.defer='recorded_video' class="form-control" />
                     @error('recorded_video') <span class="error">{{ $message }}</span> @endError
 
                     @if($recorded_video)
@@ -106,7 +106,7 @@
                 </x-atoms.progress-indicator>
     
                 <div class="form-group md:col-span-2 flex justify-end">
-                    <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-primary" />
+                    <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-danger" />
                 </div>
     
             </form>

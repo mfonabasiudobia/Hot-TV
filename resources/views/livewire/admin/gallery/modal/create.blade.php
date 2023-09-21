@@ -8,18 +8,18 @@ x-transition
 x-cloak
 >  
 <x-loading />
-    <section class="modal-inner-wrapper p-7 text-dark">
+    <section class="modal-inner-wrapper p-7 bg-black">
           <section 
-            class="modal-body rounded-lg shadow w-full  px-5 space-y-3 bg-white" 
+            class="modal-body rounded-lg shadow w-full  px-5 space-y-3" 
             @click.outside="status = false"
             >
              
-             <header class="flex justify-between items-center p-2 md:p-5 bg-gray-100">
+             <header class="flex justify-between items-center p-2 md:p-5 bg-black border border-secondary">
                <div>
-                    <button type="button" x-on:click="currentTab = 0" :class="currentTab === 0 ? 'bg-white' : ''" class="px-5 py-3">
+                    <button type="button" x-on:click="currentTab = 0" :class="currentTab === 0 ? 'bg-danger' : ''" class="px-5 py-3">
                        Select File 
                     </button>
-                    <button type="button" x-on:click="currentTab = 1" :class="currentTab === 1 ? 'bg-white' : ''" class="px-5 py-3" >
+                    <button type="button" x-on:click="currentTab = 1" :class="currentTab === 1 ? 'bg-danger' : ''" class="px-5 py-3" >
                        Upload New
                     </button>
                </div>
@@ -73,23 +73,23 @@ x-cloak
                 <form  
                     class="md:p-5 space-y-3" 
                     wire:submit.prevent="uploadImage" 
+                    style="color: #fff !important"
                     x-show="currentTab === 1">
                     <x-atoms.progress-indicator>
                     <div 
-                    class="border border-dashed min-h-[40vh] bg-gray-50 border-gray-200 outline-gray-200 rounded-lg overflow-hidden outline-1  p-2 outline-dashed outline-offset-4 flex flex-col items-center justify-center relative">
+                    class="border border-dashed min-h-[40vh] text-white border-secondary outline-secondary rounded-lg overflow-hidden outline-1  p-2 outline-dashed outline-offset-4 flex flex-col items-center justify-center relative">
                                    @if($uploadedFile)
-                                    
                                         @if(in_array($uploadedFile->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']))
                                             <img src="{{$uploadedFile->temporaryUrl()}}" class="max-h-[40vh] object-cover">
                                         @else 
-                                            <video class='max-h-[40vh] object-cover' controls>
+                                            <video class='max-h-[40vh] object-cover text-white' controls>
                                                 <source src='{{ $uploadedFile->temporaryUrl() }}' type="video/mp4">
                                                 Your browser does not support HTML5 video.
                                             </video>
                                         @endIf
                                     @else
-                                        <h3 class="text-xl text-center">Drop files here, paste or <a href="#" class="text-brown-100">Browse</a></h3>
-                                        <input type="file" class="absolute top-0 left-0  block w-full h-full pt-[50vh] cursor-pointer" wire:model.debounce="uploadedFile" >
+                                        <label for="file" class="text-xl text-center text-white relative z-50">Drop files here, paste or <a href="#" class="text-brown-100">Browse</a></label>
+                                        <input type="file"  id="file" class="absolute top-0 z-10 left-0  block w-full h-full pt-[50vh] cursor-pointer bg-transparent" wire:model.debounce="uploadedFile" >
                                     @endIf
 
                                     @error('uploadedFile') <span class="text-red-500">{{$message}}</span> @endError
@@ -106,7 +106,7 @@ x-cloak
 
                             @endIf
 
-                            <button type="save" class="text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5 text-center">
+                            <button type="save" class="text-white bg-danger rounded-lg px-5 py-2.5 text-center">
                              Upload <i class="las la-cloud-upload-alt"></i>
                             </button>
                     </div>

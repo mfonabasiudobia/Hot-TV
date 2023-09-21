@@ -5,7 +5,7 @@
 
                     @if(in_array('sortByLatest',$showItems))
                          <div class="form-group">
-                            <select class="form-control-light appearance-none" wire:model="sortByLatest">
+                            <select class="form-control appearance-none" wire:model="sortByLatest">
                                 <option value="">Sort By Latest </option>
                                 <option value="desc">Sort By Newest</option>
                                 <option value="asc">Sort By Oldest</option>
@@ -17,7 +17,7 @@
 
                     @if(in_array('sortByYear',$showItems))
                          <div class="form-group">
-                            <select class="form-control-light appearance-none" wire:model="sortByYear">
+                            <select class="form-control appearance-none" wire:model="sortByYear">
                                 <option value="">Sort By Year </option>
                                 @foreach (range(2020, date("Y")) as $item)
                                 <option value="{{ $item }}">{{ $item }}</option>

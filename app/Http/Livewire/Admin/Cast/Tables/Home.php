@@ -56,10 +56,7 @@ final class Home extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return Cast::query()
-        ->when($this->tvshow, function($q){
-            $q->where('tv_show_id', $this->tvshow->id);
-        });
+        return Cast::query();
     }
 
     /*
@@ -130,10 +127,6 @@ final class Home extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Character', 'role')
-                ->searchable()
-                ->sortable(),
-
             Column::make('Created At', 'created_at_formatted'),
         ];
     }
@@ -171,11 +164,17 @@ final class Home extends PowerGridComponent
     {
        return [
 
-           Button::add('edit')
+        //    Button::add('edit')
+        //         ->caption("<i class='las la-pencil-alt'></i>")
+        //         ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+        //         ->target('_self')
+        //         ->route('admin.tv-show.cast.edit', ['id' => 'id', 'tvslug' => $this->tvshow->slug ]),
+
+        Button::add('edit')
                 ->caption("<i class='las la-pencil-alt'></i>")
                 ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
                 ->target('_self')
-                ->route('admin.tv-show.cast.edit', ['id' => 'id', 'tvslug' => $this->tvshow->slug ]),
+                ->route('admin.tv-show.cast.edit', ['id' => 'id']),
 
            Button::add('destroy')
                 ->caption("<i class='las la-trash'></i>")

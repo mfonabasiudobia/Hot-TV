@@ -34,9 +34,9 @@ class StreamServiceProvider extends ServiceProvider
                 'id' => 'cms-plugins-stream',
                 'priority' => 5,
                 'parent_id' => null,
-                'name' => 'plugins/stream::stream.name',
+                'name' => 'Manage Tv Channel',
                 'icon' => 'fa fa-list',
-                'url' => route('admin.dashboard'),
+                'url' => route('admin.tv-show.list'),
                 'permissions' => ['stream.index'],
             ]);
         });

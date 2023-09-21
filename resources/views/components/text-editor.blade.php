@@ -18,6 +18,7 @@
                 'searchreplace visualblocks code fullscreen',
                 'insertdatetime media table paste code help wordcount', 'image'
             ],
+            content_style: 'body { background-color: black; color: #fff; }',
             setup: function (editor) {
                 editor.on('change', function () {
                     $dispatch('input', editor.getContent());
@@ -26,4 +27,6 @@
             }
         });
     }"
+    
+    style="background-color: black;"
 ></textarea>

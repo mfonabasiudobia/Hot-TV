@@ -143,6 +143,7 @@ class User extends BaseModel implements
 
         return $this->hasAnyAccess($permissions);
     }
+    
 
     public function sendPasswordResetNotification($token): void
     {

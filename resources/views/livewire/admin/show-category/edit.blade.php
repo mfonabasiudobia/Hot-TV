@@ -8,13 +8,13 @@
 
         <div class="form-group w-full">
             <label>Name</label>
-            <input type="text" class="form-control text-dark" placeholder="Name*" wire:model.defer="name" />
+            <input type="text" class="form-control" placeholder="Name*" wire:model.defer="name" />
             @error('name') <span class="error"> {{ $message }}</span> @endError
         </div>
 
         <div class="form-group w-full">
             <label>Order</label>
-            <input type="text" class="form-control text-dark" placeholder="Order*" wire:model.defer="order" />
+            <input type="text" class="form-control" placeholder="Order*" wire:model.defer="order" />
             @error('order') <span class="error"> {{ $message }}</span> @endError
         </div>
 

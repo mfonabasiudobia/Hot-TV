@@ -9,7 +9,7 @@ use App\Repositories\CastRepository;
 class Edit extends BaseComponent
 {
 
-    public $name, $role, $image;
+    public $name, $image;
 
     public $tvshow, $cast;
 
@@ -18,15 +18,13 @@ class Edit extends BaseComponent
 
         $this->fill([
             'name' => $this->cast->name,
-            'image' => $this->cast->image,
-            'role' => $this->cast->role
+            'image' => $this->cast->image
         ]);
     }
 
     public function submit(){
             $this->validate([
                 'name' => 'required|string',
-                'role' => 'required',
                 'image' => 'required'
             ]);
 
@@ -34,7 +32,6 @@ class Edit extends BaseComponent
 
                 $data = [
                     'name' => $this->name,
-                    'role' => $this->role,
                     'image' => $this->image
                 ];
 
@@ -42,7 +39,7 @@ class Edit extends BaseComponent
 
                 toast()->success('Cast has been updated')->pushOnNextPage();
 
-                return redirect()->route('admin.tv-show.show', ['slug' => $this->cast->tvShow->slug ]);
+                return redirect()->route('admin.tv-show.cast.list');
 
             } catch (\Throwable $e) {
                 toast()->danger($e->getMessage())->push();

@@ -12,6 +12,10 @@ class TvShow extends BaseModel
         return $this->belongsToMany(ShowCategory::class);
     }
 
+    public function casts(){
+        return $this->belongsToMany(Cast::class);
+    }
+
     public function releaseAt(){
         return Carbon::parse($this->release_date)->format('M d, Y');
     }

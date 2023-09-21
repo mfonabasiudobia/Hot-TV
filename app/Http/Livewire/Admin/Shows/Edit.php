@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Shows;
 
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\TvShowRepository;
+use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
 
 class Edit extends BaseComponent
@@ -11,7 +12,7 @@ class Edit extends BaseComponent
 
     public $title, $slug, $description, $release_date, $thumbnail;
 
-    public $categories = [], $categories_id = [], $tvShow, $trailer;
+    public $categories = [], $categories_id = [], $tvShow, $trailer, $casts_id = [], $casts = [];
 
     public $tags = [], $meta_title, $meta_description;
 
@@ -21,6 +22,7 @@ class Edit extends BaseComponent
 
         $this->fill([
             'categories' => ShowCategoryRepository::all(),
+            'casts' => CastRepository::all(),
             'title' => $this->tvShow->title,
             'description' => $this->tvShow->description,
             'slug' => $this->tvShow->slug,
@@ -46,14 +48,17 @@ class Edit extends BaseComponent
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'categories_id' => 'required|array',
+            'casts_id' => 'required|array',
             'trailer' => 'required',
             'tags' => 'array',
             'meta_title' => 'nullable',
             'meta_description' => 'nullable',
         ],[
             'release_date.*' => 'Invalid Release Date Selected',
-            'categories_id' => 'Select at least 1 category to continue'
+            'categories_id' => 'Select at least 1 category to continue',
+            'casts_id' => 'Select at least 1 cast to continue'
         ]);
+
 
         try {
 
@@ -69,7 +74,10 @@ class Edit extends BaseComponent
                 'meta_description' => $this->meta_description
             ];
 
-            throw_unless(TvShowRepository::updateTvShow($data, $this->categories_id, $this->tvShow->id), "Please try again");
+            throw_unless(TvShowRepository::updateTvShow($data, [
+                'categories' => $this->categories_id,
+                'casts' => $this->casts_id,
+            ], $this->tvShow->id), "Please try again");
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 

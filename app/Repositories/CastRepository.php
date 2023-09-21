@@ -10,7 +10,7 @@ class CastRepository {
 
     public static function all() 
     {
-        return Cast::query();
+        return Cast::all();
     }
 
     public static function getCastById(int $id) : Cast 
@@ -20,7 +20,9 @@ class CastRepository {
 
     public static function getCastsByShow($tvShowId) : Collection
     {
-        return Cast::where('tv_show_id', $tvShowId)->get();
+        return Cast::whereHas('tvshows', function($q) use($tvShowId) {
+            $q->where('tv_shows.id', $tvShowId);
+        })->get();
     }
 
     public static function createCast(array $data) : Cast

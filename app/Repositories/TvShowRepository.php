@@ -48,22 +48,26 @@ class TvShowRepository {
         return TvShow::where('slug', $slug)->firstOrFail();
     }
 
-    public static function createTvShow(array $data, array $categories) : TvShow
+    public static function createTvShow(array $data, array $others) : TvShow
     {
         $tvShow = TvShow::create($data);
 
-        $tvShow->categories()->attach($categories);
+        $tvShow->categories()->attach($others['categories']);
+
+        $tvShow->casts()->attach($others['casts']);
 
         return $tvShow;
     }
 
-    public static function updateTvShow(array $data, $categories, int $id) : TvShow
+    public static function updateTvShow(array $data, $others, int $id) : TvShow
     {
          $tvShow = TvShow::find($id);
          
          $tvShow->update($data);
 
-         $tvShow->categories()->sync($categories);
+         $tvShow->categories()->sync($others['categories']);
+
+        $tvShow->casts()->sync($others['casts']);
 
          return $tvShow;
     }

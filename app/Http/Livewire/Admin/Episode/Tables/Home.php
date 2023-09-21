@@ -151,6 +151,8 @@ final class Home extends PowerGridComponent
     {
         return [
             Filter::inputText('title'),
+            Filter::inputText('season_number'),
+            Filter::inputText('episode_number'),
             Filter::datepicker('created_at_formatted', 'created_at'),
         ];
     }
@@ -179,7 +181,7 @@ final class Home extends PowerGridComponent
                 ->caption("<i class='las la-pencil-alt'></i>")
                 ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
                 ->target('_self')
-                ->route('admin.tv-show.episode.edit', ['slug' => 'slug', 'tvslug' => $this->tvshow->slug ]),
+                ->route('admin.tv-show.episode.edit', [ 'id' => 'id' ]),
 
            Button::add('destroy')
                 ->caption("<i class='las la-trash'></i>")
@@ -188,7 +190,7 @@ final class Home extends PowerGridComponent
                     'id' => 'id',
                     'model' => Episode::class,
                     'title' => 'Are you sure?',
-                    'message' => 'Are you sure you want to delete this category?'
+                    'message' => 'Are you sure you want to delete this episode?'
                 ])
         ];
     }

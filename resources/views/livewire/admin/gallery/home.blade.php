@@ -6,7 +6,7 @@
         <section class="flex justify-between items-center">
             <h1 class="title">Gallery</h1>
 
-            <button class="bg-primary action-btn" wire:click="$emit('openGallery')">Add New File</button>
+            <button class="bg-danger action-btn" wire:click="$emit('openGallery')">Add New File</button>
         </section>
         @livewire('admin.gallery.tables.home', key($key))
     </section>
