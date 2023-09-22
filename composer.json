@@ -27,6 +27,7 @@
         "botble/widget": "*@dev",
         "doctrine/dbal": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
+        "hardevine/shoppingcart": "^3.2",
         "laravel/framework": "^9.21",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",

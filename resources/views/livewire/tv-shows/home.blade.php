@@ -58,49 +58,7 @@
 
             </section>
 
-
-        @if($tvShows->total() > 12)
-            <div class="flex justify-center md:justify-end text-sm">
-
-                <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-7">
-                    <span class="opacity-60">Showing {{ $tvShows->firstItem() }} to {{ $tvShows->lastItem() }} of {{ $tvShows->total()
-                        }} data</span>
-                
-                    <div class="space-x-1 flex items-center">
-                        @if ($tvShows->previousPageUrl())
-                        <button wire:click="gotoPage({{ $tvShows->currentPage() - 1 }})" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">
-                            <i class="las la-angle-double-left"></i>
-                            <span>Previous</span>
-                        </button>
-                        @else
-                        <a class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center opacity-50" disabled>
-                            <i class="las la-angle-double-left"></i>
-                            <span>Previous</span>
-                        </a>
-                        @endif
-                
-                        @foreach (range(1, $tvShows->lastPage()) as $pageNumber)
-                        <button wire:click="gotoPage({{ $pageNumber }})"
-                            class="space-x-1 btn btn-sm bg-{{ $pageNumber == $tvShows->currentPage() ? 'danger' : 'dark' }} rounded-xl">
-                            {{ $pageNumber }}
-                        </button>
-                        @endforeach
-                
-                        @if ($tvShows->nextPageUrl())
-                        <button wire:click="gotoPage({{ $tvShows->currentPage() + 1  }})" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">
-                            <span>Next</span>
-                            <i class="las la-angle-double-right"></i>
-                        </button>
-                        @else
-                        <a class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center opacity-50" disabled>
-                            <span>Next</span>
-                            <i class="las la-angle-double-right"></i>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        @endIf
+            <x-pagination :items="$tvShows" />
         </section>
     </div>
 

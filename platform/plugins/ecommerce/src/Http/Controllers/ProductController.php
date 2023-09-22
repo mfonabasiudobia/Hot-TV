@@ -155,7 +155,7 @@ class ProductController extends BaseController
 
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
-
+        
         if ($request->has('variation_default_id')) {
             ProductVariation::query()
                 ->where('configurable_product_id', $product->getKey())

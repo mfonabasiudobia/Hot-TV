@@ -54,7 +54,7 @@ class UpdatedContentListener
                     }
                 } else {
                     $item = $this->slugRepository->createOrUpdate([
-                        'key' => $slug,
+                        'key' => Str::slug($slug),
                         'reference_type' => $class,
                         'reference_id' => $event->data->getKey(),
                         'prefix' => SlugHelper::getPrefix($class, '', false),

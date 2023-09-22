@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Blog;
 
 use Livewire\Component;
 use Botble\Slug\Facades\SlugHelper;
-use Botble\Blog\Models\Post;;
+use Botble\Blog\Models\Post;
 
 class Show extends Component
 {

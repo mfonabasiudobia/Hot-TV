@@ -11,6 +11,8 @@ class Home extends BaseComponent
 
     private $postRepo;
 
+    public $page = 1;
+
     public function mount(){
         $this->postRepo = new PostRepository(new Post);
     }

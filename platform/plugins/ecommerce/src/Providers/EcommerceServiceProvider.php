@@ -354,6 +354,7 @@ class EcommerceServiceProvider extends ServiceProvider
         SlugHelper::setPrefix(Brand::class, 'brands');
         SlugHelper::setPrefix(ProductTag::class, 'product-tags');
         SlugHelper::setPrefix(ProductCategory::class, 'product-categories');
+        
 
         SiteMapManager::registerKey([
             'product-categories',

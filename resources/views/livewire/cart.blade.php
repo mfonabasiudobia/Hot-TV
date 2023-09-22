@@ -16,129 +16,56 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr x-data="{ quantity : 0 }">
-                            <td>    
 
-                                <section class="flex items-center space-x-3 w-[320px]">
-                                    <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                                    
-                                    <div class="space-y-2">
-                                        <h2 class="font-semibold text-xl">Terrible Madness</h2>
-                                        <div class="text-secondary space-x-3">
-                                            <span>2018</span>
-                                            <span>ENGLAND</span>
-                                            <span>1hr 2min</span>
+                        @foreach (Cart::instance('product')->content() as $cart)
+                            <tr x-data="{ quantity : {{ $cart->qty }} }">
+                                <td>
+                            
+                                    <section class="flex items-center space-x-3 w-[320px]">
+                                        <img src="{{ file_path($cart->model->images[0]) }}" alt="" class="h-[214px] w-[153px] rounded-xl" />
+                            
+                                        <div class="space-y-2">
+                                            <h2 class="font-semibold text-xl">{{ $cart->model->name }}</h2>
+                                            {{-- <div class="text-secondary space-x-3">
+                                                <span>2018</span>
+                                                <span>ENGLAND</span>
+                                                <span>1hr 2min</span>
+                                            </div> --}}
+
+                                            @if(isset($cart->model->categories[0]->name))
+                                            <button class="btn btn-sm bg-danger bg-opacity-20 border-danger border rounded-xl text-danger">
+                                                {{ $cart->model->categories[0]->name }}
+                                            </button>
+                                            @endIf
+                            
+                                            
                                         </div>
-                                    
-                                        <button class="btn btn-sm bg-danger bg-opacity-20 border-danger border rounded-xl text-danger">ACTION
-                                            SERIES</button>
+                                    </section>
+                            
+                                </td>
+                            
+                                <td class="font-medium text-xl">
+                                    {{ ac() . number_format($cart->model->price) }}
+                                </td>
+                                <td>
+                                    <div class="inline-flex items-center justify-start">
+                                        <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity -= quantity <= 0 ? 0 : 1">-</button>
+                                        <span class="text-2xl font-bold px-3 w-[70px] text-center" x-text="quantity">0</span>
+                                        <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity += 1">+</button>
                                     </div>
-                                </section>
-
-                            </td>
-
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <div class="inline-flex items-center justify-start">
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity -= quantity <= 0 ? 0 : 1">-</button>
-                                    <span class="text-2xl font-bold px-3 w-[70px] text-center" x-text="quantity">0</span>
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity += 1">+</button>
-                                </div>
-                            </td>
-
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <button class="text-danger">
-                                    <i class="las la-trash text-2xl"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-
-                        <tr x-data="{ quantity : 0 }">
-                            <td class="flex items-center space-x-3">
+                                </td>
+                            
+                                <td class="font-medium text-xl">
+                                    $25,78
+                                </td>
+                                <td>
+                                    <button class="text-danger">
+                                        <i class="las la-trash text-2xl"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                         
-                                <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                        
-                                <div class="space-y-2">
-                                    <h2 class="font-semibold text-xl">Terrible Madness</h2>
-                                    <div class="text-secondary space-x-3">
-                                        <span>2018</span>
-                                        <span>ENGLAND</span>
-                                        <span>1hr 2min</span>
-                                    </div>
-                        
-                                    <button class="btn btn-sm bg-danger bg-opacity-20 border-danger border rounded-xl text-danger">ACTION
-                                        SERIES</button>
-                                </div>
-                        
-                            </td>
-                        
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <div class="inline-flex items-center justify-start">
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity -= quantity <= 0 ? 0 : 1">-</button>
-                                    <span class="text-2xl font-bold px-3 w-[70px] text-center" x-text="quantity">0</span>
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity += 1">+</button>
-                                </div>
-                            </td>
-                        
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <button class="text-danger">
-                                    <i class="las la-trash text-2xl"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-
-                        <tr x-data="{ quantity : 0 }">
-                            <td class="flex items-center space-x-3">
-                        
-                                <img src="{{ asset('images/placeholder-04.png') }}" alt="" />
-                        
-                                <div class="space-y-2">
-                                    <h2 class="font-semibold text-xl">Terrible Madness</h2>
-                                    <div class="text-secondary space-x-3">
-                                        <span>2018</span>
-                                        <span>ENGLAND</span>
-                                        <span>1hr 2min</span>
-                                    </div>
-                        
-                                    <button class="btn btn-sm bg-danger bg-opacity-20 border-danger border rounded-xl text-danger">ACTION
-                                        SERIES</button>
-                                </div>
-                        
-                            </td>
-                        
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <div class="inline-flex items-center justify-start">
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity -= quantity <= 0 ? 0 : 1">-</button>
-                                    <span class="text-2xl font-bold px-3 w-[70px] text-center" x-text="quantity">0</span>
-                                    <button class="btn btn-sq btn-xs text-2xl" x-on:click="quantity += 1">+</button>
-                                </div>
-                            </td>
-                        
-                            <td class="font-medium text-xl">
-                                $25,78
-                            </td>
-                            <td>
-                                <button class="text-danger">
-                                    <i class="las la-trash text-2xl"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>

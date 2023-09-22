@@ -15,6 +15,7 @@ use Botble\Ecommerce\Facades\Discount as DiscountFacade;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\FlashSale as FlashSaleFacade;
 use Botble\Ecommerce\Services\Products\UpdateDefaultProductService;
+use Botble\Revision\RevisionableTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,6 +33,18 @@ use Illuminate\Support\Facades\Auth;
  */
 class Product extends BaseModel
 {
+
+    use RevisionableTrait;
+
+    protected bool $revisionEnabled = true;
+
+    protected bool $revisionCleanup = true;
+
+    protected array $dontKeepRevisionOf = [
+        'content',
+        'views',
+    ];
+
     protected $table = 'ec_products';
 
     protected $fillable = [
@@ -127,6 +140,10 @@ class Product extends BaseModel
             'product_id',
             'category_id'
         );
+    }
+
+    public function scopePublished($q){
+        return $q->where('status', 'published');
     }
 
     public function productAttributeSets(): BelongsToMany

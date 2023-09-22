@@ -142,6 +142,7 @@ return array(
     'Google\\ApiCore\\' => array($vendorDir . '/google/gax/src'),
     'Google\\Analytics\\Data\\' => array($vendorDir . '/google/analytics-data/src'),
     'Google\\' => array($vendorDir . '/google/apiclient/src'),
+    'Gloudemans\\Shoppingcart\\' => array($vendorDir . '/hardevine/shoppingcart/src'),
     'GPBMetadata\\Google\\Type\\' => array($vendorDir . '/google/common-protos/metadata/Type'),
     'GPBMetadata\\Google\\Rpc\\' => array($vendorDir . '/google/common-protos/metadata/Rpc'),
     'GPBMetadata\\Google\\Protobuf\\' => array($vendorDir . '/google/protobuf/src/GPBMetadata/Google/Protobuf'),

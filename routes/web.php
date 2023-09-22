@@ -7,6 +7,18 @@ Route::get('jsdjsjjs', function(){
     return 444;
 })->name('public.index');
 
+Route::get('public/cart', function(){
+    return 444;
+})->name('public.cart');
+
+Route::get('public/wishlist', function(){
+    return 444;
+})->name('public.wishlist');
+
+Route::get('public/compare', function(){
+    return 444;
+})->name('public.compare');
+
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 

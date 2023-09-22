@@ -4,6 +4,7 @@ return [
     'pattern' => '--slug--',
     'supported' => [
         'Botble\Page\Models\Page' => 'Pages',
+        'Botble\Ecommerce\Models\Product' => 'Products',
     ],
     'prefixes' => [],
     'disable_preview' => [],
