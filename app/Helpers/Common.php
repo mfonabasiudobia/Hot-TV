@@ -1,9 +1,9 @@
 <?php 
 
-use App\Models\Setting;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 function gs(){
-    return (object) Setting::all()->pluck("value","key")->toArray();
+    return (object) \DB::table('settings')->pluck("value","key")->toArray();
 }
 
 //Active Currency
@@ -76,4 +76,34 @@ function view_count($number) {
         $formattedNumber = $number;
     }
     return $formattedNumber;
+}
+
+function sub_total(){
+    $total = 0;
+
+    foreach (Cart::instance('product')->content() as $cart) {
+        $total += $cart->model->price*$cart->qty;
+    }
+
+    return $total;
+}
+
+function discount_amount(){
+    $total = 0;
+
+    foreach (Cart::instance('product')->content() as $cart) {
+        if($cart->model->sale_price > 0){
+            $total += ($cart->model->price-$cart->model->sale_price)*$cart->qty;
+        }
+    }
+
+    return $total;
+}
+
+function tax_amount(){
+    return 0;
+}
+
+function total_amount(){
+    return sub_total() - discount_amount() + tax_amount();
 }

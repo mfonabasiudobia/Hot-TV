@@ -62,9 +62,11 @@
 
 
         <ul class="hidden xl:flex items-center space-x-5">
-            <li title="Wishlist">
-                <a href="#" class="hover:text-danger text-lg">
-                    <i class="fa fa-solid fa-heart"></i>
+            <li title="Cart">
+                <a href="{{ route('cart') }}" class="hover:text-danger text-lg relative">
+                    <i class="fas fa-shopping-cart"></i>
+
+                    <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block absolute -top-1 -right-1">{{ Cart::instance('product')->count() }}</span>
                 </a>
             </li>
             @if(!auth()->check())
@@ -136,11 +138,18 @@
             @endIf
         </ul>
 
-
-        <button class="text-white inline-block xl:hidden" type="button"
-            x-on:click="$dispatch('toggle-mobile-nav')">
+       <div class="space-x-3 flex  xl:hidden items-center">
+        <a href="{{ route('cart') }}" class="hover:text-danger text-lg relative">
+            <i class="fas fa-shopping-cart"></i>
+        
+            <span
+                class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block absolute -top-1 -right-1">{{ Cart::instance('product')->count() }}</span>
+        </a>
+        
+        <button class="text-white inline-block" type="button" x-on:click="$dispatch('toggle-mobile-nav')">
             <i class="las la-bars text-3xl"></i>
         </button>
+       </div>
 
     </div>
 

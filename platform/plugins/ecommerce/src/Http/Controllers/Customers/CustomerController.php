@@ -141,7 +141,7 @@ class CustomerController extends BaseController
     public function getListCustomerForSearch(Request $request, BaseHttpResponse $response)
     {
         $customers = Customer::query()
-            ->where('name', 'LIKE', '%' . $request->input('keyword') . '%')
+            ->where('first_name', 'LIKE', '%' . $request->input('keyword') . '%')
             ->simplePaginate(5);
 
         foreach ($customers as &$customer) {

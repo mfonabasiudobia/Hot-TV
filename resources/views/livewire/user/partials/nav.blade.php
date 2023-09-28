@@ -29,14 +29,23 @@
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('wishlist')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Wishlist
+                    class="relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    <span>Wishlist</span>
+
+                    <span
+                        class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
+                        {{ \Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->count() }}
+                    </span>
                 </a>
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('watchlist')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'watchlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Watchlist
+                    class="relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'watchlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    <span>Watchlist</span>
+
+                    <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
+                        {{ \App\Models\Watchlist::where('user_id', auth()->id())->count() }}
+                    </span>
                 </a>
             </li>
             {{-- <li>
@@ -47,14 +56,18 @@
             </li> --}}
             <li>
                 <a href="#" wire:click.prevent="setNav('screenshots')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'screenshots' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Screenshots
+                    class="relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'screenshots' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    <span>Screenshots</span>
                 </a>
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('watch-history')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'watch-history' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Watch History
+                    class="relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'watch-history' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    <span>Watch History</span>
+
+                    <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
+                        {{ \App\Models\TvShowView::where('user_id')->groupBy('tv_show_id')->selectRaw('tv_show_views.tv_show_id')->count() }}
+                    </span>
                 </a>
             </li>
         </ul>
@@ -77,3 +90,4 @@
     @endIf
     </section>
 </section>
+

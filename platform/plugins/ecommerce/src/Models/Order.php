@@ -12,6 +12,7 @@ use Botble\Ecommerce\Facades\OrderHelper;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Payment\Models\Payment;
 use Carbon\Carbon;
+use Botble\ACL\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,7 +71,7 @@ class Order extends BaseModel
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'user_id', 'id')->withDefault();
+        return $this->belongsTo(User::class, 'user_id', 'id')->withDefault();
     }
 
     protected function userName(): Attribute

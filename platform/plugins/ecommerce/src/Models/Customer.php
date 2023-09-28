@@ -41,7 +41,7 @@ class Customer extends BaseModel implements
     use HasApiTokens;
     use Notifiable;
 
-    protected $table = 'ec_customers';
+    protected $table = 'users';
 
     protected $fillable = [
         'name',
@@ -81,7 +81,7 @@ class Customer extends BaseModel implements
                 }
 
                 try {
-                    return (new Avatar())->create(Str::ucfirst($this->name))->toBase64();
+                    return (new Avatar())->create(Str::ucfirst($this->first_name))->toBase64();
                 } catch (Exception) {
                     return RvMedia::getDefaultImage();
                 }

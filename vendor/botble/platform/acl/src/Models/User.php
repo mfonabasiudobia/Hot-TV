@@ -23,6 +23,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Botble\Ecommerce\Models\Wishlist;
+use Botble\Ecommerce\Models\Discount;
+use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\Review;
+use Botble\Ecommerce\Models\Order;
+use Botble\Ecommerce\Models\Address;
+use Botble\Ecommerce\Models\Payment;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -184,4 +191,51 @@ class User extends BaseModel implements
 
         return parent::delete();
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
+    public function addresses(): HasMany
+    {
+        $with = [];
+        if (is_plugin_active('location')) {
+            $with = ['locationCountry', 'locationState', 'locationCity'];
+        }
+
+        return $this->hasMany(Address::class, 'customer_id', 'id')->with($with);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'customer_id', 'id');
+    }
+
+    public function discounts(): BelongsToMany
+    {
+        return $this->belongsToMany(Discount::class, 'ec_discount_customers', 'customer_id', 'id');
+    }
+
+    public function wishlist(): HasMany
+    {
+        return $this->hasMany(Wishlist::class, 'customer_id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'customer_id');
+    }
+
+
+    public function viewedProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'ec_customer_recently_viewed_products');
+    }
+
+    public function usedCoupons(): BelongsToMany
+    {
+        return $this->belongsToMany(Discount::class, 'ec_customer_used_coupons');
+    }
+
 }

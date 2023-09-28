@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Product;
 use App\Http\Livewire\BaseComponent;
 use Botble\Slug\Facades\SlugHelper;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\Wishlist;
 use Botble\Slug\Models\Slug;
 use Cart;
 
@@ -36,10 +37,32 @@ class Show extends BaseComponent
             Cart::instance('product')->add($product['id'], $product['name'], $qty, $product['price'])->associate(Product::class);
 
             toast()->success('Product Added to Cart')->push();
+
+            $this->emit('refreshCart');
+            
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
         }
 
+    }
+
+    public function saveToWishList($productId){
+        try {
+            
+            $wishlist = Wishlist::where('product_id', $productId)->where('customer_id', auth()->id())->first();
+
+            if(!$wishlist){
+                Wishlist::create([ 'product_id' => $productId, 'customer_id' => auth()->id() ]);
+
+                return toast()->success('Product has been added to wishlist')->push();
+            }
+
+            $wishlist->delete();
+
+            toast()->success('Product has been removed from wishlist')->push();
+        } catch (\Throwable $e) {
+            toast()->danger($e->getMessage())->push();
+        }
     }
 
 

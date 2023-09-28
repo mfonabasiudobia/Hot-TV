@@ -7,6 +7,7 @@ use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
 use App\Repositories\CastRepository;
 use App\Models\TvShowView;
+use App\Models\Watchlist;
 
 class Show extends BaseComponent
 {
@@ -42,8 +43,6 @@ class Show extends BaseComponent
         ];
 
         TvShowView::firstOrCreate($data, $data);
-
-        
     }
 
     public function updatedSeasonNumber($value){
@@ -58,6 +57,25 @@ class Show extends BaseComponent
             'episode' => $this->selectedEpisode->slug,
             'season' => $this->selectedEpisode->season_number
         ]);
+    }
+
+    public function saveToWatchlist($tvShowId){
+        try {
+            
+            $watchlist = Watchlist::where('tv_show_id', $tvShowId)->where('user_id', auth()->id())->first();
+
+            if(!$watchlist){
+                Watchlist::create(['tv_show_id' => $tvShowId, 'user_id' => auth()->id() ]);
+
+                return toast()->success('Added To My List')->push();
+            }
+
+            $watchlist->delete();
+
+            toast()->success('Removed From My List')->push();
+        } catch (\Throwable $e) {
+            toast()->danger($e->getMessage())->push();
+        }
     }
 
     public function render()

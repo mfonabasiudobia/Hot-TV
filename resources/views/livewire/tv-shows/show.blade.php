@@ -94,11 +94,14 @@
                 <section class="bg-dark p-5 rounded-2xl relative">
                     <img src="{{ file_path($selectedEpisode->thumbnail ?? $tvShow->thumbnail) }}" alt="" class="h-[483px] w-full object-cover rounded-xl" />
 
-                    <button class="rounded-md absolute top-7 right-7 bg-white hover:bg-danger text-danger hover:text-white w-[40px] h-[40px]">
+                    <button wire:click.prevent="saveToWatchlist({{ $tvShow->id }})" 
+                        
+                        class="rounded-md absolute top-7 right-7 w-[40px] h-[40px] {{ \App\Models\Watchlist::where('user_id', auth()->id())->where('tv_show_id', $tvShow->id)->first() ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                         <i class="las la-heart"></i>
                     </button>
                 </section>
 
+                @if(count($seasons) > 0)
                 <section class="bg-dark p-5 rounded-2xl space-y-5">
                     <h3 class="text-right opacity-50 text-sm space-x-2 relative">
                         <select class="text-white select-season-form appearance-none mr-2" wire:model='season_number'>
@@ -129,6 +132,7 @@
                         @endforeach
                     </section>
                 </section>
+                @endIf
 
 
                 <section class="bg-dark p-5 space-y-3 rounded-2xl">

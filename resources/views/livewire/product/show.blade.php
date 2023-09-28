@@ -34,7 +34,13 @@
                     <h1 class="font-semibold text-xl md:text-3xl">{{ $product->name }}</h1>
 
                     <section class="flex items-center space-x-5">
-                        <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->price) }}</span>
+                       <div>
+                            <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->price) }}</span>
+                            @if($product->sale_price > 0)
+                            /
+                            <strike class="opacity-50">{{ ac() . number_format($product->sale_price)}}</strike>
+                            @endIf
+                       </div>
                         <span>({{ $product->quantity }} Units In stock)</span>
                     </section>
                 </header>
@@ -64,6 +70,18 @@
                         x-on:click="$wire.addToCart({{ $product }}, quantity)" 
                         class="btn btn-xl btn-danger" 
                     />
+
+                    @auth
+                    <x-atoms.loading-button text="{{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'Remove From Wishlist' : 'Add To Wishlist' }}" target="saveToWishList" x-on:click="$wire.saveToWishList({{ $product->id }})"
+                        class="btn btn-xl btn-danger" />
+
+                    {{-- <button wire:click.prevent="saveToWishList({{ $product->id }})"
+                        class="rounded-md absolute top-3 right-7 w-[40px] h-[40px] 
+                                                    {{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'hover:bg-white bg-danger shadow-xl hover:text-danger text-white' : 'bg-white hover:bg-danger shadow-xl text-danger hover:text-white' }}">
+                        <i class="las la-heart"></i>
+                    </button> --}}
+                    @endauth
+
                 </div>
 
                 <ul class="space-y-2">

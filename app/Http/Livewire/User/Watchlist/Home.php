@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire\User\Watchlist;
 
-use Livewire\Component;
+use App\Http\Livewire\BaseComponent;
+use App\Models\Watchlist;;
 
-class Home extends Component
+class Home extends BaseComponent
 {
     public function render()
     {
-        return view('livewire.user.watchlist.home');
+        $watchlists = Watchlist::where('user_id', auth()->id())->paginate(12);
+
+        return view('livewire.user.watchlist.home', compact('watchlists'));
     }
 }

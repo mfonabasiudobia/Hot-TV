@@ -77,6 +77,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
         Route::get('checkout',"Checkout")->name('checkout');
         Route::get('about',"About")->name('about');
         Route::get('contact',"Contact")->name('contact');
+        Route::get('payment-verification',"PaymentVerification")->name('payment-verification');
         Route::get('terms-and-condition',"Terms")->name('terms');
         Route::get('s',"Search")->name('search');
 

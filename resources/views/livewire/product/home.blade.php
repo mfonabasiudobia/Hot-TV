@@ -27,13 +27,26 @@
     
                         <footer class="flex items-center justify-between">
                             <div>
-                                <span class="text-danger font-bold text-xl">{{ ac() . number_format($product->price)
-                                    }}</span>
+                                <span class="text-danger font-bold text-xl">
+                                    {{ ac() . number_format($product->price)}}
+                                </span>
+                                @if($product->sale_price > 0)
+                                    /
+                                    <strike class="opacity-50">{{ ac() . number_format($product->sale_price)}}</strike>
+                                @endIf
                             </div>
     
                             <button wire:click.prevent="addToCart({{ $product }})"
                                 class="btn btn-sm btn-danger rounded-xl">Add</button>
                         </footer>
+
+                       @auth
+                            <button wire:click.prevent="saveToWishList({{ $product->id }})"
+                                class="rounded-md absolute top-3 right-7 w-[40px] h-[40px] 
+                                {{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'bg-danger shadow-xl text-white' : 'bg-white shadow-xl text-danger' }}">
+                                <i class="las la-heart"></i>
+                            </button>
+                       @endauth
                     </a>
                     @endforeach
     

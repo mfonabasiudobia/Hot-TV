@@ -11,6 +11,12 @@ class Home extends BaseComponent
 
     public $currentNav = 'favourites';
 
+    public function mount(){
+        if(request()->has('p')){
+            $this->currentNav = request('p');
+        }
+    }
+
     public function setNav($value){
         $this->currentNav = $value;
     }

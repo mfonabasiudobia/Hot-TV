@@ -35,3 +35,13 @@
     });
 </script>
 @endpush
+
+@push('script')
+<script>
+    document.addEventListener('change-nav', (event) => {
+        setTimeout(() => {
+            window.history.replaceState(null, null, `?p=${event.detail.page}`);
+        }, 5000);
+    })
+</script>
+@endPush
