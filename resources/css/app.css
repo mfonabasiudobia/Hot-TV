@@ -229,12 +229,12 @@ body {
     }
 
     .video-container {
-        @apply relative h-[600px];
+        @apply relative h-auto md:h-auto;
     }
 
     /* Style the video element */
     .video-container video {
-       @apply h-[600px]; 
+       @apply h-auto md:h-auto; 
     }
 
     .video-container video::poster {
@@ -249,6 +249,8 @@ body {
         background: #000 !important;
         background-color: #000 !important;
     }
+
+    
 
 
 }

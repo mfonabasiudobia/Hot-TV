@@ -18,7 +18,8 @@
                 'searchreplace visualblocks code fullscreen',
                 'insertdatetime media table paste code help wordcount', 'image'
             ],
-            content_style: 'body { background-color: black; color: #fff; }',
+            skin: 'oxide-dark',
+            content_css: 'dark',
             setup: function (editor) {
                 editor.on('change', function () {
                     $dispatch('input', editor.getContent());

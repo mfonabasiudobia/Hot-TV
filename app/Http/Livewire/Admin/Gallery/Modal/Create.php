@@ -33,7 +33,7 @@ class Create extends Component
             $this->validate(["uploadedFile" => "required"]);
 
 
-            Gallery::create([
+            $gallery = Gallery::create([
                 'url' => AppHelper::uploadFile($this->uploadedFile, 'files'),
                 'type' => 'external',
                 'mime_type' => $this->uploadedFile->getMimeType(),
@@ -48,6 +48,10 @@ class Create extends Component
 
             $this->reset(['uploadedFile']);
             $this->show = true;
+
+            $this->dispatchBrowserEvent('trigger-close-modal');
+
+            $this->dispatchBrowserEvent('set-push-file', ['unique_key' => $this->uniqueid, 'path' => $gallery->url, 'id' => $gallery->id ]);
 
       }
 

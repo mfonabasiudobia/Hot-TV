@@ -152,5 +152,12 @@
 
     @push('header')
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+        <style>
+            .swiper-button-prev,
+            .swiper-button-next {
+            color: #FF0207; /* Change to your desired color */
+            }
+        </style>
     @endpush
 </div>

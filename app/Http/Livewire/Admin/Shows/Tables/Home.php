@@ -94,7 +94,7 @@ final class Home extends PowerGridComponent
                 return $model->createdAt();
             })
             ->addColumn('status_formatted', function(TvShow $model){
-                return $model->status == 'published' ? "<span class='px-3 py-1 rounded-full bg-green-200'>Published</span>" : "<span
+                return $model->status == 'published' ? "<span class='px-3 py-1 rounded-full bg-green-800'>Published</span>" : "<span
                     class='px-3 py rounded-full bg-red-200'>Unpublished</span>";
             });
     }
@@ -163,13 +163,13 @@ final class Home extends PowerGridComponent
 
             // Button::add('view')
             //     ->caption("<i class='las la-eye'></i>")
-            //     ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+            //     ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
             //     ->target('_self')
             //     ->route('admin.tv-show.show', ['slug' => 'slug']),
 
            Button::add('edit')
                 ->caption("<i class='las la-pencil-alt'></i>")
-                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+                ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
                 ->target('_self')
                 ->route('admin.tv-show.edit', ['id' => 'id']),
 

@@ -107,3 +107,7 @@ function tax_amount(){
 function total_amount(){
     return sub_total() - discount_amount() + tax_amount();
 }
+
+function sanitize_seo_description($value){
+    return str()->limit(htmlspecialchars_decode(strip_tags($value)), 100);
+}

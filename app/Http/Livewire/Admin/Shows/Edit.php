@@ -32,7 +32,8 @@ class Edit extends BaseComponent
             'trailer' => $this->tvShow->trailer,
             'meta_title' => $this->tvShow->meta_title,
             'meta_description' => $this->tvShow->meta_description,
-            'categories_id' => $this->tvShow->categories()->get()->pluck('id')
+            'categories_id' => $this->tvShow->categories()->get()->pluck('id'),
+            'casts_id' =>  $this->tvShow->casts()->get()->pluck('id'),
         ]);
     }
 

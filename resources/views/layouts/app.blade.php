@@ -8,6 +8,9 @@
 
     {{-- <link rel="shortcut icon" href="{{ asset('storage/images/logo/logo.png') }}" type="image/x-icon"> --}}
 
+    <title>{{ $seo_title ?? env('APP_NAME') }}</title>
+    <meta name="description" content="{{ $seo_description ?? NULL }}">
+
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
@@ -20,6 +23,24 @@
     @stack('header')
 
     @livewireStyles
+
+    <style>
+        .ss-values, .ss-main, .ss-content {
+            background-color: #000 !important;
+        }
+
+        .ss-main {
+            width: 120px;
+        }
+
+        .ss-search {
+            display: none !important;
+        }
+
+        .ss-option:hover, .ss-selected{
+            background-color: red !important;
+        }
+    </style>
 
 </head>
 

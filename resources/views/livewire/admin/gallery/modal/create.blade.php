@@ -100,7 +100,7 @@ x-cloak
 
                             @if($uploadedFile)
 
-                             <button class="text-white bg-red-500 hover:bg-red-600 rounded-lg px-5 py-2.5 text-center" type="button" wire:click="removeFile">
+                             <button class="text-dark bg-light rounded-lg px-5 py-2.5 text-center" type="button" wire:click="removeFile">
                                 Cancel  <i class="las la-times"></i>
                              </button>
 

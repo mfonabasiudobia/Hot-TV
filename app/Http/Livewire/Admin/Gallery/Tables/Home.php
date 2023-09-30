@@ -101,7 +101,7 @@ final class Home extends PowerGridComponent
        return [
            Button::add('edit')
                ->caption("Edit")
-               ->class('bg-indigo-500 action-btn')
+               ->class('bg-gray-600 action-btn')
                ->dispatch('trigger-edit-modal', [
                 'id' => 'id', 
                 'model' => Gallery::class,

@@ -1,13 +1,11 @@
 <div class="py-5 bg-black text-white space-y-5 min-h-screen">
-    <x-atoms.breadcrumb :routes="[['title' => 'Tv Shows', 'route' => null ]]" />
+    <x-atoms.breadcrumb :routes="[['title' => $tvShow->name, 'route' => null ]]" />
     <div class="container space-y-7">
 
         <section class="space-y-7">
             <header class="space-y-3">
-                <h2 class="font-semibold text-xl md:text-3xl">Our Tv Shows</h2>
-                <p>Esse curso tem como objetivo de te dar os fundamentos da programação e entender um pouco mais sobre o web, precisamos
-                desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que vamos encontrar
-                como desenvolvedores e desenvolvedoras web.</p>
+                <h2 class="font-semibold text-xl md:text-3xl">{{ $tvShow->name }}</h2>
+                <p>{!! $tvShow->content !!}</p>
             </header>
 
             <div class="rounded-2xl px-7 hidden md:flex justify-between items-center bg-dark text-sm py-3">

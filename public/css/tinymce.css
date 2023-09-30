@@ -1,0 +1,16 @@
+body {
+    background-color: #2b2b2b !important; /* Dark background color */
+    color: #ffffff !important; /* Light text color */
+}
+
+/* Customize the toolbar if needed */
+.tox-toolbar {
+    background-color: #1a1a1a !important; /* Dark toolbar background color */
+    color: #ffffff !important; /* Light text color for toolbar */
+}
+
+/* Dark mode specific styles for TinyMCE content area */
+.tox-tinymce {
+    background-color: #2b2b2b !important; /* Dark content area background color */
+    color: #ffffff !important; /* Light text color for content area */
+}

@@ -1,7 +1,7 @@
 <section>
     <x-loading />
     <div class="py-5 bg-black text-white space-y-5">
-        <x-atoms.breadcrumb :routes="[['title' => 'Products', 'route' => null ]]" />
+        <x-atoms.breadcrumb :routes="[['title' => $product->name, 'route' => null ]]" />
         <div class="container space-y-7">
             <section class="space-y-7">
                 <header class="space-y-3">

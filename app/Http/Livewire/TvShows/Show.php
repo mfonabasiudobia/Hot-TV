@@ -80,6 +80,9 @@ class Show extends BaseComponent
 
     public function render()
     {
-        return view('livewire.tv-shows.show');
+        return view('livewire.tv-shows.show')->layout('layouts.app', [
+            'seo_title' => $this->tvShow->title,
+            'seo_description' => sanitize_seo_description($this->tvShow->description)
+        ]);
     }
 }

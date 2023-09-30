@@ -68,6 +68,10 @@ class Show extends BaseComponent
 
     public function render()
     {
-        return view('livewire.product.show');
+        return view('livewire.product.show')
+        ->layout('layouts.app', [
+            'seo_title' => $this->product->name,
+            'seo_description' => sanitize_seo_description($this->product->description ?? '')
+        ]);
     }
 }

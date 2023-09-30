@@ -8,6 +8,7 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 use Botble\Revision\RevisionableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Botble\Base\Models\MetaBox;
 
 class Page extends BaseModel
 {
@@ -43,5 +44,9 @@ class Page extends BaseModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withDefault();
+    }
+
+     public function meta(){
+        return $this->morphOne(MetaBox::class, 'reference');
     }
 }

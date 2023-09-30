@@ -29,11 +29,10 @@
                     <div class="form-group">
                         <label>Show Categories</label>
                         <div class="relative" wire:ignore>
-                            <select class="form-control" wire:model.defer="categories_id" multiple id="categories"
-                                data-placeholder="--Categories--">
-                                <option value="">--Select Categories--</option>
+                            <select class="form-control" wire:model.defer="categories_id" multiple id="categories" data-placeholder="--Categories--">
                                 @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option data-placeholder="true">--Select Show Category--</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -44,8 +43,8 @@
                         <label>Casts</label>
                         <div class="relative" wire:ignore>
                             <select class="form-control" wire:model.defer="casts_id" multiple id="casts" data-placeholder="--Casts--">
-                                <option value="">--Select Cast--</option>
                                 @foreach ($casts as $cast)
+                                <option data-placeholder="true">--Select Cast--</option>
                                 <option value="{{ $cast->id }}">{{ $cast->name }}</option>
                                 @endforeach
                             </select>
@@ -64,11 +63,13 @@
 
                     <div class="form-group" wire:ignore>
                         <label>Tags </label>
-                        <select id="tags" class="form-control" multiple="multiple" data-placeholder="--Tags--">
+
+                        <select id="tags" class="form-control" wire:model.defer="tags" multiple="multiple" data-placeholder="--Tags--">
                             @foreach ($tags as $tag)
                             <option value="{{ $tag }}" selected>{{ $tag }}</option>
                             @endforeach
                         </select>
+
                         @error('tags') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
@@ -137,37 +138,19 @@
 @push('script')
 <script>
     $(document).ready(function () {
-    
-                window.initSelectDrop = () => {
-                    $("#categories").select2();
-
-                    $("#casts").select2();
-
-                    $("#tags").select2({
-                        tags: "true",
-                        selectOnClose: true,
-                        tokenSeparators: [],
+                    new SlimSelect({
+                        select: '#categories'
                     });
-                }
-                
-                $('#categories').on('change', function (e) {
-                    @this.set('categories_id', $(this).val());             
-                });
 
-                $('#casts').on('change', function (e) {
-                    @this.set('casts_id', $(this).val());
-                });
-                
-                $('#tags').on('change', function (e) {
-                    @this.set('tags', $(this).val());
-                });
+                    new SlimSelect({
+                        select: '#casts'
+                    });
 
-                initSelectDrop();
-                
-                window.livewire.on('select2', () => {
-                    initSelectDrop();
-                })
-    
-});    
+                    const select = new SlimSelect({
+                        select: '#tags',
+                        showSearch: false
+                    });
+                  
+        });
 </script>
 @endPush

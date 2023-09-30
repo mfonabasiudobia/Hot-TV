@@ -1,6 +1,6 @@
 <div class="py-5 bg-black text-white space-y-7 min-h-screen">
     <x-atoms.breadcrumb :routes="[
-                ['title' => 'FAQ', 'route' => null]
+                ['title' => $faq->name, 'route' => null]
             ]" />
     <div class="container space-y-7">
         <section class="space-y-7">
