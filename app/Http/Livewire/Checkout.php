@@ -32,6 +32,13 @@ class Checkout extends BaseComponent
 
         // dd(PaymentMethodEnum::STRIPE);
 
+        if(Cart::instance('product')->count() === 0){
+
+            toast()->danger('Cart cannot be empty')->pushOnNextPage();
+
+            return redirect()->route('cart');
+        }
+
         $this->fill([
             'first_name' => 'MfonAbasi',
             'last_name' => 'Udobia',

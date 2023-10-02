@@ -20,14 +20,14 @@ class SendMailListener implements ShouldQueue
 
     public function handle(SendMailEvent $event): void
     {
-        try {
-            $this->mailer->to($event->to)->send(new EmailAbstract($event->content, $event->title, $event->args));
-        } catch (Exception $exception) {
-            if ($event->debug) {
-                throw $exception;
-            }
+        // try {
+        //     $this->mailer->to($event->to)->send(new EmailAbstract($event->content, $event->title, $event->args));
+        // } catch (Exception $exception) {
+        //     if ($event->debug) {
+        //         throw $exception;
+        //     }
 
-            Log::error($exception->getMessage());
-        }
+        //     Log::error($exception->getMessage());
+        // }
     }
 }

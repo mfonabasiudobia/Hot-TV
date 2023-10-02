@@ -11,6 +11,10 @@ class Authenticate extends BaseAuthenticate
     {
         $this->authenticate($request, $guards);
 
+        if(!in_array(auth()->id(), admin_id_array())){
+                    return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
         if (! $guards) {
             $route = $request->route();
             $flag = $route->getAction('permission');

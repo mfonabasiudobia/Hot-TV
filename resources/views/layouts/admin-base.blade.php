@@ -65,6 +65,7 @@
     <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
     <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
+    <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
 
     @stack("script")
 

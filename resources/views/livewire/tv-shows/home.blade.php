@@ -51,7 +51,6 @@
                         <h1 class="text-xl md:text-2xl font-bold">Nothing Found</h1>
                         <p>Sorry, nothing found. Please try again with some different keywords.</p>
                     </div>
-
                @endforelse
 
             </section>

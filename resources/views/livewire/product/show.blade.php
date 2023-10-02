@@ -71,16 +71,14 @@
                         class="btn btn-xl btn-danger" 
                     />
 
-                    @auth
-                    <x-atoms.loading-button text="{{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'Remove From Wishlist' : 'Add To Wishlist' }}" target="saveToWishList" x-on:click="$wire.saveToWishList({{ $product->id }})"
-                        class="btn btn-xl btn-danger" />
-
-                    {{-- <button wire:click.prevent="saveToWishList({{ $product->id }})"
-                        class="rounded-md absolute top-3 right-7 w-[40px] h-[40px] 
-                                                    {{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'hover:bg-white bg-danger shadow-xl hover:text-danger text-white' : 'bg-white hover:bg-danger shadow-xl text-danger hover:text-white' }}">
-                        <i class="las la-heart"></i>
-                    </button> --}}
-                    @endauth
+                    @if(is_user_logged_in())
+                        <x-atoms.loading-button 
+                            text="{{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'Remove From Wishlist' : 'Add To Wishlist' }}" 
+                            target="saveToWishList" 
+                            x-on:click="$wire.saveToWishList({{ $product->id }})"
+                            class="btn btn-xl btn-danger" 
+                        />
+                    @endIf
 
                 </div>
 

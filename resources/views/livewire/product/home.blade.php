@@ -40,13 +40,13 @@
                                 class="btn btn-sm btn-danger rounded-xl">Add</button>
                         </footer>
 
-                       @auth
+                       @if(is_user_logged_in())
                             <button wire:click.prevent="saveToWishList({{ $product->id }})"
                                 class="rounded-md absolute top-3 right-7 w-[40px] h-[40px] 
                                 {{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'bg-danger shadow-xl text-white' : 'bg-white shadow-xl text-danger' }}">
                                 <i class="las la-heart"></i>
                             </button>
-                       @endauth
+                       @endIf
                     </a>
                     @endforeach
     

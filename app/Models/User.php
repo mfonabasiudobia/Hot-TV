@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Botble\ACL\Models\Role;
+use Botble\ACL\Models\Activation;
 
 class User extends AuthenticatableBaseModel
 {
@@ -32,6 +34,18 @@ class User extends AuthenticatableBaseModel
     ];
 
     protected $appends = ['is_verified', 'fullname'];
+
+    public function roles()
+    {
+        return $this
+            ->belongsToMany(Role::class, 'role_users', 'user_id', 'role_id')
+            ->withTimestamps();
+    }
+
+    public function activations()
+    {
+        return $this->hasMany(Activation::class, 'user_id');
+    }
 
     public function getIsVerifiedAttribute(){
         return $this->email_verified_at ? true : false;

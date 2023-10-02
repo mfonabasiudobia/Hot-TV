@@ -111,3 +111,16 @@ function total_amount(){
 function sanitize_seo_description($value){
     return str()->limit(htmlspecialchars_decode(strip_tags($value)), 100);
 }
+
+function admin_id_array(){
+    return [1, 3];
+}
+
+function is_user_logged_in(){
+
+    if(auth()->check()){
+        if(!in_array(auth()->id(), admin_id_array())) return true;
+    }
+
+    return false;
+}

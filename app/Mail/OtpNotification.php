@@ -30,7 +30,7 @@ class OtpNotification extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('no-reply@xwash.ng', 'Xwash'),
+            from: new Address('no-reply@hottv.ng', 'Hot TV'),
             subject: env('APP_NAME') . ' Sign Up Otp',
         );
     }

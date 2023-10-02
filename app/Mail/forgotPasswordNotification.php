@@ -14,13 +14,12 @@ class forgotPasswordNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user, $code, $type;
+    public $user, $code;
 
-    public function __construct($user, $code, $type = 'api')
+    public function __construct($user, $code)
     {
         $this->user = $user;
         $this->code = $code;
-        $this->type = $type;
     }
 
     /**

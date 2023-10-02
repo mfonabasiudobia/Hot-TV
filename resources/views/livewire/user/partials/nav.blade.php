@@ -13,14 +13,14 @@
         <button class="btn btn-sm md:btn-md rounded-xl btn-danger space-x-2 flex items-center">
             <span>Upgrade Premium</span>
 
-            <span class="bg-yellow-500 h-[25px] w-[25px] inline-block rounded-full flex items-center justify-center">
+            <span class="bg-yellow-500 h-[25px] w-[25px] rounded-full flex items-center justify-center">
                 <i class="las la-crown"></i>
             </span>
         </button>
     </section>
 
     <section class="flex items-start md:items-center flex-col space-y-7 md:space-y-0 md:flex-row md:space-x-3 md:justify-between">
-        <ul class="flex items-center space-x-5 md:space-x-7 text-sm md:text-base">
+        <ul class="flex items-center space-x-5 md:space-x-7 text-sm md:text-base overflow-x-auto overflow-y-hidden w-full">
             <li>
                 <a href="#" wire:click.prevent="setNav('favourites')"
                     class="py-3 transition-all hover:text-danger {{ $currentNav === 'favourites' ? 'border-b-2 border-danger font-semibold' : '' }}">
@@ -29,7 +29,7 @@
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('wishlist')"
-                    class="relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    class="flex items-center relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     <span>Wishlist</span>
 
                     <span
@@ -40,7 +40,7 @@
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('watchlist')"
-                    class="relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'watchlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    class="flex items-center relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'watchlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     <span>Watchlist</span>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
@@ -62,7 +62,7 @@
             </li>
             <li>
                 <a href="#" wire:click.prevent="setNav('watch-history')"
-                    class="relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'watch-history' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    class="flex items-center whitespace-nowrap relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'watch-history' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     <span>Watch History</span>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">

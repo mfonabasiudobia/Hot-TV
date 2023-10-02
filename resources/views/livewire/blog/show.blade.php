@@ -23,12 +23,8 @@
 
 
             <section class="space-y-7">
-                {{-- <img src="{{ asset('storage') }}/{{ $post->image }}" alt="" /> --}}
 
-
-                {{-- {!! $post->content !!} --}}
-
-                {!! BaseHelper::clean($post->content) !!}
+                {!! do_shortcode(BaseHelper::clean($post->content)) !!}
 
             </section>
 

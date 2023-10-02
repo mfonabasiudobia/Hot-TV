@@ -10,6 +10,51 @@
                     <p>Your Next Stop for Traveling and streaming Station</p>
                 </section>
             </header>
+
+            @if(session()->has('confirmation-email-message'))
+               <div 
+               
+               x-data="{ canResend: false, countdown: 60 }" 
+               @trigger-email-sent.window="() => {
+                    countdown = 60;
+                    canResend = false;
+               }"
+               x-init="() => {
+                    setInterval(() => {
+                        if(countdown >= 1){
+                            --countdown;
+                        }else{
+                            canResend = true;
+                        } 
+                    }, 1000)
+                }">
+                <div class="p-3 rounded-xl bg-danger text-sm space-y-1">
+                    <span>A confirmation email has been sent to your email address. Please confirm your account by clicking the
+                        confirm button</span><br />
+            
+                   <div class="flex items-center space-x-2">
+                    <x-atoms.loading-button text="Resend link" wire:click="resendVerificationMail" class=""
+                        x-bind:class="!canResend ? 'opacity-70' : ''" x-bind:disabled="!canResend" target="resendVerificationMail" />
+                    
+                    <span x-show="!canResend">in 00:<span x-text="countdown"></span>s</span>
+                   </div>
+                </div>
+            </div>
+            @endIf
+
+            @if(session()->has('verification-email-message'))
+                <div class="p-3 rounded bg-success text-sm">
+                    Congratulations! Your email has been verified. Please log in to your account to proceed.
+                </div>
+            @endIf
+
+            @if(session()->has('email-already-verified-message'))
+                <div class="p-3 rounded bg-success text-sm">
+                    Congratulations! Your email has been verified already. Please log in to your account to proceed.
+                </div>
+            @endIf
+
+
             <form class="grid gap-5" wire:submit.prevent='submit'>
                 <div class="form-group">
                     <label>Username</label>
@@ -48,5 +93,5 @@
                 <span class="font-thin">Don't have an Account ?</span> <a href="{{ route('register') }}" class="semibold">Register</a>
             </div>
         </div>
-    
     </div>
+    

@@ -43,6 +43,8 @@
     <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
     <script src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
+    
 
     @stack("script")
 

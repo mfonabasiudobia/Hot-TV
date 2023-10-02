@@ -11,13 +11,14 @@ class UserAuth
 
         public function handle(Request $request, Closure $next)
         {
-            if(AppHelper::isUserAuthRoute() && auth()->check()){
-                // if(auth()->user()->hasRole('normal')){
-                    return redirect()->route('user.dashboard');
-                // }  
-                return redirect()->route('login');
+            if(AppHelper::isUserAuthRoute() && is_user_logged_in()){
+                return redirect()->route('user.dashboard');
             }else if(!AppHelper::isUserAuthRoute() && !auth()->check()){
                    return redirect()->route('login');
+            }else if(!AppHelper::isUserAuthRoute() && auth()->check()){
+                if(!is_user_logged_in()){
+                     return redirect()->route('login');
+                }
             }          
 
             return $next($request);

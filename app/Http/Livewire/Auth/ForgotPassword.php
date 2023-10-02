@@ -16,15 +16,15 @@ class ForgotPassword extends BaseComponent
             'email' => 'required|email'
         ]);
 
-        // try {
+        try {
 
             throw_unless($user = AuthRepository::forgotPassword($this->email), "The email must be valid email address");
 
-            toast()->success("Thanks, a password reset link has been sent to your email")->push();
+            toast()->success("A password reset link has been sent to your email")->push();
 
-        // } catch (\Throwable $e) {
-        //     toast()->danger($e->getMessage())->push();
-        // }
+        } catch (\Throwable $e) {
+            toast()->danger($e->getMessage())->push();
+        }
 
     }
 

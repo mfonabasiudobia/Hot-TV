@@ -31,12 +31,12 @@
                             @endIf
                         </div>
 
-                            @auth
+                            @if(is_user_logged_in())
                             <button  wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
                                 class="md:hidden rounded-md w-[40px] h-[40px] {{ \App\Models\Watchlist::where('user_id', auth()->id())->where('tv_show_id', $tvShow->id)->first() ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                                 <i class="las la-heart"></i>
                             </button>
-                            @endauth
+                            @endIf
                     </div>
 
                     <div class="flex flex-col items-end space-y-5">
@@ -108,12 +108,12 @@
                 <section class="bg-dark p-5 rounded-2xl relative hidden md:block">
                     <img src="{{ file_path($selectedEpisode->thumbnail ?? $tvShow->thumbnail) }}" alt="" class="h-[483px] w-full object-cover rounded-xl" />
 
-                   @auth
+                   @if(is_user_logged_in())
                        <button wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
                             class="rounded-md absolute top-7 right-7 w-[40px] h-[40px] {{ \App\Models\Watchlist::where('user_id', auth()->id())->where('tv_show_id', $tvShow->id)->first() ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                             <i class="las la-heart"></i>
                         </button>
-                   @endauth
+                   @endIf
                 </section>
 
                 @if(count($seasons) > 0)

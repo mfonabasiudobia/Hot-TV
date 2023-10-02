@@ -31,9 +31,13 @@ class Register extends BaseComponent
 
         try {
 
-            throw_unless(AuthRepository::register($data), "Failed to create user");
+            throw_unless($user =  AuthRepository::register($data), "Failed to create your account");
 
-            toast()->success('User has been created')->pushOnNextPage();
+            throw_unless($otp = AuthRepository::sendOtp($user->email), "Failed to send OTP");
+
+            toast()->success('Your account has been created')->pushOnNextPage();
+
+            session()->flash('confirmation-email-message', true);
 
             return redirect()->route("login");
 

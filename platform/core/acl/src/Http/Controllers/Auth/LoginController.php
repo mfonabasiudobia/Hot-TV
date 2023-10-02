@@ -104,6 +104,13 @@ class LoginController extends BaseController
                     session()->flash('url.intended', url()->current());
                 }
 
+                //Validate User Roles (Added by Mbrain)
+                if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
+                    auth()->logout();
+
+                    return $this->sendFailedLoginResponse();
+                }
+        
                 return $this->sendLoginResponse($request);
             });
     }

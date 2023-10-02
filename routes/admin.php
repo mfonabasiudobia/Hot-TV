@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],function () {
 
-    Route::group(['middleware'=> []], function() {
+    Route::group(['middleware'=> ['AdminAuth']], function() {
 
         Route::get('dashboard',"Dashboard\Home")->name('dashboard');
         

@@ -62,6 +62,7 @@
     <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
 
     @stack("script")
 
