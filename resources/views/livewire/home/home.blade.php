@@ -1,5 +1,7 @@
 <main class="min-h-screen text-white">
-  <section style="background-image: url('{{ asset('images/background-image-01.png') }}">
+
+  {!! do_shortcode($page->content) !!}
+  {{-- <section style="background-image: url('{{ asset('images/background-image-01.png') }}">
     <section class="py-16">
       <div class="container grid md:grid-cols-2 gap-10">
         <section class="space-y-7 md:order-1 order-2">
@@ -52,17 +54,17 @@
     </section>
     
     @livewire("home.partials.recently-watch")
-  </section>
+  </section> --}}
 
-  @livewire("home.partials.pedicab-streams")
+  {{-- @livewire("home.partials.pedicab-streams") --}}
 
-  @livewire("home.partials.recommendation")
+  {{-- @livewire("home.partials.recommendation") --}}
 
-  @livewire("home.partials.most-viewed")
+  {{-- @livewire("home.partials.most-viewed") --}}
 
-  @livewire("home.partials.popular-podcast")
+  {{-- @livewire("home.partials.popular-podcast") --}}
 
-  @livewire("home.partials.pricing")
+  {{-- @livewire("home.partials.pricing") --}}
 
   @livewire("home.partials.partners")
 

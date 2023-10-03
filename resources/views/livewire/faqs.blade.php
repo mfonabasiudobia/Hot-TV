@@ -5,33 +5,8 @@
     <div class="container space-y-7">
 
         <section class="space-y-7">
-            <header class="md:w-3/4 text-center mx-auto space-y-3">
-                <span class="barlow-font text-xl md:text-3xl">{!! $faq->description !!}</span>
-                <h1 class="font-semibold text-xl md:text-3xl">{{ $faq->name }}</h1>
-                {{-- <p class="text-[#7E7E7E]">{!! $faq->content !!}</p> --}}
 
-                {{-- {!! BaseHelper::clean($faq->content) !!} --}}
-
-                {{-- {!! do_shortcode($faq->content) !!} --}}
-            </header>
-
-
-            <section class="space-y-5 text-secondary">
-                @foreach ($faqs as $faq)
-                    <div class="space-y-3 border border-secondary p-3" x-data="{ show : false}" x-on:click.away="show = false">
-                        <header class="flex items-center space-x-3 justify-between cursor-pointer" x-on:click="show = !show">
-                            <h2 class="text-danger">{{ $faq->question }}</h2>
-                            <button class="min-w-[45px] min-h-[45px] text-danger">
-                                <i class="las la-angle-down"></i>
-                            </button>
-                        </header>
-                        <div x-show="show">
-                            {!! $faq->answer !!}
-                        </div>
-                    </div>
-                @endforeach
-            
-            </section>
+            {!! do_shortcode($faq->content) !!}
 
         </section>
     </div>

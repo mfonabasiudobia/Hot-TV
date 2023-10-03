@@ -54,12 +54,6 @@ app()->booted(function () {
     //     return Theme::partial('shortcodes.intro-video.admin-config', compact('attributes'));
     // });
 
-    add_shortcode('recommended-tv-shows', __('Recommended Tv Shows'), __('Recommended Tv Shows'), function (Shortcode $shortcode) {
-        $shortcode->youtube_video_id = $shortcode->youtube_video_url ? Youtube::getYoutubeVideoID($shortcode->youtube_video_url) : null;
-
-        return Theme::partial('shortcodes.tv-shows.recommendation', compact('shortcode'));
-    });
-
     // add_shortcode('why-choose-us', __('Why Choose Us'), __('Why Choose Us'), function (Shortcode $shortcode) {
     //     return Theme::partial('shortcodes.why-choose-us.index', compact('shortcode'));
     // });
@@ -364,99 +358,174 @@ app()->booted(function () {
     //     return Theme::partial('shortcodes.career-banner.admin-config', compact('attributes'));
     // });
 
-    // add_shortcode('what-we-offer', __('What we offer'), __('What we offer'), function (Shortcode $shortcode) {
-    //     $style = in_array($shortcode->style, ['style-1', 'style-2', 'style-3', 'style-4']) ? $shortcode->style : 'style-1';
+    /*NEW SHORT CODES ARE ADDED HERE*/
+    add_shortcode('faq', __('Frequently Asked Questions'), __('Frequently Asked Questions'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.faq.index', compact('shortcode'));
+    });
 
-    //     $tabs = [];
-    //     $quantity = min((int) $shortcode->quantity, 20);
+    shortcode()->setAdminConfig('faq', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.faq.admin-config', compact('attributes'));
+    });
 
-    //     if ($quantity) {
-    //         for ($i = 1; $i <= $quantity; $i++) {
-    //             $tabs[] = [
-    //                 'title' => $shortcode->{'title_' . $i},
-    //                 'description' => $shortcode->{'description_' . $i},
-    //                 'image' => $shortcode->{'image_' . $i},
-    //                 'logo' => $shortcode->{'logo_' . $i},
-    //                 'label' => $shortcode->{'label_' . $i},
-    //                 'action' => $shortcode->{'action_' . $i},
-    //             ];
-    //         }
-    //     }
+    add_shortcode('faq-list', __('Faq List'), __('Faq List'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.faq-list.index', compact('shortcode'));
+    });
 
-    //     return Theme::partial(
-    //         "shortcodes.what-we-offer.styles.$style",
-    //         compact('shortcode', 'style', 'tabs')
-    //     );
-    // });
+    shortcode()->setAdminConfig('faq-list', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.faq-list.admin-config', compact('attributes'));
+    });
 
-    // shortcode()->setAdminConfig('what-we-offer', function (array $attributes) {
-    //     $fields = [
-    //         'title' => [
-    //             'title' => __('Title'),
-    //         ],
-    //         'description' => [
-    //             'title' => __('Description'),
-    //         ],
-    //         'image' => [
-    //             'type' => 'image',
-    //             'title' => __('Image'),
-    //         ],
-    //         'logo' => [
-    //             'type' => 'image',
-    //             'title' => __('Logo'),
-    //         ],
-    //         'label' => [
-    //             'title' => __('Label'),
-    //         ],
-    //         'action' => [
-    //             'title' => __('Action'),
-    //         ],
-    //     ];
+    add_shortcode('hero-section', __('Hero Section'), __('Hero Section'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.hero-section.index', compact('shortcode'));
+    });
 
-    //     return Theme::partial('shortcodes.what-we-offer.admin-config', compact('attributes', 'fields'));
-    // });
+    shortcode()->setAdminConfig('hero-section', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.hero-section.admin-config', compact('attributes'));
+    });
 
-    // add_shortcode('choose-to-the-plan', __('Choose to the plan'), __('Choose to the plan'), function (Shortcode $shortcode) {
-    //     $tabs = [];
-    //     $quantity = min((int)$shortcode->quantity, 20) ?: 6;
-    //     if ($quantity) {
-    //         for ($i = 1; $i <= $quantity; $i++) {
-    //             if ($title = $shortcode->{'title_' . $i}) {
-    //                 $isActive = $shortcode->{'active_' . $i} === 'yes';
-    //                 $tabs[] = [
-    //                     'title' => $title,
-    //                     'subtitle' => $shortcode->{'subtitle_' . $i},
-    //                     'payment_cycle' => $shortcode->{'payment_cycle_' . $i},
-    //                     'icon_image' => $shortcode->{'icon_image_' . $i},
-    //                     'month_price' => $shortcode->{'month_price_' . $i},
-    //                     'year_price' => $shortcode->{'year_price_' . $i},
-    //                     'button_label' => $shortcode->{'button_label_' . $i},
-    //                     'button_url' => $shortcode->{'button_url_' . $i},
-    //                     'checked' => array_filter(explode(';', $shortcode->{'checked_' . $i})),
-    //                     'uncheck' => array_filter(explode(';', $shortcode->{'uncheck_' . $i})),
-    //                     'active' => $isActive,
-    //                 ];
-    //             }
-    //         }
-    //     }
-    //     if ($tabs) {
-    //         $active = Arr::first($tabs, function ($value) {
-    //             return $value['active'] == true;
-    //         });
+    add_shortcode('recently-watched', __('Recently Watched'), __('Recently Watched'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.recently-watched.index', compact('shortcode'));
+    });
+    
+    shortcode()->setAdminConfig('recently-watched', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.recently-watched.admin-config', compact('attributes'));
+    });
 
-    //         if (! $active) {
-    //             $tabs[0]['active'] = true;
-    //         }
-    //     }
+    add_shortcode('pedicab-stream', __('Pedicab Stream'), __('Pedicab Stream'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.pedicab-streams.index', compact('shortcode'));
+    });
 
-    //     $styleBg = ['bg-fourth-bg', 'bg-first-bg', 'bg-second-bg', 'bg-fifth-bg'];
-    //     $style = in_array($shortcode->style, ['style-1', 'style-2']) ? $shortcode->style : 'style-1';
+    shortcode()->setAdminConfig('pedicab-stream', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.pedicab-streams.admin-config', compact('attributes'));
+    });
 
-    //     return Theme::partial(
-    //         "shortcodes.choose-to-the-plan.styles.$style",
-    //         compact('shortcode', 'tabs', 'styleBg')
-    //     );
-    // });
+    add_shortcode('recommended-tv-shows', __('Recommended Tv Shows'), __('Recommended Tv Shows'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.recommended-tv-shows.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('recommended-tv-shows', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.recommended-tv-shows.admin-config', compact('attributes'));
+    });
+
+    add_shortcode('most-viewed', __('Most Viewed/Past Streams'), __('Most Viewed/Past Streams'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.most-viewed.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('most-viewed', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.most-viewed.admin-config', compact('attributes'));
+    });
+
+
+    add_shortcode('popular-podcast', __('Popular Podcasts'), __('Popular Podcasts'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.popular-podcasts.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('popular-podcast', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.popular-podcasts.admin-config', compact('attributes'));
+    });
+
+    add_shortcode('pricing', __('Pricing'), __('Pricing'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.pricing.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('pricing', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.pricing.admin-config', compact('attributes'));
+    });
+
+    /*END OF NEW SHORT CODES*/
+    add_shortcode('what-we-offer', __('What we offer'), __('What we offer'), function (Shortcode $shortcode) {
+        $style = in_array($shortcode->style, ['style-1', 'style-2', 'style-3', 'style-4']) ? $shortcode->style : 'style-1';
+
+        $tabs = [];
+        $quantity = min((int) $shortcode->quantity, 20);
+
+        if ($quantity) {
+            for ($i = 1; $i <= $quantity; $i++) {
+                $tabs[] = [
+                    'title' => $shortcode->{'title_' . $i},
+                    'description' => $shortcode->{'description_' . $i},
+                    'image' => $shortcode->{'image_' . $i},
+                    'logo' => $shortcode->{'logo_' . $i},
+                    'label' => $shortcode->{'label_' . $i},
+                    'action' => $shortcode->{'action_' . $i},
+                ];
+            }
+        }
+
+        return Theme::partial(
+            "shortcodes.what-we-offer.styles.$style",
+            compact('shortcode', 'style', 'tabs')
+        );
+    });
+
+    shortcode()->setAdminConfig('what-we-offer', function (array $attributes) {
+        $fields = [
+            'title' => [
+                'title' => __('Title'),
+            ],
+            'description' => [
+                'title' => __('Description'),
+            ],
+            'image' => [
+                'type' => 'image',
+                'title' => __('Image'),
+            ],
+            'logo' => [
+                'type' => 'image',
+                'title' => __('Logo'),
+            ],
+            'label' => [
+                'title' => __('Label'),
+            ],
+            'action' => [
+                'title' => __('Action'),
+            ],
+        ];
+
+        return Theme::partial('shortcodes.what-we-offer.admin-config', compact('attributes', 'fields'));
+    });
+
+    add_shortcode('choose-to-the-plan', __('Choose to the plan'), __('Choose to the plan'), function (Shortcode $shortcode) {
+        $tabs = [];
+        $quantity = min((int)$shortcode->quantity, 20) ?: 6;
+        if ($quantity) {
+            for ($i = 1; $i <= $quantity; $i++) {
+                if ($title = $shortcode->{'title_' . $i}) {
+                    $isActive = $shortcode->{'active_' . $i} === 'yes';
+                    $tabs[] = [
+                        'title' => $title,
+                        'subtitle' => $shortcode->{'subtitle_' . $i},
+                        'payment_cycle' => $shortcode->{'payment_cycle_' . $i},
+                        'icon_image' => $shortcode->{'icon_image_' . $i},
+                        'month_price' => $shortcode->{'month_price_' . $i},
+                        'year_price' => $shortcode->{'year_price_' . $i},
+                        'button_label' => $shortcode->{'button_label_' . $i},
+                        'button_url' => $shortcode->{'button_url_' . $i},
+                        'checked' => array_filter(explode(';', $shortcode->{'checked_' . $i})),
+                        'uncheck' => array_filter(explode(';', $shortcode->{'uncheck_' . $i})),
+                        'active' => $isActive,
+                    ];
+                }
+            }
+        }
+        if ($tabs) {
+            $active = Arr::first($tabs, function ($value) {
+                return $value['active'] == true;
+            });
+
+            if (! $active) {
+                $tabs[0]['active'] = true;
+            }
+        }
+
+        $styleBg = ['bg-fourth-bg', 'bg-first-bg', 'bg-second-bg', 'bg-fifth-bg'];
+        $style = in_array($shortcode->style, ['style-1', 'style-2']) ? $shortcode->style : 'style-1';
+
+        return Theme::partial(
+            "shortcodes.choose-to-the-plan.styles.$style",
+            compact('shortcode', 'tabs', 'styleBg')
+        );
+    });
 
     shortcode()->setAdminConfig('choose-to-the-plan', function (array $attributes) {
         $fields = [

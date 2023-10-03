@@ -46,7 +46,7 @@
                 </header>
 
                 <section>
-                    {!! $product->description !!}
+                    {!! do_shortcode($product->description) !!}
                 </section>
 
                 <div class="flex items-center space-x-2">
@@ -114,7 +114,7 @@
         </nav>
         
         <section x-show="tab == 1" class="min-h-[20vh]">
-            {!! BaseHelper::clean($product->content) !!}
+            {!! do_shortcode($product->content) !!}
         </section>
 
         <section x-show="tab == 2" class="min-h-[20vh]">

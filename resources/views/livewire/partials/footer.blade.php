@@ -61,6 +61,9 @@
                         <a href="{{ route('merchandize.home') }}">Products</a>
                     </li>
                     <li>
+                        <a href="{{ route('faqs') }}">FAQ</a>
+                    </li>
+                    <li>
                         <a href="{{ route('login') }}">Login</a>
                     </li>
                     <li>
