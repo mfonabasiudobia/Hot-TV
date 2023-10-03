@@ -432,6 +432,14 @@ app()->booted(function () {
         return Theme::partial('shortcodes.new-shortcodes.pricing.admin-config', compact('attributes'));
     });
 
+    add_shortcode('brand-list', __('Brand List'), __('Brand List'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.brand-list.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('brand-list', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.brand-list.admin-config', compact('attributes'));
+    });
+
     /*END OF NEW SHORT CODES*/
     add_shortcode('what-we-offer', __('What we offer'), __('What we offer'), function (Shortcode $shortcode) {
         $style = in_array($shortcode->style, ['style-1', 'style-2', 'style-3', 'style-4']) ? $shortcode->style : 'style-1';

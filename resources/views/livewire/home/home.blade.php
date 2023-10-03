@@ -66,7 +66,7 @@
 
   {{-- @livewire("home.partials.pricing") --}}
 
-  @livewire("home.partials.partners")
+  {{-- @livewire("home.partials.partners") --}}
 
   @livewire("home.partials.newsletter")
 </main>
