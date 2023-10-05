@@ -42,10 +42,10 @@
                    <div class="border-t py-2 flex flex-col md:flex-row items-end md:items-center  justify-between space-y-3 md:space-y-0 md:space-x-5">
                         <section class="flex-2 space-y-3">
                             <div class="flex space-x-3">
-                                <img src="{{ asset($stream->thumbnail) }}" alt="" class="max-w-[100px] h-[100px] min-w-[100px]" />
+                                <img src="{{ file_path($stream->thumbnail) }}" alt="" class="max-w-[100px] h-[100px] min-w-[100px]" />
                                 <div class="space-y-2">
                                     <h2 class="font-bold">{{ $stream->title }}</h2>
-                                    <p class="font-light text-xs">{{ Str::limit($stream->description, 140, '...') }}<p>
+                                    <p class="font-light text-xs">{{ Str::limit(strip_tags($stream->description), 140, '...') }}<p>
                                 @if($currentTab === 'upcoming') 
                                     <footer class="flex items-center space-x-5 text-xs">
                                         <a href="{{ route('admin.video.edit', ['id' => $stream->id ]) }}" class="text-primary">Edit</a>

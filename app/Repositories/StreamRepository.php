@@ -14,10 +14,7 @@ class StreamRepository
     }
 
     public static function create(array $data){
-        $stream = Stream::create(array_merge($data, [
-            'recorded_video' => AppHelper::uploadFile($data['recorded_video'], 'streams'),
-            'thumbnail' => AppHelper::uploadFile($data['thumbnail'], 'thumbnail')
-        ]));
+        $stream = Stream::create(array_merge($data, []));
 
         return $stream;
     }
@@ -26,10 +23,7 @@ class StreamRepository
 
         $stream = Stream::findOrFail($id);
         
-        $stream->update(array_merge($data, [
-            'recorded_video' => $data['recorded_video'] ?  AppHelper::uploadFile($data['recorded_video'], 'streams') : $stream->recorded_video,
-            'thumbnail' => $data['thumbnail'] ? AppHelper::uploadFile($data['thumbnail'], 'streams') : $stream->thumbnail
-        ]));
+        $stream->update(array_merge($data, []));
 
         return $stream;
     }

@@ -26,8 +26,8 @@ class Edit extends BaseComponent
             'end_time' => $this->stream->end_time,
             'stream_type' => $this->stream->stream_type,
             'schedule_date' => $this->stream->schedule_date,
-            'recorded_video_path' => $this->stream->recorded_video,
-            'thumbnail_path' => $this->stream->thumbnail,
+            'recorded_video' => $this->stream->recorded_video,
+            'thumbnail' => $this->stream->thumbnail,
             'uploaded_video_type' => $this->stream->uploaded_video_type
         ]);
 
@@ -45,9 +45,9 @@ class Edit extends BaseComponent
             'description' => 'required|max:1500',
             'schedule_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
-            'thumbnail' => 'nullable|image',
+            'thumbnail' => 'nullable',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'recorded_video' => 'nullable|file|mimetypes:video/*|max:204800',
+            'recorded_video' => 'nullable',
             'stream_type' => 'required|in:uploaded_video,podcast,pedicab_stream',
             'uploaded_video_type' => 'nullable',
             'show_category_id' => 'nullable'

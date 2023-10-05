@@ -29,9 +29,9 @@ class Create extends BaseComponent
             'description' => 'required|max:1500',
             'schedule_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
-            'thumbnail' => 'required|image',
+            'thumbnail' => 'required',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'recorded_video' => 'required|file|mimetypes:video/*|max:204800',
+            'recorded_video' => 'required',
             'stream_type' => 'required|in:uploaded_video,podcast,pedicab_stream',
             'uploaded_video_type' => 'nullable',
             'show_category_id' => 'nullable'

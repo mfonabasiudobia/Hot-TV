@@ -124,3 +124,10 @@ function is_user_logged_in(){
 
     return false;
 }
+
+function convert_time_to_streaming_time($time){
+    list($hour, $minute) = explode(":", $time);
+    $decimalTime = (int)$hour + ((int)$minute / 60);
+
+    return $decimalTime;
+}

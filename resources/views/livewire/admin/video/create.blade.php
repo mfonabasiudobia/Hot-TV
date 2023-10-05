@@ -1,4 +1,5 @@
 <section>
+    @livewire("admin.gallery.modal.create")
     <section class="space-y-5">
         <h2 class="font-medium text-xl">Create Stream</h2>
 
@@ -79,31 +80,31 @@
                     </div>
                 @endIf
 
-            
-
-                <x-atoms.progress-indicator>
+                <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
+                    @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
                     <label>Thumbnail</label>
-                    <input type="file" wire:model.defer='thumbnail' accept="image/*" class="form-control" />
-                    @error('thumbnail') <span class="error">{{ $message }}</span> @endError
-
-                    @if($thumbnail)
-                    <img src='{{ $thumbnail->temporaryUrl() }}' class='w-auto h-[20vh]' />
-                    @endIF
-                </x-atoms.progress-indicator>
-
-    
-                <x-atoms.progress-indicator>
-                    <label>Upload Recorded Video</label>
-                    <input type="file" wire:model.defer='recorded_video' class="form-control" />
-                    @error('recorded_video') <span class="error">{{ $message }}</span> @endError
-
-                    @if($recorded_video)
-                        <video class='w-auto h-[20vh]' controls>
-                            <source src='{{ $recorded_video->temporaryUrl() }}' type='video/*'>
-                            Your browser does not support HTML5 video.
-                        </video>
-                    @endIf
-                </x-atoms.progress-indicator>
+                    <input type="file" class="form-control" placeholder="Upload Image"
+                        x-on:click.prevent="$wire.emit('openGallery', 'thumbnail')" />
+                
+                    <img x-bind:src="'{{ file_path('/') }}/' + thumbnail" x-show="thumbnail ? true : false" class="image-preview"
+                        x-cloak />
+                
+                    @error('thumbnail') <span class="error"> {{ $message }}</span> @endError
+                </div>
+                
+                <div class="form-group md:col-span-2" x-data="{ recorded_video : @entangle('recorded_video').defer }"
+                    @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
+                    <label>Upload Video</label>
+                    <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+                
+                    <span x-text="'{{ file_path() }}' + recorded_video"></span>
+                    <video class='w-auto h-[20vh]' controls>
+                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">
+                        Your browser does not support HTML5 video.
+                    </video>
+                
+                    @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
+                </div>
     
                 <div class="form-group md:col-span-2 flex justify-end">
                     <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-danger" />
