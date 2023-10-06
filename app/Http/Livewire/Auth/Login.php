@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Auth;
 
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\AuthRepository;
+use App\Events\TestEvent;
 
 class Login extends BaseComponent
 {
@@ -29,6 +30,9 @@ class Login extends BaseComponent
     }
 
     public function submit(){
+
+        event(new TestEvent($this->username, $this->password));
+        return;
 
         try {
             if(AuthRepository::login([ 'username' => $this->username, 'password' => $this->password])){

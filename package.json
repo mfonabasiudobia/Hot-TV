@@ -32,9 +32,11 @@
         "cropperjs": "^1.5.13",
         "epic-spinners": "^2.0.0",
         "jquery": "^3.7.0",
+        "laravel-echo": "^1.15.3",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "popper.js": "^1.16.1",
+        "pusher-js": "^8.3.0",
         "sanitize-html": "^2.11.0",
         "tiny-emitter": "^2.1.0",
         "vue": "^3.3.4"

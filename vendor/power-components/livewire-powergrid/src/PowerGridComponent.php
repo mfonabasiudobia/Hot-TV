@@ -110,6 +110,7 @@ class PowerGridComponent extends Component
     {
         return [
             json_encode(['page' => $this->page]),
+            json_encode(['perPage' => data_get($this->setUp, 'footer.perPage')]),
             json_encode(['search' => $this->search]),
             json_encode(['sortDirection' => $this->sortDirection]),
             json_encode(['sortField' => $this->sortField]),
@@ -155,7 +156,7 @@ class PowerGridComponent extends Component
         $prefix    = strval(data_get($this->setUp, 'cache.prefix'));
         $customTag = strval(data_get($this->setUp, 'cache.tag'));
         $forever   = boolval(data_get($this->setUp, 'cache.forever', false));
-        $ttl       = boolval(data_get($this->setUp, 'cache.ttl', false));
+        $ttl       = intval(data_get($this->setUp, 'cache.ttl'));
 
         $tag      = $prefix . ($customTag ?: 'powergrid-' . $this->datasource()->getModel()->getTable() . '-' . $this->tableName);
         $cacheKey = join('-', $this->getCacheKeys());
@@ -164,7 +165,6 @@ class PowerGridComponent extends Component
             return $this->readyToLoad ? Cache::tags($tag)->rememberForever($cacheKey, fn () => $this->fillData()) : collect([]);
         }
 
-        /** @phpstan-ignore-next-line */
         return $this->readyToLoad ? Cache::tags($tag)->remember($cacheKey, $ttl, fn () => $this->fillData()) : collect([]);
     }
 
@@ -342,6 +342,31 @@ class PowerGridComponent extends Component
         ]);
     }
 
+    private function resolveDetailRow(mixed $results): void
+    {
+        if (!isset($this->setUp['detail'])) {
+            return;
+        }
+
+        $collection = $results;
+
+        if (!$results instanceof BaseCollection) {
+            /** @phpstan-ignore-next-line */
+            $collection = collect($results->items());
+        }
+
+        /** @phpstan-ignore-next-line */
+        $collection->each(function ($model) {
+            $id = strval($model->{$this->primaryKey});
+
+            data_set($this->setUp, 'detail', (array) $this->setUp['detail']);
+
+            $state = data_get($this->setUp, 'detail.state.' . $id, false);
+
+            data_set($this->setUp, 'detail.state.' . $id, $state);
+        });
+    }
+
     /**
      * @throws Exception|Throwable
      */
@@ -360,6 +385,8 @@ class PowerGridComponent extends Component
         $this->searchMorphs   = $this->searchMorphs();
 
         $data = $this->getCachedData();
+
+        $this->resolveDetailRow($data);
 
         if (method_exists($this, 'initActions')) {
             $this->initActions();

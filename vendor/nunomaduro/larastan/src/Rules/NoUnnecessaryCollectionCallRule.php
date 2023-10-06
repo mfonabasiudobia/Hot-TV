@@ -21,6 +21,12 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
+use function array_diff;
+use function array_map;
+use function array_merge;
+use function count;
+use function in_array;
+
 /**
  * This rule checks for unnecessary heavy operations on the Collection class
  * that could have instead been performed on the Builder class.
@@ -156,6 +162,10 @@ class NoUnnecessaryCollectionCallRule implements Rule
         /** @var \PhpParser\Node\Identifier $name */
         $name = $node->name;
 
+        if (! in_array($name->toLowerString(), $this->shouldHandle, true)) {
+            return [];
+        }
+
         if (! $this->isCalledOnCollection($node->var, $scope)) {
             // Method was not called on a collection, so no errors.
             return [];
@@ -172,10 +182,6 @@ class NoUnnecessaryCollectionCallRule implements Rule
         if (! ($previousCall->name instanceof Identifier)) {
             // Previous call was made dynamically e.g. User::query()->{$method}()
             // Can't really analyze it in this scenario so no errors.
-            return [];
-        }
-
-        if (! in_array($name->toLowerString(), $this->shouldHandle, true)) {
             return [];
         }
 

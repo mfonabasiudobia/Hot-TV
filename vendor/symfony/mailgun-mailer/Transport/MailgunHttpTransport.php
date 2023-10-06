@@ -53,6 +53,7 @@ class MailgunHttpTransport extends AbstractHttpTransport
     protected function doSendHttp(SentMessage $message): ResponseInterface
     {
         $body = new FormDataPart([
+            'h:sender' => $message->getEnvelope()->getSender()->toString(),
             'to' => implode(',', $this->stringifyAddresses($message->getEnvelope()->getRecipients())),
             'message' => new DataPart($message->toString(), 'message.mime'),
         ]);
@@ -71,7 +72,7 @@ class MailgunHttpTransport extends AbstractHttpTransport
         try {
             $statusCode = $response->getStatusCode();
             $result = $response->toArray(false);
-        } catch (DecodingExceptionInterface $e) {
+        } catch (DecodingExceptionInterface) {
             throw new HttpTransportException('Unable to send an email: '.$response->getContent(false).sprintf(' (code %d).', $statusCode), $response);
         } catch (TransportExceptionInterface $e) {
             throw new HttpTransportException('Could not reach the remote Mailgun server.', $response, 0, $e);
