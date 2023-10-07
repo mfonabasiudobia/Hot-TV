@@ -4,7 +4,10 @@
        
 
         <section>
-            <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
+           <section class="w-full max-h-screen relative">
+                <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
+                <div class="custom-loader absolute left-[45%] top-[45%]" id="loading-button"></div>
+           </section>
 
             <div class="space-y-7">
                 <div class="border-b">
@@ -23,103 +26,79 @@
 
         document.addEventListener('DOMContentLoaded', () => {
                 const player = new Plyr('#player', {
+                    muted : true,
+                    controls : false,
                     autoplay: true, // Autoplay is initially set to false
                 });
+
+                // Add an event listener to handle video source loading
+                // player.on("waiting", function () {
+                //     // When the video is waiting to load
+                //     document.getElementById("loading-button").classList.add("hidden");
+
+                //     console.log("Waiting!");
+                // });
+
+
         });
     </script>
 @endPush
 
-@push('script')    
+@push('script')
     <script>
-            let currentVideoUrl = '';
-        // Define an array of video sources
-            // const videoSources = [
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            //     "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            //     "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            //     "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-            // ];
+    document.addEventListener("DOMContentLoaded", function () {
+        let currentVideoSrc = '';
+        function playVideo(data) {
+            const description = document.getElementById("description");
+            videoPlayer.src = data.src;
+            currentVideoSrc = data.src;
+            description.innerHTML = data.description;
+            videoPlayer.muted = true;
+            videoPlayer.load();
+            videoPlayer.play();
+        }
 
-
-            const videoSources = @json($infoArray);
-    
-            // Define the schedule times (in 24-hour format)
-            // const scheduleTimes = [
-            //     { start: 0, end: 1 },  // 12AM-1AM
-            //     { start: 1, end: 2 },  // 1AM-2AM
-            //     { start: 2, end: 3 },  // 2AM-3AM
-            //     { start: 3, end: 4 }, // 3AM-4AM
-            //     { start: 4, end: 5 }, // 4AM-5AM
-            //     { start: 5, end: 6 }, // 5AM-6AM
-            //     { start: 6, end: 7 }, // 6AM-7AM
-            //     { start: 7, end: 8 }, // 7AM-8AM
-            //     { start: 8, end: 8.666666666666666 }, // 8AM-8.10Am
-            //     { start: 8.666666666666666, end: 9 }, // 8AM-9AM
-            //     { start: 9, end: 10 }, // 9AM-10AM
-            //     { start: 10, end: 11 }, // 10AM-11AM
-            // ];
-
-            //Constantly update the video url every 1 minutes using setInterval
-            //Link Video Episodes in TV Channel
-            //Show an image when there is no video
-            //Try using web sockets instead of loop
-            //Ask if the tv shows in home page is for pedicab stream or TV Shows 
-
-            const scheduleTimes = @json($timeArray);
-
-            // console.log(scheduleTimes);
-    
-            // Function to play the video at the specified index
-            function playVideo(index) {
-                const videoPlayer = document.getElementById("player");
-                const description = document.getElementById("description");
-                videoPlayer.src = videoSources[index].src;
-                description.innerHTML = videoSources[index].description;
-                videoPlayer.load();
-                videoPlayer.play();
+        //Subscribe to public.tv-channel.1 channel and listen for NewOrder events
+        window.Echo.channel(`public.tv-channel.1`)
+        .subscribed(() => {
+            console.log("Echo connected to PieSocket channel!");
+        })
+        .listen('.tv-channel', (data) => {
+            console.log("New Subscription Data", data);
+            if(currentVideoSrc != data.src){
+                playVideo(data);
             }
-    
-            // Function to check the schedule and play videos
-            function checkSchedule() {
-                const now = new Date();
-                const currentHour = now.getHours();
-                const currentMinute = now.getMinutes() / 60;
-                
-                const currentTime = currentHour + currentMinute;
-                
-                for (let i = 0; i < scheduleTimes.length; i++) { 
-                    const { start, end } = scheduleTimes[i]; 
-                    if (currentTime>= start && currentTime < end) { 
-                        if(currentVideoUrl !== videoSources[i].src){
-                            playVideo(i);
-                        }
-                        
-                        currentVideoUrl = videoSources[i].src;
-                        break; 
-                    } 
-                }
 
-                // Check the schedule every minute
-                setTimeout(checkSchedule, 60000);
+            if(!data.src){
+                //Show loading button when Src is not there
+                document.getElementById("loading-button").classList.remove("hidden");
+            }else{
+                document.getElementById("loading-button").classList.add("hidden");
             }
-    
-            // Initial check
-            checkSchedule();
+        });
+    });
     </script>
 @endpush
 
 @push('header')
-    <style>
-        :root {
-            --plyr-color-main: #FF0207;
-        }
-    </style>
+<style>
+    :root {
+        --plyr-color-main: #FF0207;
+    }
+
+    .custom-loader {
+        width:50px;
+        height:50px;
+        border-radius:50%;
+        padding:1px;
+        background:conic-gradient(#0000 10%,#FF0207) content-box;
+        -webkit-mask:
+        repeating-conic-gradient(#0000 0deg,#000 1deg 20deg,#0000 21deg 36deg),
+        radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 calc(100% - 8px));
+        -webkit-mask-composite: destination-in;
+        mask-composite: intersect;
+        animation:s4 2s infinite steps(10);
+    }
+    @keyframes s4 {to{transform: rotate(1turn)}}
+</style>
 @endPush

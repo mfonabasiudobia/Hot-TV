@@ -32,14 +32,14 @@ window.Echo = new Echo({
 });
 
 //Subscribe to orders channel and listen for NewOrder events
-window.Echo.channel(`public.test.1`)
-    .subscribed(() => {
-        console.log("Echo connected to PieSocket channel!");
-    })
-    .listen('.test', (data) => {
-        alert("New Order Received");
-        console.log("New Order Data", data);
-    });
+// window.Echo.channel(`public.test.1`)
+//     .subscribed(() => {
+//         console.log("Echo connected to PieSocket channel!");
+//     })
+//     .listen('.test', (data) => {
+//         alert("New Order Received");
+//         console.log("New Order Data", data);
+//     });
 
 // wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
 //wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,

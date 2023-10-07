@@ -7,12 +7,18 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        Commands\TvChannelCron::class,
+    ];
+
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:tv-channel')->everyMinute()->when(function () {
+            return (int) now()->format('s') % 15 === 0;
+        });
     }
 
     /**

@@ -59,17 +59,17 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.283.1",
-            "version_normalized": "3.283.1.0",
+            "version": "3.283.2",
+            "version_normalized": "3.283.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0d1857ca3392ec9f8ee0b1605ba09842cced6351"
+                "reference": "6616677d76e39af28138512740199d38a461859f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0d1857ca3392ec9f8ee0b1605ba09842cced6351",
-                "reference": "0d1857ca3392ec9f8ee0b1605ba09842cced6351",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6616677d76e39af28138512740199d38a461859f",
+                "reference": "6616677d76e39af28138512740199d38a461859f",
                 "shasum": ""
             },
             "require": {
@@ -110,7 +110,7 @@
                 "ext-openssl": "Allows working with CloudFront private distributions and verifying received SNS messages",
                 "ext-sockets": "To use client-side monitoring"
             },
-            "time": "2023-10-05T18:07:42+00:00",
+            "time": "2023-10-06T18:09:54+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -151,7 +151,7 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.283.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.283.2"
             },
             "install-path": "../aws/aws-sdk-php"
         },
@@ -8538,17 +8538,17 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.37",
-            "version_normalized": "1.10.37.0",
+            "version": "1.10.38",
+            "version_normalized": "1.10.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "058ba07e92f744d4dcf6061ae75283d0c6456f2e"
+                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/058ba07e92f744d4dcf6061ae75283d0c6456f2e",
-                "reference": "058ba07e92f744d4dcf6061ae75283d0c6456f2e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5302bb402c57f00fb3c2c015bac86e0827e4b691",
+                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691",
                 "shasum": ""
             },
             "require": {
@@ -8557,7 +8557,7 @@
             "conflict": {
                 "phpstan/phpstan-shim": "*"
             },
-            "time": "2023-10-02T16:18:37+00:00",
+            "time": "2023-10-06T14:19:14+00:00",
             "bin": [
                 "phpstan",
                 "phpstan.phar"
@@ -15851,17 +15851,17 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v1.7.2",
-            "version_normalized": "1.7.2.0",
+            "version": "v1.8.0",
+            "version_normalized": "1.8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "cb47272ee078adc8cd0b04c4f0f9cb56f68d0a38"
+                "reference": "638a4c0d8592af991514a6ab0b3b12c867fdc1f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/cb47272ee078adc8cd0b04c4f0f9cb56f68d0a38",
-                "reference": "cb47272ee078adc8cd0b04c4f0f9cb56f68d0a38",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/638a4c0d8592af991514a6ab0b3b12c867fdc1f6",
+                "reference": "638a4c0d8592af991514a6ab0b3b12c867fdc1f6",
                 "shasum": ""
             },
             "require": {
@@ -15872,7 +15872,7 @@
                 "orchestra/testbench": "^3.0 || ^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0",
                 "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.0"
             },
-            "time": "2023-10-04T13:26:01+00:00",
+            "time": "2023-10-06T14:01:40+00:00",
             "type": "library",
             "extra": {
                 "laravel": {
@@ -15915,7 +15915,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v1.7.2"
+                "source": "https://github.com/tighten/ziggy/tree/v1.8.0"
             },
             "install-path": "../tightenco/ziggy"
         },

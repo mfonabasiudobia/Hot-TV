@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '460dcb6cc10431ab45de932e0b8f9d3a8fcb2420',
+        'reference' => 'f078217df0537896493063db2630c8473751ab50',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'aws/aws-sdk-php' => array(
-            'pretty_version' => '3.283.1',
-            'version' => '3.283.1.0',
-            'reference' => '0d1857ca3392ec9f8ee0b1605ba09842cced6351',
+            'pretty_version' => '3.283.2',
+            'version' => '3.283.2.0',
+            'reference' => '6616677d76e39af28138512740199d38a461859f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
@@ -873,7 +873,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '460dcb6cc10431ab45de932e0b8f9d3a8fcb2420',
+            'reference' => 'f078217df0537896493063db2630c8473751ab50',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1363,9 +1363,9 @@
             'dev_requirement' => false,
         ),
         'phpstan/phpstan' => array(
-            'pretty_version' => '1.10.37',
-            'version' => '1.10.37.0',
-            'reference' => '058ba07e92f744d4dcf6061ae75283d0c6456f2e',
+            'pretty_version' => '1.10.38',
+            'version' => '1.10.38.0',
+            'reference' => '5302bb402c57f00fb3c2c015bac86e0827e4b691',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpstan/phpstan',
             'aliases' => array(),
@@ -1560,8 +1560,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0.0 || 2.0.0 || 3.0.0',
-                1 => '1.0|2.0|3.0',
+                0 => '1.0|2.0|3.0',
+                1 => '1.0.0 || 2.0.0 || 3.0.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -2348,9 +2348,9 @@
             'dev_requirement' => true,
         ),
         'tightenco/ziggy' => array(
-            'pretty_version' => 'v1.7.2',
-            'version' => '1.7.2.0',
-            'reference' => 'cb47272ee078adc8cd0b04c4f0f9cb56f68d0a38',
+            'pretty_version' => 'v1.8.0',
+            'version' => '1.8.0.0',
+            'reference' => '638a4c0d8592af991514a6ab0b3b12c867fdc1f6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../tightenco/ziggy',
             'aliases' => array(),

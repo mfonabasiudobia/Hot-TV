@@ -26,7 +26,7 @@ class Create extends BaseComponent
 
         $this->validate([
             'title' => 'required|string',
-            'description' => 'required|max:1500',
+            'description' => 'required',
             'schedule_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'thumbnail' => 'required',
@@ -45,7 +45,7 @@ class Create extends BaseComponent
 
             $acceptedTimeRange = StreamRepository::acceptedTimeRange($this->start_time, $this->end_time);
 
-            throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
+            // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
 
             $data = [
                 'title' => $this->title,
