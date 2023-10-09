@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Video;
 
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\StreamRepository;
+use App\Events\TvChannelEvent;
 
 class Edit extends BaseComponent
 {
@@ -14,7 +15,11 @@ class Edit extends BaseComponent
 
      public $timeRangedAlreadyScheduled = [];
 
-     public $stream_type = 'uploaded_video', $uploaded_video_type, $show_category_id;
+     public $stream_type = 'uploaded_video', $uploaded_video_type;
+
+    public $show_category_id, $tv_shows = [], $tv_show_id, $tv_show_seasons = [], $season_number;
+
+    public $tv_show_episodes = [], $episode_id;
 
      public function mount($id){
         $this->stream = StreamRepository::getStreamById($id);
@@ -38,6 +43,27 @@ class Edit extends BaseComponent
         $this->dispatchBrowserEvent("update-time-range", ['time_range' => $this->timeRangedAlreadyScheduled ]);
      }
 
+      public function updatedShowCategoryId($value){
+        $this->tv_shows = TvShowRepository::getTvShowsByCategory($value);
+    }
+
+    public function updatedTvShowId($value){
+        $this->tv_show_seasons = TvShowRepository::getTvShowSeasons($value);
+    }
+
+    public function updatedSeasonNumber($value){
+        $this->tv_show_episodes = EpisodeRepository::getEpisodesBySeason($this->tv_show_id, $value);
+    }
+
+    public function updatedEpisodeId($value){
+        $episode = EpisodeRepository::getEpisodeById($value);
+        $this->description = $episode->description;
+        $this->title = $episode->title;
+        $this->recorded_video = $episode->recorded_video;
+
+        $this->dispatchBrowserEvent('added-tv-episode', $this->description);
+    }
+
      public function submit(){
 
         $this->validate([
@@ -57,11 +83,21 @@ class Edit extends BaseComponent
             'end_time.required' => 'Invalid End Time Selected'
         ]);
 
+        
+            // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
+
+
         try {
 
             $acceptedTimeRange = StreamRepository::acceptedTimeRange($this->start_time, $this->end_time);
 
-            // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
+            $videoLength = StreamRepository::getVideoLengthInSeconds('storage/' . $this->recorded_video);
+            $scheduledLength = StreamRepository::getScheduledTimeInSeconds($this->start_time, $this->end_time);
+
+
+            $diff = $scheduledLength - $videoLength;
+
+            throw_if($diff < -120 || $diff > 120, "The time scheduled for the video must match with the video length");
 
             $data = [
                 'title' => $this->title,
@@ -79,6 +115,8 @@ class Edit extends BaseComponent
             throw_unless(StreamRepository::update($this->stream->id, $data), "Please try again");
 
             toast()->success('Cheer! Stream has been updated!')->pushOnNextPage();
+
+            event(new TvChannelEvent());
 
             return redirect()->route('admin.dashboard');
 

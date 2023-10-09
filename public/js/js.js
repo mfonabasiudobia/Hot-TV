@@ -96,18 +96,6 @@ flatpickr(".custom-datetime",{...config, enableTime: true, dateFormat : "Y-m-d H
 // flatpickr(".custom-date-from-today-range",{...config,mode: "range",minDate:'today'}); 
 
 
-const inputField = document.querySelector('.validate-numbers');
-
-inputField.addEventListener('input', (event) => {
-    const input = event.target;
-    const regex = /^[0-9]{0,15}$/; // allows only numbers and maximum of 15 characters
-    if (!regex.test(input.value)) {
-      input.value = input.value.slice(0, 15).replace(/[^0-9]/g, ''); // removes any non-numeric characters and limits to 15 characters
-    }
- });
-
-
-
 
  
 

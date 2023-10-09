@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\Stream;
 use Carbon\Carbon;
 use AppHelper;
+use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 
 class StreamRepository
 {
@@ -28,7 +30,37 @@ class StreamRepository
         return $stream;
     }
 
+    public static function getVideoLengthInSeconds($videoPath){
+        // Initialize FFProbe
+        $ffprobe = FFProbe::create();
 
+        // Get the duration of the video
+        $duration = $ffprobe->format($videoPath)->get('duration');
+
+        return $duration;
+
+
+            // Convert duration to a human-readable format (e.g., HH:MM:SS)
+            // $formattedDuration = gmdate('H:i:s', (int)$duration);
+
+                //  dd($formattedDuration);
+    }
+
+    public static function getScheduledTimeInSeconds($startTime, $endTime){
+        // Split the start time and end time into hours and minutes
+        list($startHour, $startMinute) = explode(":", $startTime);
+        list($endHour, $endMinute) = explode(":", $endTime);
+
+        // Calculate the total seconds for each time
+        $startSeconds = ($startHour * 3600) + ($startMinute * 60);
+        $endSeconds = ($endHour * 3600) + ($endMinute * 60);
+
+        // Calculate the time difference in seconds
+        $timeDifferenceInSeconds = $endSeconds - $startSeconds;
+
+        return $timeDifferenceInSeconds;
+    }
+    
     public static function getTimeRangeAlreadyScheduled($selectedDate){
         return Stream::whereDate('schedule_date', $selectedDate)->pluck('start_time', 'end_time')
          ->map(function($startTime, $endTime) {

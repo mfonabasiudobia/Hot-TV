@@ -31,15 +31,15 @@
                     autoplay: true, // Autoplay is initially set to false
                 });
 
-                // Add an event listener to handle video source loading
-                // player.on("waiting", function () {
-                //     // When the video is waiting to load
-                //     document.getElementById("loading-button").classList.add("hidden");
+                // Listen for the "play" event
+                player.on("pause", function() {
+                    player.play();
+                });
 
-                //     console.log("Waiting!");
-                // });
+        });
 
-
+        videoPlayer.addEventListener("click", function (event) {
+             event.preventDefault();
         });
     </script>
 @endPush
@@ -50,12 +50,24 @@
         let currentVideoSrc = '';
         function playVideo(data) {
             const description = document.getElementById("description");
-            videoPlayer.src = data.src;
-            currentVideoSrc = data.src;
             description.innerHTML = data.description;
-            videoPlayer.muted = true;
-            videoPlayer.load();
-            videoPlayer.play();
+
+            if(currentVideoSrc != data.src){
+                videoPlayer.muted = true;
+                videoPlayer.src = data.src;
+                currentVideoSrc = data.src;
+
+                videoPlayer.load();
+
+                videoPlayer.currentTime = data.start_time;
+
+                videoPlayer.play();
+
+                setTimeout(() => {
+                    videoPlayer.muted = false;
+                }, 3000);
+            }
+            
         }
 
         //Subscribe to public.tv-channel.1 channel and listen for NewOrder events
@@ -65,9 +77,8 @@
         })
         .listen('.tv-channel', (data) => {
             console.log("New Subscription Data", data);
-            if(currentVideoSrc != data.src){
-                playVideo(data);
-            }
+            
+            playVideo(data);
 
             if(!data.src){
                 //Show loading button when Src is not there
@@ -75,6 +86,8 @@
             }else{
                 document.getElementById("loading-button").classList.add("hidden");
             }
+
+            
         });
     });
     </script>

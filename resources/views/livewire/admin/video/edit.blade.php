@@ -13,7 +13,7 @@
                 <div class="form-group md:col-span-2">
                     <label>Video Description</label>
                    <div wire:ignore>
-                        <x-text-editor model="description" placeholder="Video Description" class="text-dark" />
+                        <x-text-editor model="description" placeholder="Video Description" class="text-dark" id="description" />
                     </div>
                     @error('description') <span class="error">{{ $message }}</span> @endError
                 </div>
@@ -68,17 +68,57 @@
                 @endIf
 
                 @if(in_array($uploaded_video_type, ['show_episode']))
-                <div class="form-group">
-                    <label>Show Category</label>
-                    <select class="form-control" wire:model.defer="show_category_id">
-                        <option value="">--Select Show Category--</option>
-                        @foreach (\App\Models\ShowCategory::all() as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('show_category_id') <span class="error">{{ $message }}</span> @endError
-                </div>
-                @endIf
+                    <div class="form-group">
+                        <label>Show Category</label>
+                        <select class="form-control" wire:model="show_category_id">
+                            <option value="">--Select Show Category--</option>
+                            @foreach (\App\Models\ShowCategory::all() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('show_category_id') <span class="error">{{ $message }}</span> @endError
+                    </div>
+                    
+                    @if($show_category_id)
+                    <div class="form-group">
+                        <label>TV Shows</label>
+                        <select class="form-control" wire:model="tv_show_id">
+                            <option value="">--Select TV Show--</option>
+                            @foreach ($tv_shows as $item)
+                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                            @endforeach
+                        </select>
+                        @error('tv_show_id') <span class="error">{{ $message }}</span> @endError
+                    </div>
+                    @endIf
+                    
+                    @if($tv_show_id)
+                    <div class="form-group">
+                        <label>Season Number</label>
+                        <select class="form-control" wire:model="season_number">
+                            <option value="">--Select Season Number--</option>
+                            @foreach ($tv_show_seasons as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                            @endforeach
+                        </select>
+                        @error('season_number') <span class="error">{{ $message }}</span> @endError
+                    </div>
+                    @endIf
+                    
+                    @if($season_number)
+                    <div class="form-group">
+                        <label>TV Show Episodes</label>
+                        <select class="form-control" wire:model="episode_id">
+                            <option value="">--Select Season Number--</option>
+                            @foreach ($tv_show_episodes as $item)
+                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                            @endforeach
+                        </select>
+                        @error('episode_id') <span class="error">{{ $message }}</span> @endError
+                    </div>
+                    @endIf
+                    
+                    @endIf
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
@@ -97,11 +137,10 @@
                     <label>Upload Video</label>
                     <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
                 
-                    <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                    <video class='w-auto h-[20vh]' controls>
-                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">
-                        Your browser does not support HTML5 video.
-                    </video>
+                    <div class="flex justify-center flex-col items-center space-y-3">
+                        <span x-text="'{{ file_path() }}' + recorded_video"></span>
+                        <video class='w-1/2' x-bind:src="'{{ file_path() }}' + recorded_video" controls></video>
+                    </div>
                 
                     @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
                 </div>
@@ -118,6 +157,16 @@
 
 @push('script')
 <script>
+
+    window.addEventListener('added-tv-episode', function(event){
+        // Get the TinyMCE editor instance
+        var editor = tinymce.get('description');
+        
+        if (editor) {
+        editor.setContent(event.detail);
+        }
+    })
+
     window.addEventListener("update-time-range", function (event) {
 
         flatpickr(".custom-time",{

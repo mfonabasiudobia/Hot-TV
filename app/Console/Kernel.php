@@ -16,9 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:tv-channel')->everyMinute()->when(function () {
-            return (int) now()->format('s') % 15 === 0;
-        });
+        $schedule->command('app:tv-channel')->everyMinute();
     }
 
     /**

@@ -14,12 +14,12 @@
                 </a>
             </li>
 
-            <li class="{{request()->routeIs('admin.live.*') ? 'active' : ''}}">
+            {{-- <li class="{{request()->routeIs('admin.live.*') ? 'active' : ''}}">
                 <a href="{{route('admin.live')}}">
                     <i class="las la-play"></i>
                     <span>Manage Channel Content</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="{{$status = request()->routeIs('admin.show-category.*') ? 'active' : ''}}"
                 x-data="{ show : '{{$status ? true : false}}'}">

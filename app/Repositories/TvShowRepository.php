@@ -77,6 +77,12 @@ class TvShowRepository {
         $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
     }
 
+    public static function getTvShowsByCategory($categoryId) : Collection{
+        return TvShow::wherehas('categories', function($q) use($categoryId) {
+            return $q->where('show_category_id', $categoryId);
+        })->get();
+    }
+
     public static function delete(int $id) : bool {
         return TvShow::find($id)->delete();
     }

@@ -23,7 +23,7 @@ class TvChannelEvent implements ShouldBroadcast
      */
     public $timeArray, $infoArray;
 
-    private $src, $title, $description;
+    private $src, $title, $description, $secondsPassed;
 
     public function __construct()
     {
@@ -44,6 +44,7 @@ class TvChannelEvent implements ShouldBroadcast
             $this->infoArray[] = [
                 'title' => $item->title,
                 'description' => $item->description,
+                'start_time' => $item->start_time,
                 'src' => file_path($item->recorded_video)
             ];
         }
@@ -60,10 +61,20 @@ class TvChannelEvent implements ShouldBroadcast
             $end = $schedule["end"];
 
             if ($currentTime >= $start && $currentTime < $end) {
+
+                  // Define your start time
+                $startTime = Carbon::createFromTimeString($this->infoArray[$i]["start_time"]);
+
+                // Get the current time
+                $currentTime = Carbon::now();
+
+                // Calculate the difference in seconds
+                $secondsPassed = $currentTime->diffInSeconds($startTime);
+
                 $this->src = $this->infoArray[$i]["src"];
                 $this->title = $this->infoArray[$i]["title"];
                 $this->description = $this->infoArray[$i]["description"];
-
+                $this->secondsPassed = $secondsPassed;
                 break;
             }
         }
@@ -85,11 +96,13 @@ class TvChannelEvent implements ShouldBroadcast
     }
 
     public function broadcastWith(){
+       
 
         return [
             'title' => $this->title,
             'description' => $this->description,
-            'src' => $this->src
+            'src' => $this->src,
+            'start_time' => $this->secondsPassed - 60 //continue from seconds back
         ];
     }
 
