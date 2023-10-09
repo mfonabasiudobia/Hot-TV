@@ -68,7 +68,7 @@
                         <label>Tags</label>
 
                         <div wire:ignore>
-                            <select id="tags" class="form-control" multiple="multiple" data-placeholder="--Tags--"></select>
+                            <input id='tags' class="form-control text-xs" placeholder='Tags' wire:model.defer='tags' />
                         </div>
                         @error('tags') <span class="error"> {{ $message }}</span> @endError
                     </div>
@@ -141,12 +141,18 @@
                     new SlimSelect({
                         select: '#casts'
                     });
-
-                    const select = new SlimSelect({
-                        select: '#tags',
-                        showSearch: false
-                    });
-                  
         });
+
+        var input = document.querySelector('#tags'),
+        // init Tagify script on the above inputs
+        tagify = new Tagify(input, {
+        maxTags: 10,
+        dropdown: {
+            maxItems: 20, // <- mixumum allowed rendered suggestions 
+            classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted 
+            enabled: 0, // <- show suggestions on focus 
+            closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected 
+        } 
+    })
 </script>
 @endPush

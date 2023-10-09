@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('header')
@@ -31,7 +32,8 @@
     
         .ss-option:hover,
         .ss-selected, .ss-value-text, .ss-value-delete, .ss-value {
-            background-color: red !important;
+            background-color: #FFFFFF !important;
+            color: #000 !important;
         }
     </style>
 
@@ -64,6 +66,7 @@
         referrerpolicy="origin"></script>
     <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js"></script>
     <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
 
