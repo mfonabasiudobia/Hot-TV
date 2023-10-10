@@ -139,6 +139,7 @@ class ComposerStaticInit63fae2c37516c422f70a2ec11230b426
             'Svg\\' => 4,
             'Stripe\\' => 7,
             'Spatie\\TemporaryDirectory\\' => 26,
+            'Spatie\\ShortSchedule\\' => 21,
             'Spatie\\LaravelPackageTools\\' => 27,
             'Spatie\\LaravelIgnition\\' => 23,
             'Spatie\\Ignition\\' => 16,
@@ -577,6 +578,10 @@ class ComposerStaticInit63fae2c37516c422f70a2ec11230b426
         'Spatie\\TemporaryDirectory\\' => 
         array (
             0 => __DIR__ . '/..' . '/spatie/temporary-directory/src',
+        ),
+        'Spatie\\ShortSchedule\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src',
         ),
         'Spatie\\LaravelPackageTools\\' => 
         array (
@@ -11220,6 +11225,17 @@ class ComposerStaticInit63fae2c37516c422f70a2ec11230b426
         'Spatie\\LaravelPackageTools\\Exceptions\\InvalidPackage' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Exceptions/InvalidPackage.php',
         'Spatie\\LaravelPackageTools\\Package' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/Package.php',
         'Spatie\\LaravelPackageTools\\PackageServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-package-tools/src/PackageServiceProvider.php',
+        'Spatie\\ShortSchedule\\Commands\\ShortScheduleRunCommand' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/Commands/ShortScheduleRunCommand.php',
+        'Spatie\\ShortSchedule\\Events\\ShortScheduledTaskStarted' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/Events/ShortScheduledTaskStarted.php',
+        'Spatie\\ShortSchedule\\Events\\ShortScheduledTaskStarting' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/Events/ShortScheduledTaskStarting.php',
+        'Spatie\\ShortSchedule\\PendingShortScheduleCommand' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/PendingShortScheduleCommand.php',
+        'Spatie\\ShortSchedule\\RunConstraints\\BetweenConstraint' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/RunConstraints/BetweenConstraint.php',
+        'Spatie\\ShortSchedule\\RunConstraints\\EnvironmentConstraint' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/RunConstraints/EnvironmentConstraint.php',
+        'Spatie\\ShortSchedule\\RunConstraints\\RunConstraint' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/RunConstraints/RunConstraint.php',
+        'Spatie\\ShortSchedule\\RunConstraints\\WhenConstraint' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/RunConstraints/WhenConstraint.php',
+        'Spatie\\ShortSchedule\\ShortSchedule' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/ShortSchedule.php',
+        'Spatie\\ShortSchedule\\ShortScheduleCommand' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/ShortScheduleCommand.php',
+        'Spatie\\ShortSchedule\\ShortScheduleServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-short-schedule/src/ShortScheduleServiceProvider.php',
         'Spatie\\TemporaryDirectory\\Exceptions\\InvalidDirectoryName' => __DIR__ . '/..' . '/spatie/temporary-directory/src/Exceptions/InvalidDirectoryName.php',
         'Spatie\\TemporaryDirectory\\Exceptions\\PathAlreadyExists' => __DIR__ . '/..' . '/spatie/temporary-directory/src/Exceptions/PathAlreadyExists.php',
         'Spatie\\TemporaryDirectory\\TemporaryDirectory' => __DIR__ . '/..' . '/spatie/temporary-directory/src/TemporaryDirectory.php',

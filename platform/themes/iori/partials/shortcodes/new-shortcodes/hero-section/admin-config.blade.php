@@ -14,6 +14,11 @@
         {!! Form::mediaImage('background', Arr::get($attributes, 'background')) !!}
     </div>
 
+    <div class="form-group">
+        <label class="control-label">{{ __('Tv Channel Thumbnail') }}</label>
+        {!! Form::mediaImage('tv_channel_thumbnail', Arr::get($attributes, 'tv_channel_thumbnail')) !!}
+    </div>
+
 
     <div class="form-group">
         <label class="control-label">{{ __('Button primary label') }}</label>

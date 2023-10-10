@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Spatie\ShortSchedule\ShortSchedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -14,9 +15,15 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
-    protected function schedule(Schedule $schedule): void
+    // protected function schedule(Schedule $schedule): void
+    // {
+    //     $schedule->command('app:tv-channel')->everySecond();
+    // }
+
+    protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $shortSchedule)
     {
-        $schedule->command('app:tv-channel')->everyMinute();
+        // this command will run every second
+        $shortSchedule->command('app:tv-channel')->everySecond(3);
     }
 
     /**

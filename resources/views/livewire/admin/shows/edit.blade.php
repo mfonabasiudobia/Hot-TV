@@ -64,11 +64,9 @@
                     <div class="form-group" wire:ignore>
                         <label>Tags </label>
 
-                        <select id="tags" class="form-control" wire:model.defer="tags" multiple="multiple" data-placeholder="--Tags--">
-                            @foreach ($tags as $tag)
-                            <option value="{{ $tag }}" selected>{{ $tag }}</option>
-                            @endforeach
-                        </select>
+                        <div wire:ignore>
+                            <input id='tags' class="form-control text-xs" placeholder='Tags' wire:model.defer='tags' />
+                        </div>
 
                         @error('tags') <span class="error"> {{ $message }}</span> @endError
                     </div>
@@ -152,5 +150,23 @@
                     });
                   
         });
+
+
+        var input = document.querySelector('#tags'),
+        // init Tagify script on the above inputs
+        tagify = new Tagify(input, {
+        maxTags: 10,
+        dropdown: {
+            maxItems: 20, // <- mixumum allowed rendered suggestions 
+            classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted 
+            enabled: 0, // <- show suggestions on focus 
+            closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected 
+        } 
+        })
+            
+        input.addEventListener('change', ()=> {
+            var tagsArray = tagify.value.map(tagData => tagData.value);
+            @this.set('tags', tagsArray);
+        })
 </script>
 @endPush

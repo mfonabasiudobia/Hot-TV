@@ -172,10 +172,11 @@
         flatpickr(".custom-time",{
                 noCalendar : true,
                 enableTime : true,
-                dateFormat: "H:i",
+                dateFormat: "H:i:S",
                 time_24hr: false,
-                minTime: "00:00",
-                maxTime: "23:59",
+                minTime: "00:00:00",
+                maxTime: "23:59:59",
+                enableSeconds: true,
                 minuteIncrement: 1,
                 altFormat : "h:i K",
                 disable: event.detail.time_range,
@@ -189,8 +190,8 @@
                         
                         // Check if the selected time falls within the restricted ranges
                         instance.config.disable.forEach(function(range) {
-                        const startTime = instance.parseDate(range.from, "H:i");
-                        const endTime = instance.parseDate(range.to, "H:i");
+                        const startTime = instance.parseDate(range.from, "H:i:S");
+                        const endTime = instance.parseDate(range.to, "H:i:S");
                         
                         if (selectedTime >= startTime && selectedTime <= endTime) { 
                             instance.input.value="Not available" ;

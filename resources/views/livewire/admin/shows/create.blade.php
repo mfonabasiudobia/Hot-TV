@@ -148,11 +148,17 @@
         tagify = new Tagify(input, {
         maxTags: 10,
         dropdown: {
-            maxItems: 20, // <- mixumum allowed rendered suggestions 
-            classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted 
-            enabled: 0, // <- show suggestions on focus 
-            closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected 
-        } 
-    })
+                maxItems: 20, // <- mixumum allowed rendered suggestions 
+                classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted 
+                enabled: 0, // <- show suggestions on focus 
+                closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected 
+            } 
+        })
+
+        input.addEventListener('change', () => {
+            var tagsArray = tagify.value.map(tagData => tagData.value);
+            @this.set('tags', tagsArray);
+        })
+
 </script>
 @endPush

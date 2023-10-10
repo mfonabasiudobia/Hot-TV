@@ -24,27 +24,23 @@
     <script>
         const videoPlayer = document.getElementById('player');
 
+        var start_time = 0;
+
         document.addEventListener('DOMContentLoaded', () => {
                 const player = new Plyr('#player', {
                     muted : true,
-                    controls : false,
+                    controls: ['play', 'volume', 'fullscreen'],
+                    hideControls: false,
                     autoplay: true, // Autoplay is initially set to false
                 });
 
                 // Listen for the "play" event
-                player.on("pause", function() {
-                    player.play();
+                player.on("play", function() {
+                    videoPlayer.currentTime = start_time;
                 });
 
         });
-
-        videoPlayer.addEventListener("click", function (event) {
-             event.preventDefault();
-        });
     </script>
-@endPush
-
-@push('script')
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         let currentVideoSrc = '';
@@ -80,6 +76,8 @@
             
             playVideo(data);
 
+            start_time = data.start_time;
+
             if(!data.src){
                 //Show loading button when Src is not there
                 document.getElementById("loading-button").classList.remove("hidden");
@@ -113,5 +111,6 @@
         animation:s4 2s infinite steps(10);
     }
     @keyframes s4 {to{transform: rotate(1turn)}}
+
 </style>
 @endPush

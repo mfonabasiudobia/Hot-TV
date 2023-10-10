@@ -27,8 +27,8 @@ class Create extends BaseComponent
         $this->slug = str()->slug($title);
     }
 
+
     public function submit(){
-        dd($this->tags);
         $this->validate([
             'title' => 'required|string',
             'slug' => 'required|unique:tv_shows,slug',

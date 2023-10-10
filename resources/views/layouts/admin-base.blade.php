@@ -59,6 +59,7 @@
     @livewireScripts
     @toastScripts
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -66,7 +67,6 @@
         referrerpolicy="origin"></script>
     <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.min.js"></script>
     <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
 
