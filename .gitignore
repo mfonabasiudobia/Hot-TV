@@ -1,6 +1,6 @@
 /node_modules
 /public/hot
-#/public/storage
+/public/storage
 /storage/*.key
 /vendor
 .DS_Store
@@ -19,6 +19,9 @@ sftp-config.json
 _ide_helper_models.php
 /storage/app/backup
 /storage/cache_keys.json
+
+/config/websockets.php
+/config/broadcasting.php
 
 __MACOSX
 /.phpintel
