@@ -105,12 +105,12 @@
             x-on:click="tab = 1">
                 Description
             </button>
-            <button 
+            {{-- <button 
                 :class="tab == 2 ? 'bg-danger bg-opacity-50 text-danger' : ''"
                 class="btn btn-sm text-xl font-semibold" 
                 x-on:click="tab = 2">
                 Reviews (2)
-            </button>
+            </button> --}}
         </nav>
         
         <section x-show="tab == 1" class="min-h-[20vh]">
