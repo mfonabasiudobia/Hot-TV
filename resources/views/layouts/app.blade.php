@@ -19,7 +19,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if(env('APP_ENV') === 'development')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else 
+        <link rel="preload" as="style" href="{{  asset('build/assets/app-41d701a9.css') }}" />
+        <link rel="modulepreload" href="{{  asset('build/assets/app-56576e97.js') }}" />
+        <link rel="stylesheet" href="{{  asset('build/assets/app-41d701a9.css') }}" />
+        <script type="module" src="{{  asset('build/assets/app-56576e97.js') }}"></script>
+    @endIf
+
     @stack('header')
 
     @livewireStyles
