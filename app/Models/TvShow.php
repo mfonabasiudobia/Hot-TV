@@ -27,4 +27,9 @@ class TvShow extends BaseModel
     public function views(){
         return $this->hasMany(TvShowView::class, 'tv_show_id');
     }
+
+    public function watchlists()
+    {
+        return $this->morphMany(Watchlist::class, 'watchable');
+    }
 }

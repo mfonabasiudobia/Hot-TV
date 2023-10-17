@@ -7,44 +7,45 @@
 
         <div class="swiper most-viewed">
             <div class="swiper-wrapper">
-                @foreach ([1,2,3,4,5,6,7,8] as $item)
+                @foreach (\App\Repositories\StreamRepository::getMostStreamedVideos() as $item)
                 <section class="bg-white rounded-xl overflow-hidden text-dark shadow-xl swiper-slide">
-                    <img src="{{ asset('images/stream-01.png') }}" alt="" class="object-cover h-[210px] w-full" />
+                    <img src="{{ file_path($item->thumbnail) }}" alt="" class="object-cover h-[210px] w-full" />
 
                     <section class="p-5 space-y-5">
                         <div class="flex items-center justify-between text-sm">
                             <div class="opacity-60 space-x-3">
                                 <span>London Bridge</span>
-                                <span>1hr 2min</span>
+                                <span>{{ convert_seconds_to_time(diff_start_end_time_seconds($item->start_time, $item->end_time)) }}</span>
                             </div>
 
                             <button class="text-danger btn bg-[#f2f3fa] btn-sm rounded-xl">Traveling</button>
                         </div>
                         <div class="space-y-2">
-                            <h2 class="text-xl font-semibold">Love of Street Food</h2>
-                            <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt
-                                ut labore et dolore
-                                magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                            <h2 class="text-xl font-semibold">{{ $item->title }}</h2>
+                            <p class="text-sm" style="min-height: 60px">
+                                {{ sanitize_seo_description($item->description, 130) }}
+
+                            </p>
                         </div>
 
                         <div class="flex items-center space-x-3 justify-between">
                             <div class="space-x-3 flex items-center">
-                                <a href="{{ route('tv-shows.show', ['slug' => 'love-of-the-street']) }}"
+                                <a href="{{ route('tv-channel.show', ['slug' => $item->id]) }}"
                                     class="btn border rounded-xl btn-lg py-3 text-danger hover:bg-danger hover:text-white">
                                     Watch Now
                                 </a>
 
-                                <button
-                                    class="btn border rounded-xl py-1 px-2 text-3xl text-danger hover:bg-danger hover:text-white">
-                                    <i class="las la-heart"></i>
-                                </button>
+                                @if(is_user_logged_in())
+                                    <button wire:click.prevent="saveToWatchlist({{ $item }})"
+                                        class="btn border rounded-xl py-1 px-2 text-3xl text-danger hover:bg-danger hover:text-white {{ $item->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
+                                        <i class="las la-heart"></i>
+                                    </button>
+                                @endIf
                             </div>
 
 
                             <div>
-                                <span class="text-danger text-xl font-semibold">21.9k</span>
+                                <span class="text-danger text-xl font-semibold">{{ view_count($item->views_count) }}</span>
                                 <span class="opacity-60 text-sm">Views</span>
                             </div>
                         </div>

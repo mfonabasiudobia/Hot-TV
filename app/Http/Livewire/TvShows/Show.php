@@ -62,10 +62,12 @@ class Show extends BaseComponent
     public function saveToWatchlist($tvShowId){
         try {
             
-            $watchlist = Watchlist::where('tv_show_id', $tvShowId)->where('user_id', auth()->id())->first();
+            $watchlist =  $this->tvShow->watchlists()->where('user_id', auth()->id())->first();
 
             if(!$watchlist){
-                Watchlist::create(['tv_show_id' => $tvShowId, 'user_id' => auth()->id() ]);
+                $watchlist = new Watchlist(['user_id' => auth()->id()]);
+
+                $this->tvShow->watchlists()->save($watchlist);
 
                 return toast()->success('Added To My List')->push();
             }

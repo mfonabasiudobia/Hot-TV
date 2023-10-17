@@ -1,4 +1,4 @@
-<main class="min-h-screen text-white">
+<main class="min-h-screen text-white" wire:ignore>
 
   {!! do_shortcode($page->content) !!}
   {{-- <section style="background-image: url('{{ asset('images/background-image-01.png') }}">

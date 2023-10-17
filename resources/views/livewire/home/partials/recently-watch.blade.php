@@ -5,7 +5,7 @@
             <div class="swiper-wrapper">
                 @foreach ([1,2,3,4,5,6,7,8,9] as $item)
                 <a href="{{ route('tv-shows.show', ['slug' => 'boxing-show']) }}" class="bg-black p-5 rounded-3xl grid grid-cols-2 gap-5 swiper-slide">
-                    <img src="{{ asset('images/placeholder.png') }}" alt="" class="h-[170px]" />
+                    <img src="{{ asset('images/placeholder.png') }}" alt="" class="h-[164px] w-[142px]" />
         
                     <div class="space-y-3">
                         <button class="btn border border-danger text-danger btn-lg rounded-xl py-2 px-3">

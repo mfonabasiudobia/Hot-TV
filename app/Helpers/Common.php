@@ -108,8 +108,8 @@ function total_amount(){
     return sub_total() - discount_amount() + tax_amount();
 }
 
-function sanitize_seo_description($value){
-    return str()->limit(htmlspecialchars_decode(strip_tags($value)), 100);
+function sanitize_seo_description($value, $limit = 100){
+    return str()->limit(htmlspecialchars_decode(strip_tags($value)), $limit);
 }
 
 function admin_id_array(){
@@ -130,4 +130,19 @@ function convert_time_to_streaming_time($time){
     $decimalTime = (int)$hour + ((int)$minute / 60);
 
     return $decimalTime;
+}
+
+function diff_start_end_time_seconds($startTime, $endTime){
+        // Split the start time and end time into hours and minutes
+        list($startHour, $startMinute) = explode(":", $startTime);
+        list($endHour, $endMinute) = explode(":", $endTime);
+
+        // Calculate the total seconds for each time
+        $startSeconds = ($startHour * 3600) + ($startMinute * 60);
+        $endSeconds = ($endHour * 3600) + ($endMinute * 60);
+
+        // Calculate the time difference in seconds
+        $timeDifferenceInSeconds = $endSeconds - $startSeconds;
+
+        return $timeDifferenceInSeconds;
 }

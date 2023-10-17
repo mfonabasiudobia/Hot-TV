@@ -3,34 +3,26 @@
 namespace App\Http\Livewire\LiveChannel;
 
 use App\Http\Livewire\BaseComponent;
-use App\Models\Stream;
+use App\Models\TvChannelView;
+use App\Repositories\StreamRepository;
 
 class Show extends BaseComponent
 {
     public $timeArray = [], $infoArray = [];
     
     public function mount(){
-        $records = Stream::whereDate('schedule_date', now())->get();    
 
-         // Initialize an array to store the formatted data
-        $this->timeArray = [];
-        $this->infoArray = [];
+        $result = StreamRepository::getCurrentStreamingInformation();
 
-        // Iterate through the data and format it as required
-        foreach ($records as $item){
-
-            $this->timeArray[] = [
-                'start' => convert_time_to_streaming_time($item->start_time),
-                'end' => convert_time_to_streaming_time($item->end_time)
+        if(isset($result['id'])){
+           $data = [
+                'user_id' => auth()->id(),
+                'stream_id' => $result['id'],
+                'ip_address' => request()->ip()
             ];
 
-            $this->infoArray[] = [
-                'title' => $item->title,
-                'description' => $item->description,
-                'src' => file_path($item->recorded_video)
-            ];
+        TvChannelView::firstOrCreate($data, $data);
         }
-
     }
 
     public function render()

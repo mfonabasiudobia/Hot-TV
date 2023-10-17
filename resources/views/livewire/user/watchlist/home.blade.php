@@ -1,8 +1,8 @@
-<div class="py-16">
-    <section class="container">
+<div class="py-5">
+    <section class="container space-y-3">
+        <h1 class="font-bold text-md">Tv Shows</h1>
         <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-            
-                @forelse ($watchlists as $watchlist)
+             @forelse ($watchlists as $watchlist)
                 <a class="relative space-y-5 p-5 bg-dark rounded-xl group hover:scale-125 transition-all"
                     href="{{ route('tv-shows.show', ['slug' => $watchlist->tvShow->slug ]) }}">
                     <img src="{{ file_path($watchlist->tvShow->thumbnail) }}" alt="" class="h-[321px] rounded-lg object-cover w-full" />

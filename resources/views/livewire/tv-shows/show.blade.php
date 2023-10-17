@@ -33,7 +33,7 @@
 
                             @if(is_user_logged_in())
                             <button  wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
-                                class="md:hidden rounded-md w-[40px] h-[40px] {{ \App\Models\Watchlist::where('user_id', auth()->id())->where('tv_show_id', $tvShow->id)->first() ? 'bg-danger text-white' : 'bg-white text-danger' }}">
+                                class="md:hidden rounded-md w-[40px] h-[40px] {{ $tvShow->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                                 <i class="las la-heart"></i>
                             </button>
                             @endIf
@@ -110,7 +110,7 @@
 
                    @if(is_user_logged_in())
                        <button wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
-                            class="rounded-md absolute top-7 right-7 w-[40px] h-[40px] {{ \App\Models\Watchlist::where('user_id', auth()->id())->where('tv_show_id', $tvShow->id)->first() ? 'bg-danger text-white' : 'bg-white text-danger' }}">
+                            class="rounded-md absolute top-7 right-7 w-[40px] h-[40px] {{ $tvShow->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                             <i class="las la-heart"></i>
                         </button>
                    @endIf

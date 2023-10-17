@@ -24,6 +24,15 @@ class Stream extends BaseModel
         return \Carbon\Carbon::parse($value)->format('H:i:s');
     }
 
+    public function views(){
+        return $this->hasMany(TvChannelView::class, 'stream_id');
+    }
+
+    public function watchlists()
+    {
+        return $this->morphMany(Watchlist::class, 'watchable');
+    }
+
 
     
 }

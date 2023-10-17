@@ -103,5 +103,71 @@ class StreamRepository
          ->toArray();
     }
 
+    public static function getCurrentStreamingInformation(){
+
+        $records = Stream::whereDate('schedule_date', now())->get();
+        $result = [];   
+
+        // Initialize an array to store the formatted data
+        $timeArray = [];
+        $infoArray = [];
+
+        // Iterate through the data and format it as required
+        foreach ($records as $item){
+
+            $timeArray[] = [
+                'start' => convert_time_to_streaming_time($item->start_time),
+                'end' => convert_time_to_streaming_time($item->end_time)
+            ];
+
+            $infoArray[] = [
+                'title' => $item->title,
+                'description' => $item->description,
+                'start_time' => $item->start_time,
+                'id' => $item->id,
+                'src' => file_path($item->recorded_video)
+            ];
+        }
+
+        $now = Carbon::now();
+        $currentHour = $now->hour;
+        $currentMinute = $now->minute / 60;
+
+        // Calculate the current time in hours with fractions of an hour
+        $currentTime = $currentHour + $currentMinute;
+
+        foreach ($timeArray as $i => $schedule) {
+            $start = $schedule["start"];
+            $end = $schedule["end"];
+
+            if ($currentTime >= $start && $currentTime < $end) {
+
+                  // Define your start time
+                $startTime = Carbon::createFromTimeString($infoArray[$i]["start_time"]);
+
+                // Get the current time
+                $currentTime = Carbon::now();
+
+                // Calculate the difference in seconds
+                $secondsPassed = $currentTime->diffInSeconds($startTime);
+
+                $result['src'] = $infoArray[$i]["src"];
+                $result['title'] = $infoArray[$i]["title"];
+                $result['description'] = $infoArray[$i]["description"];
+                $result['id'] = $infoArray[$i]["id"];
+                $result['seconds_passed'] = $secondsPassed;
+                break;
+            }
+        }
+
+
+        return $result;
+
+    }
+
+    public static function getMostStreamedVideos(){
+          return Stream::withCount('views')->orderByDesc('views_count')->get();
+    }
+
 
 }

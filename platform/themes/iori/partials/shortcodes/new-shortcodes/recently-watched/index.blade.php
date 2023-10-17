@@ -3,20 +3,21 @@
         <h1 class="text-xl font-medium">{{ $shortcode->title }}</h1>
         <section class="swiper recently-watched">
             <div class="swiper-wrapper">
-                @foreach ([1,2,3,4,5,6,7,8,9] as $item)
-                <a href="{{ route('tv-shows.show', ['slug' => 'boxing-show']) }}"
+                @foreach (\App\Repositories\TvShowRepository::recentlyWatched(user())->take(10) as $item)
+                <a href="{{ route('tv-shows.show', ['slug' => $item->tvShow->slug, 'season' => $item->season_number, 'episode' => $item->slug ]) }}"
                     class="bg-black p-5 rounded-3xl grid grid-cols-2 gap-5 swiper-slide">
-                    <img src="{{ asset('images/placeholder.png') }}" alt="" class="h-[170px]" />
+                    <img src="{{ file_path($item->thumbnail) }}" alt="" class="h-[164px] w-[142px] object-cover rounded-xl" />
 
                     <div class="space-y-3">
                         <button class="btn border border-danger text-danger btn-lg rounded-xl py-2 px-3">
-                            TV Show
+                            {{-- {{ $item->tvcategories[0]->name }} --}}
+                            Season  {{ $item->season_number }}
                         </button>
 
                         <div class="space-y-5 flex flex-col justify-between">
                             <div>
-                                <h2 class="text-lg font-medium">The Boxing Show</h2>
-                                <p class="text-sm opacity-60">Episode 7</p>
+                                <h2 class="text-lg font-medium">{{ $item->tvShow->title }}</h2>
+                                <p class="text-sm opacity-60">Episode {{ $item->episode_number }}</p>
                             </div>
 
                             <img src="{{ asset('images/progress.svg') }}" alt="" />

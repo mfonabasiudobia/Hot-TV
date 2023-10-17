@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\TvShow;
 use App\Models\Episode;
+use App\Models\TvShowView;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -81,6 +82,14 @@ class TvShowRepository {
         return TvShow::wherehas('categories', function($q) use($categoryId) {
             return $q->where('show_category_id', $categoryId);
         })->get();
+    }
+
+    public static function recentlyWatched($user = null) : Collection {
+         return Episode::whereHas('views', function($q) use($user) {
+            $q->when($user, function($q) use($user) {
+                $q->latest()->where('user_id', $user->id);
+            });
+         })->get();
     }
 
     public static function delete(int $id) : bool {

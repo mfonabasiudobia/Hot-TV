@@ -12,4 +12,9 @@ class Episode extends BaseModel
     public function views(){
         return $this->hasMany(TvShowView::class, 'episode_id');
     }
+
+    public function tvShow()
+    {
+        return $this->hasOne(TvShow::class, 'id', 'tv_show_id');
+    }
 }

@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
     protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $shortSchedule)
     {
         // this command will run every second
-        $shortSchedule->command('app:tv-channel')->everySecond(3);
+        $shortSchedule->command('app:tv-channel')->everySecond(7);
     }
 
     /**
