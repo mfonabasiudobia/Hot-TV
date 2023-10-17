@@ -19,14 +19,7 @@
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tagify/4.17.9/tagify.css" />
 
-    {{-- @if(env('APP_ENV') === 'development') --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- @else
-        <link rel="preload" as="style" href="{{  asset('build/assets/app-41d701a9.css') }}" />
-        <link rel="modulepreload" href="{{  asset('build/assets/app-56576e97.js') }}" />
-        <link rel="stylesheet" href="{{  asset('build/assets/app-41d701a9.css') }}" />
-        <script type="module" src="{{  asset('build/assets/app-56576e97.js') }}"></script>
-    @endIf --}}
     @stack('header')
 
     @livewireStyles
@@ -64,7 +57,6 @@
 
 
     @livewireScripts
-    {{-- @toastScripts --}}
     <script src="{{ asset('js/tall-toasts.js') }}" data-turbo-eval="false" data-turbolinks-eval="false"></script>
     <script data-turbo-eval="false" data-turbolinks-eval="false">
         document.addEventListener('alpine:init', () => {

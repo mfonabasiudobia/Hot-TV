@@ -19,14 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
-    {{-- @if(env('APP_ENV') === 'development') --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- @else 
-        <link rel="preload" as="style" href="{{  asset('build/assets/app-41d701a9.css') }}" />
-        <link rel="modulepreload" href="{{  asset('build/assets/app-56576e97.js') }}" />
-        <link rel="stylesheet" href="{{  asset('build/assets/app-41d701a9.css') }}" />
-        <script type="module" src="{{  asset('build/assets/app-56576e97.js') }}"></script>
-    @endIf --}}
 
     @stack('header')
 
@@ -54,6 +47,7 @@
 
 <body>
     <livewire:toasts />
+    <x-page-loading />
     <section class="page-wrapper min-h-screen w-screen" x-data="{ toggleSidebar : true}">
         @livewire("partials.header")
         {{$slot}}
@@ -62,8 +56,6 @@
 
 
     @livewireScripts
-    @livewireScriptConfig
-    {{-- @toastScripts --}}
 
     <script src="{{ asset('js/tall-toasts.js') }}" data-turbo-eval="false" data-turbolinks-eval="false"></script>
     <script data-turbo-eval="false" data-turbolinks-eval="false">
@@ -81,6 +73,16 @@
     <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
 
     @stack("script")
+
+    <script>
+        window.addEventListener('load', function () {
+            // Get the "page-loading" element by its ID
+            var pageLoading = document.getElementById('page-loading');
+            
+            // Hide the "page-loading" element
+            pageLoading.style.display = 'none';
+        });
+    </script>
 
 
 </body>
