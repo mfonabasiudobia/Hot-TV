@@ -6,8 +6,8 @@ use App\Models\User;
 use App\Mail\WelcomeNotification;
 use App\Mail\OtpNotification;
 use App\Mail\OtpNotificationWeb;
-use App\Mail\forgotPasswordNotification;
-use App\Mail\forgotPasswordNotificationWeb;
+use App\Mail\ForgotPasswordNotification;
+use App\Mail\ForgotPasswordNotificationWeb;
 use Mail;
 use DB;
 use URL;
@@ -109,13 +109,13 @@ class AuthRepository {
                 DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $rand, 'created_at' => now() ]);
 
                 //Send Forgot token Mail to User here
-                Mail::to($email)->send(new forgotPasswordNotification($user, $code));
+                Mail::to($email)->send(new ForgotPasswordNotification($user, $code));
             }else{
 
                 //Send Forgot token Mail to User here
                 $url = URL::temporarySignedRoute('reset_password', now()->addMinutes(15), [ 'email' => $email ]);
 
-                Mail::to($email)->send(new forgotPasswordNotificationWeb($user, $url));
+                Mail::to($email)->send(new ForgotPasswordNotificationWeb($user, $url));
             }
 
             return $code;
