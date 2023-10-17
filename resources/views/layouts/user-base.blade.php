@@ -17,7 +17,14 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @if(env('APP_ENV') === 'development') --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @else
+        <link rel="preload" as="style" href="{{  asset('build/assets/app-41d701a9.css') }}" />
+        <link rel="modulepreload" href="{{  asset('build/assets/app-56576e97.js') }}" />
+        <link rel="stylesheet" href="{{  asset('build/assets/app-41d701a9.css') }}" />
+        <script type="module" src="{{  asset('build/assets/app-56576e97.js') }}"></script>
+    @endIf --}}
     @stack('header')
 
     @livewireStyles
@@ -36,7 +43,13 @@
 
 
     @livewireScripts
-    @toastScripts
+    {{-- @toastScripts --}}
+    <script src="{{ asset('js/tall-toasts.js') }}" data-turbo-eval="false" data-turbolinks-eval="false"></script>
+    <script data-turbo-eval="false" data-turbolinks-eval="false">
+        document.addEventListener('alpine:init', () => {
+                window.Alpine.directive('ToastComponent', window.ToastComponent);
+            });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

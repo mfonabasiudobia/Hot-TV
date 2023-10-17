@@ -22,6 +22,7 @@ _ide_helper_models.php
 
 /config/websockets.php
 /config/broadcasting.php
+/config/livewire.php
 
 __MACOSX
 /.phpintel
