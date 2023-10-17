@@ -169,5 +169,9 @@ class StreamRepository
           return Stream::withCount('views')->orderByDesc('views_count')->get();
     }
 
+    public static function getTvChannelBySlug($slug) : Stream {
+        return Stream::where('slug',$slug)->firstOrFail();
+    }
+
 
 }

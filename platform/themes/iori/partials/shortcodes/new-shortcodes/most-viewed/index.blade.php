@@ -30,7 +30,7 @@
 
                         <div class="flex items-center space-x-3 justify-between">
                             <div class="space-x-3 flex items-center">
-                                <a href="{{ route('tv-channel.show', ['slug' => $item->id]) }}"
+                                <a href="{{ route('tv-channel.show', ['slug' => $item->slug]) }}"
                                     class="btn border rounded-xl btn-lg py-3 text-danger hover:bg-danger hover:text-white">
                                     Watch Now
                                 </a>

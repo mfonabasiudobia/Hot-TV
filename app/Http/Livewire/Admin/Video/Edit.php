@@ -26,6 +26,7 @@ class Edit extends BaseComponent
 
         $this->fill([
             'title' => $this->stream->title,
+            'slug' => str()->slug($this->title),
             'description' => $this->stream->description,
             'start_time' => $this->stream->start_time,
             'end_time' => $this->stream->end_time,

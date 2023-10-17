@@ -83,6 +83,7 @@ class Create extends BaseComponent
 
             $data = [
                 'title' => $this->title,
+                'slug' => str()->slug($this->title),
                 'description' => $this->description,
                 'schedule_date' => $this->schedule_date,
                 'start_time' => $this->start_time,
