@@ -88,17 +88,17 @@ class Edit extends BaseComponent
             // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
 
 
-        // try {
+        try {
 
-            $acceptedTimeRange = StreamRepository::acceptedTimeRange($this->start_time, $this->end_time);
+            // $acceptedTimeRange = StreamRepository::acceptedTimeRange($this->start_time, $this->end_time);
 
-            $videoLength = StreamRepository::getVideoLengthInSeconds('storage/' . $this->recorded_video);
-            $scheduledLength = StreamRepository::getScheduledTimeInSeconds($this->start_time, $this->end_time);
+            // $videoLength = StreamRepository::getVideoLengthInSeconds('storage/' . $this->recorded_video);
+            // $scheduledLength = StreamRepository::getScheduledTimeInSeconds($this->start_time, $this->end_time);
 
 
-            $diff = $scheduledLength - $videoLength;
+            // $diff = $scheduledLength - $videoLength;
 
-            throw_if($diff < -120 || $diff > 120, "The time scheduled for the video must match with the video length");
+            // throw_if($diff < -120 || $diff > 120, "The time scheduled for the video must match with the video length");
 
             $data = [
                 'title' => $this->title,
@@ -121,9 +121,9 @@ class Edit extends BaseComponent
 
             return redirect()->route('admin.dashboard');
 
-        // } catch (\Throwable $e) {
-        //     toast()->danger($e->getMessage())->push();
-        // }
+        } catch (\Throwable $e) {
+            toast()->danger($e->getMessage())->push();
+        }
      }
 
 
