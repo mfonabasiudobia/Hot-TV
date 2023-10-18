@@ -98,6 +98,11 @@
                     
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>
+
+                    <div class="form-group">
+                        <x-atoms.toggle model="is_recommended" label="Is Recommended" />
+                    </div>
+                    
                 </section>
 
 

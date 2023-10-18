@@ -1,6 +1,6 @@
 {{-- blade-formatter-enable --}}
 <tr
-    class="{{ $theme->table->trBodyClass }}"
+    class="{{ $theme->table->trBodyClass }} bg-black"
     style="{{ $theme->table->trBodyStyle }}"
 >
     @if (data_get($setUp, 'detail.showCollapseIcon'))

@@ -4,17 +4,21 @@
 ])
 <div @isset($this->setUp['responsive']) x-data="tableResponsive" @endisset>
     <table
-        class="table power-grid-table {{ $theme->tableClass }} bg-black"
-        style="{{ $theme->tableStyle }}">
+        class="table power-grid-table {{ $theme->tableClass }}"
+        style="{{ $theme->tableStyle }}"
+    >
         <thead
             class="{{ $theme->theadClass }}"
-            style="{{ $theme->theadStyle }}">
+            style="{{ $theme->theadStyle }}"
+        >
             {{ $header }}
         </thead>
         @if ($readyToLoad)
             <tbody
                 class="{{ $theme->tbodyClass }}"
-                style="{{ $theme->tbodyStyle }}">
+                style="{{ $theme->tbodyStyle }}"
+                wire:key="tableBody-{{ uniqid() }}"
+            >
                 {{ $rows }}
             </tbody>
         @else

@@ -14,19 +14,19 @@
 
         <div class="swiper recommendation">
             <div class="swiper-wrapper">
-                @foreach ([1,2,3,4,5,6,7,8] as $item)
-                <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
+                @foreach (\App\Repositories\TvShowRepository::getRecommendedTvShows(15) as $item)
+                <a href="{{ route('tv-shows.show', ['slug' => $item->slug]) }}"
                     class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
-                    <img src="{{ asset('images/placeholder-02.png') }}" alt=""
+                    <img src="{{ file_path($item->thumbnail) }}" alt=""
                         class="object-cover h-[284px] w-full rounded-lg" />
 
                     <section class="p-3 space-y-5 recommendation-item-details invisible group-hover:visible">
                         <div class="space-y-2">
-                            <h2 class="text-md font-semibold">Cloak Dagger - Marvel</h2>
-                            <span class="text-danger text-sm">Comedy</span>
+                            <h2 class="text-md font-semibold">{{ $item->title }}</h2>
+                            <span class="text-danger text-sm">{{ $item->categories[0]->name }}</span>
                             <div class="opacity-60 space-x-3 text-sm">
-                                <span>2019</span>
-                                <span>120 Episodes</span>
+                                <span>{{ \Carbon\Carbon::parse($item->release_date)->year }}</span>
+                                <span>{{ count(\App\Repositories\TvShowRepository::getTvShowSeasons($item->id)) }} Seasons</span>
                             </div>
                         </div>
                     </section>

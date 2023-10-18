@@ -96,6 +96,10 @@ class TvShowRepository {
         return TvShow::find($id)->delete();
     }
 
+    public static function getRecommendedTvShows($limit = 20) : Collection {
+        return TvShow::where("is_recommended", 1)->get()->take($limit);
+    }
+
 
 
 }

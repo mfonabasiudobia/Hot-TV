@@ -7,8 +7,8 @@
     }
     
     $dynamicComponentAttributesBag = $helperClass->componentAttributesBag($action->params);
+    
 @endphp
-
 @if ($action->event !== '' && $action->to === '')
     <button
         wire:click='$emit("{{ $action->event }}", @json($parameters))'

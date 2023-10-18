@@ -14,7 +14,7 @@ class Create extends BaseComponent
 
     public $categories = [], $categories_id = [], $trailer, $casts_id = [], $casts = [];
 
-    public $tags = [], $meta_title, $meta_description;
+    public $tags = [], $meta_title, $meta_description, $is_recommended = 0;
 
     public function mount(){
         $this->fill([
@@ -58,7 +58,8 @@ class Create extends BaseComponent
                 'thumbnail' => $this->thumbnail,
                 'trailer' => $this->trailer,
                 'meta_title' => $this->meta_title,
-                'meta_description' => $this->meta_description
+                'meta_description' => $this->meta_description,
+                'is_recommended' => $this->is_recommended
             ];
 
             throw_unless(TvShowRepository::createTvShow($data, [

@@ -34,7 +34,7 @@
         "laravel/tinker": "^2.8",
         "pbmedia/laravel-ffmpeg": "^8.3",
         "php-ffmpeg/php-ffmpeg": "^1.1",
-        "power-components/livewire-powergrid": "^4.9",
+        "power-components/livewire-powergrid": "^4.4",
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-short-schedule": "^1.5",

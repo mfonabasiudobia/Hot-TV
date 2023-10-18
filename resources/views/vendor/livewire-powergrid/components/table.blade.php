@@ -2,7 +2,8 @@
 
 <x-livewire-powergrid::table-base
     :theme="$theme->table"
-    :ready-to-load="$readyToLoad">
+    :ready-to-load="$readyToLoad"
+>
     <x-slot:header>
         <tr
             class="{{ $theme->table->trClass }}"
@@ -92,7 +93,6 @@
                 :setUp="$setUp"
             />
         @endif
-
         @if (is_null($data) || count($data) === 0)
             <th>
                 <tr

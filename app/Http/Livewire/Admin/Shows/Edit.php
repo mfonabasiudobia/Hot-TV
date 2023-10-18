@@ -14,7 +14,7 @@ class Edit extends BaseComponent
 
     public $categories = [], $categories_id = [], $tvShow, $trailer, $casts_id = [], $casts = [];
 
-    public $tags = [], $meta_title, $meta_description;
+    public $tags = [], $meta_title, $meta_description, $is_recommended;
 
 
     public function mount($id){
@@ -34,6 +34,7 @@ class Edit extends BaseComponent
             'meta_description' => $this->tvShow->meta_description,
             'categories_id' => $this->tvShow->categories()->get()->pluck('id'),
             'casts_id' =>  $this->tvShow->casts()->get()->pluck('id'),
+            'is_recommended' => $this->tvShow->is_recommended
         ]);
     }
 
@@ -72,7 +73,8 @@ class Edit extends BaseComponent
                 'thumbnail' => $this->thumbnail,
                 'trailer' => $this->trailer,
                 'meta_title' => $this->meta_title,
-                'meta_description' => $this->meta_description
+                'meta_description' => $this->meta_description,
+                'is_recommended' => $this->is_recommended
             ];
 
             throw_unless(TvShowRepository::updateTvShow($data, [

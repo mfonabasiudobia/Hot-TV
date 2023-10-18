@@ -13,6 +13,7 @@
             class="pg-actions {{ $theme->table->tdBodyClass. ' ' .$theme->table->tdActionClass }}"
             style="{{ $theme->table->tdBodyStyle .' '.$theme->table->tdActionStyle }}"
         >
+
             @foreach ($actions as $key => $action)
                 @php
                     $customAction = null;

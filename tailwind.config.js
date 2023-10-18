@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors') 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +10,9 @@ module.exports = {
     './app/Http/**/*.php',
     './vendor/usernotnull/tall-toasts/config/**/*.php',
     './vendor/usernotnull/tall-toasts/resources/views/**/*.blade.php'
+  ],
+  presets: [
+        require("./vendor/power-components/livewire-powergrid/tailwind.config.js"), 
   ],
   darkMode : 'class',
   theme: {
@@ -22,7 +26,8 @@ module.exports = {
         'danger' : '#FF0207', //#BB0004
         'warning' : '#FEC107',
         'info' : '#03a9f3',
-        'secondary' : '#434343'
+        'secondary' : '#434343',
+        "pg-primary": colors.gray, 
     },
   },
   },

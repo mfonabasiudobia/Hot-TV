@@ -121,12 +121,24 @@ final class Home extends PowerGridComponent
             Column::make('Title', 'title')
                 ->searchable()
                 ->sortable(),
+
+            Column::make('Is Recommended', 'is_recommended')
+                ->searchable()
+                ->sortable()
+                ->toggleable(false, 'yes', 'no'),
             
             Column::make('Status', 'status_formatted'),
 
             Column::make('Created At', 'created_at_formatted'),
         ];
     }
+
+    public function onUpdatedEditable($id, $field, $value): void{   
+        TvShow::query()->find($id)->update([
+            $field => $value,
+        ]);
+    }
+
 
     /**
      * PowerGrid Filters.

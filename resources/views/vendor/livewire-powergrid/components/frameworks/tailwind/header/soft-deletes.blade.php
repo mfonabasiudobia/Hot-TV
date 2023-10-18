@@ -23,7 +23,7 @@
             x-transition:leave="transform duration-200"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-90"
-            class="mt-2 py-2 w-48 shadow-xl absolute z-10 dark:bg-pg-primary-600"
+            class="mt-2 py-2 w-48 bg-white shadow-xl absolute z-10 dark:bg-pg-primary-600"
         >
 
             <div

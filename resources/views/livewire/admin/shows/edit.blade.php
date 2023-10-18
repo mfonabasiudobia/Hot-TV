@@ -97,6 +97,10 @@
 
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>
+
+                    <div class="form-group">
+                            <x-atoms.toggle model="is_recommended" label="Is Recommended" />
+                        </div>
                 </section>
 
 
@@ -124,6 +128,8 @@
                     </div>
                 </div>
 
+
+           
                 <div class="form-group flex justify-end">
                     <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-danger" />
                 </div>

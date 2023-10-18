@@ -29,7 +29,7 @@
             ])>
                 <label
                     @class([
-                        'absolute left-0  border-2 mb-2 w-4 h-4 rounded-full transition transform duration-100 ease-linear cursor-pointer',
+                        'absolute left-0 bg-white border-2 mb-2 w-4 h-4 rounded-full transition transform duration-100 ease-linear cursor-pointer',
                         'translate-x-full border-pg-secondary-600' => $value === 1,
                         'translate-x-0 border-pg-primary-200' => $value === 0,
                     ])
