@@ -35,12 +35,12 @@
                                     Watch Now
                                 </a>
 
-                                @if(is_user_logged_in())
+                                {{-- @if(is_user_logged_in())
                                     <button wire:click.prevent="saveToWatchlist({{ $item }})"
                                         class="btn border rounded-xl py-1 px-2 text-3xl text-danger hover:bg-danger hover:text-white {{ $item->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                                         <i class="las la-heart"></i>
                                     </button>
-                                @endIf
+                                @endIf --}}
                             </div>
 
 

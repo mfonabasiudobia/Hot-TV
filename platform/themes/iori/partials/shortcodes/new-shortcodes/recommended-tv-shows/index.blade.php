@@ -32,10 +32,10 @@
                     </section>
 
 
-                    <button
+                    {{-- <button
                         class="invisible group-hover:visible btn h-[48px] w-[48px] border rounded-2xl hover:border-danger hover:bg-danger hover:text-white text-danger absolute top-5 right-5">
                         <i class="las la-heart text-2xl"></i>
-                    </button>
+                    </button> --}}
                 </a>
                 @endforeach
             </div>
