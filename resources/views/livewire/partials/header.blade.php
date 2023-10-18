@@ -5,7 +5,7 @@
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
             </a>
             
-            <form action="{{ route('search') }}" class="hidden xl:flex items-center bg-dark w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
+            <form action="{{ route('search') }}" class="hidden xl:flex items-center bg-[#000000] w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
                 <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
                 <input type="text" placeholder="Search titles here..." name="q" class="form-control border-0" />
             </form>
