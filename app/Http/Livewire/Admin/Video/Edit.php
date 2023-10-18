@@ -88,7 +88,7 @@ class Edit extends BaseComponent
             // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
 
 
-        try {
+        // try {
 
             $acceptedTimeRange = StreamRepository::acceptedTimeRange($this->start_time, $this->end_time);
 
@@ -121,9 +121,9 @@ class Edit extends BaseComponent
 
             return redirect()->route('admin.dashboard');
 
-        } catch (\Throwable $e) {
-            toast()->danger($e->getMessage())->push();
-        }
+        // } catch (\Throwable $e) {
+        //     toast()->danger($e->getMessage())->push();
+        // }
      }
 
 
