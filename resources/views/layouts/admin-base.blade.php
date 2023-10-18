@@ -55,8 +55,7 @@
     </section>
 
 
-    <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
-    
+
     @livewireScripts
     <script src="{{ asset('js/tall-toasts.js') }}" data-turbo-eval="false" data-turbolinks-eval="false"></script>
     <script data-turbo-eval="false" data-turbolinks-eval="false">
@@ -71,6 +70,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/srfq9lugj6h3um0oumk0latm9rs1cx0zyrcojwh2rc7van3r/tinymce/5/tinymce.min.js"
         referrerpolicy="origin"></script>
+    <script src="https://unpkg.com/alpinejs@3.9.0/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
     <script defer src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
