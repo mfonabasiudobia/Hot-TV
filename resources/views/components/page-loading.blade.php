@@ -1,4 +1,4 @@
-<div class="fixed z-[2000] h-screen w-screen top-0 left-0 bg-black bg-opacity-50" id="page-loading" style="background-image: url('{{ asset('images/background-image-01.png') }}">
+<div class="fixed z-[2000] h-screen w-screen top-0 left-0 bg-black" id="page-loading">
 
     <div class="flex items-center  justify-center h-full w-full">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
