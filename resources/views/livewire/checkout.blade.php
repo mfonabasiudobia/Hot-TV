@@ -131,10 +131,12 @@
                                 <section class="flex justify-start items-start space-x-5">
                                     <div>
                                         <input '
-                                            type="checkbox"
+                                            type="radio"
                                             class="accent-danger w-[20px] h-[20px]" 
                                             id="stripe" 
-                                            {{ gs()->default_payment_method == 'stripe' ? 'checked' : '' }} 
+                                            wire:model.defer='payment_method'
+                                            name="payment_method"
+                                            value="stripe" 
                                         />
                                     </div>
                                     <label class="space-y-2" for="stripe">
@@ -147,7 +149,12 @@
                             @if(gs()->payment_paypal_status ?? false)
                             <section class="flex justify-start items-start space-x-5">
                                 <div>
-                                    <input type="checkbox" class="accent-danger w-[20px] h-[20px]" id="paypal" {{ gs()->default_payment_method == 'paypal' ? 'checked' : '' }} />
+                                    <input type="radio"
+                                     class="accent-danger w-[20px] h-[20px]" 
+                                     wire:model.defer='payment_method'
+                                     name="payment_method"
+                                     value="paypal"
+                                     id="paypal" />
                                 </div>
                                 <label class="space-y-2" for="paypal">
                                     <h3 class="font-medium text-md">{{ gs()->payment_paypal_name }}</h3>

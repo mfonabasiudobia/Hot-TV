@@ -19,7 +19,7 @@ class Edit extends BaseComponent
 
     public $show_category_id, $tv_shows = [], $tv_show_id, $tv_show_seasons = [], $season_number;
 
-    public $tv_show_episodes = [], $episode_id;
+    public $tv_show_episodes = [], $episode_id, $podcast_id;
 
      public function mount($id){
         $this->stream = StreamRepository::getStreamById($id);
@@ -64,6 +64,16 @@ class Edit extends BaseComponent
 
         $this->dispatchBrowserEvent('added-tv-episode', $this->description);
     }
+
+     public function updatedPodcastId($value){
+        $podcast = PodcastRepository::getPodcastById($value);
+        $this->description = $podcast->description;
+        $this->title = $podcast->title;
+        $this->recorded_video = $podcast->recorded_video;
+
+        $this->dispatchBrowserEvent('added-tv-episode', $this->description);
+    }
+
 
      public function submit(){
 

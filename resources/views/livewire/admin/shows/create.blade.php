@@ -91,10 +91,7 @@
                         <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />
                     
                         <span x-text="'{{ file_path() }}' + trailer"></span>
-                        <video class='w-auto h-[20vh]' controls>
-                            <source :src="'{{ file_path() }}' + trailer" type="video/mp4">
-                            Your browser does not support HTML5 video.
-                        </video>
+                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
                     
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>

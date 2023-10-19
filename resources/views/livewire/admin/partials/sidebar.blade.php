@@ -21,6 +21,32 @@
                 </a>
             </li> --}}
 
+
+            <li class="{{$status = request()->routeIs('admin.podcast.*') ? 'active' : ''}}"
+                x-data="{ show : '{{$status ? true : false}}'}">
+                <a href="#" x-on:click="show = !show">
+                    <i class="las la-podcast"></i>
+                    <span>Manage Podcast</span>
+                    <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </a>
+            
+            
+                <ul class="list-2" x-show="show">
+                    <li>
+                        <a href="{{ route('admin.podcast.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Podcast List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.podcast.create')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Create Podcast</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="{{$status = request()->routeIs('admin.show-category.*') ? 'active' : ''}}"
                 x-data="{ show : '{{$status ? true : false}}'}">
                 <a href="#" x-on:click="show = !show">

@@ -120,6 +120,20 @@
 
                 @endIf
 
+
+                @if(in_array($stream_type, ['podcast']))
+                        <div class="form-group">
+                            <label>Podcasts</label>
+                            <select class="form-control" wire:model="podcast_id">
+                                <option value="">--Select Podcast--</option>
+                                @foreach (\App\Models\Podcast::all() as $item)
+                                <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                @endforeach
+                            </select>
+                            @error('podcast_id') <span class="error">{{ $message }}</span> @endError
+                        </div>
+                @endIf
+
                 
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"

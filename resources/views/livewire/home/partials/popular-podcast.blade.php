@@ -28,7 +28,7 @@
                         </button>
                     </div>
                     <div class="relative">
-                        <img src="{{ asset('images/featured.png') }}" alt="" />
+                        <img src="{{ asset('images/featured.png') }}" alt="" class="h-[266px] w-full" />
                         <img src="{{ asset('images/btnPlay.svg') }}" alt="" class="absolute top-0 left-0 right-0 bottom-0 m-auto" />
                     </div>
                 </section>

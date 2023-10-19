@@ -12,9 +12,5 @@
                 </circle>
             </svg>
         </div>
-
-        {{-- <img src="{{ asset('images/loaders/loader.gif') }}" alt=""> --}}
-
     </div>
-
 </div>
