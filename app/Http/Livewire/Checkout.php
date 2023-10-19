@@ -35,14 +35,14 @@ class Checkout extends BaseComponent
         }
 
         $this->fill([
-            'first_name' => 'MfonAbasi',
-            'last_name' => 'Udobia',
-            'email' => 'mfonabasiisaac@gmail.com',
-            'mobile_number' => '09036342948',
-            'address' => 'No 3, Ekpri Close, Uyo',
-            'country' => 'Nigeria',
-            'post_code' => 37382,
-            'city' => 'Uyo',
+            // 'first_name' => 'MfonAbasi',
+            // 'last_name' => 'Udobia',
+            // 'email' => 'mfonabasiisaac@gmail.com',
+            // 'mobile_number' => '09036342948',
+            // 'address' => 'No 3, Ekpri Close, Uyo',
+            // 'country' => 'Nigeria',
+            // 'post_code' => 37382,
+            // 'city' => 'Uyo',
             'payment_method' => gs()->default_payment_method
         ]);
     }
