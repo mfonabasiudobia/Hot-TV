@@ -34,6 +34,7 @@
         "laravel/tinker": "^2.8",
         "league/omnipay": "^3.2",
         "omnipay/paypal": "^3.0",
+        "omnipay/stripe": "^3.2",
         "pbmedia/laravel-ffmpeg": "^8.3",
         "php-ffmpeg/php-ffmpeg": "^1.1",
         "power-components/livewire-powergrid": "^4.4",

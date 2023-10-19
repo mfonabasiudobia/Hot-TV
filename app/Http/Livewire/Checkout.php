@@ -123,6 +123,8 @@ class Checkout extends BaseComponent
 
                 // return redirect()->route('payment-verification');
 
+                
+
             }else{
 
                 $gateway = Omnipay::create("PayPal_Rest");

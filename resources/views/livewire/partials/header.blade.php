@@ -23,7 +23,7 @@
             <li>
                 <a href="{{ route('live-channel.show') }}" class="hover:text-danger">
                     <span class="text-danger">&bull;</span>
-                    Live
+                    Live Channel
                 </a>
             </li>
 
@@ -227,7 +227,7 @@
                 <li>
                     <a href="{{ route('live-channel.show') }}" class="hover:text-secondary">
                         <span class="text-danger">&bull;</span>
-                        Live
+                        Live Channel
                     </a>
                 </li>
             
