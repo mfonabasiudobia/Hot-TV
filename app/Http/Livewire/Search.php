@@ -7,7 +7,7 @@ use App\Repositories\TvShowRepository;
 
 class Search extends BaseComponent
 {
-    public $sortByTitle, $sortByTime = "month", $page = 1, $sortByDate = "desc";
+    public $sortByTitle, $sortByTime, $page = 1, $sortByDate = "desc";
 
     public $q;
 
