@@ -20,31 +20,31 @@ class PlanForm extends FormAbstract
             ->withCustomFields()
             // ->addCustomField('tags', TagField::class)
             ->add('name', 'text', [
-                'label' => trans('core/base::forms.name'),
+                'label' => trans('Name'),
                 'label_attr' => ['class' => 'control-label required'],
                 'attr' => [
-                    'placeholder' => trans('core/base::forms.name_placeholder'),
+                    'placeholder' => trans('Name'),
                     'data-counter' => 150,
                 ],
             ])
             ->add('price', 'number', [
-                'label' => trans('core/base::forms.price'),
+                'label' => trans('Price'),
                 'label_attr' => ['class' => 'control-label required'],
                 'attr' => [
-                    'placeholder' => trans('core/base::forms.price'),
+                    'placeholder' => trans('Price'),
                 ],
                 'default_value' => 0,
             ])
             ->add('discount_type', 'customSelect', [
-                'label' => trans('core/base::tables.discount_type'),
+                'label' => trans('Discount Type'),
                 'label_attr' => ['class' => 'control-label required'],
                 'choices' => ['percent' => 'Percent', 'fixed' => 'Fixed'],
             ])
             ->add('discount_value', 'number', [
-                'label' => trans('core/base::forms.discount_value'),
+                'label' => trans('Discount Vlaue'),
                 'label_attr' => ['class' => 'control-label required'],
                 'attr' => [
-                    'placeholder' => trans('core/base::forms.discount_value'),
+                    'placeholder' => trans('Discount Vlaue'),
                 ],
                  'default_value' => 0,
                 ])
@@ -58,12 +58,31 @@ class PlanForm extends FormAbstract
             //     ],
             // ])
             ->add('can_download', 'onOff', [
-                'label' => trans('core/base::forms.can_download'),
+                'label' => trans('Can Download?'),
                 'label_attr' => ['class' => 'control-label'],
                 'default_value' => false,
             ])
+            ->add('features', 'repeater', [
+                'label'      => __('Features'),
+                'label_attr' => ['class' => 'control-label'],
+                'fields' => [
+                    [
+                        'type'       => 'text',
+                        'label'      => __('Text'),
+                        'label_attr' => ['class' => 'control-label required'],
+                        'attributes' => [
+                            'name'    => 'text',
+                            'value'   => null,
+                            'options' => [
+                                'class'        => 'form-control',
+                                'data-counter' => 255,
+                            ],
+                        ],
+                    ]
+                ]
+            ])
             ->add('can_stream', 'onOff', [
-                'label' => trans('core/base::forms.can_stream'),
+                'label' => trans('Can Stream?'),
                 'label_attr' => ['class' => 'control-label'],
                 'default_value' => false,
             ]);

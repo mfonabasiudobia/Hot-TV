@@ -17,4 +17,9 @@ class Plan extends BaseModel
     protected $table = 'plans';
 
     protected $guarded = [];
+
+    protected $casts = [
+        'features' => 'array'
+    ];
+    
 }

@@ -4,7 +4,7 @@
             <h1 class="font-semibold text-xl md:text-3xl">{{ $shortcode->title }}</h1>
             <p>{{ $shortcode->description }}</p>
             <button class="btn btn-lg border rounded-xl">
-                Monthly
+                Annually
             </button>
         </header>
 
@@ -15,7 +15,7 @@
                     <span>Basic</span>
                     <div>
                         <span class="font-semibold text-3xl">$7.99</span>
-                        <span class="font-light">/ month</span>
+                        <span class="font-light">/ annually</span>
                     </div>
                 </header>
                 <ul x-data="{
@@ -46,7 +46,7 @@
                     <span>Standard</span>
                     <div>
                         <span class="font-semibold text-3xl">$14.99</span>
-                        <span class="font-light">/ month</span>
+                        <span class="font-light">/ annually</span>
                     </div>
                 </header>
                 <ul x-data="{ items : [
@@ -80,7 +80,7 @@
                     <span>Premium</span>
                     <div>
                         <span class="font-semibold text-3xl">$19.99</span>
-                        <span class="font-light">/ month</span>
+                        <span class="font-light">/ annually</span>
                     </div>
                 </header>
                 <ul x-data="{ items : [

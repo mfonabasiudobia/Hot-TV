@@ -20,6 +20,7 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -31,6 +32,9 @@ window.Echo = new Echo({
     encrypted: true,
     enabledTransports: ['ws', 'wss'],
 });
+
+console.log("Hostname", window.location.hostname);
+console.log("Worign!")
 
 //Subscribe to orders channel and listen for NewOrder events
 // window.Echo.channel(`public.test.1`)

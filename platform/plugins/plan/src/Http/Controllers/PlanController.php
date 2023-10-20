@@ -88,7 +88,7 @@ class PlanController extends BaseController
     ) {
         // event(new BeforeUpdateContentEvent($request, $plan));
 
-        // $plan->fill($request->input());
+        dd($request->input());
 
         $plan = Plan::find($id);
 

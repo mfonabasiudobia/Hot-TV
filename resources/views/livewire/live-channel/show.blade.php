@@ -83,10 +83,9 @@
                 document.getElementById("loading-button").classList.remove("hidden");
             }else{
                 document.getElementById("loading-button").classList.add("hidden");
-            }
-
-            
+            }  
         });
+        
     });
     </script>
 @endpush
