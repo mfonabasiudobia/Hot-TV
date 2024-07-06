@@ -74,7 +74,7 @@
     
     
             <section class="space-y-3 md:col-span-2">
-                <h2 class="font-medium text-xl">Movie Categories +</h2>
+                <h2 class="font-medium text-xl">Tv Show Categories</h2>
                 <section>
                     <ul class="grid grid-cols-2 gap-3">
                         @foreach (\App\Models\ShowCategory::get() as $item)
