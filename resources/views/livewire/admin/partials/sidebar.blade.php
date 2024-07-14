@@ -10,7 +10,7 @@
             <li class="{{request()->routeIs('admin.dashboard') ? 'active' : ''}}">
                 <a href="{{route('admin.dashboard')}}">
                     <i class="las la-video"></i>
-                    <span>Dashboard</span>
+                    <span>Manage Channel Content</span>
                 </a>
             </li>
 
