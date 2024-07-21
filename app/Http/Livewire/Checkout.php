@@ -45,6 +45,7 @@ class Checkout extends BaseComponent
             // 'city' => 'Uyo',
             'payment_method' => gs()->default_payment_method
         ]);
+        
     }
 
      public function submit(){
@@ -71,7 +72,7 @@ class Checkout extends BaseComponent
                     'phone' => $this->mobile_number,
                     'address' => $this->address,
                     'email' => $this->email,
-                    'customer_id' => auth()->id(),
+                    'customer_id' => auth()->id() ?? 0,
                     'country' => $this->country,
                     'city' => $this->city,
                     'zip_code' => $this->post_code
@@ -79,7 +80,7 @@ class Checkout extends BaseComponent
             }
 
             $order = Order::create([
-                'user_id' => auth()->id(),
+                'user_id' => auth()->id() ?? 0,
                 'amount' => total_amount(),
                 'tax_amount' => tax_amount(),
                 'sub_total' => sub_total(),
@@ -115,7 +116,7 @@ class Checkout extends BaseComponent
                             ],
                         ],
                         'mode' => 'payment',
-                        'success_url' => route('payment-verification'),
+                        'success_url' =>route('payment-verification', ['order' => $order->id]),
                         'cancel_url' => route('checkout'),
                     ]);
 

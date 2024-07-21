@@ -7,11 +7,18 @@ use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
+use Botble\Ecommerce\Models\Order;
+
 
 class PaymentVerification extends BaseComponent
 {
 
+    public $order;
+
     public function mount(){
+        $this->order = request()->query('order');
+
         $payload = request()->getContent();
         $sigHeader = request()->header('Stripe-Signature');
         $endpointSecret = config('services.stripe.webhook_secret'); // Your webhook secret from Stripe
@@ -46,9 +53,16 @@ class PaymentVerification extends BaseComponent
         return response()->json(['status' => 'success']);
     }
 
-
     public function render()
     {
+        if($this->order){
+            $order=Order::find($this->order);
+            $order->status='processing';
+            $order->is_confirmed=1;
+            $order->is_finished=1;
+            $order->payment_id=7;
+            $order->save();
+        }
         return view('livewire.payment-verification');
     }
 }
