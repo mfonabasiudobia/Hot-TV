@@ -136,7 +136,7 @@ class Checkout extends BaseComponent
                 $response = $gateway->purchase([
                     'amount' =>  total_amount(),
                     'currency' => 'USD',
-                    'returnUrl' => route('payment-verification'),
+                    'returnUrl' => route('payment-verification', ['order' => $order->id]),
                     'cancelUrl' => route('checkout'),
                 ])->send();
 
