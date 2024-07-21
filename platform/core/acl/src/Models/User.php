@@ -103,7 +103,7 @@ class User extends BaseModel implements
     {
         return Attribute::make(
             get: function () {
-                if ($this->avatar->url) {
+                if (!empty($this->avatar->url) ) {
                     return RvMedia::url($this->avatar->url);
                 }
 

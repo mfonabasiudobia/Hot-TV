@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('avatar')->nullable();
             $table->enum('status', ['activated', 'locked'])->default('activated');
+            $table->dateTime('confirmed_at')->nullable();
         });
     }
 
@@ -28,9 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('name');
+             $table->dropColumn('name');
             $table->dropColumn('avatar');
             $table->dropColumn('status');
+            $table->dropColumn('confirmed_at');
         });
     }
 };
