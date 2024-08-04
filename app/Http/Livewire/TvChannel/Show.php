@@ -12,7 +12,6 @@ class Show extends BaseComponent
     public $tvChannel;
 
     public function mount($slug){
-
         $this->fill([
             'tvChannel' => StreamRepository::getTvChannelBySlug($slug)
         ]);

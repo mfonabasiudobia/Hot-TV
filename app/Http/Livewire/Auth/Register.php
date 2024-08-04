@@ -11,7 +11,8 @@ class Register extends BaseComponent
     public $username, $first_name, $last_name, $email, $password, $password_confirmation;
 
     public function submit(){
-
+        
+        
         $this->validate([
             'first_name' => 'required',
             'last_name' => 'required',

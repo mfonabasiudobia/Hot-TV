@@ -1,0 +1,20 @@
+{
+  "name": "botble/subscription-feature",
+  "description": "SubscriptionFeature package",
+  "type": "package",
+  "autoload": {
+    "psr-4": {
+      "Botble\\SubscriptionFeature\\": "src"
+    }
+  },
+  "require": {
+
+  },
+  "extra":{
+    "laravel":{
+      "providers":[
+        "Botble\\SubscriptionFeature\\Providers\\SubscriptionFeatureServiceProvider"
+      ]
+    }
+  }
+}
