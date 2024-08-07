@@ -9,12 +9,12 @@ class Nav extends Component
 
      public $currentNav = 'profile';
 
-     public function setNav($value){
+    public function setNav($value){
+        
         $this->currentNav = $value;
 
         $this->emit('setNav', $value);
      }
-
 
     public function render()
     {

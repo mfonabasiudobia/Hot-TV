@@ -56,7 +56,7 @@ class SubscriptionPlanTable extends TableAbstract
             });
             // ->editColumn('name', function (SubscriptionPlan $item) {
             //     return generate_shortcode('subscription-plan');
-            // });;
+            // });
 
         return $this->toJson($data);
     }

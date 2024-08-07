@@ -10,13 +10,13 @@
             </h5>
         </div>
 
-        <button class="btn btn-sm md:btn-md rounded-xl btn-danger space-x-2 flex items-center">
+        <!-- <button class="btn btn-sm md:btn-md rounded-xl btn-danger space-x-2 flex items-center">
             <span>Upgrade Premium</span>
 
             <span class="bg-yellow-500 h-[25px] w-[25px] inline-block rounded-full flex items-center justify-center">
                 <i class="las la-crown"></i>
             </span>
-        </button>
+        </button> -->
     </section>
 
     <section
@@ -26,6 +26,12 @@
                 <a href="#" wire:click.prevent="setNav('profile')"
                     class="py-3 transition-all hover:text-danger {{ $currentNav === 'profile' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     My Profile
+                </a>
+            </li>
+            <li>
+                <a href="#" wire:click.prevent="setNav('subscription')"
+                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'subscription' ? 'border-b-2 border-danger font-semibold' : '' }}">
+                    Subscription
                 </a>
             </li>
         </ul>

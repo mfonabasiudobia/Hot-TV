@@ -7,24 +7,20 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
+use App\Models\User;
 
 class SubscriptionOrder extends BaseModel
 {
-    
+    protected $table = 'subscription_orders';
+
     protected $fillable = [
-        'amount',
-        'user_id',
-        'payment_method_type',
-        'session_id',
-        'tax_amount',
-        'sub_total',
-        'coupon_code',
-        'discount_amount',
-        'discount_description',
-        'description',
+        'name',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => BaseStatusEnum::class,
+        'name' => SafeContent::class,
     ];
 
     protected function amount(): Attribute
@@ -35,7 +31,7 @@ class SubscriptionOrder extends BaseModel
         );
     }
 
-    protected function tax_amount(): Attribute
+    protected function taxAmount(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value) => $value / 100,
@@ -43,7 +39,7 @@ class SubscriptionOrder extends BaseModel
         );
     }
 
-    protected function sub_total(): Attribute
+    protected function discountAmount(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value) => $value / 100,
@@ -51,7 +47,7 @@ class SubscriptionOrder extends BaseModel
         );
     }
 
-    protected function discount_amount(): Attribute
+    protected function subTotal(): Attribute
     {
         return Attribute::make(
             get: fn (mixed $value) => $value / 100,
@@ -59,4 +55,13 @@ class SubscriptionOrder extends BaseModel
         );
     }
 
+    public function subscription(): BelongsTo
+    {
+        return $this->belongsTo(Subscription::class);
+    }
+    
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

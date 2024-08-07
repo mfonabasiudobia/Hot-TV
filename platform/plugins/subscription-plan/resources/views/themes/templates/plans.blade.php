@@ -16,7 +16,7 @@
                         features: [
                         @foreach($subscription->features as $feature)
                         @php
-                            $featureName = addcslashes($feature->name, "'");
+                            $featureName = addcslashes($feature->description, "'");
                         @endphp
                             {
                                 id: {{ $feature->id }},
@@ -51,7 +51,7 @@
                                 features: [
                                     @foreach($subscription->features as $feature)
                                     @php
-                                        $featureName = addcslashes($feature->name, "'");
+                                        $featureName = addcslashes($feature->description, "'");
                                     @endphp
                                 {
                                     id: {{ $feature->id }},

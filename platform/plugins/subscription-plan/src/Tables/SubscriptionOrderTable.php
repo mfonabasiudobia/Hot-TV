@@ -5,7 +5,7 @@ namespace Botble\SubscriptionPlan\Tables;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\Html;
 use Botble\Base\Enums\BaseStatusEnum;
-use Botble\SubscriptionPlan\Models\SubscriptionFeature;
+use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Botble\Table\Abstracts\TableAbstract;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -15,18 +15,18 @@ use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\JsonResponse;
 use Botble\Table\DataTables;
 
-class SubscriptionFeatureTable extends TableAbstract
+class SubscriptionOrderTable extends TableAbstract
 {
-    public function __construct(DataTables $table, UrlGenerator $urlGenerator, SubscriptionFeature $subscriptionFeature)
+    public function __construct(DataTables $table, UrlGenerator $urlGenerator, SubscriptionOrder $subscriptionOrder)
     {
         parent::__construct($table, $urlGenerator);
 
-        $this->model = $subscriptionFeature;
+        $this->model = $subscriptionOrder;
 
         $this->hasActions = true;
         $this->hasFilter = true;
 
-        if (!Auth::user()->hasAnyPermission(['subscription-feature.edit', 'subscription-feature.destroy'])) {
+        if (!Auth::user()->hasAnyPermission(['subscription-order.edit', 'subscription-order.destroy'])) {
             $this->hasOperations = false;
             $this->hasActions = false;
         }
@@ -36,26 +36,30 @@ class SubscriptionFeatureTable extends TableAbstract
     {
         $data = $this->table
             ->eloquent($this->query())
-            ->editColumn('name', function (SubscriptionFeature $item) {
-                if (!Auth::user()->hasPermission('subscription-feature.edit')) {
-                    return BaseHelper::clean($item->name);
-                }
-                return Html::link(route('subscription-feature.edit', $item->getKey()), BaseHelper::clean($item->name));
+            ->editColumn('user_id', function (SubscriptionOrder $item) {
+                return $item->user->email;
             })
-            ->editColumn('checkbox', function (SubscriptionFeature $item) {
+            ->editColumn('subscription_id', function (SubscriptionOrder $item) {
+                return $item->subscription->name;
+            })
+            ->editColumn('amount', function (SubscriptionOrder $item) {
+                return $item->amount;
+            })
+            ->editColumn('tax', function (SubscriptionOrder $item) {
+                return $item->tax_amount;
+            })
+            ->editColumn('sub_tatal', function (SubscriptionOrder $item) {
+                return $item->sub_total;
+            })
+            ->editColumn('checkbox', function (SubscriptionOrder $item) {
                 return $this->getCheckbox($item->getKey());
             })
-            ->editColumn('description', function (SubscriptionFeature $item) {
-                return $item->description;
-            })
-            ->editColumn('created_at', function (SubscriptionFeature $item) {
+            ->editColumn('created_at', function (SubscriptionOrder $item) {
                 return BaseHelper::formatDate($item->created_at);
             })
-            ->editColumn('status', function (SubscriptionFeature $item) {
-                return $item->status->toHtml();
-            })
-            ->addColumn('operations', function (SubscriptionFeature $item) {
-                return $this->getOperations('subscription-feature.edit', 'subscription-feature.destroy', $item);
+            
+            ->addColumn('operations', function (SubscriptionOrder $item) {
+                return $this->getOperations('subscription-order.edit', 'subscription-order.destroy', $item);
             });
 
         return $this->toJson($data);
@@ -68,10 +72,12 @@ class SubscriptionFeatureTable extends TableAbstract
             ->query()
             ->select([
                'id',
-               'name',
-               'description',
+               'user_id',
+               'subscription_id',
+               'tax_amount',
+               'sub_total',
                'created_at',
-               'status',
+               
            ]);
 
         return $this->applyScopes($query);
@@ -84,33 +90,42 @@ class SubscriptionFeatureTable extends TableAbstract
                 'title' => trans('core/base::tables.id'),
                 'width' => '20px',
             ],
-            'name' => [
-                'title' => trans('core/base::tables.name'),
+            'user_id' => [
+                'title' => trans('plugins/subscription-plan::subscription-order.name'),
                 'class' => 'text-start',
             ],
-            'description' => [
-                'title' => trans('core/base::tables.description'),
+            'subscription_id' => [
+                'title' => trans('plugins/subscription-plan::subscription-order.plan'),
+                'class' => 'text-start',
+            ],
+            'amount' => [
+                'title' => trans('plugins/subscription-plan::subscription-order.amount'),
+                'class' => 'text-start',
+            ],
+            'tax_amount' => [
+                'title' => trans('plugins/subscription-plan::subscription-order.tax'),
+                'class' => 'text-start',
+            ],
+            'sub_tatal' => [
+                'title' => trans('plugins/subscription-plan::subscription-order.sub_total'),
                 'class' => 'text-start',
             ],
             'created_at' => [
                 'title' => trans('core/base::tables.created_at'),
                 'width' => '100px',
             ],
-            'status' => [
-                'title' => trans('core/base::tables.status'),
-                'width' => '100px',
-            ],
+            
         ];
     }
 
     public function buttons(): array
     {
-        return $this->addCreateButton(route('subscription-feature.create'), 'subscription-feature.create');
+        return $this->addCreateButton(route('subscription-order.create'), 'subscription-order.create');
     }
 
     public function bulkActions(): array
     {
-        return $this->addDeleteAction(route('subscription-feature.deletes'), 'subscription-feature.destroy', parent::bulkActions());
+        return $this->addDeleteAction(route('subscription-order.deletes'), 'subscription-order.destroy', parent::bulkActions());
     }
 
     public function getBulkChanges(): array

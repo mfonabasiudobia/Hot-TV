@@ -43,4 +43,11 @@ class Subscription extends BaseModel
             set: fn (mixed $value) => $value * 100
         );
     }
+
+    
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(SubscriptionOrder::class);
+    }
 }

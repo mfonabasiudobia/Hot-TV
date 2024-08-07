@@ -15,3 +15,7 @@ if (!defined('SUBSCRIPTIONS_MODULE_SCREEN_NAME')) {
 if (!defined('SUBSCRIPTION_FEATURE_MODULE_SCREEN_NAME')) {
     define('SUBSCRIPTION_FEATURE_MODULE_SCREEN_NAME', 'subscription-feature');
 }
+
+if (!defined('SUBSCRIPTION_ORDER_MODULE_SCREEN_NAME')) {
+    define('SUBSCRIPTION_ORDER_MODULE_SCREEN_NAME', 'subscription-order');
+}

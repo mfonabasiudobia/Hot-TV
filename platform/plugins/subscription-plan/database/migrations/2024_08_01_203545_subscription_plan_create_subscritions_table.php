@@ -29,6 +29,7 @@ return new class () extends Migration {
         Schema::create('subscription_orders', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('amount');
+            $table->foreignId('subscription_id')->constained('subscriptions')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('payment_method_type')->default('stripe');
             $table->string('session_id');

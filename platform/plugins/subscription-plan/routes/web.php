@@ -35,6 +35,15 @@ Route::group(['namespace' => 'Botble\SubscriptionPlan\Http\Controllers', 'middle
                 'permission' => 'subscription-feature.destroy',
             ]);
         });
+
+        Route::group(['prefix' => 'subscription-orders', 'as' => 'subscription-order.'], function () {
+            Route::resource('', 'SubscriptionOrderController')->parameters(['' => 'subscription-order']);
+            Route::delete('items/destroy', [
+                'as' => 'deletes',
+                'uses' => 'SubscriptionOrderController@deletes',
+                'permission' => 'subscription-order.destroy',
+            ]);
+        });
     });
 });
 Route::group(['middleware'=> ['web', 'core']], function() {

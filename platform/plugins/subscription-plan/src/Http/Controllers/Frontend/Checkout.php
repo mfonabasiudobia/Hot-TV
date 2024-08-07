@@ -22,6 +22,7 @@ class Checkout extends BaseController
     public function checkoutSubmit(Request $request)
     {
         $stripePlanId = $request->input('stripe_plan_id');
+        $subscriptionId = $request->input('subscription_id');
         $email = $request->input('email');
 
         Stripe::setApiKey(gs()->payment_stripe_secret);
@@ -43,6 +44,7 @@ class Checkout extends BaseController
             $order = [
                 'amount' => $session->amount_subtotal/100,
                 'user_id' => auth()->user()->id,
+                'subscription_id' => $subscriptionId,
                 'session_id' => $session->id,
                 'sub_total' => $session->amount_subtotal/100,
                 'status' => 'pending',

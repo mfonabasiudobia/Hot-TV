@@ -58,4 +58,23 @@ return [
         'flag' => 'subscription-feature.destroy',
         'parent_flag' => 'subscription-feature.index',
     ],
+    [
+        'name' => 'Subscription orders',
+        'flag' => 'subscription-order.index',
+    ],
+    [
+        'name' => 'Create',
+        'flag' => 'subscription-order.create',
+        'parent_flag' => 'subscription-order.index',
+    ],
+    [
+        'name' => 'Edit',
+        'flag' => 'subscription-order.edit',
+        'parent_flag' => 'subscription-order.index',
+    ],
+    [
+        'name' => 'Delete',
+        'flag' => 'subscription-order.destroy',
+        'parent_flag' => 'subscription-order.index',
+    ],
 ];

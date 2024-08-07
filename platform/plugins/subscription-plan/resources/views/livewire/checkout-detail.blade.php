@@ -163,6 +163,8 @@
                             </section>
                             @endIf
                         <input type="hidden" name="stripe_plan_id" value="{{ $subscription->stripe_plan_id}}" />
+                        <input type="hidden" name="subscription_id" value="{{ $subscription->id}}" />
+                        
                         <x-atoms.loading-button text="PLACE ORDER" target="submit" class="btn btn-xl rounded-xl btn-danger btn-block" />
                     </div>
                 </div>

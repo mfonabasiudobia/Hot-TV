@@ -56,6 +56,9 @@ class SubscriptionPlanServiceProvider extends ServiceProvider
             \Botble\LanguageAdvanced\Supports\LanguageAdvancedManager::registerModule(\Botble\SubscriptionPlan\Models\SubscriptionFeature::class, [
                 'name',
             ]);
+            \Botble\LanguageAdvanced\Supports\LanguageAdvancedManager::registerModule(\Botble\SubscriptionPlan\Models\SubscriptionOrder::class, [
+                'name',
+            ]);
         }
 
         $this->app['events']->listen(RouteMatched::class, function () {
@@ -90,6 +93,7 @@ class SubscriptionPlanServiceProvider extends ServiceProvider
                 'url' => route('subscriptions.index'),
                 'permissions' => ['subscriptions.index'],
             ]);
+            
             DashboardMenu::registerItem([
                 'id' => 'cms-plugins-subscription-feature',
                 'priority' => 2,
@@ -99,7 +103,18 @@ class SubscriptionPlanServiceProvider extends ServiceProvider
                 'url' => route('subscription-feature.index'),
                 'permissions' => ['subscription-feature.index'],
             ]);
+
+            DashboardMenu::registerItem([
+                'id' => 'cms-plugins-subscription-order',
+                'priority' => 0,
+                'parent_id' => 'cms-plugins-subscription-plan',
+                'name' => 'plugins/subscription-plan::subscription-order.name',
+                'icon' => null,
+                'url' => route('subscription-order.index'),
+                'permissions' => ['subscription-order.index'],
+            ]);
         });
+
 
         $this->app->booted(function () {
             $this->app->register(HookServiceProvider::class);

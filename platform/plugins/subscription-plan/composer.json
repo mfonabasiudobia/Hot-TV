@@ -1,10 +1,10 @@
 {
-  "name": "botble/subscription-feature",
-  "description": "SubscriptionFeature package",
+  "name": "botble/subscription-order",
+  "description": "SubscriptionOrder package",
   "type": "package",
   "autoload": {
     "psr-4": {
-      "Botble\\SubscriptionFeature\\": "src"
+      "Botble\\SubscriptionOrder\\": "src"
     }
   },
   "require": {
@@ -13,7 +13,7 @@
   "extra":{
     "laravel":{
       "providers":[
-        "Botble\\SubscriptionFeature\\Providers\\SubscriptionFeatureServiceProvider"
+        "Botble\\SubscriptionOrder\\Providers\\SubscriptionOrderServiceProvider"
       ]
     }
   }

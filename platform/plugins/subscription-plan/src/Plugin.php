@@ -18,6 +18,8 @@ class Plugin extends PluginOperationAbstract
         Schema::dropIfExists('subscription_subscrption_feature');
         Schema::dropIfExists('subscription_features');
         Schema::dropIfExists('subscription_features_translations');
+
         Schema::dropIfExists('subscription_orders');
+        Schema::dropIfExists('subscription_orders_translations');
     }
 }
