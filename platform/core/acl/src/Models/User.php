@@ -103,8 +103,9 @@ class User extends BaseModel implements
     {
         return Attribute::make(
             get: function () {
-                if (!empty($this->avatar->url) ) {
-                    return RvMedia::url($this->avatar->url);
+
+                if (!empty($this->avatar()->url) ) {
+                    return RvMedia::url($this->avatar()->url);
                 }
 
                 try {
@@ -116,9 +117,12 @@ class User extends BaseModel implements
         );
     }
 
-    public function avatar(): BelongsTo
+    public function avatar()
     {
-        return $this->belongsTo(MediaFile::class)->withDefault();
+        return MediaFile::where('id', $this->avatar_id)->first();
+
+
+        //return $this->belongsTo(MediaFile::class)->withDefault();
     }
 
     public function roles(): BelongsToMany
@@ -150,7 +154,7 @@ class User extends BaseModel implements
 
         return $this->hasAnyAccess($permissions);
     }
-    
+
 
     public function sendPasswordResetNotification($token): void
     {

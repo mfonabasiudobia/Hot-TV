@@ -8,7 +8,7 @@ use App\Repositories\AuthRepository;
 
 class AuthController extends Controller
 {
-    
+
     public function login(Request $request)  {
 
             $validator = validator()->make(request()->all(), [
@@ -21,7 +21,7 @@ class AuthController extends Controller
             try {
 
                 throw_unless($user = AuthRepository::login($request->all()), "Incorrect login credentials");
-                
+
                 if(!$user->email_verified_at){
                       throw_unless($otp = AuthRepository::sendOtp($user->email, $user->temporary_token), "Failed to
                       send OTP");
@@ -31,7 +31,7 @@ class AuthController extends Controller
                         'user' => $user
                       ]);
                 }
-                  
+
 
                 return $this->success("Login Successful!",[
                     'token' => $user->createToken("APITOKEN")->plainTextToken,
@@ -39,13 +39,13 @@ class AuthController extends Controller
                 ]);
 
             } catch (\Exception $e) {
-                return $this->fail($e->getMessage());                
-            }           
-            
+                return $this->fail($e->getMessage());
+            }
+
     }
 
     public function register(Request $request)  {
-        
+
         $validator = validator()->make(request()->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -68,8 +68,8 @@ class AuthController extends Controller
                 ]);
 
             } catch (\Exception $e) {
-                return $this->fail($e->getMessage());                
-            }        
+                return $this->fail($e->getMessage());
+            }
     }
 
     public function resendOTP(Request $request)  {
@@ -118,7 +118,7 @@ class AuthController extends Controller
     public function resetPassword(Request $request) {
 
         $validator = validator()->make(request()->all(), [
-            'email' => 'required', 
+            'email' => 'required',
             'old_password' => 'required',
             'new_password' => 'required|min:6',
             'temporary_token' => 'required'
@@ -157,8 +157,8 @@ class AuthController extends Controller
 
 
             } catch (\Exception $e) {
-                return $this->fail($e->getMessage());                
-            }                  
+                return $this->fail($e->getMessage());
+            }
     }
 
 

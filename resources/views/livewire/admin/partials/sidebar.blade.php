@@ -29,8 +29,8 @@
                     <span>Manage Podcast</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
-            
-            
+
+
                 <ul class="list-2" x-show="show">
                     <li>
                         <a href="{{ route('admin.podcast.list')  }}">
@@ -47,6 +47,31 @@
                 </ul>
             </li>
 
+            <li class="{{$status = request()->routeIs('admin.shoutout.*') ? 'active' : ''}}"
+                x-data="{ show : '{{$status ? true : false}}'}">
+                <a href="#" x-on:click="show = !show">
+                    <i class="las la-podcast"></i>
+                    <span>Manage Celebrity Shoutouts</span>
+                    <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </a>
+
+
+                <ul class="list-2" x-show="show">
+                    <li>
+                        <a href="{{ route('admin.shoutout.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Shoutout List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.shoutout.create')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Create Shoutout</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="{{$status = request()->routeIs('admin.show-category.*') ? 'active' : ''}}"
                 x-data="{ show : '{{$status ? true : false}}'}">
                 <a href="#" x-on:click="show = !show">
@@ -54,8 +79,8 @@
                     <span>Manage Shows Content</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
-            
-            
+
+
                 <ul class="list-2" x-show="show">
                     <li>
                         <a href="{{ route('admin.show-category.list')  }}">
@@ -84,8 +109,8 @@
                             <span>Manage Episodes</span>
                             <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                         </a>
-                    
-                    
+
+
                         <ul class="list-3" x-show="show">
                             <li>
                                 <a href="{{ route('admin.tv-show.episode.list')  }}">

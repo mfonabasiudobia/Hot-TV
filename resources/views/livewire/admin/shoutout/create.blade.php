@@ -1,9 +1,9 @@
 <section>
     @livewire("admin.gallery.modal.create")
     <section class="space-y-5">
-        <h2 class="font-medium text-xl">Create Podcast</h2>
+        <h2 class="font-medium text-xl">Create Shoutout</h2>
 
-        <section>
+        <section x-data="{show_media: 'image'}">
             <form class="space-y-5" wire:submit.prevent='submit'>
                 <section class="space-y-3 content-wrapper">
                     <div class="form-group">
@@ -38,19 +38,47 @@
                         @error('thumbnail') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-                    <div class="form-group" x-data="{ recorded_video : @entangle('recorded_video').defer }"
-                        @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
-                        <label>Upload Video</label>
-                        <input type="file" class="form-control"
-                            x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+{{--                    <div x-data="{show_media: 'image'}">--}}
+                        <div class="form-group">
+                            <label>Media type</label>
+                            <select class="form-control" placeholder="Media Type" wire:model.defer="media_type" x-on:change="show_media = $event.target.value">
+                                <option value="image">Image</option>
+                                <option value="video">Video</option>
+                            </select>
+                        </div>
 
-                        <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + recorded_video" controls></video>
 
-                        @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
-                    </div>
+                        <div class="form-group" x-data="{ recorded_video : @entangle('recorded_video').defer }"
+
+                             @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;"
+                             x-show="show_media == 'video'"
+                        >
+                            <label x-text="'Upload ' + show_media"></label>
+                            <input type="file" class="form-control"
+                                   x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+
+                            <span x-text="'{{ file_path() }}' + recorded_video"></span>
+                            <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + recorded_video" controls></video>
+
+                            @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
+                        </div>
+
+                        <div class="form-group" x-data="{ media_image : @entangle('media_image').defer }"
+                             @set-push-file.window="if($event.detail.unique_key == 'media_image') media_image = $event.detail.path;"
+                             x-show="show_media == 'image'"
+                        >
+                            <label  x-text="'Upload ' + show_media"></label>
+                            <input type="file" class="form-control" placeholder="Upload Image"
+                                   x-on:click.prevent="$wire.emit('openGallery', 'media_image')" />
+
+                            <img x-bind:src="'{{ file_path('/') }}/' + media_image" x-show="media_image ? true : false"
+                                 class="image-preview" x-cloak />
+
+                            @error('media_image') <span class="error"> {{ $message }}</span> @endError
+                        </div>
+
+{{--                    </div>--}}
                 </section>
-
 
                 <div class="space-y-5 content-wrapper">
                     <div class="space-y-1">
@@ -62,7 +90,7 @@
                     <div class="form-group">
                         <label>Meta Title</label>
                         <input type="text" class="form-control" placeholder="Meta Title"
-                            wire:model.defer="meta_title" />
+                               wire:model.defer="meta_title" />
                         @error('meta_title') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
@@ -70,7 +98,7 @@
                     <div class="form-group">
                         <label>Meta Description</label>
                         <textarea class="form-control" placeholder="Meta Description"
-                            wire:model.defer="meta_description"></textarea>
+                                  wire:model.defer="meta_description"></textarea>
                         @error('meta_description') <span class="error"> {{ $message }}</span> @endError
                     </div>
                 </div>

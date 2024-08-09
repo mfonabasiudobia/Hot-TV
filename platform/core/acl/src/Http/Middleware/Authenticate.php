@@ -10,9 +10,8 @@ class Authenticate extends BaseAuthenticate
     public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($request, $guards);
-
-        if(!in_array(auth()->id(), admin_id_array())){
-                    return response()->json(['message' => 'Unauthenticated.'], 401);
+        if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
+            return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
         if (! $guards) {

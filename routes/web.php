@@ -68,6 +68,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
         Route::group(['namespace' => 'ShoutOuts'], function() {
             Route::get('celebrity-shoutout',"Home")->name('celebrity-shoutout.home');
+            Route::get('{slug}',"Show")->name('shoutout.show');
         });
 
         Route::group(['namespace' => 'Gallery'], function() {
@@ -91,7 +92,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
     });
-    
-    
-    
+
+
+
 });

@@ -4,7 +4,7 @@
             <a href="{{ route('home') }}">
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
             </a>
-            
+
             <form action="{{ route('search') }}" class="hidden xl:flex items-center bg-[#000000] w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
                 <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
                 <input type="text" placeholder="Search titles here..." name="q" class="form-control border-0" />
@@ -36,7 +36,7 @@
                     <span>More</span>
                     <i class="fa-solid fa-angle-down"></i>
                 </a>
-            
+
                 <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
                     <li>
                         <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
@@ -45,7 +45,7 @@
                         <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
                     </li>
                     <li>
-                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity shoutouts</a>
+                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebrity shoutout</a>
                     </li>
                     <li>
                         <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
@@ -73,11 +73,11 @@
             <li>
                 <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">Sign in</a>
             </li>
-        
+
             <li>
                 <a href="{{ route('register') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
             </li>
-            @else 
+            @else
 
             <li title="Notification">
                 <a href="#" class="hover:text-danger text-lg">
@@ -104,7 +104,7 @@
                             <i class="las la-thumbs-up text-xl"></i>
                             <span>Favourites</span>
                         </a>
-                        <a href="javascript:void(0)" 
+                        <a href="javascript:void(0)"
                             x-on:click="$dispatch('trigger-upload-video-modal')"
                             class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                             <i class="las la-cloud-upload-alt text-xl"></i>
@@ -115,7 +115,7 @@
                             <span>Subscription</span>
                         </a>
 
-                        <a href="{{ route('user.dashboard') }}" 
+                        <a href="{{ route('user.dashboard') }}"
                             class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                             <i class="las la-user-circle text-xl"></i>
                             <span>My Profile</span>
@@ -126,7 +126,7 @@
                             <span>Setting</span>
                         </a>
 
-                        <a href="{{ route('logout') }}" 
+                        <a href="{{ route('logout') }}"
                             class="px-4 py-1 space-x-3 flex items-center hover:text-danger">
                             <i class="las la-sign-out-alt text-xl"></i>
                             <span>Logout</span>
@@ -145,7 +145,7 @@
 
         <a href="{{ route('cart') }}" class="hover:text-danger text-lg relative">
             <i class="fas fa-shopping-cart"></i>
-        
+
             <span
                 class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block absolute -top-1 -right-1">{{ Cart::instance('product')->count() }}</span>
         </a>
@@ -154,7 +154,7 @@
             <a href="javascript:void(0)" class="hover:text-danger flex items-center">
                 <i class="las la-user-circle text-2xl"></i>
             </a>
-        
+
             <ul
                 class="absolute top-[35px] right-[0px] py-3 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[180px] text-sm z-50 hidden group-hover:block border border-danger">
                 <li class="bg-danger p-3 text-md">
@@ -176,17 +176,17 @@
                         <i class="las la-crown text-xl"></i>
                         <span>Subscription</span>
                     </a>
-        
+
                     <a href="{{ route('user.dashboard') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                         <i class="las la-user-circle text-xl"></i>
                         <span>My Profile</span>
                     </a>
-        
+
                     <a href="{{ route('user.profile') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                         <i class="las la-cog text-xl"></i>
                         <span>Setting</span>
                     </a>
-        
+
                     <a href="{{ route('logout') }}" class="px-4 py-1 space-x-3 flex items-center hover:text-danger">
                         <i class="las la-sign-out-alt text-xl"></i>
                         <span>Logout</span>
@@ -195,7 +195,7 @@
             </ul>
         </div>
         @endIf
-        
+
         <button class="text-white inline-block" type="button" x-on:click="$dispatch('toggle-mobile-nav')">
             <i class="las la-bars text-3xl"></i>
         </button>
@@ -209,28 +209,28 @@
         <section class="space-y-10 min-h-screen overflow-y-auto">
             <header class="flex justify-between items-center">
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[70px] w-auto" />
-            
+
                 <button class="text-2xl text-white" x-on:click="show = false; isBtn = false">
                     <i class="las la-times"></i>
                 </button>
             </header>
-            
+
             <ul class="flex-1 space-y-5 text-lg md:text-2xl text-white">
                 <li>
                     <a href="{{ route('home') }}" class="hover:text-secondary">Home</a>
                 </li>
-            
+
                 <li>
                     <a href="{{ route('tv-shows.home') }}" class="hover:text-secondary">Tv Shows</a>
                 </li>
-            
+
                 <li>
                     <a href="{{ route('live-channel.show') }}" class="hover:text-secondary">
                         <span class="text-danger">&bull;</span>
                         Live Channel
                     </a>
                 </li>
-            
+
                 <li>
                     <a href="{{ route('pedicab-streams.home') }}" class="hover:text-secondary">Pedicab Streams</a>
                 </li>
@@ -240,7 +240,7 @@
                         <span>More</span>
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
-                
+
                     <ul
                         class="py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl  z-50 hidden group-hover:block">
                         <li>
@@ -264,48 +264,48 @@
                         </li>
                     </ul>
                 </li>
-            
+
             </ul>
-            
+
             <ul class="flex justify-center items-center space-x-5 border-t border-secondary py-7">
                 <li>
                     <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">
                         Sign in
                     </a>
                 </li>
-            
+
                 <li>
                     <a href="{{ route('register') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
                 </li>
             </ul>
-            
-            
+
+
             <ul class="flex items-center justify-center">
                 <li>
                     <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
                         <i class="lab la-facebook-f"></i>
                     </a>
                 </li>
-            
+
                 <li>
                     <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
                         <i class="lab la-youtube"></i>
                     </a>
                 </li>
-            
+
                 <li>
                     <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
                         <i class="lab la-twitter"></i>
                     </a>
                 </li>
-            
-            
+
+
                 <li>
                     <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
                         <i class="lab la-linkedin"></i>
                     </a>
                 </li>
-            
+
                 <li>
                     <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
                         <i class="lab la-instagram"></i>

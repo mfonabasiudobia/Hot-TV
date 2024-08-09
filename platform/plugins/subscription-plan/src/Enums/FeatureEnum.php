@@ -3,6 +3,7 @@ namespace Botble\SubscriptionPlan\Enums;
 
 enum FeatureEnum:string
 {
+    case AD_SUPPORTED = 'ad_supported';
     case UNLIMITED_AD_FREE_TV_MOBILE_GAMES = 'unlimited_ad_free_tv_mobile_games';
     case WATCH_ON_2_DEVICES =  'watch_on_2_devices';
     case WATCH_ON_4_DEVICES = 'watch_on_4_devices';

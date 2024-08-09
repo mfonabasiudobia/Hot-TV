@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -25,6 +25,16 @@ function upload_file($file, $filePath, $previousPath = null, $isupdating = false
     return 'storage/' . $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
 }
 
+function upload_avatar($file, $filePath, $previousPath = null, $isupdating = false) {
+    if(!$file && $isupdating) return $previousPath;// return previous path if we updating file and file upload exists
+
+    if (file_exists($previousPath)) unlink($previousPath);
+
+    if(!$file) return null;
+
+    return $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
+}
+
 function file_path($file = null){
     return asset('storage') . '/' . $file;
 }
@@ -32,8 +42,8 @@ function file_path($file = null){
 function get_seconds_in_time_array(){
      $intervals = [];
 
-     for ($i = 1; $i <= 180; $i++) { 
-        // 180 minutes=3 hours 
+     for ($i = 1; $i <= 180; $i++) {
+        // 180 minutes=3 hours
         $seconds=$i * 60; // Convert minutes to seconds
 
         $hours = floor($i / 60);
@@ -52,7 +62,7 @@ function get_seconds_in_time_array(){
             $title .= $minutes === 1 ? '1 minute' : $minutes . ' minutes';
         }
 
-        $intervals[]=[ 
+        $intervals[]=[
             'seconds'=> $seconds,
             'title' => $title,
          ];

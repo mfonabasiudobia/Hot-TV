@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('podcast_views', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('podcast_id')->references('id')->on('tv_shows');
+            $table->foreignId('podcast_id')->references('id')->on('tv_shows');
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->string('ip_address')->nullable();
             $table->timestamps();

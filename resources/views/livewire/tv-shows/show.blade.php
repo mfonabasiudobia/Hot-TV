@@ -4,16 +4,16 @@
                 ['title' => $tvShow->title, 'route' => null]
     ]" />
      <div class="container space-y-7">
-        
+
 
         <section class="grid lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-7 overflow-hidden">
-                
+
                 <div class="video-container" wire:ignore>
-                    <video 
-                        id="player" 
-                        src="{{ file_path($selectedEpisode->recorded_video ?? $tvShow->trailer) }}" 
-                        playsinline controls  
+                    <video
+                        id="player"
+                        src="{{ file_path($selectedEpisode->recorded_video ?? $tvShow->trailer) }}"
+                        playsinline controls
                         data-plyr-config='{ "title": "{{ $selectedEpisode->title ?? $tvShow->title }}", "debug" : "true" }'>
                     </video>
                 </div>
@@ -23,12 +23,16 @@
                     <div class="flex items-center justify-between">
                         <div class="space-y-1">
                             <h2 class="font-semibold text-xl">{{ $selectedEpisode->title ?? $tvShow->title }}</h2>
-                            
+
                             @if($selectedEpisode)
                             <p>Published on {{ $selectedEpisode->releaseAt() }}</p>
                             @else
                             <p>Published on {{ $tvShow->releaseAt() }}</p>
                             @endIf
+
+                            @if(count($tvShow->casts))
+                                <p>Cast: {{ $tvShow->casts->implode('name', ', ') }}</p>
+                            @endif
                         </div>
 
                             @if(is_user_logged_in())
@@ -49,14 +53,14 @@
                                 <i class="lar la-eye"></i>
                                 @if($selectedEpisode)
                                 <span>{{ view_count($selectedEpisode->views->count()) }} viewers</span>
-                                @else 
+                                @else
                                 <span>{{ view_count($tvShow->views->count()) }} viewers</span>
                                 @endIf
                             </div>
 
                             @if($selectedEpisode)
                                 <span>{{ convert_seconds_to_time($selectedEpisode->duration) }}</span>
-                            @else 
+                            @else
                                 <span>{{ convert_seconds_to_time($tvShow->episodes()->sum('duration')) }}</span>
                             @endIf
                         </div>
@@ -71,7 +75,7 @@
                         <div x-show="show">
                                 {!! $selectedEpisode->description ?? $tvShow->description !!}
                         </div>
-                        
+
                         <div class="flex justify-center" x-show="show === false">
                             <button class="text-sm text-danger flex items-center" x-on:click="show = !show">
                                 <span>Read More</span>
@@ -119,8 +123,8 @@
                 @if(count($seasons) > 0)
                 <section class="bg-dark p-5 rounded-2xl space-y-2">
                     <div class="flex justify-end text-sm space-x-2 relative" wire:ignore>
-                        <select 
-                            class="text-white select-season-form appearance-none mr-2 overflow-hidden season_number bg-black" 
+                        <select
+                            class="text-white select-season-form appearance-none mr-2 overflow-hidden season_number bg-black"
                             wire:model='season_number' id="season_number">
                             @foreach ($seasons as $season)
                                 <option value="{{ $season }}" class="bg-black hover:bg-danger">Season {{ $season }}</option>
@@ -130,9 +134,9 @@
 
 
                     <x-atoms.loading target="season_number" />
-                
-                    <section 
-                        wire:loading.class="hidden"  
+
+                    <section
+                        wire:loading.class="hidden"
                         wire:target="season_number"
                         class="overflow-y-auto min-h-[20vh] space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                         @foreach ($episodes as $key => $episode)
@@ -154,7 +158,7 @@
 
                 <section class="bg-dark p-5 space-y-3 rounded-2xl">
                     <h3 class="font-semibold text-lg">Share</h3>
-                
+
                     <div class="flex flex-wrap  text-sm">
                         <a x-bind:href="`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`" target="_blank" class="mr-2 mb-1">
                             <img src="{{ asset('images/facebook.png') }}" alt="" class="h-[40px]" />
@@ -175,7 +179,7 @@
                                 url: window.location.href,
                             })
                             .then(() => console.log('Shared successfully'))
-                            .catch((error) => console.error('Share failed', error));    
+                            .catch((error) => console.error('Share failed', error));
                         }">
                             <img src="{{ asset('images/custom-link.png') }}" alt="" class="h-[40px]" />
                         </a>
@@ -196,7 +200,7 @@
                 @endIf
             </div>
         </section>
-    </div> 
+    </div>
 
 
 
@@ -256,7 +260,7 @@
             }
         }
         });
-</script> 
+</script>
 
 <script>
     new SlimSelect({
@@ -281,25 +285,25 @@
             background-color: red !important;
             background: red !important;
         }
-        
+
         select option:hover {
             box-shadow: 0 0 10px 10px #000 inset !important;
         }
-        
+
         .swiper-wrapper {
             flex-direction: unset !important;
             flex-wrap: wrap !important;
             align-items: center !important;
-        } 
+        }
 
         .swiper-pagination-bullet {
-            background-color: #ff5733; 
+            background-color: #ff5733;
         }
-        
+
          .swiper-pagination-bullet-active {
-            background-color: #ff0000; 
-            opacity: 1; 
-        }  
+            background-color: #ff0000;
+            opacity: 1;
+        }
     </style>
     <script src="https://unpkg.com/slim-select@latest/dist/slimselect.min.js"></script>
     <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet" />

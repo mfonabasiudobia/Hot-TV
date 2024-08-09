@@ -42,6 +42,7 @@ class Show extends BaseComponent
             'ip_address' => request()->ip()
         ];
 
+
         TvShowView::firstOrCreate($data, $data);
     }
 
@@ -61,7 +62,7 @@ class Show extends BaseComponent
 
     public function saveToWatchlist($tvShowId){
         try {
-            
+
             $watchlist =  $this->tvShow->watchlists()->where('user_id', auth()->id())->first();
 
             if(!$watchlist){

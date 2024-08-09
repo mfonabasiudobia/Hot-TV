@@ -1,11 +1,16 @@
+
 <section class="bg-dark p-5 text-white space-y-10 min-h-[35vh] flex flex-col justify-end">
+    @livewire("user.partials.modal.upload-pic")
     <section
         class="space-y-5 md:space-y-0 flex md:items-center flex-col md:flex-row justify-start items-start md:justify-between md:w-1/2">
         <div class="flex items-center space-x-4">
-            <img src="{{ asset('images/user-icon.jpg') }}" alt="" class="w-[70px] h-[70px] rounded-full" />
+
+{{--            <img src="{{ //asset('images/user-icon.jpg') }}" alt="" class="w-[70px] h-[70px] rounded-full"   />--}}
+
+
+            <img src="{{ $avatar  }}" alt="" class="w-[70px] h-[70px] rounded-full" x-on:click="$dispatch('trigger-change-avatar-modal')"/>
             <h5 class="text-xl font-semibold">
                 {{ user()->first_name }} {{ user()->last_name }} <br />
-
                 ({{ user()->username }})
             </h5>
         </div>
@@ -66,7 +71,7 @@
                     <span>Watch History</span>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
-                        {{ \App\Models\TvShowView::where('user_id')->groupBy('tv_show_id')->selectRaw('tv_show_views.tv_show_id')->count() }}
+                        {{ \App\Models\TvShowView::where('user_id', auth()->user()->id)->groupBy('tv_show_id')->selectRaw('tv_show_views.tv_show_id')->count() }}
                     </span>
                 </a>
             </li>
@@ -82,7 +87,7 @@
             <i class="las la-camera"></i>
             <span>Screenshots</span>
         </button>
-    @else 
+    @else
         <button class="btn btn-danger btn-sm inline-block font-semibold" x-on:click="$dispatch('trigger-upload-video-modal')">
             <i class="las la-upload"></i>
             <span>Upload Video</span>

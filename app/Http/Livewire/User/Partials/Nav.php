@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\User\Partials;
 
+use Botble\Media\Models\MediaFile;
 use Livewire\Component;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 
@@ -9,9 +10,13 @@ class Nav extends Component
 {
 
     public $currentNav = 'favourites';
+    public $avatar = null;
     public $subscriptionPlan;
 
+    protected $listeners = ['reRender'];
+
     public function mount(){
+
         if(request()->has('p')){
             $this->currentNav = request('p');
         }
@@ -19,10 +24,25 @@ class Nav extends Component
         $order = SubscriptionOrder::where('user_id', auth()->user()->id)
         ->where('status', 'paid')
         ->first();
-        
+
         if($order) {
             $this->subscriptionPlan = $order->subscription->name;
         }
+
+        $this->avatar = user()->avatarUrl;
+//        $media = MediaFile::query()->where('id', user()->avatar_id)->first();
+//
+//        if($media) {
+//            $this->avatar = asset('storage/' . $media->url);
+//        } else {
+//            $this->avatar = asset('images/user-icon.jpg');
+//        }
+    }
+
+    public function reRender()
+    {
+        $this->mount();
+        $this->render();
     }
 
     public function setNav($value){

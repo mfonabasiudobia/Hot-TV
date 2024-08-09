@@ -21,43 +21,46 @@
                 </div>
             </a>
         @endIf
-            
+
             <section class="space-y-10">
                 <header class="flex justify-center">
                     <h1 class="font-semibold text-xl md:text-3xl">Latest Post</h1>
                 </header>
-            
-            
+
+
                 <section class="grid md:grid-cols-3 gap-5">
                     @foreach ($posts as $post)
                     <a href="{{ route('blog.show', ['slug' => $post->slug]) }}" class="block p-3 border border-secondary rounded-2xl">
                         <img src="{{ asset('storage') }}/{{ $post->image }}" alt="" class="w-full h-[250px] rounded-xl" />
-            
+
                         <section class="space-y-2 p-2">
                             @if($post->firstCategory)
                                 <span class="text-danger text-xs">{{ $post->firstCategory->name }}</span>
                             @endIf
-            
+
                             <h2 class="font-semibold block">{{ Str::limit($post->name, 80) }}</h2>
-            
+
                             <span class="text-secondary text-sm inline-block">{{ $post->createdAt() }}</span>
                         </section>
                     </a>
                     @endforeach
                 </section>
-            
+
                 <footer class="flex justify-center">
-                   @if ($posts->hasMorePages()) 
-                        <a href="{{ $posts->nextPageUrl() }}" class="btn btn-md border border-secondary opacity-75">View More Post</a>
+                   @if ($posts->hasMorePages())
+                        <a  wire:click.prevent="loadMore" class="btn btn-md border border-secondary opacity-75">
+
+                            View More Post
+                        </a>
                     @endIf
                 </footer>
 
-                
-            
+
+
             </section>
 
         </section>
-            
+
 
 
     </div>

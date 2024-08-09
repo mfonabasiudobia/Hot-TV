@@ -7,12 +7,12 @@
             <header class="space-y-2">
                 <div class="flex items-center justify-between">
                     <h1 class="text-xl md:text-2xl font-semibold">Upload Image</h1>
-                
+
                     <button class="text-xl" x-on:click.prevent="status = !status">
                         <i class="las la-times"></i>
                     </button>
                 </div>
-                
+
                 <p>Showcase your travel photos and experiences.</p>
             </header>
 
