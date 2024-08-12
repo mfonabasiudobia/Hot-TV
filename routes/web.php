@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VideoStreamController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,10 +21,25 @@ Route::get('public/compare', function(){
 })->name('public.compare');
 
 
+Route::get('/video/{section}/{id}', VideoStreamController::class)->name('video-stream');
+
+
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
     Route::get('logout', "Auth\Login@logout")->name('logout');
+    Route::get('faqs',"Faqs")->name('faqs');
+    Route::get('privacy-policy',"PrivacyPolicy")->name('privacy_policy');
+
+    Route::group(['namespace' => 'Cart', 'as' => 'cart.', 'prefix' => 'cart'], function() {
+        Route::get('/',"Home")->name('home');
+        Route::get('checkout',"Checkout")->name('checkout');
+    });
+    Route::get('about',"About")->name('about');
+    Route::get('contact',"Contact")->name('contact');
+    Route::get('payment-verification',"PaymentVerification")->name('payment-verification');
+    Route::get('terms-and-condition',"Terms")->name('terms');
+    Route::get('s',"Search")->name('search');
 
     Route::group(['middleware'=> []], function() {
 
@@ -45,6 +61,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
         });
 
         Route::group(['namespace' => 'Podcast'], function() {
+            Route::get('podcast',"Home")->name('podcast.home');
             Route::get('podcast/{slug}',"Show")->name('podcast.show');
         });
 
@@ -80,19 +97,14 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('{slug}',"Show")->name('show');
         });
 
-        Route::get('faqs',"Faqs")->name('faqs');
-        Route::get('privacy-policy',"PrivacyPolicy")->name('privacy_policy');
-        Route::get('cart',"Cart")->name('cart');
-        Route::get('checkout',"Checkout")->name('checkout');
-        Route::get('about',"About")->name('about');
-        Route::get('contact',"Contact")->name('contact');
-        Route::get('payment-verification',"PaymentVerification")->name('payment-verification');
-        Route::get('terms-and-condition',"Terms")->name('terms');
-        Route::get('s',"Search")->name('search');
+        Route::group(['namespace' => 'Pricing', 'as' => 'pricing.', 'prefix' => 'pricing'], function() {
+            Route::get('pricing',"Home")->name('home');
+        });
 
 
     });
-
-
-
 });
+
+
+
+

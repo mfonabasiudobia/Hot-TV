@@ -30,6 +30,9 @@
             <li>
                 <a href="{{ route('pedicab-streams.home') }}" class="hover:text-danger">Pedicab Streams</a>
             </li>
+            <li>
+                <a href="{{ route('pricing.home') }}" class="hover:text-danger">Pricing</a>
+            </li>
 
             <li class="relative group">
                 <a href="javascript:void(0)" class="hover:text-danger">
@@ -43,6 +46,9 @@
                     </li>
                     <li>
                         <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('podcast.home') }}" class="px-4 py-2 block hover:text-danger">Podcast</a>
                     </li>
                     <li>
                         <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebrity shoutout</a>
@@ -63,7 +69,7 @@
 
         <ul class="hidden xl:flex items-center space-x-5">
             <li title="Cart">
-                <a href="{{ route('cart') }}" class="hover:text-danger text-lg relative">
+                <a href="{{ route('cart.home') }}" class="hover:text-danger text-lg relative">
                     <i class="fas fa-shopping-cart"></i>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block absolute -top-1 -right-1">{{ Cart::instance('product')->count() }}</span>
@@ -143,7 +149,7 @@
             <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
         </a>
 
-        <a href="{{ route('cart') }}" class="hover:text-danger text-lg relative">
+        <a href="{{ route('cart.home') }}" class="hover:text-danger text-lg relative">
             <i class="fas fa-shopping-cart"></i>
 
             <span

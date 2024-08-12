@@ -35,11 +35,16 @@
 
                     <section class="flex items-center space-x-5">
                        <div>
-                            <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->price) }}</span>
-                            @if($product->sale_price > 0)
-                            /
-                            <strike class="opacity-50">{{ ac() . number_format($product->sale_price)}}</strike>
-                            @endIf
+
+                           @if($product->sale_price > 0)
+
+                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->sale_price, 2) }}</span>
+                                /
+                                <strike class="opacity-50">{{ ac() . number_format($product->price)}}</strike>
+
+                           @else
+                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->price, 2) }}</span>
+                           @endIf
                        </div>
                         <span>({{ $product->quantity }} Units In stock)</span>
                     </section>
@@ -64,19 +69,19 @@
 
                     {{-- <button class="btn btn-xl btn-danger">Add To Cart</button> --}}
 
-                    <x-atoms.loading-button 
-                        text="Add To Cart" 
-                        target="addToCart" 
-                        x-on:click="$wire.addToCart({{ $product }}, quantity)" 
-                        class="btn btn-xl btn-danger" 
+                    <x-atoms.loading-button
+                        text="Add To Cart"
+                        target="addToCart"
+                        x-on:click="$wire.addToCart({{ $product }}, quantity)"
+                        class="btn btn-xl btn-danger"
                     />
 
                     @if(is_user_logged_in())
-                        <x-atoms.loading-button 
-                            text="{{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'Remove From Wishlist' : 'Add To Wishlist' }}" 
-                            target="saveToWishList" 
+                        <x-atoms.loading-button
+                            text="{{ Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->where('product_id', $product->id)->first() ? 'Remove From Wishlist' : 'Add To Wishlist' }}"
+                            target="saveToWishList"
                             x-on:click="$wire.saveToWishList({{ $product->id }})"
-                            class="btn btn-xl btn-danger" 
+                            class="btn btn-xl btn-danger"
                         />
                     @endIf
 
@@ -93,26 +98,26 @@
 
 
 
-     
+
 
         <hr />
 
     <section x-data="{ tab : 1 }" class="space-y-7">
         <nav class="flex items-center space-x-5 justify-center">
-            <button 
+            <button
             :class="tab == 1 ? 'bg-danger bg-opacity-50 text-danger' : ''"
-            class="btn btn-sm text-xl font-semibold" 
+            class="btn btn-sm text-xl font-semibold"
             x-on:click="tab = 1">
                 Description
             </button>
-            {{-- <button 
+            {{-- <button
                 :class="tab == 2 ? 'bg-danger bg-opacity-50 text-danger' : ''"
-                class="btn btn-sm text-xl font-semibold" 
+                class="btn btn-sm text-xl font-semibold"
                 x-on:click="tab = 2">
                 Reviews (2)
             </button> --}}
         </nav>
-        
+
         <section x-show="tab == 1" class="min-h-[20vh]">
             {!! do_shortcode($product->content) !!}
         </section>

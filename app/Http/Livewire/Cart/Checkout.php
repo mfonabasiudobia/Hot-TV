@@ -1,23 +1,15 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cart;
 
 use App\Http\Livewire\BaseComponent;
-use Botble\Ecommerce\Models\OrderAddress;
 use Botble\Ecommerce\Models\Address;
 use Botble\Ecommerce\Models\Order;
+use Botble\Ecommerce\Models\OrderAddress;
 use Cart;
-use Botble\Payment\Facades\PaymentMethods;
-
-use Botble\Payment\Enums\PaymentMethodEnum;
-use Botble\Payment\Models\Payment;
-use Botble\Payment\Supports\PaymentHelper;
-
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use Stripe\PaymentIntent;
-
 use Omnipay\Omnipay;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class Checkout extends BaseComponent
 {
@@ -31,7 +23,7 @@ class Checkout extends BaseComponent
 
             toast()->danger('Cart cannot be empty')->pushOnNextPage();
 
-            return redirect()->route('cart');
+            return redirect()->route('cart.home');
         }
 
         $this->fill([
@@ -45,7 +37,7 @@ class Checkout extends BaseComponent
             // 'city' => 'Uyo',
             'payment_method' => gs()->default_payment_method
         ]);
-        
+
     }
 
      public function submit(){
@@ -65,7 +57,7 @@ class Checkout extends BaseComponent
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         try {
-            
+
             if($this->can_save){
                 Address::create([
                     'name' => "{$this->first_name} {$this->last_name}",
@@ -117,14 +109,14 @@ class Checkout extends BaseComponent
                         ],
                         'mode' => 'payment',
                         'success_url' =>route('payment-verification', ['order' => $order->id]),
-                        'cancel_url' => route('checkout'),
+                        'cancel_url' => route('cart.checkout'),
                     ]);
 
                     return redirect($session->url);
 
                 // return redirect()->route('payment-verification');
 
-                
+
 
             }else{
 
@@ -132,12 +124,12 @@ class Checkout extends BaseComponent
                 $gateway->setClientId(env('PAYPAL_CLIENT_ID'));
                 $gateway->setSecret(env('PAYPAL_SECRET_ID'));
                 $gateway->setTestMode(true);
-                
+
                 $response = $gateway->purchase([
                     'amount' =>  total_amount(),
                     'currency' => 'USD',
                     'returnUrl' => route('payment-verification', ['order' => $order->id]),
-                    'cancelUrl' => route('checkout'),
+                    'cancelUrl' => route('cart.checkout'),
                 ])->send();
 
                 if($response->isRedirect()){
@@ -147,7 +139,7 @@ class Checkout extends BaseComponent
                 }
             }
 
-        //   Cart::instance('product')->destroy();         
+        //   Cart::instance('product')->destroy();
 
         } catch (\Throwable $e) {
             return toast()->danger($e->getMessage())->push();

@@ -6,7 +6,12 @@
         <section>
             <section class="w-full max-h-screen relative">
                 <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"
-                    src="{{ file_path($podcast->recorded_video) }}"></video>
+                    src="{{ route('video-stream', ['podcast', $podcast->id]) }}"></video>
+
+                <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
+                    <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
+                    <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
+                </div>
                 <div class="custom-loader absolute left-[45%] top-[45%]" id="loading-button"></div>
             </section>
 
@@ -36,5 +41,15 @@
                     muted : true,
                     autoplay: true, // Autoplay is initially set to false
                 });
+
+            player.addEventListener('timeupdate', function() {
+            console.log(this.currentTime);
+            if (this.currentTime >= {{ setting('video_length') }}) { // 60 seconds = 1 minute
+                this.style.display = 'none';
+                console.log('Video is paused');
+                document.getElementById('registerMessage').style.display = 'block';
+                this.pause();
+            }
+        });
         });
 </script>

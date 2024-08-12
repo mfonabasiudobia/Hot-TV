@@ -17,7 +17,7 @@
                     <input type="text" class="form-control" placeholder="First Name" wire:model.defer="first_name" />
                     @error('first_name') <span class="error"> {{ $message }}</span> @endError
                 </div>
-            
+
                <div class="form-group">
                     <label>Last Name</label>
                     <input type="text" class="form-control" placeholder="Last Name" wire:model.defer="last_name" />
@@ -73,7 +73,7 @@
                         <td>
                             <section class="flex items-center space-x-3 w-[320px]">
                                 <img src="{{ file_path($cart->model->images[0]) }}" alt="" class="h-[100px] w-auto rounded-xl" />
-                
+
                                 <div class="space-y-2">
                                     <h2 class="font-semibold text-xl">{{ $cart->model->name }}</h2>
                                 </div>
@@ -81,7 +81,7 @@
                         </td>
                         <td class="font-medium text-xl">
                             <span>{{ ac() . number_format($cart->model->price, 2) }}</span>
-                
+
                             @if($cart->model->sale_price > 0)
                             /
                             <strike class="opacity-50 text-sm">{{ ac() . number_format($cart->model->sale_price, 2)}}</strike>
@@ -132,25 +132,25 @@
                                     <div>
                                         <input '
                                             type="radio"
-                                            class="accent-danger w-[20px] h-[20px]" 
-                                            id="stripe" 
+                                            class="accent-danger w-[20px] h-[20px]"
+                                            id="stripe"
                                             wire:model.defer='payment_method'
                                             name="payment_method"
-                                            value="stripe" 
+                                            value="stripe"
                                         />
                                     </div>
                                     <label class="space-y-2" for="stripe">
                                         <h3 class="font-medium text-md">{{ gs()->payment_stripe_name }}</h3>
                                         <p>{{ gs()->payment_stripe_description }}</p>
                                     </label>
-                                </section> 
+                                </section>
                             @endIf
 
                             @if(gs()->payment_paypal_status ?? false)
                             <section class="flex justify-start items-start space-x-5">
                                 <div>
                                     <input type="radio"
-                                     class="accent-danger w-[20px] h-[20px]" 
+                                     class="accent-danger w-[20px] h-[20px]"
                                      wire:model.defer='payment_method'
                                      name="payment_method"
                                      value="paypal"

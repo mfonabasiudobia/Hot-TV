@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cart;
 
 use App\Http\Livewire\BaseComponent;
 use Botble\Ecommerce\Models\Product;
-use Botble\Ecommerce\Models\Address;
 use Cart as CartLibrary;
 
-class Cart extends BaseComponent
+class Home extends BaseComponent
 {
 
     public $carts = [];
 
     public function mount(){
         // CartLibrary::instance('product')->destroy();
+
         $this->fill([
             'carts' => CartLibrary::instance('product')->content()
         ]);

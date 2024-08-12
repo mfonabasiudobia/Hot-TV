@@ -8,15 +8,21 @@ use Livewire\Component;
 class Home extends Component
 {
 
-    public $shoutouts;
-    public function mount()
+    public $perPage = 3;
+
+    public function loadMore()
     {
-        $this->shoutouts = Shoutout::where('status', 'published')->get();
-
-
+        $this->perPage += 3;
+        $this->render();
     }
     public function render()
     {
-        return view('livewire.shout-outs.home');
+
+
+        $shoutouts = Shoutout::where('status', 'published')
+            ->orderBy('created_at', 'desc')
+            ->paginate($this->perPage);
+
+        return view('livewire.shout-outs.home')->with('shoutouts', $shoutouts);
     }
 }

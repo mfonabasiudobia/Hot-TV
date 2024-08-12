@@ -37,6 +37,7 @@ class SettingController extends BaseController
 {
     public function getOptions()
     {
+
         PageTitle::setTitle(trans('core/setting::setting.title'));
 
         Assets::addScripts(['jquery-validation', 'form-validation'])
@@ -93,6 +94,12 @@ class SettingController extends BaseController
             setting()->set('admin_locale_direction', $adminLocalDirection);
             setting()->save();
         }
+
+        $videoLength = $request->input('video_length');
+        if ($videoLength != setting('video_length')) {
+            session()->put('video_length', $videoLength);
+        }
+
 
         return $response
             ->setPreviousUrl(route('settings.options'))

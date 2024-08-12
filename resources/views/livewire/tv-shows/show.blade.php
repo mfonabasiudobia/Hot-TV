@@ -12,10 +12,15 @@
                 <div class="video-container" wire:ignore>
                     <video
                         id="player"
-                        src="{{ file_path($selectedEpisode->recorded_video ?? $tvShow->trailer) }}"
+                        src="{{ $selectedEpisode ? route('video-stream', ['episode', $selectedEpisode->id]) : file_path($tvShow->trailer) }}"
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $selectedEpisode->title ?? $tvShow->title }}", "debug" : "true" }'>
                     </video>
+
+                    <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
+                        <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
+                        <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
+                    </div>
                 </div>
 
 
@@ -215,6 +220,16 @@
  <script>
     const videoPlayer = document.getElementById('player');
 
+    videoPlayer.addEventListener('timeupdate', function() {
+        console.log(this.currentTime);
+        if (this.currentTime >= {{ setting('video_length') }}) { // 60 seconds = 1 minute
+            this.style.display = 'none';
+            console.log('Video is paused');
+            document.getElementById('registerMessage').style.display = 'block';
+            this.pause();
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
             const player = new Plyr('#player', {
                 autoplay: true, // Autoplay is initially set to false
@@ -266,6 +281,9 @@
     new SlimSelect({
         select: '#season_number'
       })
+
+
+
 </script>
 
 @endPush

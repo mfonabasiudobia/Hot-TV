@@ -18,6 +18,7 @@ class Show extends BaseComponent
          $slug = Slug::where('key', $slug)->firstorFail();
 
          $this->product = Product::findOrFail($slug->reference_id);
+
     }
 
     public function addToCart($product, $qty = 1){
@@ -39,7 +40,7 @@ class Show extends BaseComponent
             toast()->success('Product Added to Cart')->push();
 
             $this->emit('refreshCart');
-            
+
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
         }
@@ -48,7 +49,7 @@ class Show extends BaseComponent
 
     public function saveToWishList($productId){
         try {
-            
+
             $wishlist = Wishlist::where('product_id', $productId)->where('customer_id', auth()->id())->first();
 
             if(!$wishlist){

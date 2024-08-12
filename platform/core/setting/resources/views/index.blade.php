@@ -67,6 +67,15 @@
                         {{ trans('core/setting::setting.general.enable_send_error_reporting_via_email') }}
                     </label>
                 </x-core-setting::form-group>
+
+                <x-core-setting::form-group id="video_length_wrapper" >
+                    <x-core-setting::text-input
+                        name="video_length"
+                        label="Video Length"
+                        type="number"
+                        value="10"
+                    />
+                </x-core-setting::form-group>
             </x-core-setting::section>
 
             <x-core-setting::section
