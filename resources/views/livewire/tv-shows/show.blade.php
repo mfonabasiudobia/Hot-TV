@@ -218,34 +218,81 @@
 
 @push('script')
  <script>
-    const videoPlayer = document.getElementById('player');
 
-    videoPlayer.addEventListener('timeupdate', function() {
-        console.log(this.currentTime);
-        if (this.currentTime >= {{ setting('video_length') }}) { // 60 seconds = 1 minute
-            this.style.display = 'none';
-            console.log('Video is paused');
-            document.getElementById('registerMessage').style.display = 'block';
-            this.pause();
-        }
-    });
+     function savePlaybackProgress(currentTime) {
 
-    document.addEventListener('DOMContentLoaded', () => {
-            const player = new Plyr('#player', {
-                autoplay: true, // Autoplay is initially set to false
-            });
-    });
 
-    document.addEventListener('change-episode', (event) => {
-        videoPlayer.src = event.detail.video_url;
-        videoPlayer.load(); // Load the new video source
-        videoPlayer.play(); // Play the new video
 
-        setTimeout(() => {
-            window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
-        }, 2000);
+         fetch('/api/v1/playedtime', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+             },
+             body: JSON.stringify({
+                 played_seconds: Math.floor(currentTime),
+             })
+         })
+             .then(response => response.json())
+             .then(data => {
+                 console.log('Playback progress saved:', data);
+             })
+             .catch(error => {
+                 console.error('Error saving playback progress:', error);
+             });
+     }
 
-    })
+
+     // document.addEventListener('DOMContentLoaded', function () {
+
+
+         const videoPlayer = document.getElementById('player');
+        let lastSavedTime = 0;
+         videoPlayer.addEventListener('timeupdate', function () {
+             console.log(this.currentTime);
+             {{--if (this.currentTime >= {{ setting('video_length') }}) { // 60 seconds = 1 minute--}}
+             {{--    this.style.display = 'none';--}}
+             {{--    console.log('Video is paused');--}}
+             {{--    document.getElementById('registerMessage').style.display = 'block';--}}
+             {{--    this.pause();--}}
+             {{--}--}}
+
+             const currentTime = this.currentTime;
+
+             const playedSeconds = Math.round(currentTime);
+             if (playedSeconds > lastSavedTime) {
+                 lastSavedTime = playedSeconds;
+                 savePlaybackProgress(Math.round(playedSeconds));
+
+             }
+
+
+             // Save playback progress every 10 seconds
+             // if (Math.floor(currentTime) % 10 === 0) {
+             //
+             //     savePlaybackProgress(Math.round(currentTime));
+             // }
+         });
+
+         document.addEventListener('DOMContentLoaded', () => {
+             const player = new Plyr('#player', {
+                 autoplay: true, // Autoplay is initially set to false
+             });
+         });
+
+         document.addEventListener('change-episode', (event) => {
+             videoPlayer.src = event.detail.video_url;
+             videoPlayer.load(); // Load the new video source
+             videoPlayer.play(); // Play the new video
+
+             setTimeout(() => {
+                 window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
+             }, 2000);
+
+         })
+     // });
+
+
 </script>
 
 <script>

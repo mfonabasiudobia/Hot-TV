@@ -14,13 +14,18 @@ class SubscriptionOrder extends BaseModel
     protected $table = 'subscription_orders';
 
     protected $fillable = [
-        'name',
+        'amount',
+        'user_id',
+        'subscription_id',
+        'payment_method_type',
+        'session_id',
+        'sub_total',
         'status',
     ];
 
     protected $casts = [
-        'status' => BaseStatusEnum::class,
-        'name' => SafeContent::class,
+        //'status' => BaseStatusEnum::class,
+        //'name' => SafeContent::class,
     ];
 
     protected function amount(): Attribute
@@ -59,7 +64,7 @@ class SubscriptionOrder extends BaseModel
     {
         return $this->belongsTo(Subscription::class);
     }
-    
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

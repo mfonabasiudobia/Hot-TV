@@ -12,25 +12,16 @@ class Checkout extends BaseComponent
 {
     public $subscription;
     public $email;
-    
 
     public function mount(Subscription $subscription)
     {
-        
-        if(!is_user_logged_in()) {
-            return redirect('login');
-        }
-        
-        $this->email = auth()->user()->email;
         $this->subscription = $subscription;
     }
-
 
     public function submit()
     {
         dd('this');
     }
-
 
     public function render()
     {

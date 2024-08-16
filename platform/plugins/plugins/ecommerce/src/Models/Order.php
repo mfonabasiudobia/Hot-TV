@@ -44,8 +44,8 @@ class Order extends BaseModel
     ];
 
     protected $casts = [
-        'status' => OrderStatusEnum::class,
-        'shipping_method' => ShippingMethodEnum::class,
+        //'status' => OrderStatusEnum::class,
+        //'shipping_method' => ShippingMethodEnum::class,
         'completed_at' => 'datetime',
     ];
 

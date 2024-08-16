@@ -39,13 +39,13 @@ class AuthRepository {
     }
 
     public static function register($data) : User {
-        $user = User::create(array_merge($data, 
+        $user = User::create(array_merge($data,
         [
             'password' => bcrypt($data['password']),
             'temporary_token' => str()->random(15)
         ]));
 
-        Mail::to($user->email)->send(new WelcomeNotification($user));
+        //Mail::to($user->email)->send(new WelcomeNotification($user));
 
         $user->roles()->attach([2]); //Assigning User to a Role of Streamer
 
@@ -88,7 +88,7 @@ class AuthRepository {
                 session()->flash('email-already-verified-message', true);
 
             }
-            
+
 
             return $user;
         }
@@ -125,7 +125,7 @@ class AuthRepository {
     }
 
     public static function resetPassword($data) : bool | User {
-    
+
          if (request()->is('api/*')) {
             //We may disable the first condition soon
              if($user = self::getUserByEmail($data['email'], $data['temporary_token'])){
@@ -155,7 +155,7 @@ class AuthRepository {
     }
 
 
-    public static function sendOtp($email, $temporaryToken = null) : bool | int 
+    public static function sendOtp($email, $temporaryToken = null) : bool | int
     {
             $otp = rand(111111, 999999);
 
@@ -164,7 +164,7 @@ class AuthRepository {
                 DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
                 if(request()->is('api/*')) {
-                    Mail::to($user->email)->send(new OtpNotification($user, $otp)); 
+                    //Mail::to($user->email)->send(new OtpNotification($user, $otp));
 
                     DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $otp, 'created_at' => now() ]);
                  }else{
@@ -186,6 +186,6 @@ class AuthRepository {
         })->first();
     }
 
-   
+
 
 }

@@ -46,6 +46,15 @@ class Home extends BaseComponent
         }
     }
 
+    public function removeCart()
+    {
+        foreach(CartLibrary::instance('product')->content() as $content) {
+            CartLibrary::instance('product')->remove($content->rowId);
+        }
+
+
+    }
+
     public function lessFromCart($product, $qty = 1){
         try {
             throw_if($qty < 1, 'Invalid Quantity Supplied');

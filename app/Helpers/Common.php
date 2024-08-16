@@ -39,7 +39,7 @@ function file_path($file = null){
     return asset('storage') . '/' . $file;
 }
 
-function get_seconds_in_time_array(){
+function get_seconds_in_time_array() {
      $intervals = [];
 
      for ($i = 1; $i <= 180; $i++) {

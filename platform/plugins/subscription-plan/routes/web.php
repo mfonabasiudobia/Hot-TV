@@ -3,7 +3,7 @@
 use Botble\Base\Facades\BaseHelper;
 use Illuminate\Support\Facades\Route;
 use Botble\SubscriptionPlan\Http\Livewire\Checkout;
-// use Botble\SubscriptionPlan\Http\Controllers\Checkout as CheckoutSubmit;
+use Botble\SubscriptionPlan\Http\Controllers\Frontend\Checkout as PlanCheckout;
 
 Route::group(['namespace' => 'Botble\SubscriptionPlan\Http\Controllers', 'middleware' => ['web', 'core']], function () {
 
@@ -49,8 +49,11 @@ Route::group(['namespace' => 'Botble\SubscriptionPlan\Http\Controllers', 'middle
 Route::group(['middleware'=> ['web', 'core']], function() {
     //Route::group(['namespace' => 'Botble\SubscriptionPlan\Http\Livewire'], function() {
         Route::get('subscription-checkout/{subscription}', Botble\SubscriptionPlan\Http\Livewire\Checkout::class)->name('subscription-checkout');
-        
     //});
-    Route::get('checkout', [Botble\SubscriptionPlan\Http\Controllers\Frontend\Checkout::class, 'checkoutSubmit'])->name('checkout-submit');
-    Route::get('payment-verification', [Botble\SubscriptionPlan\Http\Controllers\Frontend\Checkout::class, 'paymentVerification'])->name('payment-verification');
+
+    Route::group(['prefix' => 'plan', 'as' => 'plan.'], function() {
+        Route::post('checkout', [PlanCheckout::class, 'checkoutSubmit'])->name('checkout');
+        Route::get('payment-verification', [PlanCheckout::class, 'paymentVerification'])->name('payment-verification');
+    });
+
 });

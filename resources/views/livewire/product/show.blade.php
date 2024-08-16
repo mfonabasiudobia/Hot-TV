@@ -1,3 +1,35 @@
+@php
+
+    $now = \Carbon\Carbon::now();
+    $price = $product->price;
+    $oldPrice = null;
+
+    if($product->start_date != null && $product->end_date == null) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date))) {
+            $price = $product->sale_price;
+            //$oldPrice = $this->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } elseif($product->start_date && $product->end_date) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date)) && $now->lt(\Carbon\Carbon::parse($product->end_date))) {
+
+            $price = $product->sale_price;
+            $oldPrice = $product->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } else {
+        $price = $product->sale_price;
+        $oldPrice = null;
+    }
+
+
+@endphp
 <div class="py-5 bg-black text-white md:space-y-5">
     <x-atoms.breadcrumb :routes="[
         ['title' => 'Products', 'route' => route('merchandize.home')],
@@ -38,9 +70,11 @@
 
                            @if($product->sale_price > 0)
 
-                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->sale_price, 2) }}</span>
+                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($price, 2) }}</span>
+                               @if($oldPrice)
                                 /
                                 <strike class="opacity-50">{{ ac() . number_format($product->price)}}</strike>
+                               @endif
 
                            @else
                                <span class="text-danger font-bold text-3xl">{{ ac(). number_format($product->price, 2) }}</span>

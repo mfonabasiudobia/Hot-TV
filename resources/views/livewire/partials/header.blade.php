@@ -281,7 +281,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('register') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
+                    <a href="{{ route('pricing.home') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
                 </li>
             </ul>
 

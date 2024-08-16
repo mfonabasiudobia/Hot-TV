@@ -6,8 +6,12 @@ use App\Http\Livewire\BaseComponent;
 use Botble\Ecommerce\Models\Address;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderAddress;
+use Botble\Payment\Models\Payment;
 use Cart;
 use Omnipay\Omnipay;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+
+
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 
@@ -57,7 +61,6 @@ class Checkout extends BaseComponent
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         try {
-
             if($this->can_save){
                 Address::create([
                     'name' => "{$this->first_name} {$this->last_name}",
@@ -108,35 +111,60 @@ class Checkout extends BaseComponent
                             ],
                         ],
                         'mode' => 'payment',
-                        'success_url' =>route('payment-verification', ['order' => $order->id]),
+                        'success_url' => url('cart/payment-verification?session_id={CHECKOUT_SESSION_ID}'),
                         'cancel_url' => route('cart.checkout'),
+                    ]);
+
+                    $payment = Payment::create([
+                        'currency' => 'USD',
+                        'user_id' => auth()->id() ?? 0,
+                        'charge_id' => $session->id,
+                        'payment_channel' => 'stripe',
+                        'amount' => total_amount(),
+                        'order_id' => $order->id,
+                        'status' => 'pending',
                     ]);
 
                     return redirect($session->url);
 
                 // return redirect()->route('payment-verification');
-
-
-
             }else{
 
-                $gateway = Omnipay::create("PayPal_Rest");
-                $gateway->setClientId(env('PAYPAL_CLIENT_ID'));
-                $gateway->setSecret(env('PAYPAL_SECRET_ID'));
-                $gateway->setTestMode(true);
+                $provider = new PayPalClient([]);
+                $token = $provider->getAccessToken();
+                $provider->setAccessToken($token);
 
-                $response = $gateway->purchase([
-                    'amount' =>  total_amount(),
+                $data = [
+                    "intent" => "CAPTURE",
+                    "purchase_units" => [
+                        [
+                            "amount" => [
+                                "currency_code" => "USD",
+                                "value" => total_amount()
+                            ]
+                        ]
+                    ],
+                    "application_context" => [
+                        "cancel_url" => route('paypal.payment.cancel'),
+                        "return_url" => route('paypal.payment.success'),
+                    ]
+                ];
+                $session = $provider->createOrder($data);
+
+
+                $payment = Payment::create([
                     'currency' => 'USD',
-                    'returnUrl' => route('payment-verification', ['order' => $order->id]),
-                    'cancelUrl' => route('cart.checkout'),
-                ])->send();
+                    'user_id' => auth()->id() ?? 0,
+                    'charge_id' => $session['id'],
+                    'payment_channel' => 'paypal',
+                    'amount' => total_amount(),
+                    'order_id' => $order->id,
+                    'status' => 'pending',
+                ]);
 
-                if($response->isRedirect()){
-                    redirect($response->getRedirectUrl());
-                }else{
-                    dd("Not Working");
-                }
+
+                return redirect($session['links'][1]['href']);
+
             }
 
         //   Cart::instance('product')->destroy();

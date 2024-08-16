@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\PaymentVerificationController;
+use App\Http\Controllers\PaypalPaymentVerificationController;
 use App\Http\Controllers\VideoStreamController;
+use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,8 +24,10 @@ Route::get('public/compare', function(){
 })->name('public.compare');
 
 
-Route::get('/video/{section}/{id}', VideoStreamController::class)->name('video-stream');
+Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoContent'])->name('video-stream');
+//Route::post('/video/save-played-time', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
+Route::get('cart/payment-verification',PaymentVerificationController::class)->name('payment-verification');
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
@@ -34,10 +39,11 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
     Route::group(['namespace' => 'Cart', 'as' => 'cart.', 'prefix' => 'cart'], function() {
         Route::get('/',"Home")->name('home');
         Route::get('checkout',"Checkout")->name('checkout');
+
     });
     Route::get('about',"About")->name('about');
     Route::get('contact',"Contact")->name('contact');
-    Route::get('payment-verification',"PaymentVerification")->name('payment-verification');
+
     Route::get('terms-and-condition',"Terms")->name('terms');
     Route::get('s',"Search")->name('search');
 
@@ -97,13 +103,24 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('{slug}',"Show")->name('show');
         });
 
-        Route::group(['namespace' => 'Pricing', 'as' => 'pricing.', 'prefix' => 'pricing'], function() {
-            Route::get('pricing',"Home")->name('home');
+        Route::group(['namespace' => 'Pricing', 'prefix' => 'pricing', 'as' => 'pricing.'], function() {
+            Route::get('/pricing',"Home")->name('home');
+        });
+
+        Route::group(['namespace' => 'Cart', 'prefix' => 'cart', 'as' => 'cart.'], function() {
+            Route::get('order-completed', 'OrderCompleted')->name('order-completed');
         });
 
 
     });
 });
+
+Route::group(['prefix' => 'paypal', 'as' => 'paypal.'], function() {
+    Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
+    Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');
+});
+
+
 
 
 

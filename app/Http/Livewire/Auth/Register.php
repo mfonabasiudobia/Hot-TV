@@ -9,10 +9,10 @@ class Register extends BaseComponent
 {
 
     public $username, $first_name, $last_name, $email, $password, $password_confirmation;
+    public $show = 'register_form';
 
     public function submit(){
-        
-        
+
         $this->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -20,7 +20,6 @@ class Register extends BaseComponent
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed|min:6|alpha_num'
         ]);
-
 
         $data = [
             'username' => $this->username,
@@ -47,7 +46,25 @@ class Register extends BaseComponent
             return toast()->danger($e->getMessage())->push();
 
         }
+    }
 
+    public function next(): void
+    {
+//        $validated = $this->validate([
+//            'first_name' => 'required',
+//            'last_name' => 'required',
+//            'username' => 'required|unique:users,username',
+//            'email' => 'required|unique:users,email',
+//            'password' => 'required|confirmed|min:6|alpha_num'
+//        ]);
+//        if($validated) {
+            $this->show = 'pricing';
+//        }
+    }
+
+    public function back(): void
+    {
+        $this->show = 'register_form';
     }
 
 

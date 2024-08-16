@@ -216,4 +216,6 @@ return [
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class
     ])->toArray(),
 
+    'redirect_success_url' => env('REDIRECT_SUCCESS_URL', '${APP_URL}payment-verification?session_id={CHECKOUT_SESSION_ID}')
+
 ];

@@ -130,7 +130,7 @@
                             @if(gs()->payment_stripe_status ?? false)
                                 <section class="flex justify-start items-start space-x-5">
                                     <div>
-                                        <input '
+                                        <input
                                             type="radio"
                                             class="accent-danger w-[20px] h-[20px]"
                                             id="stripe"

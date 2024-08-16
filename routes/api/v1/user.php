@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VideoStreamController;
+
+Route::post('/playedtime', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
 
 Route::group(['middleware'=> [], 'namespace' => 'App\Http\Controllers\Api\V1'],function () {
@@ -20,7 +23,7 @@ Route::group(['middleware'=> [], 'namespace' => 'App\Http\Controllers\Api\V1'],f
     });
 
     Route::apiResource('plans', "PlanController");
-    
+
     Route::group(['middleware'=> ['auth:sanctum']],function () {
         Route::post('update-profile', "UserController@updateUser");
         Route::get('get-profile', "UserController@getProfile");

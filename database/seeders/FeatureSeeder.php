@@ -1,9 +1,11 @@
 <?php
 
 namespace Database\Seeders;
+use Botble\SubscriptionPlan\Models\SubscriptionPlan;
 use Illuminate\Database\Seeder;
 use Botble\SubscriptionPlan\Enums\FeatureEnum;
 use Botble\SubscriptionPlan\Models\SubscriptionFeature;
+use Botble\SubscriptionPlan\Models\Subscription;
 
 class FeatureSeeder extends Seeder
 {
@@ -23,9 +25,21 @@ class FeatureSeeder extends Seeder
             [ "name" => FeatureEnum::NETFLIX_SPACIAL_AUDIO->value, "description" => "Netflix spatial audio"],
         ];
 
+        $plans = [
+            [ 'name' => "Monthly" ],
+            [ 'name' => "Annually" ]
+        ];
+
+        $subscriptions = [
+            ["subscription_plan_id" => 1, "name" => "Basic", "price" => 8.99, "features" => [1, 3, 5]],
+            ["subscription_plan_id" => 1, "name" => "Standard", "price" => 16.99, "features" => [2, 3, 5, 7, 9]],
+            ["subscription_plan_id" => 1, "name" => "Premium", "price" => 21.99, "features" => [2, 4, 6, 8, 11]],
+            ["subscription_plan_id" => 2, "name" => "Basic", "price" => 7.99, "features" => [1, 3, 5]],
+            ["subscription_plan_id" => 2, "name" => "Standard", "price" => 14.99, "features" => [2, 3, 5, 7, 9]],
+            ["subscription_plan_id" => 2, "name" => "Premium", "price" => 19.99, "features" => [2, 4, 6, 8, 11]],
+        ];
+
         foreach($features as $feature) {
-
-
             SubscriptionFeature::updateOrCreate(
                 [
                     'name' => $feature['name']
@@ -35,6 +49,28 @@ class FeatureSeeder extends Seeder
                     'status' => 'published',
                 ]
             );
+        }
+
+        foreach($plans as $plan) {
+            SubscriptionPlan::updateOrCreate(
+                [
+                    'name' => $plan['name']
+                ]
+            );
+        }
+
+        foreach($subscriptions as $subscription) {
+            $sub = Subscription::updateOrCreate(
+                [
+                    'subscription_plan_id' => $subscription['subscription_plan_id'],
+                    'name' => $subscription['name']
+                ], [
+                    'stripe_plan_id' => $subscription['stripe_plan_id'],
+                    'price' => $subscription['price']
+                ]
+            );
+            $sub->features()->detach();
+            $sub->features()->attach($subscription['features']);
         }
     }
 }

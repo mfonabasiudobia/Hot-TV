@@ -15,6 +15,10 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\SubscriptionPlan\Forms\SubscritionsForm;
 use Botble\Base\Forms\FormBuilder;
+use Stripe\Price;
+use Stripe\Product;
+use Stripe\Stripe;
+
 
 class SubscriptionsController extends BaseController
 {
@@ -34,12 +38,31 @@ class SubscriptionsController extends BaseController
 
     public function store(SubscritionsRequest $request, BaseHttpResponse $response)
     {
+
+
+        Stripe::setApiKey(gs()->payment_stripe_secret);
+
+
+        $amount = $request->input('price');
+        $stripeProduct = Product::create([
+            'name' => $request->input('name'),
+            'active' => true,
+        ]);
+
+        $stripProductPrice = Price::create([
+            'currency' => 'usd',
+            'unit_amount' => $amount * 100,
+            'recurring' =>[ 'interval' =>  $request->input('subscription_plan_id') == 1 ? 'month' : 'year'],
+            'product' => $stripeProduct->id
+        ]);
+
+
         $subscription = Subscription::query()->create([
             'name' => $request->input('name'),
-            'price' => $request->input('price'),
+            'price' => $amount,
             'status' => $request->input('status'),
             'subscription_plan_id' => $request->input('subscription_plan_id'),
-            'stripe_plan_id' => $request->input('stripe_plan_id')
+            'stripe_plan_id' => $stripProductPrice->id
         ]);
 
         $subscription->features()->attach($request->input('features'));
@@ -54,10 +77,10 @@ class SubscriptionsController extends BaseController
 
     public function edit(Subscription $subscriptions, FormBuilder $formBuilder)
     {
-        
+
         PageTitle::setTitle(trans('core/base::forms.edit_item', ['name' => $subscriptions->name]));
         PageTitle::setTitle(trans('core/base::forms.edit_item', ['stripe_plan_id' => $subscriptions->stripe_plan_id]));
-        
+
         return $formBuilder->create(SubscritionsForm::class, ['model' => $subscriptions])->renderForm();
     }
 
@@ -68,7 +91,7 @@ class SubscriptionsController extends BaseController
         $subscriptions->save();
         $subscriptions->features()->detach();
         $subscriptions->features()->attach($request->input('features'));
-        
+
 
         event(new UpdatedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscriptions));
 
@@ -81,10 +104,7 @@ class SubscriptionsController extends BaseController
     {
         try {
             $subscriptions->delete();
-            
-            
             event(new DeletedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscriptions));
-
             return $response->setMessage(trans('core/base::notices.delete_success_message'));
         } catch (Exception $exception) {
             return $response
@@ -103,7 +123,7 @@ class SubscriptionsController extends BaseController
         }
 
         foreach ($ids as $id) {
-            $subscription = Subscrition::query()->findOrFail($id);
+            $subscription = Subscription::query()->findOrFail($id);
             $subscription->delete();
             event(new DeletedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscription));
         }

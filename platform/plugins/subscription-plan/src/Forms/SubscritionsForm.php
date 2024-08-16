@@ -50,20 +50,20 @@ class SubscritionsForm extends FormAbstract
                     'data-counter' => 120,
                 ],
             ])
-            ->add('stripe_plan_id', 'text', [
-                'label' => trans('plugins/subscription-plan::subscriptions.stripe_plan_id'),
-                'label_attr' => ['class' => 'control-label'],
-                'attr' => [
-                    'placeholder' => trans('plugins/subscription-plan::subscriptions.stripe_plan_id_placeholder'),
-                ],
-            ])
-            ->add('paypal_plan_id', 'text', [
-                'label' => trans('plugins/subscription-plan::subscriptions.paypal_plan_id'),
-                'label_attr' => ['class' => 'control-label'],
-                'attr' => [
-                    'placeholder' => trans('plugins/subscription-plan::subscriptions.paypal_plan_id_placeholder'),
-                ],
-            ])
+//            ->add('stripe_plan_id', 'text', [
+//                'label' => trans('plugins/subscription-plan::subscriptions.stripe_plan_id'),
+//                'label_attr' => ['class' => 'control-label'],
+//                'attr' => [
+//                    'placeholder' => trans('plugins/subscription-plan::subscriptions.stripe_plan_id_placeholder'),
+//                ],
+//            ])
+//            ->add('paypal_plan_id', 'text', [
+//                'label' => trans('plugins/subscription-plan::subscriptions.paypal_plan_id'),
+//                'label_attr' => ['class' => 'control-label'],
+//                'attr' => [
+//                    'placeholder' => trans('plugins/subscription-plan::subscriptions.paypal_plan_id_placeholder'),
+//                ],
+//            ])
             ->add('price', 'number', [
                 'label' => trans('plugins/subscription-plan::subscriptions.price'),
                 'label_attr' => ['class' => 'control-label required'],
