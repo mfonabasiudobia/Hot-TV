@@ -1,6 +1,7 @@
 <?php
 
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 function gs(){
     return (object) \DB::table('settings')->pluck("value","key")->toArray();
@@ -155,4 +156,18 @@ function diff_start_end_time_seconds($startTime, $endTime){
         $timeDifferenceInSeconds = $endSeconds - $startSeconds;
 
         return $timeDifferenceInSeconds;
+}
+
+function customPagination(LengthAwarePaginator $lengthAwarePaginator): array
+{
+    return [
+        'total'         => $lengthAwarePaginator->total(),
+        'per_page'      => $lengthAwarePaginator->perPage(),
+        'current_page'  => $lengthAwarePaginator->currentPage(),
+        'last_page'     => $lengthAwarePaginator->lastPage(),
+        'next_page_url' => $lengthAwarePaginator->nextPageUrl(),
+        'prev_page_url' => $lengthAwarePaginator->previousPageUrl(),
+        'from'          => $lengthAwarePaginator->firstItem(),
+        'to'            => $lengthAwarePaginator->lastItem(),
+    ];
 }

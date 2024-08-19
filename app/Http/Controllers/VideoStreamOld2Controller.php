@@ -17,7 +17,6 @@ class VideoStreamOld2Controller extends Controller
 
     public function videoContent(Request $request, $section, $id)
     {
-
         $TIME_LIMIT = 600; // Time limit in seconds (e.g., 30 minutes)
         $user = Auth::user();
         $ipAddress = $request->ip();
@@ -81,6 +80,7 @@ class VideoStreamOld2Controller extends Controller
             $secondsStreamed = 0;
 
             while (!feof($handle) && $secondsStreamed < $length) {
+                \Log::info("read secondsStremed :". $secondsStreamed . ', to length ' . $length);
                 echo fread($handle, $chunkSize);
                 ob_flush();
                 flush();
@@ -89,18 +89,18 @@ class VideoStreamOld2Controller extends Controller
                 if ($userPlayback) {
                     $userPlayback->played_seconds += 1;
                     $userPlayback->save();
-                    \Log::info("Played seconds updated :". $userPlayback->played_seconds);
+//                    \Log::info("Played seconds updated :". $userPlayback->played_seconds);
                 } else {
-                    VideoPlay::create([
+                    $userPlayback = VideoPlay::create([
                         'ip_address' => $ipAddress,
                         'played_seconds' => 1
                     ]);
-                    \Log::info("Played seconds created 1");
+//                    \Log::info("Played seconds created 1");
                 }
 
                 $secondsStreamed += ($chunkSize / $length);
-                \Log::info("Stream chunk size: ". $chunkSize);
-                \Log::info("Second Stream: ". $secondsStreamed);
+//                \Log::info("Stream chunk size: ". $chunkSize);
+//                \Log::info("Second Stream: ". $secondsStreamed);
                 sleep(1); // Simulate real-time second-by-second tracking
             }
 

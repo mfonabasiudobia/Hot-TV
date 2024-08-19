@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\OtpVerification;
 use App\Models\User;
 use App\Mail\WelcomeNotification;
 use App\Mail\OtpNotification;
@@ -104,9 +105,16 @@ class AuthRepository {
 
 
             if (request()->is('api/*')) {
-                DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
-                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $rand, 'created_at' => now() ]);
+                OtpVerification::updateOrCreate([
+                   'email' => $email
+                ], [
+                    'otp' => $code
+                ]);
+
+//                DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
+//
+//                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $code, 'created_at' => now() ]);
 
                 //Send Forgot token Mail to User here
                 Mail::to($email)->send(new ForgotPasswordNotification($user, $code));
