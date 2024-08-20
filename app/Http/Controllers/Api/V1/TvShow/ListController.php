@@ -19,17 +19,18 @@ class ListController extends Controller
         if($request->has('category_id')) {
             $categoryId = $request->input('category_id');
         }
+        if($request->has('featured')) {
+            $featured = $request->input('featured');
+        }
 
         $tvShows = TvShow::where('status', BaseStatusEnum::PUBLISHED()->getValue())
             ->when(!is_null($categoryId), function($query) use ($categoryId) {
-                //$query->where('show_categories.id', $categoryId);
                 $query->whereHas('categories', function ($query) use ($categoryId) {
                     $query->where('show_categories.id', $categoryId);
                 });
             })
-
+            ->orderBy('created_at', 'desc')
             ->paginate($pageSize);
-
         $tvShows->load(['categories', 'casts']);
 
         return response()->json([

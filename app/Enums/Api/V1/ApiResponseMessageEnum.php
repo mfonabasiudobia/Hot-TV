@@ -22,5 +22,6 @@ enum ApiResponseMessageEnum:string
     case EPISODE = 'episode';
     case PODCASTS = 'podcasts';
     case PODCAST = 'podcast';
+    case STREAMS = 'streams';
 
 }
