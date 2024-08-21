@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Shoutout;
 
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\ShoutoutRepository;
+use Botble\Base\Enums\BaseStatusEnum;
 
 class Create extends BaseComponent
 {
@@ -43,7 +44,9 @@ class Create extends BaseComponent
 //                'media_image' => $this->media_image,
 //                'recorded_video' => $this->recorded_video,
                 'media_type' => $this->media_type,
-                'meta_description' => $this->meta_description
+                'meta_description' => $this->meta_description,
+                'status' => BaseStatusEnum::PUBLISHED()->getValue()
+
             ];
 
 
