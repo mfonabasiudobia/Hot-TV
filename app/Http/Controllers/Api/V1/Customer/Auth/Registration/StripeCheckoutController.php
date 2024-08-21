@@ -19,8 +19,8 @@ class StripeCheckoutController extends Controller
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         try {
-            $session = Session::retrieve($request->session_id);
 
+            $session = Session::retrieve($request->session_id);
 
             if(!$session) {
                 return response()->json([
@@ -30,7 +30,7 @@ class StripeCheckoutController extends Controller
             }
 
             $order = SubscriptionOrder::where('session_id', $session->id)->where('status', 'pending')->first();
-
+            dd($order);
             if(!$order) {
                 return response()->json([
                     'success'   => false,
