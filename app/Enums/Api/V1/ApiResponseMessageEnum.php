@@ -23,5 +23,9 @@ enum ApiResponseMessageEnum:string
     case PODCASTS = 'podcasts';
     case PODCAST = 'podcast';
     case STREAMS = 'streams';
+    case YOU_DO_NOT_HAVE_PERMISSION = 'you don\'nt have permission';
+    case NO_RIDE_FOUND = 'no ride found';
+    case STRIPE_PAYMENT_URL = 'stripe payment url';
+    case PAYPAL_PAYMENT_URL = 'paypal payment url';
 
 }

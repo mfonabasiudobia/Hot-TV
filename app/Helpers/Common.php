@@ -124,6 +124,7 @@ function sanitize_seo_description($value, $limit = 100){
 }
 
 function admin_id_array(){
+
     return [1, 3];
 }
 

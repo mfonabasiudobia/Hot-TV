@@ -2,6 +2,9 @@
 
 namespace Botble\ACL\Models;
 
+use App\Enums\User\RoleEnum;
+use App\Models\Ride;
+use App\Models\RideBooking;
 use Botble\ACL\Notifications\ResetPasswordNotification;
 use Botble\ACL\Traits\PermissionTrait;
 use Botble\Base\Casts\SafeContent;
@@ -241,5 +244,23 @@ class User extends BaseModel implements
     {
         return $this->belongsToMany(Discount::class, 'ec_customer_used_coupons');
     }
+
+    public function rides(): HasMany
+    {
+        if($this->inRole(RoleEnum::DRIVER->value)) {
+            return $this->hasMany(Ride::class, 'driver_id');
+        }
+        return $this->hasMany(Ride::class)->whereRaw('1 = 0');
+    }
+
+    public function rideBookings(): HasMany
+    {
+        if($this->inRole(RoleEnum::SUBSCRIBER->value)) {
+            return $this->hasMany(RideBooking::class);
+        }
+        return $this->hasMany(RideBooking::class)->whereRaw('1 = 0');
+    }
+
+
 
 }

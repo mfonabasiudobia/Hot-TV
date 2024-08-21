@@ -18,5 +18,5 @@ Route::prefix('auth')
         Route::middleware('auth:api')->group(function() {
             Route::post('reset-password', ResetPasswordController::class)->name('forgot-password-verification');
         });
-        Route::get('stripe-checkout', StripeCheckoutController::class)->name('stripe-checkout');
+
     });

@@ -2,6 +2,7 @@
 
 namespace Botble\ACL\Http\Middleware;
 
+use App\Enums\User\RoleEnum;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate as BaseAuthenticate;
 
@@ -10,7 +11,15 @@ class Authenticate extends BaseAuthenticate
     public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($request, $guards);
-        if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
+        if(!(auth()->user()->inRole(RoleEnum::SUBSCRIBER->value)
+            ||
+            auth()->user()->inRole(RoleEnum::DRIVER->value)
+            ||
+            auth()->user()->inRole('developer')
+            )
+
+        ) {
+        //if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 

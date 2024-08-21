@@ -55,6 +55,10 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
                });
         });
 
+        Route::group(['prefix' => 'ride', 'as' => 'ride.'], function() {
+            Route::get('/', 'Ride\Home')->name('list');
+        });
+
 
 
 

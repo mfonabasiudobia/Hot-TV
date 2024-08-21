@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Driver\Auth;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
+use App\Enums\User\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Driver\Auth\LoginRequest;
 use App\Http\Resources\Api\V1\Customer\Auth\AuthUserResource;
@@ -35,6 +36,14 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials, true)) {
             $user = Auth::user();
+
+            if(!$user->inRole(RoleEnum::DRIVER->value)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
+                ], 422);
+            }
+
             $token = $user->createToken('apiToken')->accessToken;
 
             return response()->json([

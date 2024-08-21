@@ -126,7 +126,20 @@
                             </li>
                         </ul>
                     </li>
+                    <li x-data="{ show : false}">
+                        <a href="#" x-on:click="show = !show">
+                            <i class="las la-video"></i>
+                            <span>Manage Rides</span>
+                            <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                        </a>
+                    </li>
                 </ul>
+            </li>
+            <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                <a href="{{ route('admin.ride.list')  }}">
+                    <i class="las la-circle"></i>
+                    <span>Ride List</span>
+                </a>
             </li>
 
         </ul>
