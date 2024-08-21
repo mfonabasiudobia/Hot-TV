@@ -9,6 +9,7 @@ use App\Mail\OtpNotification;
 use App\Mail\OtpNotificationWeb;
 use App\Mail\ForgotPasswordNotification;
 use App\Mail\ForgotPasswordNotificationWeb;
+use Botble\ACL\Models\Role;
 use Mail;
 use DB;
 use URL;
@@ -49,6 +50,29 @@ class AuthRepository {
         //Mail::to($user->email)->send(new WelcomeNotification($user));
 
         $user->roles()->attach([2]); //Assigning User to a Role of Streamer
+
+        return $user->refresh();
+    }
+
+    public static function registerAsSubscriber($data) : User {
+        $user = User::create(array_merge($data,
+            [
+                'password' => bcrypt($data['password']),
+                'temporary_token' => str()->random(15)
+            ]));
+
+        $subscriberRole = Role::updateOrCreate([
+            'slug' => 'subscriber',
+            'name' => 'Subscriber'
+        ], [
+            'permissions' => [],
+            'description' => 'Subscriber',
+            'is_default' => 0,
+            'create_by' => 1,
+            'updated_by' => 1
+        ]);
+
+        $user->roles()->attach($subscriberRole->id); //Assigning User to a Role of Streamer
 
         return $user->refresh();
     }

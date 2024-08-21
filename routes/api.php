@@ -1,11 +1,16 @@
 <?php
 
 
-Route::group(['prefix' => 'v1', 'as' => 'v1.'], function() {
-    require __DIR__ . '/api/v1/auth-routes.php';
-    require __DIR__ . '/api/v1/subscription-routes.php';
-    require __DIR__ . '/api/v1/user-routes.php';
-    require __DIR__ . '/api/v1/tv-show-routes.php';
-    require __DIR__ . '/api/v1/podcast-routes.php';
-    require __DIR__ . '/api/v1/stream-routes.php';
+Route::group(['prefix' => 'v1/customer', 'as' => 'v1.customer'], function() {
+    require __DIR__ . '/api/v1/customer/auth-routes.php';
+    require __DIR__ . '/api/v1/customer/subscription-routes.php';
+    require __DIR__ . '/api/v1/customer/user-routes.php';
+    require __DIR__ . '/api/v1/customer/tv-show-routes.php';
+    require __DIR__ . '/api/v1/customer/podcast-routes.php';
+    require __DIR__ . '/api/v1/customer/stream-routes.php';
+});
+
+Route::group(['prefix' => 'v1/driver', 'as' => 'v1.driver'], function() {
+    require __DIR__ . '/api/v1/driver/auth-routes.php';
+
 });
