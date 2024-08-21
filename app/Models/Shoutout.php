@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shoutout extends BaseModel
 {
-
     protected $fillable = [
         'title',
         'slug',
