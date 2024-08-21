@@ -218,7 +218,7 @@ return [
     ])->toArray(),
 
     'redirect_success_url' => env('REDIRECT_SUCCESS_URL', config('app.url'). 'payment-verification?session_id={CHECKOUT_SESSION_ID}'),
-    'redirect_success_api_url' => env('REDIRECT_SUCCESS_API_URL', config('app.url'). 'subscribe/stripe-checkout?session_id={CHECKOUT_SESSION_ID}'),
+    'redirect_success_api_url' => env('REDIRECT_SUCCESS_API_URL', config('app.url'). 'subscribe/stripe-checkout/{CHECKOUT_SESSION_ID}'),
 
 
 ];

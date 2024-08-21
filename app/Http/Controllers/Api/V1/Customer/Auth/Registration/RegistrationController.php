@@ -50,7 +50,7 @@ class RegistrationController extends Controller
             ],
             'customer' => $customer->id,
             'mode' => 'subscription',
-            'success_url' => config('app.redirect_success_api_url'), //http://localhost/payment-verification?session_id={CHECKOUT_SESSION_ID}',//route('payment-verification', ['order' => $order->id]),
+            'success_url' => config('app.redirect_success_api_url'),
             //'cancel_url' => 'http://localhost/cancel',//route('checkout'),
         ]);
 

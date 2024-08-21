@@ -16,7 +16,7 @@ class StripeCheckoutController extends Controller
 {
     public function __invoke(Request $request)
     {
-        dd(gs()->payment_stripe_secret);
+
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         try {
