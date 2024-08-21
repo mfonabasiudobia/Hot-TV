@@ -29,7 +29,7 @@ Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoCon
 //Route::post('/video/save-played-time', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
 Route::get('cart/payment-verification',PaymentVerificationController::class)->name('payment-verification');
-Route::get('subscribe/stripe-checkout', function() {
+Route::get('subscribe/stripe-checkout/{session_id}', function() {
     dd('testing');
 })->name('stripe-checkout');
 
