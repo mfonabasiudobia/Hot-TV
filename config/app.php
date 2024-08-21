@@ -217,8 +217,8 @@ return [
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class
     ])->toArray(),
 
-    'redirect_success_url' => env('REDIRECT_SUCCESS_URL', '${APP_URL}payment-verification?session_id={CHECKOUT_SESSION_ID}'),
-    'redirect_success_api_url' => env('REDIRECT_SUCCESS_API_URL', '${APP_URL}api/v1/auth/stripe-checkout?session_id={CHECKOUT_SESSION_ID}'),
+    'redirect_success_url' => env('REDIRECT_SUCCESS_URL', config('app.url'). 'payment-verification?session_id={CHECKOUT_SESSION_ID}'),
+    'redirect_success_api_url' => env('REDIRECT_SUCCESS_API_URL', config('app.url'). 'api/v1/customer/auth/stripe-checkout?session_id={CHECKOUT_SESSION_ID}'),
 
 
 ];
