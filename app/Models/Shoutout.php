@@ -14,6 +14,7 @@ class Shoutout extends BaseModel
         'thumbnail',
         'meta_title',
         'media_url',
+        'status',
         'media_type',
         'meta_description'
     ];
