@@ -22,7 +22,7 @@ class Authenticate extends BaseAuthenticate
             )
 
         ) {
-        if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
+        //if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
