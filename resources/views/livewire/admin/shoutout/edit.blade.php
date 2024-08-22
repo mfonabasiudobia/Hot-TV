@@ -73,6 +73,9 @@
 
                         @error('media_image') <span class="error"> {{ $message }}</span> @endError
                     </div>
+                    <div class="form-group">
+                        <x-atoms.toggle model="status" label="Publish" />
+                    </div>
 
                 </section>
 

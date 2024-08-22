@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin\Shoutout;
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\PodcastRepository;
 use App\Repositories\ShoutoutRepository;
+use Botble\Base\Enums\BaseStatusEnum;
 
 class Edit extends BaseComponent
 {
@@ -13,7 +14,7 @@ class Edit extends BaseComponent
 
     public $shoutout, $recorded_video, $media_image, $media_type;
 
-    public $meta_title, $meta_description;
+    public $meta_title, $meta_description, $status;
 
 
     public function mount($id){
@@ -28,7 +29,8 @@ class Edit extends BaseComponent
             'media_type' => $this->shoutout->media_type,
             'thumbnail' => $this->shoutout->thumbnail,
             'meta_title' => $this->shoutout->meta_title,
-            'meta_description' => $this->shoutout->meta_description
+            'meta_description' => $this->shoutout->meta_description,
+            'status' => $this->shoutout->status == BaseStatusEnum::PUBLISHED()->getValue() ? BaseStatusEnum::PUBLISHED()->getValue(): false
         ]);
 
     }
@@ -43,11 +45,11 @@ class Edit extends BaseComponent
 
         $this->validate([
             'title' => 'required|string',
-            'slug' => 'required|unique:shoutouts,slug,' . $this->shoutout->id,
+            'slug' => 'required',
             'description' => 'required',
-            'thumbnail' => 'nullable',
-            'recorded_video' => 'nullable',
-            'media_image' => 'nullable',
+            'thumbnail' => 'required_if:media_type,video',
+            'recorded_video' => 'required_if:media_type,video',
+            'media_image' => 'required_if:media_type,image',
             'media_type' => 'required',
             'meta_title' => 'nullable',
             'meta_description' => 'nullable'
@@ -63,7 +65,8 @@ class Edit extends BaseComponent
                 'media_type' => $this->media_type,
                 'thumbnail' => $this->thumbnail,
                 'meta_title' => $this->meta_title,
-                'meta_description' => $this->meta_description
+                'meta_description' => $this->meta_description,
+                'status' => $this->status ? BaseStatusEnum::PUBLISHED()->getValue() : BaseStatusEnum::DRAFT()->getValue()
             ];
 
 

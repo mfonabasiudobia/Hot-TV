@@ -11,7 +11,7 @@ class Create extends BaseComponent
 
     public $title, $slug, $description, $thumbnail;
 
-    public $meta_title, $meta_description, $media_type = 'image', $recorded_video, $media_image;
+    public $meta_title, $meta_description, $media_type = 'image', $recorded_video, $media_image, $status;
 
 
     public function updatedTitle($title){
@@ -25,9 +25,9 @@ class Create extends BaseComponent
             'title' => 'required|string',
             'slug' => 'required|unique:shoutouts,slug',
             'description' => 'required',
-            'thumbnail' => 'nullable',
-            'recorded_video' => 'nullable',
-            'media_image' => 'nullable',
+            'thumbnail' => 'required_if:media_type,video',
+            'recorded_video' => 'required_if:media_type,video',
+            'media_image' => 'required_if:media_type,image',
             'media_type' => 'required',
             'meta_title' => 'nullable',
             'meta_description' => 'nullable'
@@ -44,7 +44,7 @@ class Create extends BaseComponent
                 'media_type' => $this->media_type,
                 'meta_title' => $this->meta_title,
                 'meta_description' => $this->meta_description,
-                'status' => BaseStatusEnum::PUBLISHED()->getValue()
+                'status' => $this->status ? BaseStatusEnum::PUBLISHED()->getValue() : BaseStatusEnum::DRAFT()->getValue()
 
             ];
 
@@ -61,7 +61,7 @@ class Create extends BaseComponent
     }
 
     public function render()
-    {
+    {   $this->status = BaseStatusEnum::PUBLISHED()->getValue();
         return view('livewire.admin.shoutout.create')->layout('layouts.admin-base');
     }
 }
