@@ -25,7 +25,7 @@ class Create extends BaseComponent
             'title' => 'required|string',
             'slug' => 'required|unique:shoutouts,slug',
             'description' => 'required',
-            'thumbnail' => 'required',
+            'thumbnail' => 'nullable',
             'recorded_video' => 'nullable',
             'media_image' => 'nullable',
             'media_type' => 'required',
