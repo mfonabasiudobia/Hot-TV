@@ -16,10 +16,13 @@ class Authenticate extends BaseAuthenticate
             auth()->user()->inRole(RoleEnum::DRIVER->value)
             ||
             auth()->user()->inRole('developer')
+            ||
+            auth()->user()->inRole('admin')
+
             )
 
         ) {
-        //if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
+        if(!in_array(auth()->user()->roles[0]->id, admin_id_array())){
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
