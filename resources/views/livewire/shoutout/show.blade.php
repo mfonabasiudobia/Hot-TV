@@ -7,7 +7,7 @@
             @if($shoutout->media_type == 'video')
                 <section class="w-full max-h-screen relative">
                     <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"
-                           src="{{ route('video-stream', ['shoutout', $shoutout->id]) }}"></video>
+                           src="{{ file_path($shoutout->media_url) }}"></video>
                     <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
                         <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
                         <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>

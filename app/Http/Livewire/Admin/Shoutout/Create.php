@@ -26,10 +26,10 @@ class Create extends BaseComponent
             'slug' => 'required|unique:shoutouts,slug',
             'description' => 'required',
             'thumbnail' => 'required',
-            'meta_title' => 'nullable',
             'recorded_video' => 'nullable',
             'media_image' => 'nullable',
             'media_type' => 'required',
+            'meta_title' => 'nullable',
             'meta_description' => 'nullable'
         ]);
 
@@ -41,9 +41,8 @@ class Create extends BaseComponent
                 'description' => $this->description,
                 'thumbnail' => $this->thumbnail,
                 'media_url' => $this->media_type == 'image' ? $this->media_image : $this->recorded_video,
-//                'media_image' => $this->media_image,
-//                'recorded_video' => $this->recorded_video,
                 'media_type' => $this->media_type,
+                'meta_title' => $this->meta_title,
                 'meta_description' => $this->meta_description,
                 'status' => BaseStatusEnum::PUBLISHED()->getValue()
 

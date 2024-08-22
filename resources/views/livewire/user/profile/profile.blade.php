@@ -7,7 +7,7 @@
                 <strong>{{ user()->first_name }} </strong>
             </div>
 
-            <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Change</button>
+            <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Edit</button>
         </div>
 
         <div class="flex justify-between items-center py-5 border-b border-secondary">
@@ -16,7 +16,7 @@
                 <strong>{{ user()->last_name }}</strong>
             </div>
 
-            <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Change</button>
+
         </div>
 
         <div class="flex justify-between items-center py-5 border-b border-secondary">
@@ -25,7 +25,7 @@
                 <strong>{{ user()->email }}</strong>
             </div>
 
-            <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Change</button>
+
         </div>
 
 
@@ -35,11 +35,10 @@
                 <strong>******</strong>
             </div>
 
-            <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Change</button>
+
         </div>
 
-        
+
 
     </section>
 </div>
-    

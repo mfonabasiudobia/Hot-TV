@@ -33,6 +33,10 @@ Route::get('subscribe/stripe-checkout/{session_id}', StripeCheckoutController::c
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
+    Route::group(['namespace' => 'Blog', 'as' => 'blog.', 'prefix' => 'blog'], function() {
+        Route::get('/',"Home")->name('home');
+        Route::get('{slug}',"Show")->name('show');
+    });
 
     Route::get('logout', "Auth\Login@logout")->name('logout');
     Route::get('faqs',"Faqs")->name('faqs');
@@ -100,10 +104,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('gallery',"Home")->name('gallery.home');
         });
 
-        Route::group(['namespace' => 'Blog', 'as' => 'blog.', 'prefix' => 'blog'], function() {
-            Route::get('/',"Home")->name('home');
-            Route::get('{slug}',"Show")->name('show');
-        });
+
 
         Route::group(['namespace' => 'Pricing', 'prefix' => 'pricing', 'as' => 'pricing.'], function() {
             Route::get('/pricing',"Home")->name('home');

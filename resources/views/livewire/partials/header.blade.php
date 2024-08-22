@@ -105,6 +105,11 @@
                         <div class="font-bold">{{ user()->first_name }} {{ user()->last_name }}</div>
                         <span>({{ user()->username }})</span>
                     </li>
+                    <a href="{{ route('user.dashboard') }}"
+                       class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
+                        <i class="las la-user-circle text-xl"></i>
+                        <span>Dashboard</span>
+                    </a>
                     <li>
                         <a href="{{ route('about') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                             <i class="las la-thumbs-up text-xl"></i>
@@ -121,15 +126,11 @@
                             <span>Subscription</span>
                         </a>
 
-                        <a href="{{ route('user.dashboard') }}"
-                            class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
-                            <i class="las la-user-circle text-xl"></i>
-                            <span>My Profile</span>
-                        </a>
+
 
                         <a href="{{ route('user.profile') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
                             <i class="las la-cog text-xl"></i>
-                            <span>Setting</span>
+                            <span>My Profile</span>
                         </a>
 
                         <a href="{{ route('logout') }}"

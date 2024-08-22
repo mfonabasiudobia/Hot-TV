@@ -26,8 +26,20 @@
                         @error('description') <span class="error">{{ $message }}</span> @endError
                     </div>
 
+
+
+{{--                    <div x-data="{show_media: 'image'}">--}}
+                    <div class="form-group">
+                        <label>Media type</label>
+                        <select class="form-control" placeholder="Media Type" wire:model.defer="media_type" x-on:change="show_media = $event.target.value">
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+
                     <div class="form-group" x-data="{ thumbnail : @entangle('thumbnail').defer }"
-                         @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
+                         @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;"
+                         x-show="show_media == 'video'">
                         <label>Thumbnail</label>
                         <input type="file" class="form-control" placeholder="Upload Image"
                                x-on:click.prevent="$wire.emit('openGallery', 'thumbnail')" />
@@ -37,17 +49,6 @@
 
                         @error('thumbnail') <span class="error"> {{ $message }}</span> @endError
                     </div>
-
-{{--                    <div x-data="{show_media: 'image'}">--}}
-                        <div class="form-group">
-                            <label>Media type</label>
-                            <select class="form-control" placeholder="Media Type" wire:model.defer="media_type" x-on:change="show_media = $event.target.value">
-                                <option value="image">Image</option>
-                                <option value="video">Video</option>
-                            </select>
-                        </div>
-
-
                         <div class="form-group" x-data="{ recorded_video : @entangle('recorded_video').defer }"
 
                              @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;"

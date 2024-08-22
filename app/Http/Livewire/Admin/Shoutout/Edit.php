@@ -46,10 +46,10 @@ class Edit extends BaseComponent
             'slug' => 'required|unique:shoutouts,slug,' . $this->shoutout->id,
             'description' => 'required',
             'thumbnail' => 'required',
-            'meta_title' => 'nullable',
             'recorded_video' => 'nullable',
             'media_image' => 'nullable',
             'media_type' => 'required',
+            'meta_title' => 'nullable',
             'meta_description' => 'nullable'
         ]);
 

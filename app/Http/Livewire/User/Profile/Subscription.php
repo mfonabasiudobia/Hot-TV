@@ -15,11 +15,11 @@ class Subscription extends BaseComponent
         $order = SubscriptionOrder::where('user_id', auth()->user()->id)
         ->where('status', 'paid')
         ->first();
-        
+
         if($order) {
             $this->order = $order;
         }
-        
+
     }
 
     public function render()

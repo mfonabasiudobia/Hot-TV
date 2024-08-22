@@ -12,11 +12,11 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug');
             $table->string('description');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->string('media_url');
             $table->string('media_type');
-            $table->string('meta_title');
-            $table->string('meta_description');
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
             $table->string('status');
             $table->timestamps();
         });

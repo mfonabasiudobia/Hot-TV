@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\ShoutOuts;
 
 use App\Models\Shoutout;
+use Botble\Base\Enums\BaseStatusEnum;
 use Livewire\Component;
 
 class Home extends Component
@@ -19,7 +20,7 @@ class Home extends Component
     {
 
 
-        $shoutouts = Shoutout::where('status', 'published')
+        $shoutouts = Shoutout::where('status', BaseStatusEnum::PUBLISHED()->getValue())
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
 
