@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Livewire\Admin\Shoutout;
 
 use App\Http\Livewire\BaseComponent;
@@ -9,15 +8,12 @@ use Botble\Base\Enums\BaseStatusEnum;
 
 class Edit extends BaseComponent
 {
-
     public $title, $slug, $description, $thumbnail;
-
     public $shoutout, $recorded_video, $media_image, $media_type;
-
     public $meta_title, $meta_description, $status;
 
-
-    public function mount($id){
+    public function mount($id): void
+    {
         $this->shoutout = ShoutoutRepository::getById($id);
 
         $this->fill([
@@ -32,17 +28,15 @@ class Edit extends BaseComponent
             'meta_description' => $this->shoutout->meta_description,
             'status' => $this->shoutout->status == BaseStatusEnum::PUBLISHED()->getValue() ? BaseStatusEnum::PUBLISHED()->getValue(): false
         ]);
-
     }
 
-
-    public function updatedTitle($title){
+    public function updatedTitle($title): void
+    {
         $this->slug = str()->slug($title);
     }
 
-    public function submit(){
-
-
+    public function submit()
+    {
         $this->validate([
             'title' => 'required|string',
             'slug' => 'required',
@@ -56,7 +50,6 @@ class Edit extends BaseComponent
         ]);
 
         try {
-
             $data = [
                 'title' => $this->title,
                 'slug' => $this->slug,
@@ -69,11 +62,8 @@ class Edit extends BaseComponent
                 'status' => $this->status ? BaseStatusEnum::PUBLISHED()->getValue() : BaseStatusEnum::DRAFT()->getValue()
             ];
 
-
             throw_unless(ShoutoutRepository::update($data, $this->shoutout->id), "Please try again");
-
             toast()->success('Podcast has been updated')->pushOnNextPage();
-
             return redirect()->route('admin.shoutout.list');
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
@@ -84,5 +74,4 @@ class Edit extends BaseComponent
     {
         return view('livewire.admin.shoutout.edit')->layout('layouts.admin-base');
     }
-
 }

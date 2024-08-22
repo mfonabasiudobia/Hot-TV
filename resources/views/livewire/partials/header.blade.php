@@ -12,9 +12,9 @@
         </div>
 
         <ul class="hidden xl:flex items-center space-x-5">
-            <li>
-                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>
-            </li>
+{{--            <li>--}}
+{{--                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>--}}
+{{--            </li>--}}
 
             <li class="relative group">
                 <a href="{{ route('tv-shows.home') }}">Tv Shows</a>

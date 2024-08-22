@@ -10,7 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TvShowRepository {
 
-    public static function all($sort, $s= null) 
+    public static function all($sort, $s= null)
     {
         return TvShow::query()
         ->when($sort['sortByTitle'], function($q) use($sort) {
@@ -36,10 +36,10 @@ class TvShowRepository {
             });
         });
 
-        
+
     }
 
-    public static function getTvShowById(int $id) : TvShow 
+    public static function getTvShowById(int $id) : TvShow
     {
             return TvShow::findOrFail($id);
     }
@@ -63,7 +63,7 @@ class TvShowRepository {
     public static function updateTvShow(array $data, $others, int $id) : TvShow
     {
          $tvShow = TvShow::find($id);
-         
+
          $tvShow->update($data);
 
          $tvShow->categories()->sync($others['categories']);
@@ -85,7 +85,8 @@ class TvShowRepository {
     }
 
     public static function recentlyWatched($user = null) : Collection {
-         return Episode::whereHas('views', function($q) use($user) {
+        
+        return Episode::whereHas('views', function($q) use($user) {
             $q->when($user, function($q) use($user) {
                 $q->latest()->where('user_id', $user->id);
             });
