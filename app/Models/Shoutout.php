@@ -18,6 +18,6 @@ class Shoutout extends BaseModel
         'meta_description'
     ];
     public function views(){
-        return $this->hasMany(PodcastView::class, 'podcast_id');
+        return $this->hasMany(ShoutoutView::class, 'shoutout_id');
     }
 }
