@@ -46,6 +46,7 @@ class Checkout extends BaseComponent
 
      public function submit(){
 
+
         $this->validate([
             'first_name' => 'required',
             'last_name' => 'required',

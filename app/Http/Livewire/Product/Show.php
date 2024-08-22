@@ -18,7 +18,7 @@ class Show extends BaseComponent
          $slug = Slug::where('key', $slug)->firstorFail();
 
          $this->product = Product::findOrFail($slug->reference_id);
-
+        //dd($this->product);
     }
 
     public function addToCart($product, $qty = 1){

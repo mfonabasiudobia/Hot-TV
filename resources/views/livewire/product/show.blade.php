@@ -24,7 +24,7 @@
             $oldPrice = null;
         }
     } else {
-        $price = $product->sale_price;
+        $price = $product->price;
         $oldPrice = null;
     }
 
@@ -70,10 +70,10 @@
 
                            @if($product->sale_price > 0)
 
-                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($price, 2) }}</span>
+                               <span class="text-danger font-bold text-3xl">{{ ac(). number_format($price, 2) }} </span>
                                @if($oldPrice)
                                 /
-                                <strike class="opacity-50">{{ ac() . number_format($product->price)}}</strike>
+                                <strike class="opacity-50">{{ ac() . number_format($oldPrice, 2)}}</strike>
                                @endif
 
                            @else

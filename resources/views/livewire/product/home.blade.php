@@ -12,6 +12,7 @@
                 <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
                     @foreach ($products as $product)
                         @php
+
                             $now = \Carbon\Carbon::now();
                             $price = $product->price;
                             $oldPrice = null;
@@ -36,7 +37,7 @@
                                     $oldPrice = null;
                                 }
                             } else {
-                                $price = $product->sale_price;
+                                $price = $product->price;
                                 $oldPrice = null;
                             }
                         @endphp
