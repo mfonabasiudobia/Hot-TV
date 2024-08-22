@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class Home extends Component
 {
-    public $perPage = 3;
+    public $perPage = 10;
 
     public function loadMore()
     {
-        $this->perPage += 3;
+        $this->perPage += 10;
         $this->render();
     }
 
@@ -22,6 +22,7 @@ class Home extends Component
         $podcasts = Podcast::where('status', 'published')
 
             ->orderBy('created_at', 'desc')->paginate($this->perPage);
+
 
 
         return view('livewire.podcast.home')->with('podcasts',  $podcasts);

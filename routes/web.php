@@ -57,6 +57,10 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
     Route::get('terms-and-condition',"Terms")->name('terms');
     Route::get('s',"Search")->name('search');
 
+    Route::group(['namespace' => 'Gallery'], function() {
+        Route::get('gallery',"Home")->name('gallery.home');
+    });
+
     Route::group(['middleware'=> []], function() {
 
         Route::get('/',"Home\Home")->name('home');
@@ -104,9 +108,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('{slug}',"Show")->name('shoutout.show');
         });
 
-        Route::group(['namespace' => 'Gallery'], function() {
-            Route::get('gallery',"Home")->name('gallery.home');
-        });
+
 
 
 

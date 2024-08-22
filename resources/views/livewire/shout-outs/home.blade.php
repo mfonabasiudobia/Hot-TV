@@ -45,27 +45,19 @@
         </section>
 
 
+        @if ($shoutouts->hasMorePages())
         <div class="flex justify-center md:justify-center text-sm">
             <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-7">
-{{--                <span class="opacity-60">Showing 10 from 10 data</span>--}}
 
                 <div class="space-x-1 flex items-center">
-{{--                    <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">--}}
-{{--                        <i class="las la-angle-double-left"></i>--}}
-{{--                        <span>Previous</span>--}}
-{{--                    </a>--}}
-
-                    <button class="space-x-1 btn btn-sm bg-danger rounded-xl" wire:click.prevent="loadMore">
+                    <button class="btn btn-md border border-secondary opacity-75" wire:click.prevent="loadMore">
                         Load more ...
                     </button>
 
-{{--                    <a href="#" class="space-x-1 btn btn-sm bg-dark rounded-xl flex items-center">--}}
-{{--                        <span>Load more...</span>--}}
-{{--                        --}}
-{{--                    </a>--}}
                 </div>
             </div>
         </div>
+        @endif
         </section>
     </div>
 </div>
