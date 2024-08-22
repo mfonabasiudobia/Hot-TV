@@ -5,10 +5,8 @@
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('images/logo-white.png') }}" />
                 </a>
-    
-                <p>HTS is video streaming lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+
+                <p>HOT TV STATION, also known as HTS, was founded by Houston, Texas entrepreneur, and world renown humanitarian Malik Rasheed. The station provides live streaming services for everyone. We specialize in bringing attention to all talented people. Let us help you take your business and platform to the next level.</p>
 
                 <section class="py-3 space-y-3">
                     <h2 class="text-xl">Follow Us</h2>
@@ -47,7 +45,7 @@
                     </ul>
                 </section>
             </section>
-    
+
             <section class="space-y-3">
                 <h2 class="font-medium text-xl">Quick Links</h2>
                 <ul class="space-y-3">
@@ -71,8 +69,8 @@
                     </li>
                 </ul>
             </section>
-    
-    
+
+
             <section class="space-y-3 md:col-span-2">
                 <h2 class="font-medium text-xl">Tv Show Categories</h2>
                 <section>
@@ -82,17 +80,17 @@
                                     <a href="{{ route('search', ['q' => $item->name ]) }}">{{ $item->name }}</a>
                                 </li>
                         @endforeach
-                       
-                        
+
+
                     </ul>
                 </section>
             </section>
-    
+
             <section class="md:col-span-2">
                 <div class="space-y-3 p-5 rounded-lg bg-gradient-to-r from-[#FF055F] to-[#630047]">
                     <h2>Watch HTS Everywhere & Anytime Now</h2>
                     <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-    
+
                     <div>
                         <a href="#" class="btn btn-xl bg-white font-bold text-dark whitespace-nowrap">
                             Get Premium Access
@@ -100,7 +98,7 @@
                     </div>
                 </div>
             </section>
-    
+
         </div>
     </section>
     <section class="bg-danger text-sm py-5 text-white text-sm md:text-base">
