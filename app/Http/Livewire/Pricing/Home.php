@@ -2,18 +2,21 @@
 
 namespace App\Http\Livewire\Pricing;
 
+use App\Enums\Ride\PaymentStatusEnum;
+use App\Models\Plan;
 use Botble\Page\Models\Page;
 use Botble\Slug\Models\Slug;
+use Botble\SubscriptionPlan\Models\SubscriptionPlan;
 use Livewire\Component;
 
 class Home extends Component
 {
 
+    public $plans;
     public function mount()
     {
-        $slug = Slug::where('key', "pricing")->firstorFail();
+        $this->plans = SubscriptionPlan::whereStatus('published')->get();
 
-        $this->page = Page::findOrFail($slug->reference_id);
     }
 
     public function render()

@@ -28,7 +28,7 @@ Route::get('public/compare', function(){
 Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoContent'])->name('video-stream');
 //Route::post('/video/save-played-time', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
-Route::get('cart/payment-verification',PaymentVerificationController::class)->name('payment-verification');
+
 Route::get('subscribe/stripe-checkout/{session_id}', StripeCheckoutController::class)->name('stripe-checkout');
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
@@ -49,6 +49,21 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
     Route::group(['namespace' => 'Cart', 'as' => 'cart.', 'prefix' => 'cart'], function() {
         Route::get('/',"Home")->name('home');
         Route::get('checkout',"Checkout")->name('checkout');
+        Route::get('order-completed', 'OrderCompleted')->name('order-completed');
+        //Route::get('payment-verification/{session_id}',PaymentVerificationController::class)->name('payment-verification');
+
+        Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {
+            Route::get('payment-success/{sessionId}', 'StripePaymentVerification')->name('payment.success');
+            Route::get('payment-cancel', 'StripePaymentCancel')->name('payment.cancel');
+        });
+
+//        Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
+//        Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');
+        Route::group(['prefix' => 'paypal', 'as' => 'paypal.'], function() {
+            Route::get('payment-success', 'PaypalPaymentVerification')->name('payment.success');
+            Route::get('payment-cancel', 'PaypalPaymentCancel')->name('payment.cancel');
+        });
+
 
     });
     Route::get('about',"About")->name('about');
@@ -69,7 +84,8 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('login',"Login")->name('login');
             Route::get('forgot-password',"ForgotPassword")->name('forgot_password');
             Route::get('reset-password',"ResetPassword")->name('reset_password');
-            Route::get('signup',"Register")->name('register');
+            Route::get('signup/{planId?}',"Register")->name('register');
+            //Route::get('subscription-payment-verification/{sessionId?}', 'SubscriptionCheckoutVerification')->name('subscription-payment-verification');
         });
 
         Route::group(['namespace' => 'LiveChannel'], function() {
@@ -112,20 +128,13 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
 
 
-
-
-        Route::group(['namespace' => 'Cart', 'prefix' => 'cart', 'as' => 'cart.'], function() {
-            Route::get('order-completed', 'OrderCompleted')->name('order-completed');
-        });
-
-
     });
 });
 
-Route::group(['prefix' => 'paypal', 'as' => 'paypal.'], function() {
-    Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
-    Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');
-});
+//Route::group(['prefix' => 'paypal', 'as' => 'paypal.'], function() {
+//    Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
+//    Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');
+//});
 
 
 

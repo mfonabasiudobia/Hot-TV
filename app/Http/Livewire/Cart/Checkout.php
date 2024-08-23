@@ -112,7 +112,7 @@ class Checkout extends BaseComponent
                             ],
                         ],
                         'mode' => 'payment',
-                        'success_url' => url('cart/payment-verification?session_id={CHECKOUT_SESSION_ID}'),
+                        'success_url' => url('cart/payment-success/{CHECKOUT_SESSION_ID}'),
                         'cancel_url' => route('cart.checkout'),
                     ]);
 
@@ -146,8 +146,8 @@ class Checkout extends BaseComponent
                         ]
                     ],
                     "application_context" => [
-                        "cancel_url" => route('paypal.payment.cancel'),
-                        "return_url" => route('paypal.payment.success'),
+                        "cancel_url" => route('cart.paypal.payment.cancel'),
+                        "return_url" => route('cart.paypal.payment.success'),
                     ]
                 ];
                 $session = $provider->createOrder($data);

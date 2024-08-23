@@ -31,7 +31,7 @@ class PaypalPaymentVerificationController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $payment = Payment::where('charge_id', $session['id'])->where('status', 'pending')->first();
+        $payment = Payment::where('charge_id',  $session['id'])->where('status', 'pending')->first();
 
         if($payment->status == 'pending') {
             $payment->status = 'completed';

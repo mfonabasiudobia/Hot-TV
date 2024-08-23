@@ -7,6 +7,7 @@ class TvShowView extends BaseModel
     protected $fillable = [
         'tv_show_id',
         'user_id',
+        'season',
         'episode_id',
         'ip_address'
     ];

@@ -42,40 +42,41 @@ class Show extends BaseComponent
 //            'ip_address' => request()->ip()
 //        ];
 
+
         $tvShowViews = TvShowView::where('user_id',  auth()->id())
             ->where('ip_address',  request()->ip())
             ->where('tv_show_id', $this->tvShow->id)
             ->first();
 
         if($this->selectedEpisode) {
-
-
-
             if(!$tvShowViews) {
                 TvShowView::create([
                     'user_id' => auth()->id(),
                     'ip_address' => request()->ip(),
                     'tv_show_id' => $this->tvShow->id,
                     'episode_id' => $this->selectedEpisode->id,
+                    'season' => $this->season_number
                 ]);
             } else {
 
                 if($tvShowViews->episode_id == null) {
+
                     $tvShowViews->episode_id = $this->selectedEpisode->id;
+                    $tvShowViews->season = $this->season_number;
                     $tvShowViews->save();
                 } else {
+
                     TvShowView::create([
                         'user_id' => auth()->id(),
                         'ip_address' => request()->ip(),
                         'tv_show_id' => $this->tvShow->id,
                         'episode_id' => $this->selectedEpisode->id,
+                        'season' => $this->season_number,
                     ]);
                 }
             }
 
         } else {
-
-
             if(!$tvShowViews) {
                 TvShowView::create([
                     'user_id' => auth()->id(),
@@ -94,6 +95,39 @@ class Show extends BaseComponent
 
     public function selectEpisode($episodeId){
         $this->selectedEpisode = EpisodeRepository::getEpisodeById($episodeId);
+
+        $tvShowViews = TvShowView::where('user_id',  auth()->id())
+            ->where('ip_address',  request()->ip())
+            ->where('tv_show_id', $this->tvShow->id)
+            ->first();
+
+        if(!$tvShowViews) {
+            TvShowView::create([
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
+                'season' => $this->season_number
+            ]);
+        } else {
+
+            if($tvShowViews->episode_id == null) {
+
+                $tvShowViews->episode_id = $this->selectedEpisode->id;
+                $tvShowViews->season = $this->season_number;
+                $tvShowViews->save();
+            } else {
+
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                    'episode_id' => $this->selectedEpisode->id,
+                    'season' => $this->season_number,
+                ]);
+            }
+        }
+
 
         $this->dispatchBrowserEvent("change-episode", [
             'video_url' => file_path($this->selectedEpisode->recorded_video),
