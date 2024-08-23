@@ -59,8 +59,20 @@ class Show extends BaseComponent
                     'episode_id' => $this->selectedEpisode->id,
                 ]);
             } else {
-                $tvShowViews->episode_id = $this->selectedEpisode->id;
-                $tvShowViews->save();
+
+                if(!is_null($tvShowViews->episode_id)) {
+                    $tvShowViews->episode_id = $this->selectedEpisode->id;
+                    $tvShowViews->save();
+                } else {
+                    TvShowView::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'tv_show_id' => $this->tvShow->id,
+                        'episode_id' => $this->selectedEpisode->id,
+                    ]);
+                }
+
+
             }
 
         } else {
