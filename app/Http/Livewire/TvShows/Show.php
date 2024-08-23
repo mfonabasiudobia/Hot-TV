@@ -60,7 +60,6 @@ class Show extends BaseComponent
             } else {
 
                 if($tvShowViews->episode_id == null) {
-                    dd('episode view is null', $tvShowViews);
                     $tvShowViews->episode_id = $this->selectedEpisode->id;
                     $tvShowViews->save();
                 } else {
