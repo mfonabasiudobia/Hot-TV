@@ -44,7 +44,7 @@ class Show extends BaseComponent
 
 
         if($this->selectedEpisode) {
-
+            dd('this');
             $tvShowViews = TvShowView::where('user_id',  auth()->id())
                 ->where('ip_address',  request()->ip())
                 ->where('tv_show_id', $this->tvShow->id)
