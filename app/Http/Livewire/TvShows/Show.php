@@ -44,11 +44,10 @@ class Show extends BaseComponent
 
 
         if($this->selectedEpisode) {
-            dd('this');
+
             $tvShowViews = TvShowView::where('user_id',  auth()->id())
                 ->where('ip_address',  request()->ip())
                 ->where('tv_show_id', $this->tvShow->id)
-                //->where('episode_id', $this->selectedEpisode->id)
                 ->first();
 
             if(!$tvShowViews) {
@@ -59,7 +58,7 @@ class Show extends BaseComponent
                     'episode_id' => $this->selectedEpisode->id,
                 ]);
             } else {
-
+                dd('if not episode');
                 if($tvShowViews->episode_id == null) {
 
                     $tvShowViews->episode_id = $this->selectedEpisode->id;
