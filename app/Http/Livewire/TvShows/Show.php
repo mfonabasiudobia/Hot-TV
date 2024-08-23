@@ -79,10 +79,12 @@ class Show extends BaseComponent
                 'user_id' => auth()->id(),
                 'ip_address' => request()->ip(),
                 'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
             ], [
                 'user_id' => auth()->id(),
                 'ip_address' => request()->ip(),
                 'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
             ]);
         }
 
