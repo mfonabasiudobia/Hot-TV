@@ -35,15 +35,39 @@ class Show extends BaseComponent
             'casts' => CastRepository::getCastsByShow($this->tvShow->id)
         ]);
 
-        $data = [
-            'user_id' => auth()->id(),
-            'tv_show_id' => $this->tvShow->id,
-            'episode_id' => $this->selectedEpisode->id ?? NULL,
-            'ip_address' => request()->ip()
-        ];
+//        $data = [
+//            'user_id' => auth()->id(),
+//            'tv_show_id' => $this->tvShow->id,
+//            'episode_id' => $this->selectedEpisode->id ?? NULL,
+//            'ip_address' => request()->ip()
+//        ];
 
 
-        TvShowView::firstOrCreate($data, $data);
+        if($this->selectedEpisode) {
+
+            TvShowView::updateOrCreate([
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
+            ], [
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
+            ]);
+        } else {
+            TvShowView::updateOrCreate([
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+            ], [
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+            ]);
+        }
+
     }
 
     public function updatedSeasonNumber($value){

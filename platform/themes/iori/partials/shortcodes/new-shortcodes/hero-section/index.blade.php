@@ -36,7 +36,7 @@
 {{--                <img src="{{ file_path($shortcode->tv_channel_thumbnail) }}" alt="" />--}}
 
                 <section class="w-full max-h-screen relative">
-                    <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
+                    <video id="player" src="{{ file_path('files/BringemInBountyTrailer-Final.mov') }}" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
                     <div class="custom-loader absolute left-[45%] top-[45%]" id="loading-button"></div>
                 </section>
 
