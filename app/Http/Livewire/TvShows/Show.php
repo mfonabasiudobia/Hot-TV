@@ -42,13 +42,14 @@ class Show extends BaseComponent
 //            'ip_address' => request()->ip()
 //        ];
 
+        $tvShowViews = TvShowView::where('user_id',  auth()->id())
+            ->where('ip_address',  request()->ip())
+            ->where('tv_show_id', $this->tvShow->id)
+            ->first();
 
         if($this->selectedEpisode) {
 
-            $tvShowViews = TvShowView::where('user_id',  auth()->id())
-                ->where('ip_address',  request()->ip())
-                ->where('tv_show_id', $this->tvShow->id)
-                ->first();
+
 
             if(!$tvShowViews) {
                 TvShowView::create([
@@ -70,22 +71,19 @@ class Show extends BaseComponent
                         'episode_id' => $this->selectedEpisode->id,
                     ]);
                 }
-
-
             }
 
         } else {
-            TvShowView::updateOrCreate([
-                'user_id' => auth()->id(),
-                'ip_address' => request()->ip(),
-                'tv_show_id' => $this->tvShow->id,
-                'episode_id' => $this->selectedEpisode->id,
-            ], [
-                'user_id' => auth()->id(),
-                'ip_address' => request()->ip(),
-                'tv_show_id' => $this->tvShow->id,
-                'episode_id' => $this->selectedEpisode->id,
-            ]);
+
+
+            if(!$tvShowViews) {
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                ]);
+            }
+
         }
 
     }
