@@ -45,17 +45,24 @@ class Show extends BaseComponent
 
         if($this->selectedEpisode) {
 
-            TvShowView::updateOrCreate([
-                'user_id' => auth()->id(),
-                'ip_address' => request()->ip(),
-                'tv_show_id' => $this->tvShow->id,
-                'episode_id' => $this->selectedEpisode->id,
-            ], [
-                'user_id' => auth()->id(),
-                'ip_address' => request()->ip(),
-                'tv_show_id' => $this->tvShow->id,
-                'episode_id' => $this->selectedEpisode->id,
-            ]);
+            $tvShowViews = TvShowView::where('user_id',  auth()->id())
+                ->where('ip_address',  request()->ip())
+                ->where('tv_show_id', $this->tvShow->id)
+                //->where('episode_id', $this->selectedEpisode->id)
+                ->first();
+
+            if(!$tvShowViews) {
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                    'episode_id' => $this->selectedEpisode->id,
+                ]);
+            } else {
+                $tvShowViews->episode_id = $this->selectedEpisode->id;
+                $tvShowViews->save();
+            }
+
         } else {
             TvShowView::updateOrCreate([
                 'user_id' => auth()->id(),
