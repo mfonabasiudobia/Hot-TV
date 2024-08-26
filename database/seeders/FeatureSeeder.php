@@ -6,8 +6,12 @@ use Illuminate\Database\Seeder;
 use Botble\SubscriptionPlan\Enums\FeatureEnum;
 use Botble\SubscriptionPlan\Models\SubscriptionFeature;
 use Botble\SubscriptionPlan\Models\Subscription;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use Stripe\Price;
+use Stripe\Product;
+use Stripe\Stripe;
 
-class FeatureSeeder extends Seeder
+    class FeatureSeeder extends Seeder
 {
     public function run(): void
     {
@@ -54,19 +58,81 @@ class FeatureSeeder extends Seeder
         foreach($plans as $plan) {
             SubscriptionPlan::updateOrCreate(
                 [
-                    'name' => $plan['name']
+                    'name' => $plan['name'],
+                    'status' => 'published',
                 ]
             );
         }
 
         foreach($subscriptions as $subscription) {
+
+            Stripe::setApiKey(gs()->payment_stripe_secret);
+            $amount = $subscription['price'];
+            $stripeProduct = Product::create([
+                'name' => $subscription['name'],
+                'active' => true,
+            ]);
+
+            $stripProductPrice = Price::create([
+                'currency' => 'usd',
+                'unit_amount' => $amount * 100,
+                'recurring' =>[ 'interval' =>  $subscription['subscription_plan_id'] == 1 ? 'month' : 'year'],
+                'product' => $stripeProduct->id
+            ]);
+
+            $provider = new PayPalClient([]);
+            $token = $provider->getAccessToken();
+            $provider->setAccessToken($token);
+
+            $paypalProduct = $provider->createProduct([
+                'name' => $subscription['name'],
+                'description' => $subscription['name'],
+                'type' => 'SERVICE',
+                'category' =>   'SOFTWARE'
+            ]);
+
+            $paypalProductId = $paypalProduct['id'];
+
+            $paypalPlan = $provider->createPlan([
+                'product_id' => $paypalProductId,
+                'name' => $subscription['name'],
+                'description' => $subscription['name'],
+                'billing_cycles' => [
+                    [
+                        'frequency' => [
+                            'interval_unit' => $subscription['subscription_plan_id'] == 1 ? 'MONTH' : 'YEAR',
+                            'interval_count' => 1,
+                        ],
+                        'tenure_type' => 'REGULAR',
+                        'sequence' => 1,
+                        'total_cycles' => 0,
+                        'pricing_scheme' => [
+                            'fixed_price' => [
+                                'value' => $amount,
+                                'currency_code' => 'USD'
+                            ],
+                        ],
+                    ],
+                ],
+                'payment_preferences' => [
+                    'auto_bill_outstanding' => true,
+                    'setup_fee' => [
+                        'value' => 0,
+                        'currency_code' => 'USD'
+                    ],
+                    'setup_fee_failure_action' => 'CONTINUE',
+                    'payment_failure_threshold' => 3
+                ],
+            ]);
             $sub = Subscription::updateOrCreate(
                 [
                     'subscription_plan_id' => $subscription['subscription_plan_id'],
                     'name' => $subscription['name']
                 ], [
-                    'stripe_plan_id' => $subscription['stripe_plan_id'],
-                    'price' => $subscription['price']
+                    'stripe_plan_id' => $stripProductPrice->id,
+                    'price' => $subscription['price'],
+                    'paypal_plan_id' => $paypalPlan['id'],
+                    'status' => 'published',
                 ]
             );
             $sub->features()->detach();

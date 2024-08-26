@@ -1,5 +1,5 @@
-<div 
-        class="min-h-screen flex items-center justify-center py-10" 
+<div
+        class="min-h-screen flex items-center justify-center py-10"
         style="background-image: url('{{ asset('images/background-image-01.png') }}">
 
         <div class="md:w-1/2 lg:w-[430px] border border-[#878787] rounded-xl bg-black text-white p-7 space-y-5">
@@ -12,9 +12,9 @@
             </header>
 
             @if(session()->has('confirmation-email-message'))
-               <div 
-               
-               x-data="{ canResend: false, countdown: 60 }" 
+               <div
+
+               x-data="{ canResend: false, countdown: 60 }"
                @trigger-email-sent.window="() => {
                     countdown = 60;
                     canResend = false;
@@ -25,21 +25,28 @@
                             --countdown;
                         }else{
                             canResend = true;
-                        } 
+                        }
                     }, 1000)
                 }">
                 <div class="p-3 rounded-xl bg-danger text-sm space-y-1">
                     <span>A confirmation email has been sent to your email address. Please confirm your account by clicking the
                         confirm button</span><br />
-            
+
                    <div class="flex items-center space-x-2">
                     <x-atoms.loading-button text="Resend link" wire:click="resendVerificationMail" class=""
                         x-bind:class="!canResend ? 'opacity-70' : ''" x-bind:disabled="!canResend" target="resendVerificationMail" />
-                    
+
                     <span x-show="!canResend">in 00:<span x-text="countdown"></span>s</span>
                    </div>
                 </div>
             </div>
+            @endIf
+            @if(session()->has('payment-failed'))
+                <div>
+                    <div class="p-3 rounded-xl bg-danger text-sm space-y-1">
+                    <span>The payment has been canceled</span>
+                    </div>
+                </div>
             @endIf
 
             @if(session()->has('verification-email-message'))
@@ -58,20 +65,20 @@
             <form class="grid gap-5" wire:submit.prevent='submit'>
                 <div class="form-group">
                     <label>Username</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        placeholder="Enter your username" 
-                        wire:model.defer="username" 
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Enter your username"
+                        wire:model.defer="username"
                     />
                 </div>
-                
+
                 <div class="form-group" x-data="{ show : false}">
                     <label>Password</label>
                     <div class="relative">
-                        <input :type="show ? 'text' : 'password'" class="form-control" 
-                            placeholder="Enter your Password" 
-                            wire:model.defer="password" 
+                        <input :type="show ? 'text' : 'password'" class="form-control"
+                            placeholder="Enter your Password"
+                            wire:model.defer="password"
                         />
                         <button type='button' class="absolute top-3 right-3" x-on:click="show = !show">
                             <i class="las" :class="show ? 'la-eye' : 'la-eye-slash'"></i>
@@ -94,4 +101,3 @@
             </div>
         </div>
     </div>
-    

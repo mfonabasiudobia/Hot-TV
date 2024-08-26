@@ -53,7 +53,9 @@ Route::group(['middleware'=> ['web', 'core']], function() {
 
     Route::group(['prefix' => 'plan', 'as' => 'plan.'], function() {
         Route::post('checkout', [PlanCheckout::class, 'checkoutSubmit'])->name('checkout');
-        Route::get('payment-verification', [PlanCheckout::class, 'paymentVerification'])->name('payment-verification');
+        Route::get('stripe/payment-verification/{sessionId}', [PlanCheckout::class, 'stripePaymentVerification'])->name('stripe.payment-verification');
+        Route::get('paypal/payment-verification', [PlanCheckout::class, 'paypalPaymentVerification'])->name('paypal.payment-verification.success');
+        Route::get('paypal/payment-cancel', [PlanCheckout::class, 'paypalPaymentCancel'])->name('paypal.payment-cancel');
     });
 
 });

@@ -19,6 +19,7 @@ class Subscription extends BaseModel
         'price',
         'subscription_plan_id',
         'stripe_plan_id',
+        'paypal_plan_id',
         'status'
     ];
 
@@ -44,7 +45,7 @@ class Subscription extends BaseModel
         );
     }
 
-    
+
 
     public function orders(): HasMany
     {

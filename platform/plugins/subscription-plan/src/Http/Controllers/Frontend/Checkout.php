@@ -88,7 +88,7 @@ class Checkout extends BaseController
         // }
     }
 
-    public function paymentVerification(Request $request)
+    public function stripePaymentVerification(Request $request)
     {
 
         Stripe::setApiKey(gs()->payment_stripe_secret);
@@ -131,5 +131,42 @@ class Checkout extends BaseController
         } catch(\Exception $e) {
             throw new NotFoundHttpException();
         }
+    }
+
+    public function paypalPaymentVerification(Request $request)
+    {
+        $sessionId = $request->subscription_id;
+
+        $order = SubscriptionOrder::where('session_id', $sessionId)->where('status', 'pending')->first();
+        if(!$order) {
+            throw new NotFoundHttpException();
+        }
+
+        if($order->status == OrderStatusEnum::PENDING->value) {
+            $order->status = OrderStatusEnum::PAID->value;
+            $order->save();
+
+            $user = $order->user;
+            $user->status = StatusEnum::ACTIVATED->value;
+            $user->save();
+        }
+
+        session()->flash('confirmation-email-message', true);
+        return redirect()->route("login");
+    }
+
+    public function paypalPaymentCancel(Request $request)
+    {
+        $sessionId = $request->subscription_id;
+
+        $order = SubscriptionOrder::where('session_id', $sessionId)->where('status', 'pending')->first();
+
+        if($order) {
+            $order->status = OrderStatusEnum::FAILED->value;
+            $order->save();
+        }
+
+        session()->flash('payment-failed', true);
+        return redirect()->route("login");
     }
 }

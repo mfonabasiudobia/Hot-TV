@@ -15,6 +15,7 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\SubscriptionPlan\Forms\SubscritionsForm;
 use Botble\Base\Forms\FormBuilder;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Stripe;
@@ -38,11 +39,7 @@ class SubscriptionsController extends BaseController
 
     public function store(SubscritionsRequest $request, BaseHttpResponse $response)
     {
-
-
         Stripe::setApiKey(gs()->payment_stripe_secret);
-
-
         $amount = $request->input('price');
         $stripeProduct = Product::create([
             'name' => $request->input('name'),
@@ -56,13 +53,58 @@ class SubscriptionsController extends BaseController
             'product' => $stripeProduct->id
         ]);
 
+        $provider = new PayPalClient([]);
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
 
+        $paypalProduct = $provider->createProduct([
+            'name' => $request->input('name'),
+            'description' => $request->input('name'),
+            'type' => 'SERVICE',
+            'category' =>   'SOFTWARE'
+        ]);
+
+        $paypalProductId = $paypalProduct['id'];
+
+        $paypalPlan = $provider->createPlan([
+            'product_id' => $paypalProductId,
+            'name' => $request->input('name'),
+            'description' => $request->input('name'),
+            'billing_cycles' => [
+                [
+                    'frequency' => [
+                        'interval_unit' => $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR',
+                        'interval_count' => 1,
+                    ],
+                    'tenure_type' => 'REGULAR',
+                    'sequence' => 1,
+                    'total_cycles' => 0,
+                    'pricing_scheme' => [
+                        'fixed_price' => [
+                            'value' => $amount,
+                            'currency_code' => 'USD'
+                        ],
+                    ],
+                ],
+            ],
+            'payment_preferences' => [
+                'auto_bill_outstanding' => true,
+                'setup_fee' => [
+                    'value' => 0,
+                    'currency_code' => 'USD'
+                ],
+                'setup_fee_failure_action' => 'CONTINUE',
+                'payment_failure_threshold' => 3
+            ],
+        ]);
+        //dd($paypalPlan);
         $subscription = Subscription::query()->create([
             'name' => $request->input('name'),
             'price' => $amount,
             'status' => $request->input('status'),
             'subscription_plan_id' => $request->input('subscription_plan_id'),
-            'stripe_plan_id' => $stripProductPrice->id
+            'stripe_plan_id' => $stripProductPrice->id,
+            'paypal_plan_id' => $paypalPlan['id']
         ]);
 
         $subscription->features()->attach($request->input('features'));

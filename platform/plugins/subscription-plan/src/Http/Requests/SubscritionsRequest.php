@@ -13,6 +13,8 @@ class SubscritionsRequest extends Request
         return [
             'name' => 'required|string|max:220',
             'status' => Rule::in(BaseStatusEnum::values()),
+            'subscription_plan_id' => 'required|exists:subscription_plans,id',
+            'price' => 'required'
         ];
     }
 }
