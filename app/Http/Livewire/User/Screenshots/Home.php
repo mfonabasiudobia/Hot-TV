@@ -10,6 +10,8 @@ class Home extends BaseComponent
 
     public function render()
     {
-        return view('livewire.user.screenshots.home', ['customPhotos' => TravelRepository::getCustomTravelPhotos(auth()->id())->get()]);
+        $travelImages = TravelRepository::getCustomTravelPhotos(auth()->id())->get();
+
+        return view('livewire.user.screenshots.home', ['customPhotos' => $travelImages]);
     }
 }

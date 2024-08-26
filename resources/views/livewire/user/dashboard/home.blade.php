@@ -14,11 +14,9 @@
     @elseif($currentNav === 'watch-history')
         @livewire("user.watch-history.home")
     @endIf
-
-    
 </section>
 
-@push('header')
+@push('script')
 <script>
     Livewire.on('setNav', function () {
             var swiper = new Swiper(".slider", {
@@ -33,11 +31,6 @@
                 },
             });
     });
-</script>
-@endpush
-
-@push('script')
-<script>
     document.addEventListener('change-nav', (event) => {
         setTimeout(() => {
             window.history.replaceState(null, null, `?p=${event.detail.page}`);

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('header')
 
@@ -78,7 +78,7 @@
         window.addEventListener('load', function () {
             // Get the "page-loading" element by its ID
             var pageLoading = document.getElementById('page-loading');
-            
+
             // Hide the "page-loading" element
             pageLoading.style.display = 'none';
         });

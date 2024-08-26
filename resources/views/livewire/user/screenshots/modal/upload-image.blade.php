@@ -16,11 +16,11 @@
                 <p>Showcase your travel photos and experiences.</p>
             </header>
 
-            <form wire:submit.prevent='submit' class="grid gap-5" autocomplete="off" x-data="{ video_type : @entangle('video_type')}">
+            <form wire:submit.prevent='submit' class="grid gap-5" autocomplete="off" >
 
                     <div class="form-group">
                         <label>Image Title *</label>
-                        <input type="text" class="form-control" placeholder="Video Title" wire:model.defer="title" />
+                        <input type="text" class="form-control" placeholder="Image Title" wire:model.defer="title" />
                         @error('title') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
