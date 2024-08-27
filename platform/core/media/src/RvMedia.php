@@ -354,6 +354,7 @@ class RvMedia
         string|null $folderSlug = null,
         bool $skipValidation = false
     ): array {
+
         $request = request();
 
         if ($uploadPath = $request->input('path')) {

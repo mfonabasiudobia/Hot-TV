@@ -26,6 +26,33 @@ function upload_file($file, $filePath, $previousPath = null, $isupdating = false
     return 'storage/' . $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
 }
 
+function upload_gallery_file($file, $filePath, $previousPath = null, $isUpdating = false) {
+    if(!$file && $isUpdating) return $previousPath;// return previous path if we updating file and file upload exists
+
+    if (file_exists($previousPath)) unlink($previousPath);
+    $uuid = Str::uuid();
+    if(!$file) return null;
+    $extension = $file->extension();
+    $fileName = $uuid . '.' .$extension;
+    $fileNameThumbnail = $uuid . '-150x150.' .$extension;
+    $fileSaveAs = $file->storeAs($filePath, $fileName);
+    $fileSaveAsThumbnail = $file->storeAs($filePath, $fileNameThumbnail);
+    $path = 'storage/' . $fileSaveAs;
+    $size = filesize($path);
+
+    $thumb_img = Image::make('storage/' . $fileSaveAsThumbnail)->resize(150, 150, function ($constraint) {
+        $constraint->aspectRatio();
+    });
+
+    return [
+        'file_path' => $fileSaveAs,
+        'name' => $fileName,
+        'mime_type' => "mime/$extension",
+        'size' => $size
+
+    ];
+}
+
 function upload_avatar($file, $filePath, $previousPath = null, $isupdating = false) {
     if(!$file && $isupdating) return $previousPath;// return previous path if we updating file and file upload exists
 

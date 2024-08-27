@@ -24,6 +24,11 @@
                         @error('title') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <input type="text" class="form-control" placeholder="Image Description" wire:model.defer="description" />
+                        @error('description') <span class="error"> {{ $message }}</span> @endError
+                    </div>
 
                     <div class="form-group">
                         <label>Image</label>
@@ -34,10 +39,8 @@
                         @error('images.*') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-
-
                 <div class="form-group">
-                    <x-atoms.loading-button text="Upload Image" target="submit" class="btn btn-lg btn-danger" />
+                    <x-atoms.loading-button text="Upload Image" target="submit" class="btn btn-lg btn-danger"  />
                 </div>
             </form>
 

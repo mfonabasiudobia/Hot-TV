@@ -63,6 +63,10 @@
                 <a href="#" wire:click.prevent="setNav('screenshots')"
                     class="relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'screenshots' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     <span>Screenshots</span>
+
+                    <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
+                        {{ Botble\Gallery\Models\Gallery::where('user_id', auth()->id())->count() }}
+                    </span>
                 </a>
             </li>
             <li>
@@ -77,22 +81,22 @@
             </li>
         </ul>
 
-   @if($currentNav === 'watchlist')
+        @if($currentNav === 'watchlist')
         <button class="btn btn-danger btn-sm inline-block font-semibold">
             <i class="las la-edit"></i>
             <span>Edit</span>
         </button>
-    @elseif($currentNav === 'screenshots')
+        @elseif($currentNav === 'screenshots')
         <button class="btn btn-danger btn-sm inline-block font-semibold" x-on:click="$dispatch('trigger-upload-screenshot-modal')">
             <i class="las la-camera"></i>
             <span>Screenshots</span>
         </button>
-    @else
+        @else
         <button class="btn btn-danger btn-sm inline-block font-semibold" x-on:click="$dispatch('trigger-upload-video-modal')">
             <i class="las la-upload"></i>
             <span>Upload Video</span>
         </button>
-    @endIf
+        @endIf
     </section>
 </section>
 

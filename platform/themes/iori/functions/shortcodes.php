@@ -386,7 +386,11 @@ app()->booted(function () {
     add_shortcode('recently-watched', __('Recently Watched'), __('Recently Watched'), function (Shortcode $shortcode) {
         return Theme::partial('shortcodes.new-shortcodes.recently-watched.index', compact('shortcode'));
     });
-    
+
+    add_shortcode('slideshow', __('Slideshow'), __('Slideshow'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.slideshow.index', compact('shortcode'));
+    });
+
     shortcode()->setAdminConfig('recently-watched', function (array $attributes) {
         return Theme::partial('shortcodes.new-shortcodes.recently-watched.admin-config', compact('attributes'));
     });
