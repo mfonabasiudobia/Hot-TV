@@ -49,7 +49,7 @@
         const swiperslideshow = new Swiper('.slideshow', {
             // Optional parameters
             direction: 'horizontal',
-            loop: true,
+            loop: false,
 
             // If we need pagination
             pagination: {

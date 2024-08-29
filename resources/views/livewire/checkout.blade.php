@@ -69,6 +69,11 @@
                <div class="overflow-auto">
                 <table class="w-full">
                     @foreach (Cart::instance('product')->content() as $cart)
+                        @php
+                            $prices = getProductSalePrice($cart->model);
+                            $price = $prices['price'];
+                            $oldPrice = $prices['old_price'];
+                        @endphp
                     <tr>
                         <td>
                             <section class="flex items-center space-x-3 w-[320px]">
@@ -80,18 +85,18 @@
                             </section>
                         </td>
                         <td class="font-medium text-xl">
-                            <span>{{ ac() . number_format($cart->model->price, 2) }}</span>
+                            <span>{{ ac() . number_format($price, 2) }}</span>
 
-                            @if($cart->model->sale_price > 0)
+                            @if($oldPrice > 0)
                             /
-                            <strike class="opacity-50 text-sm">{{ ac() . number_format($cart->model->sale_price, 2)}}</strike>
+                            <strike class="opacity-50 text-sm">{{ ac() . number_format($oldPrice, 2)}}</strike>
                             @endIf
                         </td>
                         <td class="px-5">
                             <span class="text-2xl  text-center">x{{ $cart->qty }}</span>
                         </td>
                         <td class="font-medium text-xl">
-                            <span>{{ ac() }}{{ $cart->qty * $cart->model->price }}</span>
+                            <span>{{ ac() }}{{ number_format($cart->qty * $cart->model->price, 2) }}</span>
                         </td>
                     </tr>
                     @endforeach

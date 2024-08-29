@@ -15,6 +15,7 @@ class Show extends BaseComponent
     public $product;
 
     public function mount($slug){
+
          $slug = Slug::where('key', $slug)->firstorFail();
 
          $this->product = Product::findOrFail($slug->reference_id);
@@ -28,6 +29,7 @@ class Show extends BaseComponent
             throw_if($qty < 1, 'Invalid Quantity Supplied');
 
             Cart::instance('product')->content()->search(function ($cartItem, $rowId) use($product, $qty) {
+
             if($cartItem->id === $product['id']){
                 throw_if($product['quantity'] < ($cartItem->qty + $qty), "Max Quantity Reached");
 

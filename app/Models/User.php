@@ -30,7 +30,8 @@ class User extends AuthenticatableBaseModel
         'avatar_id',
         'super_user',
         'manage_supers',
-        'permissions'
+        'permissions',
+        'stripe_customer_id'
     ];
 
     protected $guarded = [];

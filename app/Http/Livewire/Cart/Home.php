@@ -24,6 +24,7 @@ class Home extends BaseComponent
     }
 
     public function addToCart($product, $qty = 1){
+
         try {
             throw_if($qty < 1, 'Invalid Quantity Supplied');
 
@@ -36,6 +37,7 @@ class Home extends BaseComponent
             });
 
             CartLibrary::instance('product')->add($product['id'], $product['name'], 1, $product['price'])->associate(Product::class);
+
 
             toast()->success('Product Added to Cart')->push();
 

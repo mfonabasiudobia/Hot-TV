@@ -88,20 +88,25 @@ class Checkout extends BaseController
         // }
     }
 
-    public function stripePaymentVerification(Request $request)
+    public function stripePaymentVerification($sessionId)
     {
 
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         try {
-            $session = Session::retrieve($request->session_id);
+
+            $session = Session::retrieve($sessionId);
 
 
             if(!$session) {
                 throw new NotFoundHttpException();
             }
 
-            $order = SubscriptionOrder::where('session_id', $session->id)->where('status', 'pending')->first();
+            $order = SubscriptionOrder::where('session_id', $session->id)
+                ->where('status', OrderStatusEnum::PENDING->value)
+                ->orWhere('status', OrderStatusEnum::TRAIL->value)
+                ->where('current_subscription', true)
+                ->first();
 
             if(!$order) {
                 throw new NotFoundHttpException();
@@ -110,23 +115,15 @@ class Checkout extends BaseController
             if($order->status == OrderStatusEnum::PENDING->value) {
                 $order->status = OrderStatusEnum::PAID->value;
                 $order->save();
-
-                $user = $order->user;
-                $user->status = StatusEnum::ACTIVATED->value;
-                $user->save();
             }
 
-            //$user =  AuthRepository::register($data);
-
-            //throw_unless($otp = AuthRepository::sendOtp($user->email), "Failed to send OTP");
-
-            //toast()->success('Your account has been created')->pushOnNextPage();
+            $user = $order->user;
+            $user->status = StatusEnum::ACTIVATED->value;
+            $user->save();
 
             session()->flash('confirmation-email-message', true);
 
             return redirect()->route("login");
-
-            //return redirect()->route('register');
 
         } catch(\Exception $e) {
             throw new NotFoundHttpException();

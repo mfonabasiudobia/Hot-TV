@@ -129,7 +129,7 @@ class Checkout extends BaseComponent
                     return redirect($session->url);
 
                 // return redirect()->route('payment-verification');
-            }else{
+            } else{
 
                 $provider = new PayPalClient([]);
                 $token = $provider->getAccessToken();

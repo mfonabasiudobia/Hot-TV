@@ -1,5 +1,6 @@
 <?php
 
+use Botble\Ecommerce\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -198,4 +199,66 @@ function customPagination(LengthAwarePaginator $lengthAwarePaginator): array
         'from'          => $lengthAwarePaginator->firstItem(),
         'to'            => $lengthAwarePaginator->lastItem(),
     ];
+}
+
+function getProductSalePrice(Product $product): array
+{
+    $now = \Carbon\Carbon::now();
+    $price = $product->price;
+    $oldPrice = null;
+
+    if($product->start_date != null && $product->end_date == null) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date))) {
+            $price = $product->sale_price;
+            //$oldPrice = $this->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } elseif($product->start_date && $product->end_date) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date)) && $now->lt(\Carbon\Carbon::parse($product->end_date))) {
+
+            $price = $product->sale_price;
+            $oldPrice = $product->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } else {
+        $price = $product->price;
+        $oldPrice = null;
+    }
+
+    return [
+        'price' => $price,
+        'old_price' => $oldPrice
+    ];
+}
+
+function calculateDiscount($cart)
+{
+    $discount = 0;
+    foreach($cart as $item) {
+        if(!is_null($item->options->old_price)) {
+            $discount +=  $item->options->old_price - $item->price;
+        }
+    }
+    return number_format($discount, 2);
+
+}
+
+function getSubTotal($cart)
+{
+    $subTotal = 0;
+    foreach($cart as $item) {
+        if(!is_null($item->options->old_price)) {
+            $subTotal +=  $item->options->old_price;
+        } else {
+            $subTotal +=  $item->price;
+        }
+    }
+    return number_format($subTotal, 2);
+
 }

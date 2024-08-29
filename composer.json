@@ -42,6 +42,7 @@
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-short-schedule": "^1.5",
+        "spatie/laravel-webhook-client": "^3.4",
         "srmklive/paypal": "^3.0",
         "stripe/stripe-php": "^10.21",
         "symfony/http-client": "^6.3",

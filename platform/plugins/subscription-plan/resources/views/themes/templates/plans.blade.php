@@ -1,18 +1,19 @@
 @if ($plans->isNotEmpty())
 
-<section class="py-16 bg-black" x-data="{ 
-                selected_plan: 
+<section class="py-16 bg-black" x-data="{
+                selected_plan:
                 {
                     id: {{ $plans[0]->id }},
                     name: '{{ $plans[0]->name }}',
                     subscriptions: [
                     @foreach($plans[0]->subscriptions as $subscription)
-                    { 
+                    {
                         id: {{ $subscription->id }},
                         name: '{!! $subscription->name !!}',
                         price: '${{ $subscription->price }}',
                         is_default: {{ ( $plans[0]->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plans[0]->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                        url: '{{ route('subscription-checkout', $subscription->id) }}',
+                        url_text: '{{ $plans[0]->trail == 1 ? 'Start '. $plans[0]->trail_period. '-Day Free Trail' : 'Start' }}',
+                        url: '{{ $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                         features: [
                         @foreach($subscription->features as $feature)
                         @php
@@ -34,20 +35,21 @@
             <h1 class="font-semibold text-xl md:text-3xl">IT’S EASY TO GET STARTED</h1>
             <p>choose a plan tailored to your needs</p>
             @foreach($plans as $index => $plan)
-                <button :class="selected_plan.id == {{ $plan->id }} ? 'btn btn-lg border rounded-xl btn-danger' : 'btn btn-lg border rounded-xl'" x-data="{ index_button: '{{ $index }}' }" 
+                <button :class="selected_plan.id == {{ $plan->id }} ? 'btn btn-lg border rounded-xl btn-danger' : 'btn btn-lg border rounded-xl'" x-data="{ index_button: '{{ $index }}' }"
                 x-on:click="
-                selected_plan = 
+                selected_plan =
                     {
                     id: {{ $plan->id }},
                     name: '{{ $plan->name }}',
                     subscriptions: [
                         @foreach($plan->subscriptions as $subscription)
-                            { 
+                            {
                                 id: {{ $subscription->id }},
                                 name: '{!! $subscription->name !!}',
                                 price: '${{ $subscription->price }}',
                                 is_default: {{ ( $plan->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plan->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                                url: '{{ route('subscription-checkout', $subscription->id) }}',
+                                url_text: '{{ $plan->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start' }}',
+                                url: '{{ $plan->trail == 1 ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                                 features: [
                                     @foreach($subscription->features as $feature)
                                     @php
@@ -63,15 +65,15 @@
                         @endforeach
                     ]
                 }
-                " 
+                "
                 :key="Date.now() + Math.floor(Math.random() * 1000000)"
                 >{{ $plan->name }}
-                    
+
                 </button>
             @endforeach
         </header>
-        
-        
+
+
             <section class="grid md:grid-cols-3 gap-10">
                 <template x-for="sub in selected_plan.subscriptions" :key="sub.id">
                 <section :class="sub.is_default ? 'space-y-5 border-danger border-2 p-5 rounded-xl' : 'space-y-5 hover:border-danger hover:border-2 p-5 rounded-xl'">
@@ -92,16 +94,10 @@
                             </li>
                         </template>
                     </ul>
-                    <a :href="sub.url" class="btn border rounded-xl btn-md">
-                        Get Started
-                    </a>
-                    <!-- <button class="btn border rounded-xl btn-md">
-                        Get Started
-                    </button> -->
+                    <a :href="sub.url" class="btn border rounded-xl btn-md" x-text="sub.url_text"></a>
                 </section>
                 </template>
             </section>
-        
     </div>
 </section>
 @endif

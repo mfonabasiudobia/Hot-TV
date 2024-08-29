@@ -23,6 +23,14 @@ class SubscriptionPlanForm extends FormAbstract
                     'data-counter' => 120,
                 ],
             ])
+            ->add('trail', 'checkbox', [
+                'label' => trans('plugins/subscription-plan::subscription-plan.trail'),
+                'label_attr' => ['class' => 'control-label required'],
+            ])
+            ->add('trail_period', 'number', [
+                'label' => trans('plugins/subscription-plan::subscription-plan.trail_period'),
+                'label_attr' => ['class' => 'control-label'],
+            ])
             ->add('status', 'customSelect', [
                 'label' => trans('core/base::tables.status'),
                 'label_attr' => ['class' => 'control-label required'],

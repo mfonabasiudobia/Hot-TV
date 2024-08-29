@@ -12,34 +12,9 @@
                 <section class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
                     @foreach ($products as $product)
                         @php
-
-                            $now = \Carbon\Carbon::now();
-                            $price = $product->price;
-                            $oldPrice = null;
-
-                            if($product->start_date != null && $product->end_date == null) {
-
-                                if($now->gt(\Carbon\Carbon::parse($product->start_date))) {
-                                    $price = $product->sale_price;
-                                    //$oldPrice = $this->price;
-                                } else {
-                                    $price = $product->price;
-                                    $oldPrice = null;
-                                }
-                            } elseif($product->start_date && $product->end_date) {
-
-                                if($now->gt(\Carbon\Carbon::parse($product->start_date)) && $now->lt(\Carbon\Carbon::parse($product->end_date))) {
-
-                                    $price = $product->sale_price;
-                                    $oldPrice = $product->price;
-                                } else {
-                                    $price = $product->price;
-                                    $oldPrice = null;
-                                }
-                            } else {
-                                $price = $product->price;
-                                $oldPrice = null;
-                            }
+                            $prices = getProductSalePrice($product);
+                            $price = $prices['price'];
+                            $oldPrice = $prices['old_price'];
                         @endphp
 
                         <a class="relative space-y-5 p-5 bg-dark group border border-secondary rounded-xl" href="{{ route('merchandize.show',['slug' => $product->slug ]) }}">

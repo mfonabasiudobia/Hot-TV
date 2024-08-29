@@ -12,6 +12,7 @@ use Botble\Base\Models\BaseModel;
 use Botble\Base\Supports\Avatar;
 use Botble\Media\Facades\RvMedia;
 use Botble\Media\Models\MediaFile;
+use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -261,6 +263,10 @@ class User extends BaseModel implements
         return $this->hasMany(RideBooking::class)->whereRaw('1 = 0');
     }
 
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true);
+    }
 
 
 }

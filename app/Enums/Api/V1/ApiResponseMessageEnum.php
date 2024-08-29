@@ -27,5 +27,15 @@ enum ApiResponseMessageEnum:string
     case NO_RIDE_FOUND = 'no ride found';
     case STRIPE_PAYMENT_URL = 'stripe payment url';
     case PAYPAL_PAYMENT_URL = 'paypal payment url';
+    case PRODUCTS = 'products';
+    case PRODUCT = 'product';
+    case INVALID_QUANTITY_SUPPLIED='invalid quantity supplied';
+    case MAX_QUANTITY_REACHED = 'max quantity reached';
+    case PRODUCT_ADDED_SUCCESS = 'product added to cart successfully';
+    case CART = 'cart';
+    case CART_UPDATED = 'cart updated';
+    case ITEM_REMOVED_FROM_CART = 'item removed from the cart';
+    case CHECKOUT_REDIRECT = 'checkout redirect';
+    case PAYMENT_SUCCESS = 'payment success';
 
 }

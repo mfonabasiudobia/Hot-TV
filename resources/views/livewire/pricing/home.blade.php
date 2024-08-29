@@ -13,7 +13,8 @@
                         name: '{!! $subscription->name !!}',
                         price: '${{ $subscription->price }}',
                         is_default: {{ ( $plans[0]->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plans[0]->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                        url: '{{ route('register', $subscription->id) }}',
+                        url_text: '{{ $plans[0]->trail == 1 ? 'Start '. $plans[0]->trail_period. '-Day Free Trail' : 'Start' }}',
+                        url: '{{ $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                         features: [
                         @foreach($subscription->features as $feature)
                         @php
@@ -34,6 +35,7 @@
                 <header class="md:w-3/4 text-center mx-auto space-y-3">
                     <h1 class="font-semibold text-xl md:text-3xl">IT’S EASY TO GET STARTED</h1>
                     <p>choose a plan tailored to your needs</p>
+
                     @foreach($plans as $index => $plan)
                         <button :class="selected_plan.id == {{ $plan->id }} ? 'btn btn-lg border rounded-xl btn-danger' : 'btn btn-lg border rounded-xl'" x-data="{ index_button: '{{ $index }}' }"
                                 x-on:click="
@@ -48,7 +50,8 @@
                                 name: '{!! $subscription->name !!}',
                                 price: '${{ $subscription->price }}',
                                 is_default: {{ ( $plan->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plan->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                                url: '{{ route('register', $subscription->id) }}',
+                                url_text: '{{ $plan->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start' }}',
+                                url: '{{ $plan->trail == 1 ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                                 features: [
                                     @foreach($subscription->features as $feature)
                                     @php
@@ -84,21 +87,18 @@
                                 </div>
                             </header>
                             <ul class="space-y-5">
-                                <template x-for="item in sub.features"  :key="item.id">
+                                <template x-for="item in sub.features" :key="item.id">
                                     <li class="flex items-start justify-start space-x-2">
-                                <span class="py-0.5">
-                                    <input type="checkbox" checked class="accent-white" readonly />
-                                </span>
+                                        <span class="py-0.5">
+                                            <input type="checkbox" checked class="accent-white" readonly />
+                                        </span>
                                         <span x-text="item.name"></span>
                                     </li>
                                 </template>
                             </ul>
-                            <a :href="sub.url" class="btn border rounded-xl btn-md">
-                                Get Started
-                            </a>
-                            <!-- <button class="btn border rounded-xl btn-md">
-                                Get Started
-                            </button> -->
+
+                            <a :href="sub.url" class="btn border rounded-xl btn-md" x-text="sub.url_text"></a>
+
                         </section>
                     </template>
                 </section>

@@ -8,5 +8,6 @@ enum OrderStatusEnum:string
     case PAID = 'paid';
 
     case FAILED = 'failed';
+    case TRAIL = 'trail';
 
 }

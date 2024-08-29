@@ -45,6 +45,12 @@ class SubscriptionPlanTable extends TableAbstract
             ->editColumn('checkbox', function (SubscriptionPlan $item) {
                 return $this->getCheckbox($item->getKey());
             })
+            ->editColumn('trail', function (SubscriptionPlan $item) {
+                return $item->trail == 1 ? 'Enabled' : 'Disabled';
+            })
+            ->editColumn('trail_period', function (SubscriptionPlan $item) {
+                return $item->trail_period;
+            })
             ->editColumn('created_at', function (SubscriptionPlan $item) {
                 return BaseHelper::formatDate($item->created_at);
             })
@@ -69,6 +75,8 @@ class SubscriptionPlanTable extends TableAbstract
             ->select([
                'id',
                'name',
+               'trail',
+               'trail_period',
                'created_at',
                'status',
            ]);
@@ -85,6 +93,14 @@ class SubscriptionPlanTable extends TableAbstract
             ],
             'name' => [
                 'title' => trans('core/base::tables.name'),
+                'class' => 'text-start',
+            ],
+            'trail' => [
+                'title' => trans('plugins/subscription-plan::subscription-plan.trail'),
+                'class' => 'text-start',
+            ],
+            'trail_period' => [
+                'title' => trans('plugins/subscription-plan::subscription-plan.trail_period'),
                 'class' => 'text-start',
             ],
             'created_at' => [

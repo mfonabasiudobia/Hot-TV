@@ -130,7 +130,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
     });
 });
-
+//Route::webhooks('paystack/webhook');
 //Route::group(['prefix' => 'paypal', 'as' => 'paypal.'], function() {
 //    Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
 //    Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');

@@ -53,7 +53,17 @@ class SubscriptionPlanController extends BaseController
 
     public function update(SubscriptionPlan $subscriptionPlan, SubscriptionPlanRequest $request, BaseHttpResponse $response)
     {
-        $subscriptionPlan->fill($request->input());
+
+        $name = $request->input('name');
+        $status = $request->input('status');
+        $trail = $request->has('trail') ? 1 : 0;
+        $trail_period = $request->input('trail_period');
+        $subscriptionPlan->fill([
+            'name' => $name,
+            'status' => $status,
+            'trail' => $trail,
+            'trail_period' => $trail_period
+        ]);
 
         $subscriptionPlan->save();
 

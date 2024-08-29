@@ -20,9 +20,6 @@ class Home extends BaseComponent
 
         $this->product = Page::with(['meta'])->findOrFail($slug->reference_id);
 
-
-
-        //dd($this->product, $this->price, $this->oldPrice);
     }
 
     public function render()

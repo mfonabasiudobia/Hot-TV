@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Auth;
 use App\Enums\User\StatusEnum;
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\AuthRepository;
+use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 use Botble\SubscriptionPlan\Models\Subscription;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Botble\SubscriptionPlan\Models\SubscriptionPlan;
@@ -35,40 +36,51 @@ class Register extends BaseComponent
 
         $this->plans = SubscriptionPlan::whereStatus('published')->get();
         $this->paymentMethod = 'paypal';
+
+
     }
     public function submit(){
 
-        $user = AuthRepository::register([
-            'username' => $this->username,
-            'email' => $this->email,
-            'password' => $this->password,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'status' => StatusEnum::LOCKED->value
-        ]);
+
 
         if($this->paymentMethod == 'stripe') {
             $stripePlanId = $this->subscription->stripe_plan_id;
 
             Stripe::setApiKey(gs()->payment_stripe_secret);
 
+
             $customer = Customer::create([
                 'email' => $this->email,
                 'name' => "$this->first_name $this->last_name"
-
             ]);
+
+            $user = AuthRepository::register([
+                'username' => $this->username,
+                'email' => $this->email,
+                'password' => $this->password,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'status' => StatusEnum::LOCKED->value,
+                'stripe_customer_id' => $customer->id,
+            ]);
+
+
+            if($this->subscription->plan->trail == 1) {
+                $stripSessionObject['subscription_data'] =['trial_period_days' => $this->subscription->plan->trail_period];
+                $subscriptionStatus = OrderStatusEnum::TRAIL->value;
+            } else {
+                $subscriptionStatus = OrderStatusEnum::PENDING->value;
+            }
+
+            $stripSessionObject['payment_method_types'] = ['card'];
+            $stripSessionObject['line_items'] = [['price' => $stripePlanId,'quantity' => 1,],];
+            $stripSessionObject['customer'] = $customer->id;
+            $stripSessionObject['mode'] = 'subscription';
+            $stripSessionObject['success_url'] = url('plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}'); //config('app.redirect_success_url'), //http://localhost/payment-verification?session_id={CHECKOUT_SESSION_ID}',//route('payment-verification', ['order' => $order->id]),
+            //$stripSessionObject['cancel_url'] = 'http://localhost/cancel',//route('checkout');
+
             $session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [
-                    [
-                        'price' => $stripePlanId,
-                        'quantity' => 1,
-                    ],
-                ],
-                'customer' => $customer->id,
-                'mode' => 'subscription',
-                'success_url' => url('plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}'), //config('app.redirect_success_url'), //http://localhost/payment-verification?session_id={CHECKOUT_SESSION_ID}',//route('payment-verification', ['order' => $order->id]),
-                //'cancel_url' => 'http://localhost/cancel',//route('checkout'),
+                $stripSessionObject
             ]);
 
             $order = [
@@ -78,6 +90,7 @@ class Register extends BaseComponent
                 'payment_method_type' => 'stripe',
                 'session_id' => $session->id,
                 'sub_total' => $session->amount_subtotal/100,
+                'status' => $subscriptionStatus
             ];
             $order = SubscriptionOrder::create($order);
 
@@ -86,6 +99,17 @@ class Register extends BaseComponent
             $provider = new PayPalClient([]);
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
+
+            $user = AuthRepository::register([
+                'username' => $this->username,
+                'email' => $this->email,
+                'password' => $this->password,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'status' => StatusEnum::LOCKED->value,
+                //'stripe_customer_id' => $customer->id,
+            ]);
+
 
             $paypalPlanId = $this->subscription->paypal_plan_id;
             $subscription = $provider->createSubscription([

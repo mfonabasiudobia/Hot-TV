@@ -94,7 +94,8 @@
                                 name: '{!! $subscription->name !!}',
                                 price: '${{ $subscription->price }}',
                                 is_default: {{ ( $plans[0]->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plans[0]->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                                url: '{{ route('subscription-checkout', $subscription->id) }}',
+                                url_text: '{{ $plans[0]->trail == 1 ? 'Start '. $plans[0]->trail_period. '-Day Free Trail' : 'Start' }}',
+                                url: '{{ $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                                 features: [
                                 @foreach($subscription->features as $feature)
                                 @php
@@ -131,7 +132,8 @@
                                                     name: '{!! $subscription->name !!}',
                                                     price: '${{ $subscription->price }}',
                                                     is_default: {{ ( $plan->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plan->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                                                    url: '{{ route('subscription-checkout', $subscription->id) }}',
+                                                    url_text: '{{ $plan->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start' }}',
+                                                    url: '{{ $plan->trail == 1 ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
                                                     features: [
                                                         @foreach($subscription->features as $feature)
                                                         @php
@@ -176,9 +178,8 @@
                                             </li>
                                         </template>
                                     </ul>
-                                    <button @click="$wire.selectPlan(sub.id)" class="btn border rounded-xl btn-md">
-                                        Get Started
-                                    </button>
+                                    <button @click="$wire.selectPlan(sub.id)" class="btn border rounded-xl btn-md" x-text="sub.url_text"></button>
+
                                 </section>
                             </template>
                         </section>

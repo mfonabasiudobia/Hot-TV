@@ -17,6 +17,8 @@ class SubscriptionOrder extends BaseModel
         'amount',
         'user_id',
         'subscription_id',
+        'stripe_subscription_id',
+        'stripe_customer_id',
         'payment_method_type',
         'session_id',
         'sub_total',

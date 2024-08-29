@@ -13,8 +13,10 @@ class SubscriptionPlan extends BaseModel
 
     protected $fillable = [
         'name',
-        'status'
-        
+        'status',
+        'trail',
+        'trail_period'
+
     ];
 
     protected $casts = [
