@@ -14,6 +14,7 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
+        phpinfo();
         if(config('app.env') == 'production') {
             $throttleKey = $request->input('email');
             $hit = RateLimiter::hit($throttleKey, 1800);
