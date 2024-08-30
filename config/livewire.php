@@ -106,7 +106,9 @@ return [
             'jpg', 'jpeg', 'mpga', 'webp', 'wma',
         ],
         'max_upload_time' => 2 * 100 * 1024 * 1024, // Max duration (in minutes) before an upload gets invalidated.
+        'chunk_size' => 1024 * 1024 * 5, // 5 MB chunk size
     ],
+
 
     /*
     |--------------------------------------------------------------------------
