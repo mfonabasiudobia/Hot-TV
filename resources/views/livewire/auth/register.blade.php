@@ -1,3 +1,5 @@
+
+@if($allowRegistration)
 <div class="min-h-screen flex items-center justify-center py-10"
      style="background-image: url('{{ asset('images/background-image-01.png') }}">
     @if($show == 'register_form')
@@ -276,3 +278,16 @@
         </form>
     @endif
 </div>
+@else
+    <div class="min-h-screen flex items-center justify-center py-8"
+         style="background-image: url('{{ asset('images/background-image-01.png') }}">
+        <div class="md:w-1/2 lg:w-[500px] border border-[#878787] rounded-xl bg-black text-white p-7 space-y-5">
+            <header class="space-y-3">
+                <h1 class="font-thin font-2xl text-2xl">Registrations Are Currently Closed</h1>
+                <section class="space-y-2">
+                    <p class="font-thin">We appreciate your interest in joining our community. Unfortunately, we are not accepting new registrations at this time.</p>
+                </section>
+            </header>
+        </div>
+    </div>
+@endif

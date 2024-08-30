@@ -37,5 +37,6 @@ enum ApiResponseMessageEnum:string
     case ITEM_REMOVED_FROM_CART = 'item removed from the cart';
     case CHECKOUT_REDIRECT = 'checkout redirect';
     case PAYMENT_SUCCESS = 'payment success';
+    case REGISTRATION_CLOSED = 'registrations are currently closed';
 
 }

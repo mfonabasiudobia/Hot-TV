@@ -96,8 +96,9 @@
                                     </li>
                                 </template>
                             </ul>
-
-                            <a :href="sub.url" class="btn border rounded-xl btn-md" x-text="sub.url_text"></a>
+                            @if(gs()->payment_stripe_status == 1 || gs()->payment_paypal_status == 1)
+                                <a :href="sub.url" class="btn border rounded-xl btn-md" x-text="sub.url_text"></a>
+                            @endif
 
                         </section>
                     </template>

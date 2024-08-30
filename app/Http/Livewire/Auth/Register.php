@@ -24,10 +24,17 @@ class Register extends BaseComponent
     public $plans;
     public $subscription;
     public $paymentMethod;
+    public $allowRegistration;
 
 
     public function mount($planId = null)
     {
+
+        if(gs()->payment_stripe_status == 1 || gs()->payment_paypal_status == 1) {
+            $this->allowRegistration = true;
+        } else {
+            $this->allowRegistration = false;
+        }
 
         if($planId) {
 
