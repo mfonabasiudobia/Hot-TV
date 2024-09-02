@@ -21,3 +21,7 @@ Route::group(['prefix' => 'v1/driver', 'as' => 'v1.driver.'], function() {
 Route::group(['prefix' => 'v1/webhooks/stripe', 'as' => 'v1.webhooks.stripe'], function() {
     require __DIR__ . '/api/webhooks/stripe/event-routes.php';
 });
+
+Route::group(['prefix' => 'v1/webhooks/paypal', 'as' => 'v1.webhooks.stripe'], function() {
+    require __DIR__ . '/api/webhooks/paypal/event-routes.php';
+});

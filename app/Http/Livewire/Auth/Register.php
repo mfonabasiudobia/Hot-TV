@@ -167,11 +167,11 @@ class Register extends BaseComponent
             'first_name' => 'required',
             'last_name' => 'required',
             'username' => 'required|unique:users,username',
-            'email' => 'required|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6|alpha_num'
         ]);
-        if($validated) {
 
+        if($validated) {
             if(!$this->subscription) {
                 $this->show = 'plans';
             } else {

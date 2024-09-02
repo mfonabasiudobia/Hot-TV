@@ -76,7 +76,7 @@ use Stripe\Stripe;
             $stripProductPrice = Price::create([
                 'currency' => 'usd',
                 'unit_amount' => $amount * 100,
-                'recurring' =>[ 'interval' =>  $subscription['subscription_plan_id'] == 1 ? 'month' : 'year'],
+                'recurring' =>[ 'interval' =>  $subscription['interval']],
                 'product' => $stripeProduct->id
             ]);
 
@@ -93,6 +93,8 @@ use Stripe\Stripe;
 
             $paypalProductId = $paypalProduct['id'];
 
+
+
             $paypalPlan = $provider->createPlan([
                 'product_id' => $paypalProductId,
                 'name' => $subscription['name'],
@@ -100,7 +102,7 @@ use Stripe\Stripe;
                 'billing_cycles' => [
                     [
                         'frequency' => [
-                            'interval_unit' => $subscription['subscription_plan_id'] == 1 ? 'MONTH' : 'YEAR',
+                            'interval_unit' => $subscription['interval'],
                             'interval_count' => 1,
                         ],
                         'tenure_type' => 'REGULAR',
@@ -123,7 +125,74 @@ use Stripe\Stripe;
                     'setup_fee_failure_action' => 'CONTINUE',
                     'payment_failure_threshold' => 3
                 ],
+                'plan_status' => 'ACTIVE'
             ]);
+            $paypalPlanIds = [
+                "without_trail" => $paypalPlan['id'],
+                "7_days" => null,
+                "15_days" => null,
+                "13_days" => null,
+                "3_months" => null,
+            ];
+            $paypalTenures = [
+                "7_days" => ['interval_unit' => 'DAY','interval_count' => 7],
+                "15_days" => ['interval_unit' => 'DAY','interval_count' => 15],
+                "30_days" => ['interval_unit' => 'DAY','interval_count' => 30],
+                "3_months" => ['interval_unit' => 'MONTH','interval_count' =>3],
+            ];
+
+            foreach($paypalTenures as $key => $tenure) {
+
+                $createPlan = [
+                    'product_id' => $paypalProductId,
+                    'name' => $subscription['name'],
+                    'description' => $subscription['name'],
+                    'billing_cycles' => [
+                        [
+                            'frequency' => $tenure,
+                            'tenure_type' => 'TRIAL',
+                            'sequence' => 1,
+                            'total_cycles' => 1,
+                            'pricing_scheme' => [
+                                'fixed_price' => [
+                                    'value' => '0',
+                                    'currency_code' => 'USD'
+                                ]
+                            ]
+                        ],
+                        [
+                            'frequency' => [
+                                'interval_unit' => $subscription['interval'],
+                                'interval_count' => 1,
+                            ],
+                            'tenure_type' => 'REGULAR',
+                            'sequence' => 2,
+                            'total_cycles' => 0,
+                            'pricing_scheme' => [
+                                'fixed_price' => [
+                                    'value' => $amount,
+                                    'currency_code' => 'USD'
+                                ],
+                            ],
+                        ],
+                    ],
+                    'payment_preferences' => [
+                        'auto_bill_outstanding' => true,
+                        'setup_fee' => [
+                            'value' => 0,
+                            'currency_code' => 'USD'
+                        ],
+                        'setup_fee_failure_action' => 'CONTINUE',
+                        'payment_failure_threshold' => 3
+                    ],
+                    'plan_status' => 'ACTIVE'
+                ];
+
+                $paypalPlan = $provider->createPlan($createPlan);
+
+                $paypalPlanIds[$key] = $paypalPlan["id"];
+            }
+
             $sub = Subscription::updateOrCreate(
                 [
                     'subscription_plan_id' => $subscription['subscription_plan_id'],
@@ -131,7 +200,7 @@ use Stripe\Stripe;
                 ], [
                     'stripe_plan_id' => $stripProductPrice->id,
                     'price' => $subscription['price'],
-                    'paypal_plan_id' => $paypalPlan['id'],
+                    'paypal_plan_id' => $paypalPlanIds,
                     'status' => 'published',
                 ]
             );

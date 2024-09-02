@@ -1,11 +1,12 @@
 <?php
 
+
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\PaypalPaymentVerificationController;
 use App\Http\Controllers\VideoStreamController;
 use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
 
 Route::get('jsdjsjjs', function(){
@@ -28,8 +29,10 @@ Route::get('public/compare', function(){
 Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoContent'])->name('video-stream');
 //Route::post('/video/save-played-time', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
+//Route::get('this-test', PaypalCheckoutController::class);
 
 Route::get('subscribe/stripe-checkout/{session_id}', StripeCheckoutController::class)->name('stripe-checkout');
+Route::get('subscribe/paypal-checkout', PaypalCheckoutController::class)->name('stripe-checkout');
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 

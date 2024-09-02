@@ -6,6 +6,7 @@ use Botble\Base\Casts\SafeContent;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class SubscriptionPlan extends BaseModel
 {
@@ -15,7 +16,9 @@ class SubscriptionPlan extends BaseModel
         'name',
         'status',
         'trail',
-        'trail_period'
+        'interval',
+        'trail_period_stripe',
+        'trail_period_paypal'
 
     ];
 

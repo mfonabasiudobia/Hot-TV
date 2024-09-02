@@ -25,6 +25,7 @@ class Subscription extends BaseModel
 
     protected $casts = [
         'status' => BaseStatusEnum::class,
+        'paypal_plan_id' => 'array'
     ];
 
     public function plan(): BelongsTo

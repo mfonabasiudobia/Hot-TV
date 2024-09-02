@@ -15,6 +15,7 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\SubscriptionPlan\Forms\SubscriptionPlanForm;
 use Botble\Base\Forms\FormBuilder;
+use Illuminate\Support\Str;
 
 class SubscriptionPlanController extends BaseController
 {
@@ -57,12 +58,19 @@ class SubscriptionPlanController extends BaseController
         $name = $request->input('name');
         $status = $request->input('status');
         $trail = $request->has('trail') ? 1 : 0;
-        $trail_period = $request->input('trail_period');
+        $trail_period = $request->has('trail') ? $request->input('trail_period') : null;
+
+        $mappingInterval = get_interval_mappings();
+
+        $mappingTrailPeriod = get_trail_mappings();
+
         $subscriptionPlan->fill([
-            'name' => $name,
+            'name' => $mappingInterval[Str::lower($name)],
             'status' => $status,
+            'interval' => $name,
             'trail' => $trail,
-            'trail_period' => $trail_period
+            'trail_period_stripe' => $trail_period,
+            'trail_period_paypal' => $mappingTrailPeriod[$trail_period],
         ]);
 
         $subscriptionPlan->save();

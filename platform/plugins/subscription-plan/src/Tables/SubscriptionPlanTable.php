@@ -48,8 +48,8 @@ class SubscriptionPlanTable extends TableAbstract
             ->editColumn('trail', function (SubscriptionPlan $item) {
                 return $item->trail == 1 ? 'Enabled' : 'Disabled';
             })
-            ->editColumn('trail_period', function (SubscriptionPlan $item) {
-                return $item->trail_period;
+            ->editColumn('trail_period_stripe', function (SubscriptionPlan $item) {
+                return $item->trail_period_stripe;
             })
             ->editColumn('created_at', function (SubscriptionPlan $item) {
                 return BaseHelper::formatDate($item->created_at);
@@ -76,7 +76,7 @@ class SubscriptionPlanTable extends TableAbstract
                'id',
                'name',
                'trail',
-               'trail_period',
+               'trail_period_paypal',
                'created_at',
                'status',
            ]);
@@ -99,7 +99,7 @@ class SubscriptionPlanTable extends TableAbstract
                 'title' => trans('plugins/subscription-plan::subscription-plan.trail'),
                 'class' => 'text-start',
             ],
-            'trail_period' => [
+            'trail_period_paypal' => [
                 'title' => trans('plugins/subscription-plan::subscription-plan.trail_period'),
                 'class' => 'text-start',
             ],

@@ -29,3 +29,31 @@ if (! function_exists('get_all_subscrition_plans')) {
     }
 }
 
+if (! function_exists('get_interval_mappings')) {
+    function get_interval_mappings()
+    {
+        $mappingInterval = [
+            'year' => 'Annually',
+            'month' => 'Monthly',
+            'week' => 'Weekly',
+            'day' => 'Daily'
+        ];
+
+        return $mappingInterval;
+    }
+}
+
+if (! function_exists('get_trail_mappings')) {
+    function get_trail_mappings()
+    {
+        $mappingTrailPeriod = [
+            '7'  => '7 days',
+            '15' => '15 days',
+            '30' => '30 days',
+            '90' => '3 months'
+        ];
+
+        return $mappingTrailPeriod;
+    }
+}
+

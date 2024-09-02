@@ -75,7 +75,7 @@ class RegistrationController extends Controller
                 'stripe_customer_id' => $customer->id,
             ]);
             if($subscription->plan->trail == 1) {
-                $stripSessionObject['subscription_data'] =['trial_period_days' => $subscription->plan->trail_period];
+                $stripSessionObject['subscription_data'] =['trial_period_days' => $subscription->plan->trail_period_stripe];
                 $subscriptionStatus = OrderStatusEnum::TRAIL->value;
             } else {
                 $subscriptionStatus = OrderStatusEnum::PENDING->value;
@@ -113,6 +113,7 @@ class RegistrationController extends Controller
                 ]
             ]);
         } else {
+
             $provider = new PayPalClient([]);
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
@@ -127,8 +128,11 @@ class RegistrationController extends Controller
                 //'stripe_customer_id' => $customer->id,
             ]);
 
-
-            $paypalPlanId = $subscription->paypal_plan_id;
+            if($subscription->plan->trail == 1) {
+                $paypalPlanId = $subscription->paypal_plan_id[$subscription->plan->trail_period_paypal];
+            } else {
+                $paypalPlanId = $subscription->paypal_plan_id['without_trail'];
+            }
             $paypalSubscription = $provider->createSubscription([
                 'plan_id' => $paypalPlanId,
                 'subscriber' => [
@@ -147,8 +151,8 @@ class RegistrationController extends Controller
                         'payer_selected' => 'PAYPAL',
                         'payee_preferred' => 'IMMEDIATE_PAYMENT_REQUIRED',
                     ],
-                    'return_url' => route('plan.paypal.payment-verification.success'),
-                    'cancel_url' => route('plan.paypal.payment-cancel'),
+                    'return_url' => route('paypal-checkout'),
+                    //'cancel_url' => route('plan.paypal.payment-cancel'),
                 ],
             ]);
 
