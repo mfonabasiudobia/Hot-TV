@@ -100,7 +100,7 @@ class EventController extends Controller
                         }
                     } elseif($billingReason == 'subscription_cycle') {
                         $subscriptionOrder->current_subscription = 0;
-                        if($subscriptionOrder->status != OrderStatusEnum::TRAIL->value) {
+                        if($subscriptionOrder->status == OrderStatusEnum::TRAIL->value) {
                             $subscriptionOrder->trail_ended_at = now();
                         }
 
@@ -114,6 +114,7 @@ class EventController extends Controller
                             'payment_method_type' => 'stripe',
                             'session_id' => $subscriptionOrder->session_id,
                             'sub_total' => $amountPaid / 100,
+                            'stripe_subscription_id' => $subscriptionOrder->stripe_subscription_id,
                             'status' => OrderStatusEnum::PAID->value,
                         ]);
                     }

@@ -21,23 +21,23 @@ class UserObserver
         if($oldStatus ==  StatusEnum::LOCKED->value && $newStatus == StatusEnum::ACTIVATED->value ) {
 
             Mail::to($user->email)->send(new WelcomeNotification($user));
-            if(request()->is('api/*')) {
-                $code = rand(111111, 999999);
-
-                $otp = OtpVerification::where('email', $user->email)->first();
-                if($otp) {
-                    $otp->delete();
-                }
-                OtpVerification::updateOrCreate([
-                    'email' => $user->email
-                ], [
-                    'otp' => $code
-                ]);
-                Mail::to($user->email)->send(new OtpNotification($user, $otp));
-            } else {
+//            if(request()->is('api/*')) {
+//                $code = rand(111111, 999999);
+//
+//                $otp = OtpVerification::where('email', $user->email)->first();
+//                if($otp) {
+//                    $otp->delete();
+//                }
+//                OtpVerification::updateOrCreate([
+//                    'email' => $user->email
+//                ], [
+//                    'otp' => $code
+//                ]);
+//                Mail::to($user->email)->send(new OtpNotification($user, $otp));
+//            } else {
                 $url = URL::temporarySignedRoute('login', now()->addMinutes(15), [ 'email' => $user->email ]);
                 Mail::to($user->email)->send(new OtpNotificationWeb($user, $url));
-            }
+//            }
         }
     }
 }

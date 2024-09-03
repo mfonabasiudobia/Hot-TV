@@ -35,6 +35,7 @@ class EventController extends Controller
                 break;
             case 'BILLING.SUBSCRIPTION.ACTIVATED':
                 $this->handleSubscriptionActivated($request);
+                break;
 
             case 'BILLING.SUBSCRIPTION.UPDATED':
                 // Subscription updated
@@ -86,48 +87,69 @@ class EventController extends Controller
 
     private function handleSubscriptionActivated(Request $request)
     {
-            $paypalSubscription = $request->input('resource');
-            $subscriptionId = $paypalSubscription['id'];
+        $paypalSubscription = $request->input('resource');
+        $subscriptionId = $paypalSubscription['id'];
+        $billingCurrencyCode = $paypalSubscription['billing_info']['outstanding_balance']['currency_code'];
+        $billingAmount = $paypalSubscription['billing_info']['outstanding_balance']['value'];
+        $cycleExecution = $paypalSubscription['billing_info']['cycle_executions'];
 
-            $status = $paypalSubscription['status'];
+        $isInTrial = false;
+        $isEnteringRegular = false;
 
-            $subscriptionOrder = SubscriptionOrder::where('paypal_subscription_id', $subscriptionId)
-                ->where('current_subscription', true)
-                ->first();
-            Log::info(json_encode($subscriptionOrder));
-            //if($billingReason == 'subscription_create') {
-                if($subscriptionOrder && $subscriptionOrder->status == OrderStatusEnum::PENDING->value && $status == 'ACTIVE') {
+        foreach($cycleExecution as $cycle) {
+            if($cycle['tenure_type'] == 'TRIAL' && $cycle['cycles_completed'] == 1) {
+                $isInTrial = true;
+
+            }  else if($cycle['tenure_type'] == 'REGULAR' && $cycle['cycles_completed'] == 1)  {
+                $isEnteringRegular = true;
+            }
+
+        }
+
+
+        $status = $paypalSubscription['status'];
+
+        $subscriptionOrder = SubscriptionOrder::where('paypal_subscription_id', $subscriptionId)
+            ->where('current_subscription', true)
+            ->first();
+
+        if($isInTrial && !$isEnteringRegular){
+
+            if($subscriptionOrder && $subscriptionOrder->status != OrderStatusEnum::PAID->value) {
+                $subscriptionOrder->amount = $billingAmount;
+                $subscriptionOrder->sub_total = $billingAmount;
+                if($subscriptionOrder->status == OrderStatusEnum::PENDING->value) {
                     $subscriptionOrder->status = OrderStatusEnum::PAID->value;
-//                    if($subscriptionOrder->status == OrderStatusEnum::TRAIL->value) {
-//                        $subscriptionOrder->trail_ended_at = now();
-//                    } else {
-                    $subscriptionOrder->save();
-                    $user = $subscriptionOrder->user;
-                    $user->status = StatusEnum::ACTIVATED->value;
-                    $user->save();
-//                    }
-
-
                 }
-//            } elseif($billingReason == 'subscription_cycle') {
-//                $subscriptionOrder->current_subscription = 0;
-//                $subscriptionOrder->save();
-//                $user = $subscriptionOrder->user;
-//
-//                $newSubscriptionPayment = SubscriptionOrder::create([
-//                    'amount' => $amountPaid / 100,
-//                    'subscription_id' => $subscriptionId,
-//                    'user_id' => $user->id,
-//                    'payment_method_type' => 'stripe',
-//                    'session_id' => $subscriptionOrder->session_id,
-//                    'sub_total' => $amountPaid / 100,
-//                    'status' => OrderStatusEnum::PAID->value,
-//                ]);
-//
-//
-//            }
+                $subscriptionOrder->save();
+                $user = $subscriptionOrder->user;
+                $user->status = StatusEnum::ACTIVATED->value;
+                $user->save();
 
+            }
 
+        } elseif($isEnteringRegular) {
+            $subscriptionOrder->current_subscription = 0;
+            if($subscriptionOrder->status == OrderStatusEnum::TRAIL->value) {
+                $subscriptionOrder->trail_ended_at = now();
+            }
+
+            $subscriptionOrder->save();
+            $user = $subscriptionOrder->user;
+
+            $newSubscriptionPayment = SubscriptionOrder::create([
+                'amount' => $billingAmount,
+                'subscription_id' => $subscriptionId,
+                'user_id' => $user->id,
+                'payment_method_type' => 'paypal',
+                'session_id' => $subscriptionOrder->session_id,
+                'sub_total' => $billingAmount,
+                'paypal_subscription_id' => $subscriptionOrder->paypal_subscription_id,
+                'status' => OrderStatusEnum::PAID->value,
+            ]);
+        }
+
+        Log::info(json_encode('New Subscription activated from paypal: ' . $subscriptionId));
     }
     private function handleSubscriptionUpdated(Request $request)
     {
@@ -151,6 +173,15 @@ class EventController extends Controller
 
     private function handleSubscriptionExpired(Request $request)
     {
-        dd($request);
+        $resource = $request->input('resource');
+        $subscriptionId = $resource['id'];
+
+        $subscription = SubscriptionOrder::where('paypal_subscription_id', $subscriptionId)
+            ->where('current_subscription', true)
+            ->first();
+        $user = $subscription->user;
+        $user->status = StatusEnum::LOCKED->value;
+        $user->save();
+        Log::info(json_encode('New Subscription cancelled from paypal:' . $subscriptionId));
     }
 }
