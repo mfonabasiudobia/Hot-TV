@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
 
+
+
 Route::get('jsdjsjjs', function(){
     return 444;
 })->name('public.index');
@@ -31,8 +33,8 @@ Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoCon
 
 //Route::get('this-test', PaypalCheckoutController::class);
 
-Route::get('subscribe/stripe-checkout/{session_id}', StripeCheckoutController::class)->name('stripe-checkout');
-Route::get('subscribe/paypal-checkout', PaypalCheckoutController::class)->name('stripe-checkout');
+
+
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {
 
@@ -138,6 +140,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 //    Route::get('payment-cancel', [PaypalPaymentVerificationController::class, 'cancel'])->name('payment.cancel');
 //    Route::get('payment-success', [PaypalPaymentVerificationController::class, 'paymentSuccess'])->name('payment.success');
 //});
+
 
 
 

@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Customer\Auth\Registration;
+namespace App\Services;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Enums\User\StatusEnum;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\V1\Customer\Auth\RegistrationRequest;
 use App\Repositories\AuthRepository;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 use Botble\SubscriptionPlan\Models\Subscription;
@@ -15,19 +13,33 @@ use Stripe\Checkout\Session;
 use Stripe\Customer;
 use Stripe\Stripe;
 
-class RegistrationController extends Controller
+class AuthenticationService
 {
-    public function __invoke(RegistrationRequest $request)
+    public function register(array $data)
     {
+        $paymentMethod = $data('payment_method');
 
-        $paymentMethod = $request->input('payment_method');
+        if($paymentMethod == 'stripe' && gs()->payment_stripe_status == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => ApiResponseMessageEnum::REGISTRATION_CLOSED->value
+            ], 404);
+        }
 
-        $firstName = $request->input('first_name');
-        $lastName = $request->input('last_name');
-        $email = $request->input('email');
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $subscriptionId = $request->input('subscription_id');
+        if($paymentMethod == 'paypal' && gs()->payment_paypal_status == 0) {
+            return response()->json([
+                'success' => false,
+                'message' => ApiResponseMessageEnum::REGISTRATION_CLOSED->value
+            ], 404);
+        }
+
+        $firstName = $data('first_name');
+        $lastName = $data('last_name');
+        $email = $data('email');
+        $username = $data('username');
+        $password = $data('password');
+        $subscriptionId = $data('subscription_id');
+
 
         $subscription = Subscription::where('id', $subscriptionId)->first();
 
@@ -46,6 +58,7 @@ class RegistrationController extends Controller
             $customer = Customer::create([
                 'email' => $email,
                 'name' => "$firstName $lastName"
+
             ]);
 
             $user = AuthRepository::register([
@@ -71,9 +84,11 @@ class RegistrationController extends Controller
             $stripSessionObject['success_url'] = config('app.redirect_success_api_url');
             //$stripSessionObject['cancel_url'] = 'http://localhost/cancel',//route('checkout'),
 
+
             $session = Session::create([
                 $stripSessionObject
             ]);
+
 
             $order = [
                 'amount' => $session->amount_subtotal/100,
@@ -95,7 +110,6 @@ class RegistrationController extends Controller
             ]);
         } else {
 
-
             $provider = new PayPalClient([]);
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
@@ -107,18 +121,15 @@ class RegistrationController extends Controller
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'status' => StatusEnum::LOCKED->value,
+                //'stripe_customer_id' => $customer->id,
             ]);
 
             if($subscription->plan->trail == 1) {
 
-                $paypalPlanId = $subscription->paypal_plan_id[str_replace(' ', '_', $subscription->plan->trail_period_paypal)];
-                $subscriptionStatus = OrderStatusEnum::TRAIL->value;
+                $paypalPlanId = $subscription->paypal_plan_id[$subscription->plan->trail_period_paypal];
             } else {
                 $paypalPlanId = $subscription->paypal_plan_id['without_trail'];
-                $subscriptionStatus = OrderStatusEnum::PENDING->value;
-
             }
-
             $paypalSubscription = $provider->createSubscription([
                 'plan_id' => $paypalPlanId,
                 'subscriber' => [
@@ -137,7 +148,7 @@ class RegistrationController extends Controller
                         'payer_selected' => 'PAYPAL',
                         'payee_preferred' => 'IMMEDIATE_PAYMENT_REQUIRED',
                     ],
-                    'return_url' => route('v1.subscribe.paypal-checkout-success'),
+                    'return_url' => route('paypal-checkout'),
                     //'cancel_url' => route('plan.paypal.payment-cancel'),
                 ],
             ]);
@@ -149,7 +160,6 @@ class RegistrationController extends Controller
                 'payment_method_type' => 'paypal',
                 'session_id' => $paypalSubscription['id'],
                 'sub_total' => $subscription->price,
-                'status' => $subscriptionStatus
             ];
             $order = SubscriptionOrder::create($order);
 
@@ -159,7 +169,7 @@ class RegistrationController extends Controller
                 'success' => true,
                 'message' => ApiResponseMessageEnum::REGISTRATION_PROCESS->value,
                 'data' => [
-                    'paypal_payment_url' => $approvalUrl
+                    'stripe_payment_url' => $approvalUrl
                 ]
             ]);
         }

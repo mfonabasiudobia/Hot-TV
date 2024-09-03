@@ -42,15 +42,12 @@ class EventController extends Controller
         switch($event->type) {
             case 'customer.subscription.created':
                 $stripeSubscription = $event->data->object;
-
-                //$subscription = SubscriptionOrder::where('stripe_customer_id', $stripeSubscription['customer'])->first();
-
                 $user = User::where('stripe_customer_id', $stripeSubscription['customer'])->first();
                 $subscription = $user->subscription;
-
                 $subscription->stripe_subscription_id = $stripeSubscription['id'];
                 $subscription->save();
                 Log::info(json_encode('New Subscription created: ' . $stripeSubscription['id']));
+                break;
 //            case 'checkout.session.completed':
 //
 //
@@ -92,19 +89,21 @@ class EventController extends Controller
                         if($subscriptionOrder && $subscriptionOrder->status != OrderStatusEnum::PAID->value) {
                             $subscriptionOrder->amount = $amountPaid / 100;
                             $subscriptionOrder->sub_total = $amountPaid / 100;
-                            $subscriptionOrder->status = OrderStatusEnum::PAID->value;
-                            if($subscriptionOrder->status == OrderStatusEnum::TRAIL->value) {
-                                $subscriptionOrder->trail_ended_at = now();
-                            } else {
-                                $user = $subscriptionOrder->user;
-                                $user->status = StatusEnum::ACTIVATED->value;
-                                $user->save();
+                            if($subscriptionOrder->status == OrderStatusEnum::PENDING->value) {
+                                $subscriptionOrder->status = OrderStatusEnum::PAID->value;
                             }
-
                             $subscriptionOrder->save();
+                            $user = $subscriptionOrder->user;
+                            $user->status = StatusEnum::ACTIVATED->value;
+                            $user->save();
+
                         }
                     } elseif($billingReason == 'subscription_cycle') {
                         $subscriptionOrder->current_subscription = 0;
+                        if($subscriptionOrder->status != OrderStatusEnum::TRAIL->value) {
+                            $subscriptionOrder->trail_ended_at = now();
+                        }
+
                         $subscriptionOrder->save();
                         $user = $subscriptionOrder->user;
 
@@ -117,11 +116,9 @@ class EventController extends Controller
                             'sub_total' => $amountPaid / 100,
                             'status' => OrderStatusEnum::PAID->value,
                         ]);
-
-
                     }
-
                 }
+                break;
 
             case 'customer.subscription.trial_will_end':
                 // Todo: send notification few days before trail ends

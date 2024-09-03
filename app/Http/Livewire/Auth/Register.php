@@ -118,7 +118,16 @@ class Register extends BaseComponent
             ]);
 
 
-            $paypalPlanId = $this->subscription->paypal_plan_id;
+
+            if($this->subscription->plan->trail == 1) {
+
+                $paypalPlanId = $this->subscription->paypal_plan_id[str_replace(' ', '_', $this->subscription->plan->trail_period_paypal)];
+                $subscriptionStatus = OrderStatusEnum::TRAIL->value;
+            } else {
+                $paypalPlanId = $this->subscription->paypal_plan_id['without_trail'];
+                $subscriptionStatus = OrderStatusEnum::PENDING->value;
+
+            }
             $subscription = $provider->createSubscription([
                 'plan_id' => $paypalPlanId,
                 'subscriber' => [
@@ -142,6 +151,7 @@ class Register extends BaseComponent
                 ],
             ]);
 
+
             $order = [
                 'amount' => $this->subscription->price,
                 'subscription_id' => $this->subscription->id,
@@ -149,6 +159,8 @@ class Register extends BaseComponent
                 'payment_method_type' => 'paypal',
                 'session_id' => $subscription['id'],
                 'sub_total' => $this->subscription->price,
+                'status' => $subscriptionStatus
+
             ];
             $order = SubscriptionOrder::create($order);
 

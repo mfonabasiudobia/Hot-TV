@@ -32,6 +32,7 @@ return new class extends Migration
             $table->dropColumn('trail_period_paypal');
             $table->dropColumn('trail_period_stripe');
             $table->dropColumn('trail');
+            $table->dropColumn('interval');
         });
     }
 };

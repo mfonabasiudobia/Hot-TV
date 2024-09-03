@@ -8,12 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\Customer\Auth\AuthUserResource;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PaypalCheckoutController extends Controller
+class CheckoutPaypalController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         $sessionId = $request->subscription_id;
 

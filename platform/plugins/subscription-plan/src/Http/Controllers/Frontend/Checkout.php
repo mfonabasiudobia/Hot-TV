@@ -90,21 +90,18 @@ class Checkout extends BaseController
 
     public function stripePaymentVerification($sessionId)
     {
-
         Stripe::setApiKey(gs()->payment_stripe_secret);
-
         try {
-
             $session = Session::retrieve($sessionId);
-
 
             if(!$session) {
                 throw new NotFoundHttpException();
             }
-
             $order = SubscriptionOrder::where('session_id', $session->id)
-                ->where('status', OrderStatusEnum::PENDING->value)
-                ->orWhere('status', OrderStatusEnum::TRAIL->value)
+                ->where(function($query) {
+                    return $query->where('status', OrderStatusEnum::PENDING->value)
+                        ->orWhere('status', OrderStatusEnum::TRAIL->value)  ;
+                })
                 ->where('current_subscription', true)
                 ->first();
 
@@ -134,7 +131,13 @@ class Checkout extends BaseController
     {
         $sessionId = $request->subscription_id;
 
-        $order = SubscriptionOrder::where('session_id', $sessionId)->where('status', 'pending')->first();
+        $order = SubscriptionOrder::where('session_id', $sessionId)
+            ->where(function($query) {
+                return $query->where('status', OrderStatusEnum::PENDING->value)
+                    ->orWhere('status', OrderStatusEnum::TRAIL->value)  ;
+            })
+            ->where('current_subscription', true)
+            ->first();
         if(!$order) {
             throw new NotFoundHttpException();
         }
@@ -143,10 +146,11 @@ class Checkout extends BaseController
             $order->status = OrderStatusEnum::PAID->value;
             $order->save();
 
-            $user = $order->user;
-            $user->status = StatusEnum::ACTIVATED->value;
-            $user->save();
+
         }
+        $user = $order->user;
+        $user->status = StatusEnum::ACTIVATED->value;
+        $user->save();
 
         session()->flash('confirmation-email-message', true);
         return redirect()->route("login");

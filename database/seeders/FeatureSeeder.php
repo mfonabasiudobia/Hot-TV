@@ -15,6 +15,10 @@ use Stripe\Stripe;
 {
     public function run(): void
     {
+
+        SubscriptionPlan::truncate();
+        Subscription::truncate();
+
         $features = [
             [ "name" => FeatureEnum::AD_SUPPORTED->value, "description" => "Ad-supported, all but a few movies and TV shows available, unlimited mobile games" ],
             [ "name" => FeatureEnum::UNLIMITED_AD_FREE_TV_MOBILE_GAMES->value, "description" => "Unlimited ad-free movies, TV shows, and mobile games" ],
@@ -76,7 +80,7 @@ use Stripe\Stripe;
             $stripProductPrice = Price::create([
                 'currency' => 'usd',
                 'unit_amount' => $amount * 100,
-                'recurring' =>[ 'interval' =>  $subscription['interval']],
+                'recurring' =>[ 'interval' =>  $subscription['subscription_plan_id'] == 1 ? 'month' : 'year'],
                 'product' => $stripeProduct->id
             ]);
 
@@ -102,7 +106,7 @@ use Stripe\Stripe;
                 'billing_cycles' => [
                     [
                         'frequency' => [
-                            'interval_unit' => $subscription['interval'],
+                            'interval_unit' => $subscription['subscription_plan_id'] == 1 ? 'MONTH' : 'YEAR',
                             'interval_count' => 1,
                         ],
                         'tenure_type' => 'REGULAR',
@@ -162,7 +166,7 @@ use Stripe\Stripe;
                         ],
                         [
                             'frequency' => [
-                                'interval_unit' => $subscription['interval'],
+                                'interval_unit' => $subscription['subscription_plan_id'] == 1 ? 'MONTH' : 'YEAR',
                                 'interval_count' => 1,
                             ],
                             'tenure_type' => 'REGULAR',

@@ -1,6 +1,10 @@
 <?php
 
 
+use App\Http\Controllers\Api\V1\Customer\Auth\Registration\CheckoutPaypalController;
+use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
+use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
+
 Route::group(['prefix' => 'v1/customer', 'as' => 'v1.customer.'], function() {
     require __DIR__ . '/api/v1/customer/auth-routes.php';
     require __DIR__ . '/api/v1/customer/subscription-routes.php';
@@ -18,10 +22,18 @@ Route::group(['prefix' => 'v1/driver', 'as' => 'v1.driver.'], function() {
 
 });
 
-Route::group(['prefix' => 'v1/webhooks/stripe', 'as' => 'v1.webhooks.stripe'], function() {
+Route::group(['prefix' => 'v1/webhooks/stripe', 'as' => 'v1.webhooks.stripe.'], function() {
     require __DIR__ . '/api/webhooks/stripe/event-routes.php';
 });
 
-Route::group(['prefix' => 'v1/webhooks/paypal', 'as' => 'v1.webhooks.stripe'], function() {
+Route::group(['prefix' => 'v1/webhooks/paypal', 'as' => 'v1.webhooks.paypal.'], function() {
     require __DIR__ . '/api/webhooks/paypal/event-routes.php';
+});
+
+
+Route::group(['prefix' => 'v1/subscribe', 'as' => 'v1.subscribe.'], function() {
+    Route::get('stripe-checkout/{session_id}', StripeCheckoutController::class)->name('stripe-checkout');
+    //Route::get('paypal-checkout', PaypalCheckoutController::class)->name('paypal-checkout');
+    Route::get('paypal-checkout-success', PaypalCheckoutController::class)->name('paypal-checkout-success');
+
 });

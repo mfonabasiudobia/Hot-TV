@@ -23,6 +23,7 @@ class SubscriptionOrder extends BaseModel
         'session_id',
         'sub_total',
         'status',
+        'current_subscription'
     ];
 
     protected $casts = [

@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::table('subscription_orders', function (Blueprint $table) {
             $table->string('stripe_subscription_id')->nullable()->after('subscription_id');
-            $table->timestamp('trial_ended_at')->nullable()->after('stripe_subscription_id');
+            $table->string('paypal_subscription_id')->nullable()->after('stripe_subscription_id');
+            $table->timestamp('trial_ended_at')->nullable()->after('paypal_subscription_id');
             $table->boolean('current_subscription')->default(true);
         });
     }
@@ -28,9 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('subscription_orders', function (Blueprint $table) {
-            $table->dropColumn('trial_ended_at');
-            $table->dropColumn('stripe_subscription_id');
             $table->dropColumn('current_subscription');
+            $table->dropColumn('trial_ended_at');
+            $table->dropColumn('paypal_subscription_id');
+            $table->dropColumn('stripe_subscription_id');
         });
     }
 };

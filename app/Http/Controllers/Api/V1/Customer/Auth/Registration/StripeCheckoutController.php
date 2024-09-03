@@ -16,13 +16,9 @@ class StripeCheckoutController extends Controller
 {
     public function __invoke(Request $request)
     {
-
         Stripe::setApiKey(gs()->payment_stripe_secret);
-
         try {
-
             $session = Session::retrieve($request->session_id);
-
             if(!$session) {
                 return response()->json([
                     'success'   => false,
@@ -30,7 +26,13 @@ class StripeCheckoutController extends Controller
                 ], 404);
             }
 
-            $order = SubscriptionOrder::where('session_id', $session->id)->where('status', 'pending')->first();
+            $order = SubscriptionOrder::where('session_id', $session->id)
+                ->where(function($query) {
+                    return $query->where('status', OrderStatusEnum::PENDING->value)
+                        ->orWhere('status', OrderStatusEnum::TRAIL->value)  ;
+                })
+                ->where('current_subscription', true)
+                ->first();
 
             if(!$order) {
                 return response()->json([
@@ -39,14 +41,15 @@ class StripeCheckoutController extends Controller
                 ], 404);
             }
 
-            $user = $order->user;
             if($order->status == OrderStatusEnum::PENDING->value) {
                 $order->status = OrderStatusEnum::PAID->value;
                 $order->save();
-
-                $user->status = StatusEnum::ACTIVATED->value;
-                $user->save();
             }
+
+            $user = $order->user;
+
+            $user->status = StatusEnum::ACTIVATED->value;
+            $user->save();
 
             $token = $user->createToken('apiToken')->accessToken;
 
@@ -58,7 +61,6 @@ class StripeCheckoutController extends Controller
                 ],
                 'token' => $token
             ]);
-
 
         } catch(\Exception $e) {
             return response()->json([
