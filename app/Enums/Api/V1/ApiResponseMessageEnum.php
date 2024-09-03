@@ -38,5 +38,6 @@ enum ApiResponseMessageEnum:string
     case CHECKOUT_REDIRECT = 'checkout redirect';
     case PAYMENT_SUCCESS = 'payment success';
     case REGISTRATION_CLOSED = 'registrations are currently closed';
+    case PAYMENT_METHODS = 'payment methods';
 
 }

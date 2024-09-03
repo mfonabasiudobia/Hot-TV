@@ -18,6 +18,7 @@ class ListResource extends JsonResource
             'tags' => $this->tags,
             'release_date' => $this->release_date,
             'is_recommended' => $this->is_recommended == 1,
+            'duration' => convert_seconds_to_time($this->episodes()->sum('duration')),
             'episodes' => EpisodeResource::collection($this->episodes),
             'cast' => CastResource::collection($this->whenLoaded('casts')),
             'categories' => ShowCategoryResource::collection($this->whenLoaded('categories'))

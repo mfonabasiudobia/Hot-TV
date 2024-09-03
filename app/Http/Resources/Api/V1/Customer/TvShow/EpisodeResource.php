@@ -15,9 +15,9 @@ class EpisodeResource extends JsonResource
             "description" =>  $this->description,
             "season_number" =>  $this->season_number,
             "episode_number" =>  $this->episode_number,
-            "duration" =>  $this->duration,
-            "thumbnail" =>  $this->thumbnail,
-            "recorded_video" =>  $this->recorded_video,
+            "duration" =>  convert_seconds_to_time($this->duration),
+            "thumbnail" =>  asset('storage/'. $this->thumbnail),
+            "recorded_video" =>  asset('storage/'. $this->recorded_video),
             "release_date" =>  $this->release_date,
         ];
     }
