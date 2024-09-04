@@ -111,10 +111,6 @@
                         <span>Dashboard</span>
                     </a>
                     <li>
-                        <a href="{{ route('about') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
-                            <i class="las la-thumbs-up text-xl"></i>
-                            <span>Favourites</span>
-                        </a>
                         <a href="javascript:void(0)"
                             x-on:click="$dispatch('trigger-upload-video-modal')"
                             class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
