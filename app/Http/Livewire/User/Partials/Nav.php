@@ -31,7 +31,7 @@ class Nav extends Component
             $this->subscriptionPlan = $order->subscription->name;
         }
 
-        $this->avatar = user()->avatarUrl;
+        $this->avatar = $user->avatarUrl;
 //        $media = MediaFile::query()->where('id', user()->avatar_id)->first();
 //
 //        if($media) {
