@@ -10,7 +10,8 @@ class RideDuration extends Model
 
     protected $fillable = [
         'duration',
-        'price'
+        'price',
+        'stream'
     ];
 
     protected function price(): Attribute

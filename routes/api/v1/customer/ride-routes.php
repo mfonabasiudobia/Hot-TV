@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Customer\Ride\DurationController;
 use App\Http\Controllers\Api\V1\Customer\Ride\RequestController;
 use App\Http\Controllers\Api\V1\Customer\Ride\Stripe\PaymentCancelController as StripePaymentCancelController;
 use App\Http\Controllers\Api\V1\Customer\Ride\Stripe\PaymentVerificationController as StripePaymentVerificationController;
@@ -11,6 +12,7 @@ Route::prefix('ride')
     ->group(function() {
         Route::middleware('auth:api')->group(function(){
             Route::post('request', RequestController::class)->name('request');
+            Route::get('ride-durations', DurationController::class)->name('ride-durations');
         });
 
         Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {

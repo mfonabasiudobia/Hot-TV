@@ -39,5 +39,6 @@ enum ApiResponseMessageEnum:string
     case PAYMENT_SUCCESS = 'payment success';
     case REGISTRATION_CLOSED = 'registrations are currently closed';
     case PAYMENT_METHODS = 'payment methods';
+    case RIDE_DURATIONS = 'ride durations';
 
 }

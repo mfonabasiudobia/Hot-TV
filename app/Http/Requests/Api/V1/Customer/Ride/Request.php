@@ -9,8 +9,9 @@ class Request extends FormRequest
     public function rules(): array
     {
         return [
-            'ride_id' => 'required|exists:rides,id',
-            'payment_method' => 'required'
+            'streat_name' => 'required',
+            'ride_duration' => 'required',
+            'type' => 'required'
         ];
     }
 

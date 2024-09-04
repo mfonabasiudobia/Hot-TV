@@ -56,6 +56,9 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
         });
 
         Route::group(['prefix' => 'ride', 'as' => 'ride.'], function() {
+            Route::get('durations', 'RideDuration\Home')->name('durations');
+            Route::get('edit-duration/{id}', 'RideDuration\Edit')->name('edit-duration');
+            Route::get('create-duration', 'RideDuration\Create')->name('create-duration');
             Route::get('/', 'Ride\Home')->name('list');
         });
 

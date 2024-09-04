@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\Api\V1\Customer\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\V1\Customer\Auth\ForgotPasswordVerificationController;
 use App\Http\Controllers\Api\V1\Customer\Auth\LoginController;
@@ -16,10 +15,8 @@ Route::prefix('auth')
         Route::post('registration', RegistrationController::class)->name('registration');
         Route::post('forgot-password', ForgotPasswordController::class)->name('forgot-password');
         Route::post('forgot-password-verification', ForgotPasswordVerificationController::class)->name('forgot-password-verification');
-        Route::post('payment-methods', PaymentMethodController::class)->name('payment-methods');
-
+        Route::get('payment-methods', PaymentMethodController::class)->name('payment-methods');
         Route::middleware('auth:api')->group(function() {
             Route::post('reset-password', ResetPasswordController::class)->name('forgot-password-verification');
         });
-
     });

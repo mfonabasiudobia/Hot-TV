@@ -126,21 +126,35 @@
                             </li>
                         </ul>
                     </li>
-                    <li x-data="{ show : false}">
-                        <a href="#" x-on:click="show = !show">
-                            <i class="las la-video"></i>
-                            <span>Manage Rides</span>
-                            <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </ul>
+            </li>
+
+            <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}"
+                x-data="{ show : '{{$status ? true : false}}'}">
+                <a href="#" x-on:click="show = !show">
+                    <i class="las la-tv"></i>
+                    <span>Manage Pedicabs</span>
+                    <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </a>
+
+
+                <ul class="list-2" x-show="show">
+                    <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                        <a href="{{ route('admin.ride.durations')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Ride Durations</span>
+                        </a>
+                    </li>
+
+                    <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                        <a href="{{ route('admin.ride.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Ride List</span>
                         </a>
                     </li>
                 </ul>
             </li>
-            <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
-                <a href="{{ route('admin.ride.list')  }}">
-                    <i class="las la-circle"></i>
-                    <span>Ride List</span>
-                </a>
-            </li>
+
 
         </ul>
 
