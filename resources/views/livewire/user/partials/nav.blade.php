@@ -1,6 +1,7 @@
 
 <section class="bg-dark p-5 text-white space-y-10 min-h-[35vh] flex flex-col justify-end">
     @livewire("user.partials.modal.upload-pic")
+
     <section
         class="space-y-5 md:space-y-0 flex md:items-center flex-col md:flex-row justify-start items-start md:justify-between md:w-1/2">
         <div class="flex items-center space-x-4">

@@ -1,3 +1,4 @@
+@livewire("user.videos.modal.upload-video")
 <nav class="bg-[#0d0d0d] text-white">
     <div class="container flex items-center justify-between py-2">
         <div class="flex items-center space-x-10">
