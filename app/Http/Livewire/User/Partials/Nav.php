@@ -12,26 +12,29 @@ class Nav extends Component
 
     public $currentNav = 'favourites';
     public $avatar = null;
+    public $user;
     public $subscriptionPlan;
 
     protected $listeners = ['reRender'];
 
     public function mount(){
 
-        $user = Auth::user();
+        $this->user = Auth::user();
         if(request()->has('p')){
             $this->currentNav = request('p');
         }
 
-        $order = SubscriptionOrder::where('user_id', $user->id)
+        $order = SubscriptionOrder::where('user_id', $this->user->id)
         ->where('status', 'paid')
         ->first();
 
         if($order) {
             $this->subscriptionPlan = $order->subscription->name;
+        } else {
+            $this->subscriptionPlan = 'Not subscribe';
         }
 
-        $this->avatar = $user->avatarUrl;
+        $this->avatar = $this->user->avatarUrl;
 //        $media = MediaFile::query()->where('id', user()->avatar_id)->first();
 //
 //        if($media) {

@@ -8,13 +8,35 @@
                     name: '{{ $plans[0]->name }}',
                     subscriptions: [
                     @foreach($plans[0]->subscriptions as $subscription)
+                    @php
+                        if($user && $user->subscription) {
+
+                            if($user->subscription->subscription_id == $subscription->id) {
+                                $urlText = 'Current Plan';
+                                $url = null;
+                            } else {
+
+                                if($user->subscription->subscription->price < $subscription->price) {
+                                    $urlText = 'Upgrade';
+                                } else {
+                                    $urlText = 'Downgrade';
+                                }
+
+                                $url = $user->subscription->payment_method_type == 'stripe' ? route('upgrade-plan-stripe', $subscription->id) : route('upgrade-plan-paypal', ['planId' => $subscription->id ]);
+                            }
+
+                        } else {
+                            $urlText = $plans[0]->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start';
+                            $url = $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]);
+                                }
+                     @endphp
                     {
                         id: {{ $subscription->id }},
                         name: '{!! $subscription->name !!}',
                         price: '${{ $subscription->price }}',
                         is_default: {{ ( $plans[0]->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plans[0]->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                        url_text: '{{ $plans[0]->trail == 1 ? 'Start '. $plans[0]->trail_period. '-Day Free Trail' : 'Start' }}',
-                        url: '{{ $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
+                        url_text: '{{ $urlText }}',
+                        url: '{{ $url }}',
                         features: [
                         @foreach($subscription->features as $feature)
                         @php
@@ -39,43 +61,61 @@
                     @foreach($plans as $index => $plan)
                         <button :class="selected_plan.id == {{ $plan->id }} ? 'btn btn-lg border rounded-xl btn-danger' : 'btn btn-lg border rounded-xl'" x-data="{ index_button: '{{ $index }}' }"
                                 x-on:click="
-                selected_plan =
-                    {
-                    id: {{ $plan->id }},
-                    name: '{{ $plan->name }}',
-                    subscriptions: [
-                        @foreach($plan->subscriptions as $subscription)
-                            {
-                                id: {{ $subscription->id }},
-                                name: '{!! $subscription->name !!}',
-                                price: '${{ $subscription->price }}',
-                                is_default: {{ ( $plan->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plan->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
-                                url_text: '{{ $plan->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start' }}',
-                                url: '{{ $plan->trail == 1 ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]) }}',
-                                features: [
-                                    @foreach($subscription->features as $feature)
-                                    @php
-                                        $featureName = addcslashes($feature->description, "'");
-                                    @endphp
+                            selected_plan =
                                 {
-                                    id: {{ $feature->id }},
-                                    name: '{!! $featureName !!}',
-                                },
+                                id: {{ $plan->id }},
+                                name: '{{ $plan->name }}',
+                                subscriptions: [
+                                    @foreach($plan->subscriptions as $subscription)
+                                        @php
+                                            if($user && $user->subscription) {
+
+                                                if($user->subscription->subscription_id == $subscription->id) {
+                                                    $urlText = 'Current Plan';
+                                                    $url = null;
+                                                } else {
+                                                    if($user->subscription->subscription->price < $subscription->price) {
+                                                        $urlText = 'Upgrade';
+                                                    } else {
+                                                        $urlText = 'Downgrade';
+                                                    }
+                                                    $url = $user->subscription->payment_method_type == 'stripe' ? route('upgrade-plan-stripe', $subscription->id ) : route('upgrade-plan-paypal', ['planId' => $subscription->id ]);
+                                                }
+
+                                            } else {
+                                                $urlText = $plan->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start';
+                                                $url = $plan->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]);
+                                            }
+                                         @endphp
+                                        {
+                                            id: {{ $subscription->id }},
+                                            name: '{!! $subscription->name !!}',
+                                            price: '${{ $subscription->price }}',
+                                            is_default: {{ ( $plan->name == 'Annually' && $subscription->name == 'Standard' ) || ( $plan->name == 'Monthly' && $subscription->name == 'Standard') ? 'true' : 'false' }},
+                                            url_text: '{{ $urlText }}',
+                                            url: '{{ $url }}',
+                                            features: [
+                                                @foreach($subscription->features as $feature)
+                                                @php
+                                                    $featureName = addcslashes($feature->description, "'");
+                                                @endphp
+                                            {
+                                                id: {{ $feature->id }},
+                                                name: '{!! $featureName !!}',
+                                            },
+                                                @endforeach
+                                            ]
+                                        },
                                     @endforeach
                                 ]
-                            },
-                        @endforeach
-                    ]
-                }
-                "
+                            }
+                            "
                                 :key="Date.now() + Math.floor(Math.random() * 1000000)"
                         >{{ $plan->name }}
 
                         </button>
                     @endforeach
                 </header>
-
-
                 <section class="grid md:grid-cols-3 gap-10">
                     <template x-for="sub in selected_plan.subscriptions" :key="sub.id">
                         <section :class="sub.is_default ? 'space-y-5 border-danger border-2 p-5 rounded-xl' : 'space-y-5 hover:border-danger hover:border-2 p-5 rounded-xl'">

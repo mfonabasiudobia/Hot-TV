@@ -8,6 +8,8 @@ use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 
 class Subscription extends BaseModel
@@ -48,8 +50,8 @@ class Subscription extends BaseModel
 
 
 
-    public function orders(): HasMany
+    public function order(): HasOne
     {
-        return $this->hasMany(SubscriptionOrder::class);
+        return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true);
     }
 }

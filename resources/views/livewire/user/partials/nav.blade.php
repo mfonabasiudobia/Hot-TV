@@ -17,6 +17,7 @@
         </div>
 
         <button class="btn btn-sm md:btn-md rounded-xl btn-danger space-x-2 flex items-center">
+
             <span>{{ $subscriptionPlan }} user</span>
 
             <span class="bg-yellow-500 h-[25px] w-[25px] rounded-full flex items-center justify-center">

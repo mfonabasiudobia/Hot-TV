@@ -3,6 +3,8 @@
 
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\PaypalPaymentVerificationController;
+use App\Http\Controllers\UpgratePlan\PaypalController;
+use App\Http\Controllers\UpgratePlan\StripeController;
 use App\Http\Controllers\VideoStreamController;
 use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +34,9 @@ Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoCon
 //Route::post('/video/save-played-time', [VideoStreamController::class, 'savePlayedTime'])->name('save-played-time');
 
 //Route::get('this-test', PaypalCheckoutController::class);
+
+Route::get('upgrade-plan-stripe/{subscription}',StripeController::class )->name('upgrade-plan-stripe');
+Route::get('upgrade-plan-paypal/{subscription}',PaypalController::class )->name('upgrade-plan-paypal');
 
 
 
