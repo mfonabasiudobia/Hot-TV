@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\User\Partials;
 
 use Botble\Media\Models\MediaFile;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 
@@ -17,11 +18,12 @@ class Nav extends Component
 
     public function mount(){
 
+        $user = Auth::user();
         if(request()->has('p')){
             $this->currentNav = request('p');
         }
 
-        $order = SubscriptionOrder::where('user_id', auth()->user()->id)
+        $order = SubscriptionOrder::where('user_id', $user->id)
         ->where('status', 'paid')
         ->first();
 

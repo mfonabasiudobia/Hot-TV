@@ -7,7 +7,7 @@
                     <div>
                         <div class="avatar-view mt-card-avatar mt-overlay-1">
 {{--                            <img src="{{ //$media->avatar_url }}" alt="avatar">--}}
-                            <img src="{{ config('app.url') . 'storage/' .$media->url }}" alt="avatar">
+                            <img src="{{ $avatarUrl }}" alt="avatar">
                             @if ($canChangeProfile)
                                 <div class="mt-overlay">
                                     <ul class="mt-info">
