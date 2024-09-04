@@ -52,6 +52,7 @@ class UserTable extends TableAbstract
                 return $item->super_user ? trans('core/base::base.yes') : trans('core/base::base.no');
             })
             ->editColumn('status_name', function (User $item) {
+
                 if ($item->activations()->where('completed', true)->exists()) {
                     return UserStatusEnum::ACTIVATED()->toHtml();
                 }
@@ -120,6 +121,7 @@ class UserTable extends TableAbstract
             CreatedAtColumn::make(),
             Column::make('status_name')
                 ->title(trans('core/base::tables.status'))
+                ->searchable(false)
                 ->width(100),
             Column::make('super_user')
                 ->title(trans('core/acl::users.is_super'))
