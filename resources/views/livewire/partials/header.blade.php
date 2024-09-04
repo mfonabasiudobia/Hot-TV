@@ -117,10 +117,10 @@
                             <i class="las la-cloud-upload-alt text-xl"></i>
                             <span>Upload</span>
                         </a>
-                        <a href="{{ route('user.subscription') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
-                            <i class="las la-crown text-xl"></i>
-                            <span>Subscription</span>
-                        </a>
+{{--                        <a href="{{ route('user.subscription') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">--}}
+{{--                            <i class="las la-crown text-xl"></i>--}}
+{{--                            <span>Subscription</span>--}}
+{{--                        </a>--}}
 
 
 

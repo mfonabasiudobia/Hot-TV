@@ -2,7 +2,7 @@
     <section
         class="space-y-5 md:space-y-0 flex md:items-center flex-col md:flex-row justify-start items-start md:justify-between md:w-1/2">
         <div class="flex items-center space-x-4">
-            <img src="{{ asset('images/user-icon.jpg') }}" alt="" class="w-[70px] h-[70px] rounded-full" />
+            <img src="{{ $avatar }}" alt="" class="w-[70px] h-[70px] rounded-full" />
             <h5 class="text-xl font-semibold">
                 {{ user()->first_name }} {{ user()->last_name }} <br />
 
