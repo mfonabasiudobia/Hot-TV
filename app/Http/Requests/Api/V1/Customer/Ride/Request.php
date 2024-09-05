@@ -9,9 +9,11 @@ class Request extends FormRequest
     public function rules(): array
     {
         return [
-            'streat_name' => 'required',
-            'ride_duration' => 'required',
-            'type' => 'required'
+            'street_name' => 'required',
+            'duration' => 'required',
+            'stream' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required'
         ];
     }
 

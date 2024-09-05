@@ -2,6 +2,8 @@
 
 namespace App\Models;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Episode extends BaseModel
 {
@@ -16,5 +18,10 @@ class Episode extends BaseModel
     public function tvShow()
     {
         return $this->hasOne(TvShow::class, 'id', 'tv_show_id');
+    }
+
+    public function season(): BelongsTo
+    {
+        return $this->belongsTo(Season::class);
     }
 }

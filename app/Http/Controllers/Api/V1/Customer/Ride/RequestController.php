@@ -19,11 +19,16 @@ class RequestController extends Controller
 {
     public function __invoke(Request $request)
     {
+
+        $duration = $request->input('duration');
+        $stream = $request->input('stream');
+        $rideDuration = RideDuration::where('duration', $duration)->where('stream', $stream);
+
         $user = Auth::user();
         $streetName = $request->input('street_name');
         $latitude = $request->input('latitude');
-        $longitude = $request->input('latitude');
-        $ride_duration_id = $request->input('ride_duration_id');
+        $longitude = $request->input('longitude');
+        $ride_duration_id = $rideDuration->id;
 
         $rideDuration = RideDuration::find($ride_duration_id);
 
@@ -35,6 +40,17 @@ class RequestController extends Controller
             'ride_type' =>  $rideDuration->stream ? 'Ride & Stream' : 'Ride Only',
             'latitude' => $latitude,
             'longitude' => $longitude,
+        ]);
+
+        // Todo: trigger firebase event
+
+        // Todo: get the docId and save into rides tables
+        return response()->json([
+            'success' => true,
+            'message' => ApiResponseMessageEnum::RIDE_REQUESTED->value,
+            'data' => [
+                // 'collection_id' => $docID
+            ]
         ]);
     }
 }

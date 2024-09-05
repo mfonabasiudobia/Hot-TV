@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\V1\Driver\Ride\CreateController;
+use App\Http\Controllers\Api\V1\Driver\Ride\AcceptRideController;
 
 Route::prefix('ride')
     ->name('ride.')
     ->group(function() {
         Route::middleware('auth:api')->group(function(){
-            Route::post('create', CreateController::class)->name('create');
+            Route::get('accept', AcceptRideController::class)->name('accept');
         });
     });
