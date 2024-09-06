@@ -11,7 +11,7 @@ class DurationController extends Controller
 {
     public function __invoke()
     {
-        $durations = RideDuration::all();
+        $durations = RideDuration::select('duration')->distinct()->get();
 
         return response()->json([
             'success' => true,

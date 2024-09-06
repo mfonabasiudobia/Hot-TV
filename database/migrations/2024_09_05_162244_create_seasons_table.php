@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('thumbnail');
             $table->string('video_trailer');
             $table->dateTime('release_date');
-            $table->foreignId('tv_show_id')->references('id')->on('tv_shows')->onDelete('cascade');
+            $table->foreignId('tv_show_id')->references('id')->on('tv_shows')->cascadeOnUpdate()->cascadeOnDelete();;
             $table->string('status');
             $table->string("tags");
             $table->string('meta_title');

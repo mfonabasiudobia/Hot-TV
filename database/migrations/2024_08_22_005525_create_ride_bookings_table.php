@@ -10,7 +10,7 @@ return new class extends Migration {
     {
         Schema::create('ride_bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ride_id')->references('id')->on('rides');
+            $table->foreignId('ride_id')->references('id')->on('rides')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('order_id')->nullable()->references('id')->on('ec_orders');
             $table->string('payment_status')->default(PaymentStatusEnum::PAYMENT_PENDING->value);

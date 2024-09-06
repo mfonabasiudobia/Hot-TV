@@ -6,6 +6,6 @@ Route::prefix('ride')
     ->name('ride.')
     ->group(function() {
         Route::middleware('auth:api')->group(function(){
-            Route::get('accept', AcceptRideController::class)->name('accept');
+            Route::put('accept/{ride}', AcceptRideController::class)->name('accept');
         });
     });

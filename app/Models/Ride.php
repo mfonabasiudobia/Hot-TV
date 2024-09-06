@@ -10,13 +10,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Ride extends Model
 {
     protected $fillable = [
+        'user_id',
+        'driver_id',
         'street_name',
         'price',
         'duration',
-        'details',
         'ride_type',
-        'latitude',
-        'longitude'
+        'ride_duration_id',
+        'customer_latitude',
+        'customer_longitude',
+        'driver_latitude',
+        'customer_longitude',
+        'document_id'
     ];
 
     public function driver(): BelongsTo

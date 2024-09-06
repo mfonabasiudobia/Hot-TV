@@ -268,5 +268,12 @@ class User extends BaseModel implements
         return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true);
     }
 
+    public function myRides(): HasMany
+    {
+        if($this->inRole(RoleEnum::SUBSCRIBER->value)) {
+            return $this->hasMany(Ride::class, 'user_id');
+        }
+        return $this->hasMany(Ride::class)->whereRaw('1 = 0');
+    }
 
 }

@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\Customer\Ride;
+namespace App\Http\Requests\Api\V1\Driver\Ride;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class Request extends FormRequest
+class DriverRideRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'street_name' => 'required',
-            'duration' => 'required',
-            'stream' => 'required',
             'latitude' => 'required',
-            'longitude' => 'required'
+            'longitude' => 'required',
         ];
     }
 
