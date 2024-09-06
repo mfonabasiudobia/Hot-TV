@@ -14,8 +14,6 @@ class RequestController extends Controller
 {
     public function __invoke(Request $request)
     {
-
-
         $serviceAccountKeyFile = config('services.firebase.credentials');
 
         $scopes = ['https://www.googleapis.com/auth/datastore'];
