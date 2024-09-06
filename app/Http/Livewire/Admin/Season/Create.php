@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Episode;
+namespace App\Http\Livewire\Admin\Season;
 
 use App\Http\Livewire\BaseComponent;
+use App\Models\Season;
 use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
@@ -14,9 +15,7 @@ class Create extends BaseComponent
 
      public $recorded_video, $tvshow;
 
-     public $season_id, $episode_number, $duration, $tv_show_id;
-
-     public $seasons = [];
+     public $season_number, $episode_number, $duration, $tv_show_id;
 
      public function mount(){
         // $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
@@ -26,20 +25,13 @@ class Create extends BaseComponent
         $this->slug = str()->slug($title);
      }
 
-     public function UpdateSeasons()
-     {
-         $this->seasons = SeasonRepository::getSeasonsBytvShowId($this->tv_show_id);
-     }
-
      public function submit(){
 
         $this->validate([
             'title' => 'required|string',
             'slug' => 'required|unique:tv_shows,slug',
             'description' => 'required',
-            'season_id' => 'required',
-            'episode_number' => 'required|numeric|min:0',
-            'duration' => 'required|numeric|min:0',
+            'season_number' => 'required|numeric|min:0',
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'recorded_video' => 'required',
@@ -59,16 +51,14 @@ class Create extends BaseComponent
                 'thumbnail' => $this->thumbnail,
                 'recorded_video' => $this->recorded_video,
                 'tv_show_id' => $this->tv_show_id,
-                'season_id' => $this->season_id,
-                'episode_number' => $this->episode_number,
-                'duration' => $this->duration
+                'season_number' => $this->season_number,
             ];
 
-            throw_unless(EpisodeRepository::createEpisode($data), "Please try again");
+            throw_unless(SeasonRepository::createSeason($data), "Please try again");
 
-            toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
+            toast()->success('Cheers!, Season has been added')->pushOnNextPage();
 
-            return redirect()->route('admin.tv-show.episode.list');
+            return redirect()->route('admin.tv-show.season.list');
 
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
@@ -78,6 +68,6 @@ class Create extends BaseComponent
 
     public function render()
     {
-        return view('livewire.admin.episode.create')->layout('layouts.admin-base');
+        return view('livewire.admin.season.create')->layout('layouts.admin-base');
     }
 }

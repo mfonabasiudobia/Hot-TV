@@ -106,6 +106,30 @@
                     <li x-data="{ show : false}">
                         <a href="#" x-on:click="show = !show">
                             <i class="las la-video"></i>
+                            <span>Manage Seasons</span>
+                            <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                        </a>
+
+
+                        <ul class="list-3" x-show="show">
+                            <li>
+                                <a href="{{ route('admin.tv-show.season.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Add New Season</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.tv-show.season.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Season List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li x-data="{ show : false}">
+                        <a href="#" x-on:click="show = !show">
+                            <i class="las la-video"></i>
                             <span>Manage Episodes</span>
                             <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                         </a>

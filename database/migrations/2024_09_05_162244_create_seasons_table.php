@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug');
             $table->longText('description');
+            $table->integer('season_number');
             $table->string('thumbnail');
             $table->string('video_trailer');
             $table->dateTime('release_date');

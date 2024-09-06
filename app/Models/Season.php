@@ -13,6 +13,7 @@ class Season extends Model
         'slug',
         'description',
         'thumbnail',
+        'season_number',
         'video_trailer',
         'release_date',
         'tv_show_id',
@@ -31,5 +32,10 @@ class Season extends Model
     public function tvShow()
     {
         return $this->hasOne(TvShow::class);
+    }
+
+    public function createdAt()
+    {
+        return $this->created_at->format('Y-m-d');
     }
 }

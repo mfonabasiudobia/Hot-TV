@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rides', function (Blueprint $table) {
-            $table->foreignId('ride_duration_id')->after('driver_id')->references('id')->on('ride_durations')->cascadeOnUpdate()->cascadeOnDelete();;
+        Schema::table('episodes', function (Blueprint $table) {
+            $table->foreignId('season_id')->nullable()->references('id')->on('seasons')->cascadeOnUpdate()->cascadeOnDelete();;
         });
     }
 
@@ -25,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('rides', function (Blueprint $table) {
-                $table->dropForeign(['ride_duration_id']);
-            $table->dropColumn('ride_duration_id');
+        Schema::table('episodes', function (Blueprint $table) {
+            $table->dropColumn('season_id');
         });
     }
 };

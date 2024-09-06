@@ -11,13 +11,26 @@ class DurationController extends Controller
 {
     public function __invoke()
     {
-        $durations = RideDuration::select('duration')->distinct()->get();
+        $durations = RideDuration::select('duration')
+            ->groupBy('duration') // Group by the duration text
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'duration' => $item->duration,
+                    'price_with_stream' => RideDuration::where('duration', $item->duration)
+                        ->where('stream', true)
+                        ->value('price'),
+                    'price_without_stream' => RideDuration::where('duration', $item->duration)
+                        ->where('stream', false)
+                        ->value('price'),
+                ];
+            });
 
         return response()->json([
             'success' => true,
             'message' => ApiResponseMessageEnum::RIDE_DURATIONS->value,
             'data' => [
-                'durations' => DurationResource::collection($durations)
+                'durations' => $durations
             ]
         ]);
     }

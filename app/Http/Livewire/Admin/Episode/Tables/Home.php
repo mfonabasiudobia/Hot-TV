@@ -135,7 +135,7 @@ final class Home extends PowerGridComponent
             Column::make('Episode', 'episode_number')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('Status', 'status_formatted'),
 
             Column::make('Created At', 'created_at_formatted'),
@@ -170,7 +170,7 @@ final class Home extends PowerGridComponent
      *
      * @return array<int, Button>
      */
-    
+
 
 
     public function actions(): array
@@ -194,7 +194,7 @@ final class Home extends PowerGridComponent
                 ])
         ];
     }
-    
+
 
     /*
     |--------------------------------------------------------------------------
