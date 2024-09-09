@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TvShow extends BaseModel
 {
@@ -31,5 +32,10 @@ class TvShow extends BaseModel
     public function watchlists()
     {
         return $this->morphMany(Watchlist::class, 'watchable');
+    }
+
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(Season::class);
     }
 }

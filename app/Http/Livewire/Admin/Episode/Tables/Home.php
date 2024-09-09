@@ -99,6 +99,11 @@ final class Home extends PowerGridComponent
             ->addColumn('created_at_formatted', function(Episode $model){
                 return $model->createdAt();
             })
+            ->addColumn('season_number_formatted', function(Episode $model){
+
+                return $model->season ? $model->season->season_number : null;
+            })
+
             ->addColumn('status_formatted', function(Episode $model){
                 return $model->status == 'published' ? "<span class='px-3 py-1 rounded-full bg-green-800'>Published</span>" : "<span
                     class='px-3 py rounded-full bg-red-200'>Unpublished</span>";
@@ -128,7 +133,7 @@ final class Home extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Season', 'season_number')
+            Column::make('Season', 'season_number_formatted')
                 ->searchable()
                 ->sortable(),
 

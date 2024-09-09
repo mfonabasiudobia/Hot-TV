@@ -40,7 +40,7 @@ class EpisodeRepository {
     }
 
     public static function getEpisodesBySeason($tvshowId, $seasonNumber){
-        return Episode::where('season_number', $seasonNumber)->where('tv_show_id', $tvshowId)->get();
+        return Episode::where('season_id', $seasonNumber)->get();
     }
 
     public static function delete(int $id) : bool {
@@ -50,9 +50,4 @@ class EpisodeRepository {
     public static function getEpisodesByTvShow($tvshowId){
         return Episode::where('tv_show_id', $tvshowId)->get();
     }
-
-
-
-
-
 }

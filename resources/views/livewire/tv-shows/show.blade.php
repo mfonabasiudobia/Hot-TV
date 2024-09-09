@@ -132,7 +132,7 @@
                             class="text-white select-season-form appearance-none mr-2 overflow-hidden season_number bg-black"
                             wire:model='season_number' id="season_number">
                             @foreach ($seasons as $season)
-                                <option value="{{ $season }}" class="bg-black hover:bg-danger">Season {{ $season }}</option>
+                                <option value="{{ $season->id }}" class="bg-black hover:bg-danger">Season {{ $season->season_number }}</option>
                             @endforeach
                         </select>
                     </div>

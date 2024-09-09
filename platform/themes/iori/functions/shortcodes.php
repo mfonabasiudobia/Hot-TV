@@ -391,6 +391,10 @@ app()->booted(function () {
         return Theme::partial('shortcodes.new-shortcodes.slideshow.index', compact('shortcode'));
     });
 
+    shortcode()->setAdminConfig('slideshow', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.slideshow.admin-config', compact('attributes'));
+    });
+
     shortcode()->setAdminConfig('recently-watched', function (array $attributes) {
         return Theme::partial('shortcodes.new-shortcodes.recently-watched.admin-config', compact('attributes'));
     });

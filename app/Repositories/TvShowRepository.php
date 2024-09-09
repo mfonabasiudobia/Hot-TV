@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Season;
 use App\Models\TvShow;
 use App\Models\Episode;
 use App\Models\TvShowView;
@@ -73,9 +74,12 @@ class TvShowRepository {
          return $tvShow;
     }
 
-    public static function getTvShowSeasons($tvshowId) : array{
-        return Episode::groupBy('tv_show_id', 'season_number')->distinct()->where('tv_show_id',
-        $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
+    public static function getTvShowSeasons($tvshowId)
+    {
+//        return Episode::groupBy('tv_show_id', 'season_number')->distinct()->where('tv_show_id',
+//        $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
+
+        return Season::where('tv_show_id', $tvshowId)->get();
     }
 
     public static function getTvShowsByCategory($categoryId) : Collection{
@@ -85,7 +89,7 @@ class TvShowRepository {
     }
 
     public static function recentlyWatched($user = null) : Collection {
-        
+
         return Episode::whereHas('views', function($q) use($user) {
             $q->when($user, function($q) use($user) {
                 $q->latest()->where('user_id', $user->id);

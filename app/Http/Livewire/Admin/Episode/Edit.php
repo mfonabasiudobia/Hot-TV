@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin\Episode;
 
 use App\Http\Livewire\BaseComponent;
+use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
 
@@ -11,14 +12,16 @@ class Edit extends BaseComponent
 
      public $title, $slug, $description, $release_date, $thumbnail;
 
-     public $recorded_video, $tvshow, $episode, $tv_show_id;
+     public $season_id, $recorded_video, $tvshow, $episode, $tv_show_id;
 
      public $season_number, $episode_number, $duration;
+
+    public $seasons = [];
 
     public function mount($id){
         // $this->tvshow = TvShowRepository::getTvShowBySlug($tvslug);
         $this->episode = EpisodeRepository::getEpisodeById($id);
-
+        $this->seasons = SeasonRepository::getSeasonsBytvShowId($this->episode->tv_show_id);
         $this->fill([
             'title' => $this->episode->title,
             'description' => $this->episode->description,
@@ -26,7 +29,7 @@ class Edit extends BaseComponent
             'recorded_video' => $this->episode->recorded_video,
             'thumbnail' => $this->episode->thumbnail,
             'release_date' => $this->episode->release_date,
-            'season_number' => $this->episode->season_number,
+            'season_id' => $this->episode->season_id,
             'episode_number' => $this->episode->episode_number,
             'duration' => $this->episode->duration,
             'tv_show_id' => $this->episode->tv_show_id
@@ -37,13 +40,17 @@ class Edit extends BaseComponent
         $this->slug = str()->slug($title);
     }
 
+    public function UpdateSeasons()
+    {
+        $this->seasons = SeasonRepository::getSeasonsBytvShowId($this->tv_show_id);
+    }
+
     public function submit(){
         $this->validate([
             'title' => 'required|string',
             'slug' => 'required|unique:tv_shows,slug,',
             'description' => 'required',
-            'season_number' => 'required|numeric|min:0',
-            'episode_number' => 'required|numeric|min:0',
+            'season_id' => 'required',
             'duration' => 'required|numeric|min:0',
             'release_date' => 'required|date',
             'thumbnail' => 'required',
@@ -63,7 +70,7 @@ class Edit extends BaseComponent
                 'release_date' => $this->release_date,
                 'thumbnail' => $this->thumbnail,
                 'recorded_video' => $this->recorded_video,
-                'season_number' => $this->season_number,
+                'season_id' => $this->season_id,
                 'episode_number' => $this->episode_number,
                 'duration' => $this->duration,
                 'tv_show_id' => $this->tv_show_id
