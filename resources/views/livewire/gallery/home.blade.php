@@ -29,14 +29,13 @@
 
                                 @endphp
 
-                                    <a href="{{ route('gallery.home', ['slug' => $photo->id]) }}"
+                                    <a href="{{ route('gallery.detail', ['slug' => $photo->id]) }}"
                                        class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
                                         <img src="{{ asset( 'storage/' . $slideshowImage) }}" alt=""
                                              class="object-cover h-[284px] rounded-lg" />
                                         <section class="p-3 space-y-5 recommendation-item-details invisible group-hover:visible">
                                             <div class="space-y-2">
                                                 <h2 class="text-md font-semibold">{{ $photo->name }}</h2>
-                                                <span>{{ $photo->description }}</span>
                                             </div>
                                             <div class="flex items-center justify-between">
                                                 <div class="flex items-center space-x-2">

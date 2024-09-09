@@ -84,6 +84,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
     Route::group(['namespace' => 'Gallery'], function() {
         Route::get('gallery',"Home")->name('gallery.home');
+        Route::get('gallery/detail/{gallery}',"Detail")->name('gallery.detail');
     });
 
     Route::group(['middleware'=> []], function() {

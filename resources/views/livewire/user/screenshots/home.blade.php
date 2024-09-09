@@ -14,15 +14,17 @@
                                 @php
                                     $galleryMeta = \Botble\Gallery\Models\GalleryMeta::where('reference_id', $photo->id)->first();
                                 @endphp
-                                @foreach ($galleryMeta->images as $item)
-                                    @php
-                                        $img = explode('.', $item['img']);
-                                        $slideshowImage = $img[0] . '-150x150.'. $img[1];
-                                    @endphp
-                                <div class="swiper-slide">
-                                    <img src="{{ asset( 'storage/' . $slideshowImage) }}" alt="" class="h-[160px] w-full object-cover" :key="$loop->index" />
-                                </div>
-                                @endforeach
+                                @if(isset($galleryMeta->images))
+                                    @foreach ($galleryMeta->images as $item)
+                                        @php
+                                            $img = explode('.', $item['img']);
+                                            $slideshowImage = $img[0] . '-150x150.'. $img[1];
+                                        @endphp
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset( 'storage/' . $slideshowImage) }}" alt="" class="h-[160px] w-full object-cover" :key="$loop->index" />
+                                    </div>
+                                    @endforeach
+                                @endif
                             </div>
                             <div class="swiper-button-prev"></div>
                             <div class="swiper-button-next"></div>
