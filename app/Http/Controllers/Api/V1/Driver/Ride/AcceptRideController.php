@@ -16,8 +16,8 @@ class AcceptRideController extends Controller
     public function __invoke(Ride $ride, DriverRideRequest $request)
     {
 
-        $serviceAccountKeyFile = config('services.firebase.credentials');
-
+        $serviceAccountKeyFile = base_path('firebase_credentials.json');
+        $firsBaseProjectId = config('services.firebase.project_id');
         $scopes = ['https://www.googleapis.com/auth/datastore'];
 
         $credentials = new ServiceAccountCredentials($scopes, $serviceAccountKeyFile);
@@ -32,7 +32,7 @@ class AcceptRideController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
 
-            $firestoreUrl = "https://firestore.googleapis.com/v1/projects/hot-tv-a57ea/databases/(default)/documents/rides/{$ride->document_id}?updateMask.fieldPaths=driver_id&updateMask.fieldPaths=status&updateMask.fieldPaths=driver_location";
+            $firestoreUrl = "https://firestore.googleapis.com/v1/projects/$firsBaseProjectId/databases/(default)/documents/rides/{$ride->document_id}?updateMask.fieldPaths=driver_id&updateMask.fieldPaths=status&updateMask.fieldPaths=driver_location";
 
             $updateData = [
                 "fields" => [

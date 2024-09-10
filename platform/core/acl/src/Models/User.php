@@ -3,6 +3,7 @@
 namespace Botble\ACL\Models;
 
 use App\Enums\User\RoleEnum;
+use App\Models\Device;
 use App\Models\Ride;
 use App\Models\RideBooking;
 use Botble\ACL\Notifications\ResetPasswordNotification;
@@ -274,6 +275,16 @@ class User extends BaseModel implements
             return $this->hasMany(Ride::class, 'user_id');
         }
         return $this->hasMany(Ride::class)->whereRaw('1 = 0');
+    }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
+    public function hasDevice($deviceId)
+    {
+        return $this->devices()->where('device_id', $deviceId)->exists();
     }
 
 }

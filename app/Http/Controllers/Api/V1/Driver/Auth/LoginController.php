@@ -32,6 +32,7 @@ class LoginController extends Controller
             }
         }
 
+        $device_id = $request->input('device_id');
         $credentials = $request->only(['email', 'password']);
 
         if(Auth::attempt($credentials, true)) {
@@ -43,7 +44,11 @@ class LoginController extends Controller
                     'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
                 ], 422);
             }
-
+            if(!$user->hasDevice($device_id)) {
+                $user->devices()->create([
+                    'device_id' => $device_id
+                ]);
+            }
             $token = $user->createToken('apiToken')->accessToken;
 
             return response()->json([
