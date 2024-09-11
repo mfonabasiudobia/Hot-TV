@@ -29,10 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('subscription_plans', function (Blueprint $table) {
-//            $table->dropColumn('trail_period_paypal');
-//            $table->dropColumn('trail_period_stripe');
-//            $table->dropColumn('trail');
-//            $table->dropColumn('interval');
+            $table->dropColumn('trail_period_paypal');
+            $table->dropColumn('trail_period_stripe');
+            $table->dropColumn('trail');
+            $table->dropColumn('interval');
         });
     }
 };
