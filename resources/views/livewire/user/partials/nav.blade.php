@@ -28,12 +28,12 @@
 
     <section class="flex items-start md:items-center flex-col space-y-7 md:space-y-0 md:flex-row md:space-x-3 md:justify-between">
         <ul class="flex items-center space-x-5 md:space-x-7 text-sm md:text-base overflow-x-auto overflow-y-hidden w-full">
-            <li>
-                <a href="#" wire:click.prevent="setNav('favourites')"
-                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'favourites' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    Favourites
-                </a>
-            </li>
+{{--            <li>--}}
+{{--                <a href="#" wire:click.prevent="setNav('favourites')"--}}
+{{--                    class="py-3 transition-all hover:text-danger {{ $currentNav === 'favourites' ? 'border-b-2 border-danger font-semibold' : '' }}">--}}
+{{--                    Favourites--}}
+{{--                </a>--}}
+{{--            </li>--}}
             <li>
                 <a href="#" wire:click.prevent="setNav('wishlist')"
                     class="flex items-center relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">

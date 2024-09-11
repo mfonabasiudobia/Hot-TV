@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta_data')
 
-    {{-- <link rel="shortcut icon" href="{{ asset('storage/images/logo/logo.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <title>{{ $seo_title ?? env('APP_NAME') }}</title>
     <meta name="description" content="{{ $seo_description ?? NULL }}">

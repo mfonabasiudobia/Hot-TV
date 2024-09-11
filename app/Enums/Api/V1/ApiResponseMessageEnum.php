@@ -42,5 +42,9 @@ enum ApiResponseMessageEnum:string
     case RIDE_DURATIONS = 'ride durations';
     case RIDE_REQUESTED = 'ride requested';
     case USER_PROFILE = 'user profile';
+    case WATCH_LISTS = 'watch lists';
+    case WISH_LISTS = 'wish lists';
+    case SCREENSHOTS = 'screenshots';
+    case WATCH_HISTORY = 'watch history';
 
 }

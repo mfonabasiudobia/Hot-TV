@@ -9,7 +9,7 @@ class Home extends BaseComponent
 
     protected $listeners = ['setNav'];
 
-    public $currentNav = 'favourites';
+    public $currentNav = 'wishlist';
 
     public function mount(){
         if(request()->has('p')){

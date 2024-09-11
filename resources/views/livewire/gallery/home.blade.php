@@ -29,7 +29,7 @@
 
                                 @endphp
 
-                                    <a href="{{ route('gallery.detail', ['slug' => $photo->id]) }}"
+                                    <a href="{{ route('gallery.detail', $photo->id) }}"
                                        class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
                                         <img src="{{ asset( 'storage/' . $slideshowImage) }}" alt=""
                                              class="object-cover h-[284px] rounded-lg" />

@@ -10,7 +10,7 @@ use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 class Nav extends Component
 {
 
-    public $currentNav = 'favourites';
+    public $currentNav = 'wishlist';
     public $avatar = null;
     public $user;
     public $subscriptionPlan;
