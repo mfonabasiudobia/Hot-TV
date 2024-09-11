@@ -32,6 +32,13 @@ class RequestController extends Controller
             $stream = $request->input('stream');
             $rideDuration = RideDuration::where('duration', $duration)->where('stream', $stream)->first();
 
+            if(!$rideDuration) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No duration was found',
+                ], 422);
+            }
+
             $user = Auth::user();
             $streetName = $request->input('street_name');
             $latitude = $request->input('latitude');
