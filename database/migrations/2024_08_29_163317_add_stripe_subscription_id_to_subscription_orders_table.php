@@ -29,10 +29,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('subscription_orders', function (Blueprint $table) {
-            $table->dropColumn('current_subscription');
-            $table->dropColumn('trial_ended_at');
-            $table->dropColumn('paypal_subscription_id');
-            $table->dropColumn('stripe_subscription_id');
+//            $table->dropColumn('current_subscription');
+//            $table->dropColumn('trial_ended_at');
+//            $table->dropColumn('paypal_subscription_id');
+//            $table->dropColumn('stripe_subscription_id');
         });
     }
 };
