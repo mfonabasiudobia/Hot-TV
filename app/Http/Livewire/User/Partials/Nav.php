@@ -17,7 +17,8 @@ class Nav extends Component
 
     protected $listeners = ['reRender'];
 
-    public function mount(){
+    public function mount()
+    {
 
         $this->user = Auth::user();
         if(request()->has('p')){
@@ -50,7 +51,8 @@ class Nav extends Component
         $this->render();
     }
 
-    public function setNav($value){
+    public function setNav($value)
+    {
         $this->currentNav = $value;
 
         $this->emit('setNav', $value);

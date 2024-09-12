@@ -46,5 +46,6 @@ enum ApiResponseMessageEnum:string
     case WISH_LISTS = 'wish lists';
     case SCREENSHOTS = 'screenshots';
     case WATCH_HISTORY = 'watch history';
+    case GALLERY = 'gallery';
 
 }

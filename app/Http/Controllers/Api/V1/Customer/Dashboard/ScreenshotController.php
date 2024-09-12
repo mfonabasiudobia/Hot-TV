@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1\Customer\Dashboard;
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\Customer\Dashboard\ScreenshotResource;
-use App\Http\Resources\Api\V1\Customer\Dashboard\WatchListResource;
 use Botble\Gallery\Models\Gallery;
 use Illuminate\Support\Facades\Auth;
 

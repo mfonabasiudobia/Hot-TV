@@ -1,7 +1,6 @@
 <div class="py-5 bg-black text-white space-y-5 min-h-screen">
     <x-atoms.breadcrumb :routes="[['title' => 'Our Gallery', 'route' => null ]]" />
     <div class="container space-y-7">
-
         <section class="space-y-7">
             <header class="space-y-3">
                 <h2 class="font-semibold text-xl md:text-3xl">Our Gallery</h2>
@@ -16,19 +15,17 @@
                     <div class="swiper recommendation">
                         <div class="swiper-wrapper">
                             <section class="grid sm:grid-cols-2 md:grid-cols-5 gap-7">
-                            @foreach ($photoGallery as $photo)
-                                @php
-                                    $galleryMeta = \Botble\Gallery\Models\GalleryMeta::where('reference_id', $photo->id)->first();
-                                    if($galleryMeta) {
-                                        $image = $galleryMeta->images[0];
-                                        $img = explode('.', $image['img']);
-                                        $slideshowImage = $img[0] . '-150x150.'. $img[1];
-                                    } else {
-                                        continue;
-                                    }
-
-                                @endphp
-
+                                @foreach ($photoGallery as $photo)
+                                    @php
+                                        $galleryMeta = \Botble\Gallery\Models\GalleryMeta::where('reference_id', $photo->id)->first();
+                                        if($galleryMeta) {
+                                            $image = $galleryMeta->images[0];
+                                            $img = explode('.', $image['img']);
+                                            $slideshowImage = $img[0] . '-150x150.'. $img[1];
+                                        } else {
+                                            continue;
+                                        }
+                                    @endphp
                                     <a href="{{ route('gallery.detail', $photo->id) }}"
                                        class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
                                         <img src="{{ asset( 'storage/' . $slideshowImage) }}" alt=""
@@ -46,8 +43,7 @@
                                             </div>
                                         </section>
                                     </a>
-
-                            @endforeach
+                                @endforeach
                             </section>
                             <x-pagination :items="$photoGallery" />
                         </div>
