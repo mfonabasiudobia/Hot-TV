@@ -282,7 +282,7 @@ class User extends BaseModel implements
         return $this->hasMany(Device::class);
     }
 
-    public function hasDevice($deviceId)
+    public function hasDevice($deviceId): bool
     {
         return $this->devices()->where('device_id', $deviceId)->exists();
     }

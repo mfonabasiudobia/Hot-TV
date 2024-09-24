@@ -7,7 +7,7 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\User;
+use Botble\ACL\Models\User;
 
 class SubscriptionOrder extends BaseModel
 {

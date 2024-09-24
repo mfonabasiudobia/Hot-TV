@@ -21,7 +21,6 @@ class Contact extends BaseComponent
             'mobile_number' => 'required',
         ]);
 
-
         $data = [
             'email' => $this->email,
             'name' => "$this->first_name $this->last_name",

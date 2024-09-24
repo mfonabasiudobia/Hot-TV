@@ -72,7 +72,7 @@ class Register extends BaseComponent
             ]);
 
 
-            if($this->subscription->plan->trail == 1) {
+            if($this->subscription->plan->trail) {
                 $stripSessionObject['subscription_data'] =['trial_period_days' => $this->subscription->plan->trail_period];
                 $subscriptionStatus = OrderStatusEnum::TRAIL->value;
             } else {
@@ -118,8 +118,7 @@ class Register extends BaseComponent
             ]);
 
 
-
-            if($this->subscription->plan->trail == 1) {
+            if($this->subscription->plan->trail) {
 
                 $paypalPlanId = $this->subscription->paypal_plan_id[str_replace(' ', '_', $this->subscription->plan->trail_period_paypal)];
                 $subscriptionStatus = OrderStatusEnum::TRAIL->value;

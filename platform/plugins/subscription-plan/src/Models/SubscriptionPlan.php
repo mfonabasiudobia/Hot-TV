@@ -25,6 +25,7 @@ class SubscriptionPlan extends BaseModel
     protected $casts = [
         'status' => BaseStatusEnum::class,
         'name' => SafeContent::class,
+        'trail' => 'boolean'
     ];
 
     public function subscriptions(): HasMany

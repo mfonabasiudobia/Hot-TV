@@ -6,6 +6,7 @@ use App\Enums\User\StatusEnum;
 use App\Http\Controllers\Controller;
 use Botble\ACL\Models\User;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
+use Botble\SubscriptionOrder\Enums\RecurringStatusEnum;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -71,15 +72,25 @@ class EventController extends Controller
 
     private function handleSubscriptionCreated(Request $request)
     {
-
+        $provider = new PayPalClient([]);
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
 
         $resource = $request->input('resource');
         $subscriptionId = $resource['id'];
+        $response = $provider->showSubscriptionDetails($subscriptionId);
+
         $subscriberEmail = $resource['subscriber']['email_address'];
 
         $user = User::where('email', $subscriberEmail)->first();
         $subscription = $user->subscription;
         $subscription->paypal_subscription_id = $subscriptionId;
+
+        if (!empty($response) && isset($response['billing_info']['next_billing_time'])) {
+            $nextBillingDate = date('Y-m-d H:i:s', $response['billing_info']['next_billing_time']);
+        }
+
+        $subscription->next_billing_date = $nextBillingDate;
         $subscription->save();
         Log::info(json_encode('New Subscription created from paypal: ' . $subscriptionId));
 
@@ -146,6 +157,7 @@ class EventController extends Controller
                 'sub_total' => $billingAmount,
                 'paypal_subscription_id' => $subscriptionOrder->paypal_subscription_id,
                 'status' => OrderStatusEnum::PAID->value,
+                'recurring_status' => RecurringStatusEnum::RENEW->value
             ]);
         }
 

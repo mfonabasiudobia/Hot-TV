@@ -12,7 +12,7 @@ use App\Models\Watchlist;
 class Show extends BaseComponent
 {
 
-    public $tvShow, $seasons = [], $season_number = 1, $episodes = [];
+    public $tvShow, $seasons = [], $season_number = 1, $seasonId, $episodes = [];
 
     public $selectedEpisode, $casts = [];
 
@@ -31,9 +31,12 @@ class Show extends BaseComponent
 
         $this->fill([
             'seasons' => TvShowRepository::getTvShowSeasons($this->tvShow->id),
-            'episodes' => EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->season_number),
+
             'casts' => CastRepository::getCastsByShow($this->tvShow->id)
         ]);
+
+        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
+
 
 //        $data = [
 //            'user_id' => auth()->id(),
@@ -90,7 +93,7 @@ class Show extends BaseComponent
     }
 
     public function updatedSeasonNumber($value){
-        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->season_number);
+        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $value);
     }
 
     public function selectEpisode($episodeId){

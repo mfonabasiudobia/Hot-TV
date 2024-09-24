@@ -6,6 +6,7 @@ use App\Enums\User\StatusEnum;
 use App\Http\Controllers\Controller;
 use Botble\ACL\Models\User;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
+use Botble\SubscriptionOrder\Enums\RecurringStatusEnum;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,9 @@ class EventController extends Controller
                 $stripeSubscription = $event->data->object;
                 $user = User::where('stripe_customer_id', $stripeSubscription['customer'])->first();
                 $subscription = $user->subscription;
+                $nextBillingDate = date('Y-m-d H:i:s', $subscription->current_period_end);
                 $subscription->stripe_subscription_id = $stripeSubscription['id'];
+                $subscription->next_billing_date = $nextBillingDate;
                 $subscription->save();
                 Log::info(json_encode('New Subscription created: ' . $stripeSubscription['id']));
                 break;
@@ -116,6 +119,7 @@ class EventController extends Controller
                             'sub_total' => $amountPaid / 100,
                             'stripe_subscription_id' => $subscriptionOrder->stripe_subscription_id,
                             'status' => OrderStatusEnum::PAID->value,
+                            'recurring_status' => RecurringStatusEnum::RENEW->value
                         ]);
                     }
                 }
