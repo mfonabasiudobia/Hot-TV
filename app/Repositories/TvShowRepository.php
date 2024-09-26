@@ -14,28 +14,30 @@ class TvShowRepository {
     public static function all($sort, $s= null)
     {
         return TvShow::query()
-        ->when($sort['sortByTitle'], function($q) use($sort) {
-            $q->orderBy('title', $sort['sortByTitle']);
-        })
-        ->when($sort['sortByDate'], function($q) use($sort) {
-            $q->orderBy('created_at', $sort['sortByDate']);
-        })
-        ->when($sort['sortByTime'] === "month", function($q) use($sort) {
-            $q->whereYear('created_at', now()->year)
-                ->whereMonth('created_at', now()->month);
-        })
-        ->when($sort['sortByTime'] === "today", function($q) use($sort) {
-            $q->whereDate('created_at', now()->toDateString());
-        })
-        ->when($sort['sortByTime'] === "week", function($q) use($sort) {
-            $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-        })
-        ->when($s, function($q) use($s) {
-            $q->where('title', 'like', '%' . $s . '%')
-            ->orWhereHas('categories', function ($q) use ($s) {
-                $q->where('name', 'like', '%' . $s . '%');
-            });
-        });
+            ->when($sort['sortByTitle'], function($q) use($sort) {
+                $q->orderBy('title', $sort['sortByTitle']);
+            })
+            ->when($sort['sortByDate'], function($q) use($sort) {
+                $q->orderBy('created_at', $sort['sortByDate']);
+            })
+            ->when($sort['sortByTime'] === "month", function($q) use($sort) {
+                $q->whereYear('created_at', now()->year)
+                    ->whereMonth('created_at', now()->month);
+            })
+            ->when($sort['sortByTime'] === "today", function($q) use($sort) {
+                $q->whereDate('created_at', now()->toDateString());
+            })
+            ->when($sort['sortByTime'] === "week", function($q) use($sort) {
+                $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            })
+            ->when($s, function($q) use($s) {
+                $q->where('title', 'like', '%' . $s . '%')
+                ->orWhereHas('categories', function ($q) use ($s) {
+                    $q->where('name', 'like', '%' . $s . '%');
+                });
+            })
+            ->has('seasons')
+            ->where('status', 'published');
 
 
     }
