@@ -179,7 +179,7 @@ class Register extends BaseComponent
             'last_name' => 'required',
             'username' => 'required|unique:users,username',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6|alpha_num'
+            'password' => 'required|confirmed|min:6'
         ]);
 
         if($validated) {
