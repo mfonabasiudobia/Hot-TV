@@ -25,7 +25,7 @@
             <div
                 class="flex flex-col justify-center items-center space-y-3 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center py-7">
                 <h1 class="text-xl md:text-2xl font-bold">Nothing Found</h1>
-                <p>You have no watch history. <a href="{{ route('tv-show.home') }}"
+                <p>You have no watch history. <a href="{{ route('tv-shows.home') }}"
                         class="text-danger">Click here</a> to
                     start watching</p>
             </div>
