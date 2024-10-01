@@ -174,21 +174,25 @@ class Register extends BaseComponent
 
     public function next(): void
     {
-        $validated = $this->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'username' => 'required|unique:users,username',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6'
-        ]);
 
-        if($validated) {
-            if(!$this->subscription) {
-                $this->show = 'plans';
-            } else {
-                $this->show = 'checkout';
+        if(auth()->check()) {
+            $this->show = 'plans';
+        } else {
+            $validated = $this->validate([
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'username' => 'required|unique:users,username',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|confirmed|min:6'
+            ]);
+
+            if($validated) {
+                if(!$this->subscription) {
+                    $this->show = 'plans';
+                } else {
+                    $this->show = 'checkout';
+                }
             }
-
         }
     }
 
@@ -196,6 +200,7 @@ class Register extends BaseComponent
 
     public function selectPlan($planId): void
     {
+
         $this->subscription = Subscription::whereId($planId)->first();
         $this->show = 'checkout';
     }

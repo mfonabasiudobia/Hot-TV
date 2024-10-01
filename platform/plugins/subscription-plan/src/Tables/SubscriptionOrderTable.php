@@ -40,7 +40,10 @@ class SubscriptionOrderTable extends TableAbstract
                 return $item->user->email;
             })
             ->editColumn('subscription_id', function (SubscriptionOrder $item) {
-                return $item->subscription->name;
+                if($item->subscription) {
+                    return $item->subscription->name;
+                }
+                return null;
             })
             ->editColumn('amount', function (SubscriptionOrder $item) {
                 return $item->amount;
@@ -57,7 +60,7 @@ class SubscriptionOrderTable extends TableAbstract
             ->editColumn('created_at', function (SubscriptionOrder $item) {
                 return BaseHelper::formatDate($item->created_at);
             })
-            
+
             ->addColumn('operations', function (SubscriptionOrder $item) {
                 return $this->getOperations('subscription-order.edit', 'subscription-order.destroy', $item);
             });
@@ -77,7 +80,7 @@ class SubscriptionOrderTable extends TableAbstract
                'tax_amount',
                'sub_total',
                'created_at',
-               
+
            ]);
 
         return $this->applyScopes($query);
@@ -114,7 +117,7 @@ class SubscriptionOrderTable extends TableAbstract
                 'title' => trans('core/base::tables.created_at'),
                 'width' => '100px',
             ],
-            
+
         ];
     }
 

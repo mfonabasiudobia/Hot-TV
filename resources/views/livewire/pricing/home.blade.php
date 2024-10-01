@@ -28,7 +28,7 @@
                         } else {
                             $urlText = $plans[0]->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start';
                             $url = $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]);
-                                }
+                        }
                      @endphp
                     {
                         id: {{ $subscription->id }},
