@@ -96,6 +96,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
             Route::get('forgot-password',"ForgotPassword")->name('forgot_password');
             Route::get('reset-password',"ResetPassword")->name('reset_password');
             Route::get('signup/{planId?}',"Register")->name('register');
+            Route::get('checkout/{planId}',"Checkout")->name('checkout');
             //Route::get('subscription-payment-verification/{sessionId?}', 'SubscriptionCheckoutVerification')->name('subscription-payment-verification');
         });
 

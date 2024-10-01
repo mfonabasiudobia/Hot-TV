@@ -9,27 +9,17 @@ use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 use Botble\SubscriptionPlan\Models\Subscription;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Botble\SubscriptionPlan\Models\SubscriptionPlan;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Checkout\Session;
 use Stripe\Customer;
 use Stripe\Stripe;
 
-class Register extends BaseComponent
+class Checkout extends BaseComponent
 {
-
-    public $username, $first_name, $last_name, $email, $password, $password_confirmation;
-    public $show = 'register_form';
-    public $selectedPlan;
-    public $plans;
-    public $subscription;
-    public $paymentMethod;
-    public $allowRegistration;
-
-
-    public function mount($planId = null)
+    public $subscription, $plans;
+    public function mount($planId)
     {
-
         if(gs()->payment_stripe_status == 1 || gs()->payment_paypal_status == 1) {
             $this->allowRegistration = true;
         } else {
@@ -43,12 +33,11 @@ class Register extends BaseComponent
 
         $this->plans = SubscriptionPlan::whereStatus('published')->get();
         $this->paymentMethod = 'paypal';
-
-
     }
+
     public function submit(){
 
-
+        $user = Auth::user();
 
         if($this->paymentMethod == 'stripe') {
             $stripePlanId = $this->subscription->stripe_plan_id;
@@ -56,20 +45,21 @@ class Register extends BaseComponent
             Stripe::setApiKey(gs()->payment_stripe_secret);
 
 
+
             $customer = Customer::create([
-                'email' => $this->email,
-                'name' => "$this->first_name $this->last_name"
+                'email' => $user->email,
+                'name' => "$user->first_name $user->last_name"
             ]);
 
-            $user = AuthRepository::register([
-                'username' => $this->username,
-                'email' => $this->email,
-                'password' => $this->password,
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'status' => StatusEnum::LOCKED->value,
-                'stripe_customer_id' => $customer->id,
-            ]);
+//            $user = AuthRepository::register([
+//                'username' => $this->username,
+//                'email' => $this->email,
+//                'password' => $this->password,
+//                'first_name' => $this->first_name,
+//                'last_name' => $this->last_name,
+//                'status' => StatusEnum::LOCKED->value,
+//                'stripe_customer_id' => $customer->id,
+//            ]);
 
             if($this->subscription->plan->trail) {
                 $stripSessionObject['subscription_data'] =['trial_period_days' => $this->subscription->plan->trail_period];
@@ -106,15 +96,15 @@ class Register extends BaseComponent
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
 
-            $user = AuthRepository::register([
-                'username' => $this->username,
-                'email' => $this->email,
-                'password' => $this->password,
-                'first_name' => $this->first_name,
-                'last_name' => $this->last_name,
-                'status' => StatusEnum::LOCKED->value,
-                //'stripe_customer_id' => $customer->id,
-            ]);
+//            $user = AuthRepository::register([
+//                'username' => $this->username,
+//                'email' => $this->email,
+//                'password' => $this->password,
+//                'first_name' => $this->first_name,
+//                'last_name' => $this->last_name,
+//                'status' => StatusEnum::LOCKED->value,
+//                //'stripe_customer_id' => $customer->id,
+//            ]);
 
 
             if($this->subscription->plan->trail) {
@@ -130,10 +120,10 @@ class Register extends BaseComponent
                 'plan_id' => $paypalPlanId,
                 'subscriber' => [
                     'name' => [
-                        'given_name' => $this->first_name,
-                        'surname' => $this->last_name,
+                        'given_name' => $user->first_name,
+                        'surname' => $user->last_name,
                     ],
-                    'email_address' => $this->email,
+                    'email_address' => $user->email,
                 ],
                 'application_context' => [
                     'brand_name' => 'Hot TV',
@@ -171,47 +161,8 @@ class Register extends BaseComponent
         // }
     }
 
-    public function next(): void
-    {
-
-        if(auth()->check()) {
-            $this->show = 'checkout';
-        } else {
-            $validated = $this->validate([
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'username' => 'required|unique:users,username',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|confirmed|min:6'
-            ]);
-
-            if($validated) {
-                if(!$this->subscription) {
-                    $this->show = 'plans';
-                } else {
-                    $this->show = 'checkout';
-                }
-            }
-        }
-    }
-
-
-
-    public function selectPlan($planId): void
-    {
-
-        $this->subscription = Subscription::whereId($planId)->first();
-        $this->show = 'checkout';
-    }
-
-    public function back(): void
-    {
-        $this->show = 'register_form';
-    }
-
-
     public function render()
     {
-        return view('livewire.auth.register');
+        return view('livewire.auth.checkout');
     }
 }

@@ -26,8 +26,14 @@
                             }
 
                         } else {
-                            $urlText = $plans[0]->trail == 1 ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start';
-                            $url = $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]);
+
+                            if(auth()->check()) {
+                                $url = $plans[0]->trail ? route('checkout', $subscription->id) : route('checkout', ['planId' => $subscription->id ]);
+                            } else {
+                                $url = $plans[0]->trail ? route('register', $subscription->id) : route('register', ['planId' => $subscription->id ]);
+                            }
+                            $urlText = $plans[0]->trail ? 'Start '. $plan->trail_period. '-Day Free Trail' : 'Start';
+
                         }
                      @endphp
                     {
