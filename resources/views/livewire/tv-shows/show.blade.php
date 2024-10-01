@@ -5,41 +5,58 @@
     ]" />
      <div class="container space-y-7">
 
-
         <section class="grid lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-7 overflow-hidden">
 
                 <div class="video-container" wire:ignore>
-                    <video
-                        id="player"
-                        src="{{ $selectedEpisode ? route('video-stream', ['episode', $selectedEpisode->id]) : file_path($tvShow->trailer) }}"
-                        playsinline controls
-                        data-plyr-config='{ "title": "{{ $selectedEpisode->title ?? $tvShow->title }}", "debug" : "true" }'>
-                    </video>
+                    @if(now()->lt($tvShow->release_date))
+                        <div class="p-3 mb-2 bg-danger text-white">
+                            This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }}
+                        </div>
+                    @endif
+                    @if(!isset(auth()->user()->subscription))
+                        <div class="p-3 mb-2 bg-danger text-white">
+                            You need to subscribe in order to watch this episode
+                        </div>
+                    @endif
+                        @if($selectedEpisode)
+                            @if(now()->gt($tvShow->release_date) && isset(auth()->user()->subscription))
+                            <video
+                                id="player"
+                                src="{{ file_path($selectedEpisode->recorded_video) }}"
+                                playsinline controls
+                                data-plyr-config='{ "title": "{{ $selectedEpisode->title }}", "debug" : "true" }'>
+                            </video>
+                            @endif
+                        @else
+                            <video
+                                id="player"
+                                src="{{ file_path($tvShow->trailer) }}"
+                                playsinline controls
+                                data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
+                            </video>
+                        @endif
+                        <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
+                            <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
+                            <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
+                        </div>
 
-                    <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
-                        <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
-                        <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
-                    </div>
                 </div>
-
 
                 <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="flex items-center justify-between">
                         <div class="space-y-1">
                             <h2 class="font-semibold text-xl">{{ $selectedEpisode->title ?? $tvShow->title }}</h2>
-
                             @if($selectedEpisode)
-                            <p>Published on {{ $selectedEpisode->releaseAt() }}</p>
+                                <p>Published on {{ $selectedEpisode->releaseAt() }}</p>
                             @else
-                            <p>Published on {{ $tvShow->releaseAt() }}</p>
+                                <p>Published on {{ $tvShow->releaseAt() }}</p>
                             @endIf
 
                             @if(count($tvShow->casts))
                                 <p>Cast: {{ $tvShow->casts->implode('name', ', ') }}</p>
                             @endif
                         </div>
-
                             @if(is_user_logged_in())
                             <button  wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
                                 class="md:hidden rounded-md w-[40px] h-[40px] {{ $tvShow->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
@@ -57,9 +74,9 @@
                             <div>
                                 <i class="lar la-eye"></i>
                                 @if($selectedEpisode)
-                                <span>{{ view_count($selectedEpisode->views->count()) }} viewers</span>
+                                    <span>{{ view_count($selectedEpisode->views->count()) }} viewers</span>
                                 @else
-                                <span>{{ view_count($tvShow->views->count()) }} viewers</span>
+                                    <span>{{ view_count($tvShow->views->count()) }} viewers</span>
                                 @endIf
                             </div>
 
@@ -110,19 +127,15 @@
                 </section>
             @endIf
             </div>
-
-
             <div class="space-y-7">
-
                 <section class="bg-dark p-5 rounded-2xl relative hidden md:block">
                     <img src="{{ file_path($selectedEpisode->thumbnail ?? $tvShow->thumbnail) }}" alt="" class="h-[483px] w-full object-cover rounded-xl" />
-
-                   @if(is_user_logged_in())
-                       <button wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
+                    @if(is_user_logged_in())
+                        <button wire:click.prevent="saveToWatchlist({{ $tvShow->id }})"
                             class="rounded-md absolute top-7 right-7 w-[40px] h-[40px] {{ $tvShow->watchlists()->where('user_id', auth()->id())->count() > 0 ? 'bg-danger text-white' : 'bg-white text-danger' }}">
                             <i class="las la-heart"></i>
-                        </button>
-                   @endIf
+                       </button>
+                    @endIf
                 </section>
 
                 @if(count($seasons) > 0)
@@ -137,9 +150,7 @@
                         </select>
                     </div>
 
-
                     <x-atoms.loading target="season_number" />
-
                     <section
                         wire:loading.class="hidden"
                         wire:target="season_number"
@@ -207,42 +218,32 @@
         </section>
     </div>
 
-
-
-
     @livewire("home.partials.partners")
-
 
     @livewire("home.partials.newsletter")
 </div>
 
 @push('script')
- <script>
-
-     function savePlaybackProgress(currentTime) {
-
-
-
-         fetch('/api/v1/playedtime', {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json',
-                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-             },
-             body: JSON.stringify({
-                 played_seconds: Math.floor(currentTime),
+<script>
+    function savePlaybackProgress(currentTime) {
+        fetch('/api/v1/playedtime', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                played_seconds: Math.floor(currentTime),
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Playback progress saved:', data);
              })
-         })
-             .then(response => response.json())
-             .then(data => {
-                 console.log('Playback progress saved:', data);
-             })
-             .catch(error => {
-                 console.error('Error saving playback progress:', error);
-             });
+            .catch(error => {
+                console.error('Error saving playback progress:', error);
+            });
      }
-
-
      // document.addEventListener('DOMContentLoaded', function () {
 
 

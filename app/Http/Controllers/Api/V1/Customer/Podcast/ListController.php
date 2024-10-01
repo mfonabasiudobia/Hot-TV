@@ -12,7 +12,7 @@ class ListController extends Controller
 {
     public function __invoke()
     {
-        $pageSize = 20;
+        $pageSize = 6;
         $podcasts = Podcast::where('status', BaseStatusEnum::PUBLISHED()->getValue())->paginate($pageSize);
 
         return response()->json([
@@ -23,6 +23,5 @@ class ListController extends Controller
                 'pagination' => customPagination($podcasts)
             ]
         ]);
-
     }
 }

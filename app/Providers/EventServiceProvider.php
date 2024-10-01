@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\User;
+use Botble\ACL\Models\User;
 use App\Observers\SubscriptionOrderObserver;
 use App\Observers\UserObserver;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
