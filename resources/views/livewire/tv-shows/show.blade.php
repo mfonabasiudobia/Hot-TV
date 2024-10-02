@@ -19,28 +19,16 @@
                             You need to subscribe in order to watch this episode
                         </div>
                     @endif
-                        @if($selectedEpisode)
-                            @if(now()->gt($tvShow->release_date) && !is_null($user) && $user->subscription)
-                            <video
-                                id="player"
-                                src="{{ file_path($selectedEpisode->recorded_video) }}"
-                                playsinline controls
-                                data-plyr-config='{ "title": "{{ $selectedEpisode->title }}", "debug" : "true" }'>
-                            </video>
-                            @endif
-                        @else
-                            <video
-                                id="player"
-                                src="{{ $tvShow->video ? file_path('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
-                                playsinline controls
-                                data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
-                            </video>
-                        @endif
-                        <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
-                            <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
-                            <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
-                        </div>
-
+                    <video
+                        id="player"
+                        src="{{ $tvShow->video ? file_path('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
+                        playsinline controls
+                        data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
+                    </video>
+                    <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
+                        <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
+                        <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
+                    </div>
                 </div>
 
                 <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
@@ -282,13 +270,18 @@
          });
 
          document.addEventListener('change-episode', (event) => {
-             videoPlayer.src = event.detail.video_url;
-             videoPlayer.load(); // Load the new video source
-             videoPlayer.play(); // Play the new video
+             if(!event.detail.not_subscribed) {
+                 videoPlayer.src = event.detail.video_url;
+                 videoPlayer.load(); // Load the new video source
+                 videoPlayer.play(); // Play the new video
 
-             setTimeout(() => {
-                 window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
-             }, 2000);
+                 setTimeout(() => {
+                     window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
+                 }, 2000);
+             } else {
+                 videoPlayer.style.display = 'none';
+             }
+
 
          })
      // });

@@ -104,6 +104,7 @@ class Show extends BaseComponent
     }
 
     public function selectEpisode($episodeId){
+
         $this->selectedEpisode = EpisodeRepository::getEpisodeById($episodeId);
 
         $tvShowViews = TvShowView::where('user_id',  auth()->id())
@@ -138,12 +139,24 @@ class Show extends BaseComponent
             }
         }
 
+//        if($this->user && $this->user->subscription) {
+            $this->dispatchBrowserEvent("change-episode", [
+                'not_subscribed' => true,
+                'video_url' => $this->user && $this->user->subscription ? file_path($this->selectedEpisode->recorded_video) : null,
+                'episode' => $this->selectedEpisode->slug,
+                'season' => $this->selectedEpisode->season_number
+            ]);
+//        } else {
+//            $this->dispatchBrowserEvent("change-episode", [
+//                'not_subscribed' => true,
+//                'video_url' => null,
+//                'episode' => $this->selectedEpisode->slug,
+//                'season' => $this->selectedEpisode->season_number
+//            ]);
+//        }
 
-        $this->dispatchBrowserEvent("change-episode", [
-            'video_url' => file_path($this->selectedEpisode->recorded_video),
-            'episode' => $this->selectedEpisode->slug,
-            'season' => $this->selectedEpisode->season_number
-        ]);
+
+
     }
 
     public function saveToWatchlist($tvShowId){
