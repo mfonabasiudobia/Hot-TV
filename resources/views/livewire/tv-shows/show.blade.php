@@ -14,13 +14,13 @@
                             This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }}
                         </div>
                     @endif
-                    @if(!($user && $user->subscription))
+                    @if(!(!is_null($user) && $user->subscription))
                         <div class="p-3 mb-2 bg-danger text-white">
                             You need to subscribe in order to watch this episode
                         </div>
                     @endif
                         @if($selectedEpisode)
-                            @if(now()->gt($tvShow->release_date) && $user && $user->subscription)
+                            @if(now()->gt($tvShow->release_date) && !is_null($user) && $user->subscription)
                             <video
                                 id="player"
                                 src="{{ file_path($selectedEpisode->recorded_video) }}"

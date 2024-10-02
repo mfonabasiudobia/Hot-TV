@@ -7,8 +7,8 @@ use App\Mail\OtpNotification;
 use App\Mail\OtpNotificationWeb;
 use App\Mail\WelcomeNotification;
 use App\Models\OtpVerification;
-use App\Models\User;
 use App\Repositories\AuthRepository;
+use Botble\ACL\Models\User;
 use Illuminate\Support\Facades\Mail;
 use URL;
 
