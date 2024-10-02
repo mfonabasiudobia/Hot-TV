@@ -8,6 +8,7 @@ use App\Repositories\EpisodeRepository;
 use App\Repositories\CastRepository;
 use App\Models\TvShowView;
 use App\Models\Watchlist;
+use Illuminate\Support\Facades\Auth;
 
 class Show extends BaseComponent
 {
@@ -15,9 +16,13 @@ class Show extends BaseComponent
     public $tvShow, $seasons = [], $season_number = 1, $seasonId, $episodes = [];
 
     public $selectedEpisode, $casts = [];
+    public $user;
 
     public function mount($slug){
 
+        if(Auth::check()) {
+            $this->user = Auth::user();
+        }
         $this->fill([
             'tvShow' => TvShowRepository::getTvShowBySlug($slug)
         ]);
@@ -35,7 +40,9 @@ class Show extends BaseComponent
             'casts' => CastRepository::getCastsByShow($this->tvShow->id)
         ]);
 
-        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
+        if($this->tvShow->seasons()->exists()) {
+            $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
+        }
 
 
 //        $data = [

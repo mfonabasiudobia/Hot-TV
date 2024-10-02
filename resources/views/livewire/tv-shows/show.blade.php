@@ -14,13 +14,13 @@
                             This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }}
                         </div>
                     @endif
-                    @if(!isset(auth()->user()->subscription))
+                    @if(!($user && $user->subscription))
                         <div class="p-3 mb-2 bg-danger text-white">
                             You need to subscribe in order to watch this episode
                         </div>
                     @endif
                         @if($selectedEpisode)
-                            @if(now()->gt($tvShow->release_date) && isset(auth()->user()->subscription))
+                            @if(now()->gt($tvShow->release_date) && $user && $user->subscription)
                             <video
                                 id="player"
                                 src="{{ file_path($selectedEpisode->recorded_video) }}"
@@ -31,7 +31,7 @@
                         @else
                             <video
                                 id="player"
-                                src="{{ file_path($tvShow->trailer) }}"
+                                src="{{ $tvShow->video ? file_path('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
                                 playsinline controls
                                 data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
                             </video>

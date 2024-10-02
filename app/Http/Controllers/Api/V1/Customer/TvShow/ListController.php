@@ -6,6 +6,7 @@ use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\V1\Customer\TvShow\ListResource;
 use App\Models\TvShow;
+use App\Repositories\TvShowRepository;
 use Botble\Base\Enums\BaseStatusEnum;
 use Illuminate\Http\Request;
 
@@ -23,14 +24,20 @@ class ListController extends Controller
             $featured = $request->input('featured');
         }
 
-        $tvShows = TvShow::where('status', BaseStatusEnum::PUBLISHED()->getValue())
-            ->when(!is_null($categoryId), function($query) use ($categoryId) {
-                $query->whereHas('categories', function ($query) use ($categoryId) {
-                    $query->where('show_categories.id', $categoryId);
-                });
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate($pageSize);
+//        $tvShows = TvShow::where('status', BaseStatusEnum::PUBLISHED()->getValue())
+//            ->when(!is_null($categoryId), function($query) use ($categoryId) {
+//                $query->whereHas('categories', function ($query) use ($categoryId) {
+//                    $query->where('show_categories.id', $categoryId);
+//                });
+//            })
+//            ->orderBy('created_at', 'desc')
+//            ->paginate($pageSize);
+
+        $tvShows = TvShowRepository::all([
+            'sortByTitle' => null,
+            'sortByTime' => 'today',
+            'sortByDate' => 'desc'
+        ])->paginate($pageSize);
         $tvShows->load(['categories', 'casts']);
 
         return response()->json([

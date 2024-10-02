@@ -1,4 +1,4 @@
-<section :class="toggleSidebar ? '' : 'sidebar-wrapper'" x-on:click="toggleSidebar = !toggleSidebar" x-cloak>
+<section :class="toggleSidebar ? '' : 'sidebar-wrapper'"  x-cloak>
     <div x-on:click="event.stopPropagation()" class=" h-screen relative overflow-hidden"
         :class="toggleSidebar ? 'w-0 md:w-[250px]' : 'w-[270px] md:w-0'">
         <div class="flex justify-center py-3">

@@ -40,7 +40,6 @@
                         @error('categories_id') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-
                     <div class="form-group">
                         <label>Casts</label>
                         <div class="relative" wire:ignore>
@@ -88,10 +87,19 @@
                     <div class="form-group" x-data="{ trailer : @entangle('trailer').defer }"
                         @set-push-file.window="if($event.detail.unique_key == 'trailer') trailer = $event.detail.path;">
                         <label>Upload Trailer</label>
-                        <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />
 
-                        <span x-text="'{{ file_path() }}' + trailer"></span>
-                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
+                        <x-atoms.progress-indicator>
+                            <input type="file" wire:model="trailer" class="form-control" accept="video/*" />
+                        </x-atoms.progress-indicator>
+                        @if($trailer)
+                            <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
+                        @endif
+
+
+{{--                        <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />--}}
+
+{{--                        <span x-text="'{{ file_path() }}' + trailer"></span>--}}
+{{--                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>--}}
 
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>

@@ -3,6 +3,9 @@
 namespace App\Http\Livewire\Admin\Shows;
 
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
+use App\Models\Video;
 use App\Repositories\TvShowRepository;
 use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
@@ -63,10 +66,22 @@ class Create extends BaseComponent
                 'status' => $this->status ? 'published' : 'unpublished'
             ];
 
-            throw_unless(TvShowRepository::createTvShow($data, [
+            $tvShow = throw_unless(TvShowRepository::createTvShow($data, [
                 'categories' => $this->categories_id,
                 'casts' => $this->casts_id,
             ]), "Please try again");
+
+            $video = Video::create([
+                'title' => $this->title,
+                'disk' => 'public',
+                'original_name' =>  $this->trailer->getClientOriginalName(),
+                'path' => $this->trailer->store('videos', 'public'),
+                'model' => 'TvShow',
+                'model_id' => $tvShow->id
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob($video));
+            dispatch(new ConvertVideoForStreamingJob($video));
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 
@@ -74,6 +89,7 @@ class Create extends BaseComponent
 
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
+
         }
     }
 

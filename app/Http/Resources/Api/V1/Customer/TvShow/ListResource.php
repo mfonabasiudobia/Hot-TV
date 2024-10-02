@@ -14,7 +14,7 @@ class ListResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'thumbnail' => asset('storage/' . $this->thumbnail),
-            'trailer' => asset('storage/'. $this->trailer),
+            'trailer' => $this->video ? file_path('videos/' . $this->video->id . '_2_3000.m3u8') : asset('storage/'. $this->trailer),
             'tags' => $this->tags,
             'release_date' => $this->release_date,
             'is_recommended' => $this->is_recommended == 1,

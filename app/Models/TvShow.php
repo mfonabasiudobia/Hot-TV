@@ -3,6 +3,7 @@
 namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TvShow extends BaseModel
 {
@@ -37,5 +38,10 @@ class TvShow extends BaseModel
     public function seasons(): HasMany
     {
         return $this->hasMany(Season::class);
+    }
+
+    public function video(): HasOne
+    {
+        return $this->hasOne(Video::class, 'model_id');
     }
 }

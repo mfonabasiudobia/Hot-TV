@@ -29,7 +29,7 @@
         .ss-content {
             background-color: #000 !important;
         }
-    
+
         .ss-option:hover,
         .ss-selected, .ss-value-text, .ss-value-delete, .ss-value {
             background-color: #FFFFFF !important;

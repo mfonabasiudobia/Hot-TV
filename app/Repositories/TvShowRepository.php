@@ -36,7 +36,7 @@ class TvShowRepository {
                     $q->where('name', 'like', '%' . $s . '%');
                 });
             })
-            ->has('seasons')
+            //->has('seasons')
             ->where('status', 'published');
 
 
