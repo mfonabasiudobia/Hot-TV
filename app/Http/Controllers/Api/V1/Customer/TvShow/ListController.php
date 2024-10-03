@@ -24,20 +24,26 @@ class ListController extends Controller
             $featured = $request->input('featured');
         }
 
-//        $tvShows = TvShow::where('status', BaseStatusEnum::PUBLISHED()->getValue())
-//            ->when(!is_null($categoryId), function($query) use ($categoryId) {
-//                $query->whereHas('categories', function ($query) use ($categoryId) {
-//                    $query->where('show_categories.id', $categoryId);
-//                });
-//            })
-//            ->orderBy('created_at', 'desc')
-//            ->paginate($pageSize);
+        $tvShows = TvShow::where('status', BaseStatusEnum::PUBLISHED()->getValue())
+            ->when(!is_null($categoryId), function($query) use ($categoryId) {
+                $query->whereHas('categories', function ($query) use ($categoryId) {
+                    $query->where('show_categories.id', $categoryId);
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($pageSize);
 
         $tvShows = TvShowRepository::all([
             'sortByTitle' => null,
-            'sortByTime' => 'today',
+            'sortByTime' => null,
             'sortByDate' => 'desc'
-        ])->paginate($pageSize);
+        ])
+            ->when(!is_null($categoryId), function($query) use ($categoryId) {
+                $query->whereHas('categories', function ($query) use ($categoryId) {
+                    $query->where('show_categories.id', $categoryId);
+                });
+            })
+            ->paginate($pageSize);
         $tvShows->load(['categories', 'casts']);
 
         return response()->json([

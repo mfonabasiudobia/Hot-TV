@@ -71,13 +71,11 @@ class Create extends BaseComponent
                 'casts' => $this->casts_id,
             ]), "Please try again");
 
-            $video = Video::create([
+            $video = $tvShow->video()->create([
                 'title' => $this->title,
                 'disk' => 'public',
                 'original_name' =>  $this->trailer->getClientOriginalName(),
                 'path' => $this->trailer->store('videos', 'public'),
-                'model' => 'TvShow',
-                'model_id' => $tvShow->id
             ]);
 
             dispatch(new ConvertVideoForDownloadingJob($video));

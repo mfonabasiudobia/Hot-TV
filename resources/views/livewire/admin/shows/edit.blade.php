@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Show Categories</label>
+                        <label for="categories">Show Categories</label>
                         <div class="relative" wire:ignore>
                             <select class="form-control" wire:model.defer="categories_id" multiple id="categories" data-placeholder="--Categories--">
                                 @foreach ($categories as $category)
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Casts</label>
+                        <label for="casts">Casts</label>
                         <div class="relative" wire:ignore>
                             <select class="form-control" wire:model.defer="casts_id" multiple id="casts" data-placeholder="--Casts--">
                                 @foreach ($casts as $cast)
@@ -53,21 +53,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Release Date</label>
+                        <label for="release_date">Release Date</label>
                         <div wire:ignore>
-                            <input type="text" placeholder="Release Date" wire:model.defer='release_date'
-                                class="form-control custom-datetime" />
+                            <input type="text" placeholder="Release Date" wire:model.defer='release_date' class="form-control custom-datetime" />
                         </div>
                         @error('release_date') <span class="error">{{ $message }}</span> @endError
                     </div>
 
                     <div class="form-group" wire:ignore>
-                        <label>Tags </label>
-
+                        <label for="tags">Tags </label>
                         <div wire:ignore>
                             <input id='tags' class="form-control text-xs" placeholder='Tags' wire:model.defer='tags' />
                         </div>
-
                         @error('tags') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
@@ -78,19 +75,33 @@
                             x-on:click.prevent="$wire.emit('openGallery', 'thumbnail')" />
 
                         <img x-bind:src="'{{ file_path('/') }}/' + thumbnail" x-show="thumbnail ? true : false"
-                            class="image-preview" x-cloak />
+                            class="image-preview" x-cloak  alt="Thumbnail"/>
 
                         @error('thumbnail') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
                     <div class="form-group" x-data="{ trailer : @entangle('trailer').defer }"
                         @set-push-file.window="if($event.detail.unique_key == 'trailer') trailer = $event.detail.path;">
-                        <label>Upload Trailer</label>
-                        <input type="file" class="form-control"
-                            x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />
+                        <label>Replace Trailer</label>
+                        <x-atoms.progress-indicator>
+                            <input type="file" wire:model="trailer" class="form-control" accept="video/*" />
+                        </x-atoms.progress-indicator>
+{{--                        <input type="file" class="form-control"--}}
+{{--                            x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />--}}
 
-                        <span x-text="'{{ file_path() }}' + trailer"></span>
-                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
+                        @if($tvShow->video)
+                            <span>{{ Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') }}</span>
+                            @if($trailer)
+                                <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
+                            @else
+                                <video class='w-auto h-[20vh]' src="{{ Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') }}" controls></video>
+                            @endif
+
+                        @else
+                            <span x-text="'{{ file_path() }}' + trailer"></span>
+                            <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
+                        @endif
+
 
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>
@@ -102,8 +113,6 @@
                         <x-atoms.toggle model="status" label="Status" />
                     </div>
                 </section>
-
-
 
                 <div class="space-y-5 content-wrapper">
                     <div class="space-y-1">
@@ -119,7 +128,6 @@
                         @error('meta_title') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-
                     <div class="form-group">
                         <label>Meta Description</label>
                         <textarea class="form-control" placeholder="Meta Description"
@@ -128,12 +136,9 @@
                     </div>
                 </div>
 
-
-
                 <div class="form-group flex justify-end">
                     <x-atoms.loading-button text="Submit" target="submit" class="btn btn-xl btn-danger" />
                 </div>
-
             </form>
         </section>
     </section>

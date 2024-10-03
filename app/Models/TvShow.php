@@ -4,6 +4,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class TvShow extends BaseModel
 {
@@ -40,8 +41,8 @@ class TvShow extends BaseModel
         return $this->hasMany(Season::class);
     }
 
-    public function video(): HasOne
+    public function video(): MorphOne
     {
-        return $this->hasOne(Video::class, 'model_id');
+        return $this->morphOne(Video::class, 'videoable');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Season extends Model
 {
@@ -37,5 +39,10 @@ class Season extends Model
     public function createdAt()
     {
         return $this->created_at->format('Y-m-d');
+    }
+
+    public function video(): Morphone
+    {
+        return $this->morphOne(Video::class, 'videoable');
     }
 }

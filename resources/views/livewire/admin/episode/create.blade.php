@@ -98,13 +98,20 @@
                 <div class="form-group md:col-span-2" x-data="{ recorded_video : @entangle('recorded_video').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
                     <label>Upload Video</label>
-                    <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+                    <x-atoms.progress-indicator>
+                        <input type="file" wire:model="recorded_video" class="form-control" accept="video/*" />
+                    </x-atoms.progress-indicator>
+                    @if($recorded_video)
+                        <video class='w-auto h-[20vh]' src="{{ $recorded_video->temporaryUrl() }}" controls></video>
+                    @endif
 
-                    <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                    <video class='w-auto h-[20vh]' controls>
-                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">
-                        Your browser does not support HTML5 video.
-                    </video>
+{{--                    <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />--}}
+
+{{--                    <span x-text="'{{ file_path() }}' + recorded_video"></span>--}}
+{{--                    <video class='w-auto h-[20vh]' controls>--}}
+{{--                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">--}}
+{{--                        Your browser does not support HTML5 video.--}}
+{{--                    </video>--}}
 
                     @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
                 </div>

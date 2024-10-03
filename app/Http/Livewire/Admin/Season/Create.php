@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Admin\Season;
 
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
 use App\Models\Season;
+use App\Models\Video;
 use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
@@ -54,7 +57,17 @@ class Create extends BaseComponent
                 'season_number' => $this->season_number,
             ];
 
-            throw_unless(SeasonRepository::createSeason($data), "Please try again");
+            $season = throw_unless(SeasonRepository::createSeason($data), "Please try again");
+
+            $video = $season->video()->create([
+                'title' => $this->title,
+                'disk' => 'public',
+                'original_name' =>  $this->recorded_video->getClientOriginalName(),
+                'path' => $this->recorded_video->store('videos', 'public'),
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob($video));
+            dispatch(new ConvertVideoForStreamingJob($video));
 
             toast()->success('Cheers!, Season has been added')->pushOnNextPage();
 

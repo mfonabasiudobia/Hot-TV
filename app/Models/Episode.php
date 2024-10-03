@@ -3,6 +3,8 @@
 namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 
 class Episode extends BaseModel
@@ -23,5 +25,10 @@ class Episode extends BaseModel
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
+    }
+
+    public function video(): MorphOne
+    {
+        return $this->morphOne(Video::class, 'videoable');
     }
 }

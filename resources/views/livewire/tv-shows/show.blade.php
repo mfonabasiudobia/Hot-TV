@@ -21,7 +21,7 @@
                     @endif
                     <video
                         id="player"
-                        src="{{ $tvShow->video ? file_path('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
+                        src="{{ $tvShow->video ? Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
                     </video>

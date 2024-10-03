@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Video extends Model
 {
@@ -12,4 +13,9 @@ class Video extends Model
     ];
 
     protected $guarded = [];
+
+    public function videoable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

@@ -113,8 +113,6 @@
 
                 </section>
 
-
-
                 <div class="space-y-5 content-wrapper">
                     <div class="space-y-1">
                         <h1>SEO Information</h1>

@@ -9,6 +9,7 @@ use App\Repositories\CastRepository;
 use App\Models\TvShowView;
 use App\Models\Watchlist;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Show extends BaseComponent
 {
@@ -139,21 +140,21 @@ class Show extends BaseComponent
             }
         }
 
-//        if($this->user && $this->user->subscription) {
-            $this->dispatchBrowserEvent("change-episode", [
-                'not_subscribed' => true,
-                'video_url' => $this->user && $this->user->subscription ? file_path($this->selectedEpisode->recorded_video) : null,
-                'episode' => $this->selectedEpisode->slug,
-                'season' => $this->selectedEpisode->season_number
-            ]);
-//        } else {
-//            $this->dispatchBrowserEvent("change-episode", [
-//                'not_subscribed' => true,
-//                'video_url' => null,
-//                'episode' => $this->selectedEpisode->slug,
-//                'season' => $this->selectedEpisode->season_number
-//            ]);
-//        }
+        if($this->user && $this->user->subscription) {
+            $episodeVideo = $this->tvShow->video ? Storage::disk('public')->url('videos/' . $this->selectedEpisode->video->id . '.mp4') : file_path($this->selectedEpisode->recorded_video);
+            $notSubscribed = false;
+        } else {
+            $episodeVideo = null;
+            $notSubscribed = true;
+        }
+
+        $this->dispatchBrowserEvent("change-episode", [
+            'not_subscribed' => $notSubscribed,
+            'video_url' => $episodeVideo,
+            'episode' => $this->selectedEpisode->slug,
+            'season' => $this->selectedEpisode->season_number
+        ]);
+
 
 
 

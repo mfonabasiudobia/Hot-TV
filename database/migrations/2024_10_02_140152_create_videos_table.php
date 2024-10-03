@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->string('original_name');
             $table->string('disk');
             $table->string('path');
-            $table->string('model');
-            $table->bigInteger('model_id');
+            $table->string('videoable_type');
+            $table->unsignedBigInteger('videoable_id');
             $table->dateTime('converted_for_downloading_at');
             $table->dateTime('converted_for_streaming_at');
             $table->timestamps();

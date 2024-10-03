@@ -28,6 +28,7 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
     {
         $lowBitrateFormat = (new X264)->setKiloBitrate(500);
 
+
         FFMpeg::fromDisk($this->video->disk)
             ->open($this->video->path)
             ->addFilter(function($filters) {
