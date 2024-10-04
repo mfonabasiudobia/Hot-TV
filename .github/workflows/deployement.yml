@@ -21,6 +21,10 @@ jobs:
         ini-values: post_max_size=256M, upload_max_filesize=256M
         coverage: none
 
+    - name: composer
+      run: composer update
+
+
     - name: Deploy to Bahadur
       if: github.ref == 'refs/heads/bahdur'
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
