@@ -75,7 +75,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
             "Botble\\SubscriptionPlan\\": "platform/plugins/subscription-plan/src/",
             "Botble\\SubscriptionOrder\\": "platform/plugins/subscription-order/src/"
         },
