@@ -1,0 +1,39 @@
+name: Deploy Laravel Application
+
+on:
+  push:
+    branches:
+      - bahadur
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, pdo, gd, bcmath, zip
+        ini-values: post_max_size=256M, upload_max_filesize=256M
+        coverage: none
+
+    - name: Install Composer dependencies
+      run: composer update --no-dev --optimize-autoloader
+
+    - name: Deploy to Bahadure
+      if: github.ref == 'refs/heads/bahdur'
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        server: panel.saivra.co
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./ # Your project directory
+        server-dir: ./httpdocs # Subdomain directory on the server
+
+    - name: Clear Laravel Cache on Main
+      if: github.ref == 'refs/heads/bahadur'
+      run: ssh root@main-server "php  panel.saivra.co/httpdocs/artisan config:cache"
