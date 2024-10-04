@@ -21,8 +21,12 @@ jobs:
         ini-values: post_max_size=256M, upload_max_filesize=256M
         coverage: none
 
+    - name: Dump Autoload (optional but recommended)
+      run: composer dump-autoload --no-dev --optimize
+
     - name: Install Composer dependencies
       run: composer install --no-dev --optimize-autoloader
+    
 
     - name: Deploy to Bahadure
       if: github.ref == 'refs/heads/bahdur'
