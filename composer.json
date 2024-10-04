@@ -76,6 +76,9 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
+            "App\\": "app/",
+            "Botble\\SubscriptionPlan\\": "platform/plugins/subscription-plan/src/",
+            "Botble\\SubscriptionOrder\\": "platform/plugins/subscription-order/src/"
         },
         "files": [
             "app/Helpers/Common.php"
