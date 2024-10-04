@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME  }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./ # Your project directory
-        server-dir: ./httpdocs # Subdomain directory on the server
+        server-dir: ./httpdocs/ # Subdomain directory on the server
 
     - name: Clear Laravel Cache on bahadur
       if: github.ref == 'refs/heads/bahadur'
