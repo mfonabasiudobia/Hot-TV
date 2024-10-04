@@ -22,7 +22,7 @@ jobs:
         coverage: none
 
     - name: Install Composer dependencies
-      run: composer update --no-dev --optimize-autoloader
+      run: composer install --no-dev --optimize-autoloader
 
     - name: Deploy to Bahadure
       if: github.ref == 'refs/heads/bahdur'
