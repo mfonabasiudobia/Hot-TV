@@ -21,8 +21,8 @@ jobs:
         ini-values: post_max_size=256M, upload_max_filesize=256M
         coverage: none
  
-    - name: composer
-      run: composer update
+    # - name: composer
+    #   run: composer update
 
 
     - name: Deploy to Bahadur
