@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev 
+    environment: dev
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -20,21 +20,26 @@ jobs:
         extensions: mbstring, pdo, gd, bcmath, zip, grpc
         ini-values: post_max_size=256M, upload_max_filesize=256M
         coverage: none
- 
+
     # - name: composer
     #   run: composer update
 
-
-    - name: Deploy to Bahadur
+    - name: Deploy to Bahadur (FTP sync)
       if: github.ref == 'refs/heads/bahadur'
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
         server: panel.saivra.co
-        username: ${{ secrets.FTP_USERNAME  }}
+        username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./ # Your project directory
         server-dir: ./httpdocs/ # Subdomain directory on the server
+        method: sync # Ensures only differences are pushed
+        exclude: |
+          .git*
+          node_modules/
+          vendor/
+          storage/logs/
 
     - name: Clear Laravel Cache on bahadur
       if: github.ref == 'refs/heads/bahadur'
-      run: ssh root@82.180.131.168 "php  panel.saivra.co/httpdocs/artisan config:cache"
+      run: ssh root@82.180.131.168 "php panel.saivra.co/httpdocs/artisan config:cache"
