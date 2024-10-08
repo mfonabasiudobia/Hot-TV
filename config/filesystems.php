@@ -38,7 +38,9 @@ return [
 
         'video_disk' => [
             'driver' => 'local',
-            'root' => storage_path('app/videos'),
+            'root' => public_path('storage/app/public/videos'),
+            'url' => env('APP_URL').'storage/app/public/videos/',
+            'visibility' => 'public',
             'throw' => false,
         ],
 

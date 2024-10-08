@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api\V1\Customer\TvShow;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ListResource extends JsonResource
 {
@@ -16,7 +17,7 @@ class ListResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'thumbnail' => asset('storage/' . $this->thumbnail),
-            'trailer' => $this->video ? Storage::disk('public')->url('videos/' . $this->video->id . '._2_3000.m3u8')  : asset('storage/'. $this->trailer),
+            'trailer' => $this->video ? Storage::disk('video_disk')->url( Str::slug($this->title) . '/' . $this->video->uuid . '_2_3000.m3u8')  : asset('storage/'. $this->trailer),
             'tags' => $this->tags,
             'release_date' => $this->release_date,
             'is_recommended' => $this->is_recommended == 1,

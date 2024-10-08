@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\TvShows;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
@@ -10,6 +11,7 @@ use App\Models\TvShowView;
 use App\Models\Watchlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Show extends BaseComponent
 {
@@ -44,7 +46,7 @@ class Show extends BaseComponent
         if($this->tvShow->seasons()->exists()) {
             $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
         }
-
+        //dd(Storage::disk('video_disk')->url(Str::slug($this->tvShow->title) . '/' . $this->tvShow->video->uuid . '.mp4'));
 
 //        $data = [
 //            'user_id' => auth()->id(),
@@ -141,7 +143,7 @@ class Show extends BaseComponent
         }
 
         if($this->user && $this->user->subscription) {
-            $episodeVideo = $this->tvShow->video ? Storage::disk('public')->url('videos/' . $this->selectedEpisode->video->id . '.mp4') : file_path($this->selectedEpisode->recorded_video);
+            $episodeVideo = $this->tvShow->video ? Storage::disk(VideoDiskEnum::DISK->value)->url(Str::slug($this->tvShow->title) . '/' . $this->selectedEpisode->video->uuid . '.mp4') : file_path($this->selectedEpisode->recorded_video);
             $notSubscribed = false;
         } else {
             $episodeVideo = null;
@@ -154,10 +156,6 @@ class Show extends BaseComponent
             'episode' => $this->selectedEpisode->slug,
             'season' => $this->selectedEpisode->season_number
         ]);
-
-
-
-
     }
 
     public function saveToWatchlist($tvShowId){

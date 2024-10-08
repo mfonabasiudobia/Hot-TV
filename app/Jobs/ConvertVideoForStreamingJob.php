@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\VideoDiskEnum;
 use App\Models\Video;
 use Carbon\Carbon;
 use FFMpeg\Format\Video\X264;
@@ -17,10 +18,12 @@ class ConvertVideoForStreamingJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $video;
+    public $title;
 
-    public function __construct(Video $video)
+    public function __construct(Video $video, string $title)
     {
         $this->video = $video;
+        $this->title = $title;
     }
 
     public function handle(): void
@@ -32,11 +35,11 @@ class ConvertVideoForStreamingJob implements ShouldQueue
         FFMpeg::fromDisk($this->video->disk)
             ->open($this->video->path)
             ->exportForHLS()
-            ->toDisk('public')
+            ->toDisk(VideoDiskEnum::DISK->value)
             ->addFormat($lowBitrateFormat)
             ->addFormat($midBitrateFormat)
             ->addFormat($highBitrateFormat)
-            ->save('videos/' . $this->video->id . '.m3u8');
+            ->save(VideoDiskEnum::TV_SHOWS->value . $this->title . '/' . $this->video->uuid . '.m3u8');
 
         \Log::info('video converted into m3u8 successfully');
         $this->video->update([

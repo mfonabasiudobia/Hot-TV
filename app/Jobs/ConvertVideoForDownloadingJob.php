@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\VideoDiskEnum;
 use App\Models\Video;
 use Carbon\Carbon;
 use FFMpeg\Coordinate\Dimension;
@@ -18,16 +19,17 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $video;
+    public $title;
 
-    public function __construct(Video $video)
+    public function __construct(Video $video, $title)
     {
         $this->video = $video;
+        $this->title = $title;
     }
 
     public function handle(): void
     {
         $lowBitrateFormat = (new X264)->setKiloBitrate(500);
-
 
         FFMpeg::fromDisk($this->video->disk)
             ->open($this->video->path)
@@ -35,9 +37,9 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
                 $filters->resize(new Dimension(960, 540));
             })
             ->export()
-            ->toDisk('public')
+            ->toDisk(VideoDiskEnum::DISK->value)
             ->inFormat($lowBitrateFormat)
-            ->save('videos/' .$this->video->id . '.mp4');
+            ->save( VideoDiskEnum::TV_SHOWS->value . $this->title . '/' . $this->video->uuid . '.mp4');
         \Log::info('video converted into mp4 successfully');
         $this->video->update([
             'converted_for_downloading_at' => Carbon::now()

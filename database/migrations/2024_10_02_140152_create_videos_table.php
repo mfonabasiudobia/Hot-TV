@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->string('title');
             $table->string('original_name');
             $table->string('disk');

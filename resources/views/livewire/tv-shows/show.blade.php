@@ -21,7 +21,7 @@
                     @endif
                     <video
                         id="player"
-                        src="{{ $tvShow->video ? Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') : file_path($tvShow->trailer) }}"
+                        src="{{ $tvShow->video ? Storage::disk(\App\Enums\VideoDiskEnum::DISK->value)->url( \App\Enums\VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/' . $tvShow->video->uuid . '.mp4') : file_path($tvShow->trailer) }}"
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
                     </video>
@@ -126,7 +126,7 @@
                     @endIf
                 </section>
 
-                @if(count($seasons) > 0)
+                @if(count($seasons) > 1)
                 <section class="bg-dark p-5 rounded-2xl space-y-2">
                     <div class="flex justify-end text-sm space-x-2 relative" wire:ignore>
                         <select

@@ -2,13 +2,15 @@
 
 namespace App\Http\Livewire\Admin\Shows;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
 use App\Jobs\ConvertVideoForDownloadingJob;
 use App\Jobs\ConvertVideoForStreamingJob;
-use App\Models\Video;
+use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
+use Illuminate\Support\Str;
 
 class Create extends BaseComponent
 {
@@ -71,22 +73,33 @@ class Create extends BaseComponent
                 'casts' => $this->casts_id,
             ]), "Please try again");
 
-            $video = $tvShow->video()->create([
-                'title' => $this->title,
-                'disk' => 'public',
-                'original_name' =>  $this->trailer->getClientOriginalName(),
-                'path' => $this->trailer->store('videos', 'public'),
+            $season = SeasonRepository::createSeason([
+                'title' => 'Season 1',
+                'slug' => 'season-1',
+                'description' => $this->description,
+                'release_date' => $this->release_date,
+                'tv_show_id' => $tvShow->id,
+                'season_number' => 'Season 1',
             ]);
 
-            dispatch(new ConvertVideoForDownloadingJob($video));
-            dispatch(new ConvertVideoForStreamingJob($video));
+            $video = $tvShow->video()->create([
+                'uuid' => Str::uuid(),
+                'title' => $this->title,
+                'disk' => VideoDiskEnum::DISK->value,
+                'original_name' =>  $this->trailer->getClientOriginalName(),
+                'path' => $this->trailer->store(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/'. $season->slug, VideoDiskEnum::DISK->value),
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob($video, $tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForStreamingJob($video, $tvShow->slug . '/'. $season->slug));
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 
             return redirect()->route('admin.tv-show.list');
 
         } catch (\Throwable $e) {
-            toast()->danger($e->getMessage())->push();
+            dd($e->getMessage());
+            //toast()->danger($e->getMessage())->push();
 
         }
     }
