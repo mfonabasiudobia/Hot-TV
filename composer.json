@@ -28,6 +28,8 @@
         "botble/widget": "*@dev",
         "doctrine/dbal": "^3.2",
         "google/auth": "^1.42",
+        "google/cloud-firestore": "^1.0",
+        "google/gax": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "hardevine/shoppingcart": "^3.2",
         "kreait/firebase-php": "^7.14",
@@ -40,6 +42,7 @@
         "omnipay/stripe": "^3.2",
         "pbmedia/laravel-ffmpeg": "^8.3",
         "php-ffmpeg/php-ffmpeg": "^1.1",
+        "plesk/ext-laravel-integration": "^7.0",
         "power-components/livewire-powergrid": "^4.4",
         "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.2",
@@ -50,8 +53,7 @@
         "symfony/http-client": "^6.3",
         "symfony/mailgun-mailer": "^6.3",
         "usernotnull/tall-toasts": "^1.7",
-        "wikimedia/composer-merge-plugin": "^2.0",
-        "plesk/ext-laravel-integration": "*"
+        "wikimedia/composer-merge-plugin": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
