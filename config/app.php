@@ -219,6 +219,7 @@ return [
 
     'redirect_success_url' => env('REDIRECT_SUCCESS_URL', config('app.url'). 'payment-verification?session_id={CHECKOUT_SESSION_ID}'),
     'redirect_success_api_url' => env('REDIRECT_SUCCESS_API_URL', config('app.url'). 'subscribe/stripe-checkout/{CHECKOUT_SESSION_ID}'),
+    'tiny-cloud' => env('TINY_CLOUD_KEY', 'srfq9lugj6h3um0oumk0latm9rs1cx0zyrcojwh2rc7van3r')
 
 
 ];
