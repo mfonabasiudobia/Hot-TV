@@ -52,7 +52,8 @@
         "usernotnull/tall-toasts": "^1.7",
         "wikimedia/composer-merge-plugin": "^2.0",
         "google/cloud-firestore": "^1.0",
-        "google/gax": "^1.0"
+        "google/gax": "^1.0",
+        "plesk/ext-laravel-integration": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
