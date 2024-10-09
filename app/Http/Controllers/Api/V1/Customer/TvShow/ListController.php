@@ -14,7 +14,7 @@ class ListController extends Controller
 {
     public function __invoke(Request $request)
     {
-
+        phpinfo();
         $pageSize = 20;
         $categoryId = null;
         if($request->has('category_id')) {
