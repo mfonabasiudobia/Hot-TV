@@ -2,8 +2,12 @@
 
 namespace App\Http\Livewire\Admin\Podcast;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
 use App\Repositories\PodcastRepository;
+use Illuminate\Support\Str;
 
 class Create extends BaseComponent
 {
@@ -12,7 +16,7 @@ class Create extends BaseComponent
 
     public $meta_title, $meta_description, $recorded_video;
 
- 
+
     public function updatedTitle($title){
         $this->slug = str()->slug($title);
     }
@@ -41,7 +45,18 @@ class Create extends BaseComponent
                 'meta_description' => $this->meta_description
             ];
 
-            throw_unless(PodcastRepository::createPodcast($data), "Please try again");
+            $podcast = throw_unless(PodcastRepository::createPodcast($data), "Please try again");
+
+            $video = $podcast->video()->create([
+                'uuid' => Str::uuid(),
+                'title' => $this->title,
+                'disk' => VideoDiskEnum::DISK->value,
+                'original_name' =>  $this->recorded_video->getClientOriginalName(),
+                'path' => $this->recorded_video->store(VideoDiskEnum::PODCASTS->value . $podcast->slug, VideoDiskEnum::DISK->value),
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::PODCASTS->value, $video, $podcast->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::PODCASTS->value, $video, $podcast->slug));
 
             toast()->success('Podcast has been added')->pushOnNextPage();
 

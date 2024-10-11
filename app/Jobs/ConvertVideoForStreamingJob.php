@@ -17,11 +17,13 @@ class ConvertVideoForStreamingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $basePath;
     public $video;
     public $title;
 
-    public function __construct(Video $video, string $title)
+    public function __construct($basePath, Video $video, string $title)
     {
+        $this->basePath = $basePath;
         $this->video = $video;
         $this->title = $title;
     }
@@ -39,7 +41,7 @@ class ConvertVideoForStreamingJob implements ShouldQueue
             ->addFormat($lowBitrateFormat)
             ->addFormat($midBitrateFormat)
             ->addFormat($highBitrateFormat)
-            ->save(VideoDiskEnum::TV_SHOWS->value . $this->title . '/' . $this->video->uuid . '.m3u8');
+            ->save($this->basePath . $this->title . '/' . $this->video->uuid . '.m3u8');
 
         \Log::info('video converted into m3u8 successfully');
         $this->video->update([

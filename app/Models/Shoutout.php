@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Shoutout extends BaseModel
 {
@@ -19,5 +20,10 @@ class Shoutout extends BaseModel
     ];
     public function views(){
         return $this->hasMany(ShoutoutView::class, 'shoutout_id');
+    }
+
+    public function video(): Morphone
+    {
+        return $this->morphOne(Video::class, 'videoable');
     }
 }

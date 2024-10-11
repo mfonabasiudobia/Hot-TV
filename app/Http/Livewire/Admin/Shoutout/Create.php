@@ -2,9 +2,13 @@
 
 namespace App\Http\Livewire\Admin\Shoutout;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
 use App\Repositories\ShoutoutRepository;
 use Botble\Base\Enums\BaseStatusEnum;
+use Illuminate\Support\Str;
 
 class Create extends BaseComponent
 {
@@ -41,7 +45,19 @@ class Create extends BaseComponent
                 'status' => $this->status ? BaseStatusEnum::PUBLISHED()->getValue() : BaseStatusEnum::DRAFT()->getValue()
             ];
 
-            throw_unless(ShoutoutRepository::create($data), "Please try again");
+            $shoutout = throw_unless(ShoutoutRepository::create($data), "Please try again");
+
+            $video = $shoutout->video()->create([
+                'uuid' => Str::uuid(),
+                'title' => $this->title,
+                'disk' => VideoDiskEnum::DISK->value,
+                'original_name' =>  $this->recorded_video->getClientOriginalName(),
+                'path' => $this->recorded_video->store(VideoDiskEnum::SHOUDOUTS->value . $shoutout->slug, VideoDiskEnum::DISK->value),
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::SHOUDOUTS->value, $video, $shoutout->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::SHOUDOUTS->value, $video, $shoutout->slug));
+
             toast()->success('Podcast has been added')->pushOnNextPage();
             return redirect()->route('admin.shoutout.list');
         } catch (\Throwable $e) {

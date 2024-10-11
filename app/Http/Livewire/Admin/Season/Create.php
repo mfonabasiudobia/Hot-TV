@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Season;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
 use App\Jobs\ConvertVideoForDownloadingJob;
 use App\Jobs\ConvertVideoForStreamingJob;
@@ -10,6 +11,7 @@ use App\Models\Video;
 use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
+use Illuminate\Support\Str;
 
 class Create extends BaseComponent
 {
@@ -60,14 +62,15 @@ class Create extends BaseComponent
             $season = throw_unless(SeasonRepository::createSeason($data), "Please try again");
 
             $video = $season->video()->create([
+                'uuid' => Str::uuid(),
                 'title' => $this->title,
-                'disk' => 'public',
+                'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
-                'path' => $this->recorded_video->store('videos', 'public'),
+                'path' => $this->recorded_video->store(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug . '/'. $season->slug, VideoDiskEnum::DISK->value),
             ]);
 
-            dispatch(new ConvertVideoForDownloadingJob($video));
-            dispatch(new ConvertVideoForStreamingJob($video));
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $season->tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $season->tvShow->slug . '/'. $season->slug));
 
             toast()->success('Cheers!, Season has been added')->pushOnNextPage();
 

@@ -9,5 +9,6 @@ enum VideoDiskEnum:string
     case SEASONS = 'seasons/';
     case EPISODES = 'episodes/';
     case PODCASTS = 'podcasts/';
+    case SHOUDOUTS = 'shoutouts/';
 
 }

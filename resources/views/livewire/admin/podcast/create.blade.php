@@ -41,11 +41,21 @@
                     <div class="form-group" x-data="{ recorded_video : @entangle('recorded_video').defer }"
                         @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
                         <label>Upload Video</label>
-                        <input type="file" class="form-control"
-                            x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
 
-                        <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + recorded_video" controls></video>
+
+                        <x-atoms.progress-indicator>
+                            <input type="file" wire:model="recorded_video" class="form-control" accept="video/*" />
+                        </x-atoms.progress-indicator>
+                        @if($recorded_video)
+                            <video class='w-auto h-[20vh]' src="{{ $recorded_video->temporaryUrl() }}" controls></video>
+                        @endif
+
+
+{{--                        <input type="file" class="form-control"--}}
+{{--                            x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />--}}
+
+{{--                        <span x-text="'{{ file_path() }}' + recorded_video"></span>--}}
+{{--                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + recorded_video" controls></video>--}}
 
                         @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
                     </div>

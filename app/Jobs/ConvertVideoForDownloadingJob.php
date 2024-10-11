@@ -18,11 +18,13 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $basePath;
     public $video;
     public $title;
 
-    public function __construct(Video $video, $title)
+    public function __construct($basePath, Video $video, $title)
     {
+        $this->basePath = $basePath;
         $this->video = $video;
         $this->title = $title;
     }
@@ -39,7 +41,7 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
             ->export()
             ->toDisk(VideoDiskEnum::DISK->value)
             ->inFormat($lowBitrateFormat)
-            ->save( VideoDiskEnum::TV_SHOWS->value . $this->title . '/' . $this->video->uuid . '.mp4');
+            ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '.mp4');
         \Log::info('video converted into mp4 successfully');
         $this->video->update([
             'converted_for_downloading_at' => Carbon::now()
