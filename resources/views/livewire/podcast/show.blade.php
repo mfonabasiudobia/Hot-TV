@@ -6,7 +6,7 @@
         <section>
             <section class="w-full max-h-screen relative">
                 <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"
-                    src="{{ route('video-stream', ['podcast', $podcast->id]) }}"></video>
+                    src="{{ $podcast->video ? Storage::disk(\App\Enums\VideoDiskEnum::DISK->value)->url( \App\Enums\VideoDiskEnum::PODCASTS->value . $podcast->slug . '/' . $podcast->video->uuid . '.mp4') : route('video-stream', ['podcast', $podcast->id]) }}"></video>
 
                 <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
                     <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
