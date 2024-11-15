@@ -69,13 +69,13 @@
 
 
         <ul class="hidden xl:flex items-center space-x-5">
-            <li title="Cart">
+            <!-- <li title="Cart">
                 <a href="{{ route('cart.home') }}" class="hover:text-danger text-lg relative">
                     <i class="fas fa-shopping-cart"></i>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block absolute -top-1 -right-1">{{ Cart::instance('product')->count() }}</span>
                 </a>
-            </li>
+            </li> -->
             @if(!is_user_logged_in())
             <li>
                 <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">Sign in</a>
@@ -86,11 +86,11 @@
             </li>
             @else
 
-            <li title="Notification">
+            <!-- <li title="Notification">
                 <a href="#" class="hover:text-danger text-lg">
                     <i class="fa fa-solid fa-bell"></i>
                 </a>
-            </li>
+            </li> -->
 
             <li class="relative group">
                 <a href="javascript:void(0)" class="hover:text-danger border flex items-center space-x-2 rounded-xl p-3">

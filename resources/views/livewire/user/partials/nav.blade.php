@@ -34,7 +34,7 @@
 {{--                    Favourites--}}
 {{--                </a>--}}
 {{--            </li>--}}
-            <li>
+            <!-- <li>
                 <a href="#" wire:click.prevent="setNav('wishlist')"
                     class="flex items-center relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'wishlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
                     <span>Wishlist</span>
@@ -44,7 +44,7 @@
                         {{ \Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->count() }}
                     </span>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="#" wire:click.prevent="setNav('watchlist')"
                     class="flex items-center relative space-x-1 py-3 transition-all hover:text-danger {{ $currentNav === 'watchlist' ? 'border-b-2 border-danger font-semibold' : '' }}">
