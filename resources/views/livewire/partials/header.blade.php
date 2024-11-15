@@ -45,9 +45,9 @@
                     <li>
                         <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="{{ route('podcast.home') }}" class="px-4 py-2 block hover:text-danger">Podcast</a>
                     </li>
@@ -246,9 +246,9 @@
                         <li>
                             <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity
                                 shoutouts</a>

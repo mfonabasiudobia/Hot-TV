@@ -16,7 +16,7 @@
                     @endif
                     @if(!(!is_null($user) && $user->subscription))
                         <div class="p-3 mb-2 bg-danger text-white">
-                            You need to subscribe in order to watch this episode
+                            You need to subscribe to continue watching this show <a href="/pricing" class="underline"> Subscribe Now </a>
                         </div>
                     @endif
                     <video
@@ -265,7 +265,9 @@
 
          document.addEventListener('DOMContentLoaded', () => {
              const player = new Plyr('#player', {
-                 autoplay: true, // Autoplay is initially set to false
+                settings: ['captions', 'quality', 'speed', 'loop'],
+                
+                autoplay: true, // Autoplay is initially set to false
              });
          });
 
