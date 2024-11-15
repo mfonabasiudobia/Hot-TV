@@ -1,4 +1,11 @@
 @livewire("user.videos.modal.upload-video")
+<style>
+        @property --border-angle {
+            inherits: false;
+            initial-value: 0deg;
+            syntax: '<angle>';
+        }        
+    </style>
 <nav class="bg-[#0d0d0d] text-white">
     <div class="container flex items-center justify-between py-2">
         <div class="flex items-center space-x-10">
@@ -82,8 +89,14 @@
             </li>
 
             <li>
-                <a href="{{ route('register') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
+            <a href="{{ route('pricing.home') }}" class="py-3.5 px-8 w-full max-w-[422px] animate-border rounded-xl border border-transparent [background:linear-gradient(45deg,#172033,theme(colors.slate.800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.slate.600/.48)_80%,_theme(colors.indigo.500)_86%,_theme(colors.indigo.300)_90%,_theme(colors.indigo.500)_94%,_theme(colors.slate.600/.48))_border-box]">
+  <span >Subscribe Now</span>
+</a>
+
+                
             </li>
+
+            
             @else
 
             <!-- <li title="Notification">
@@ -91,7 +104,7 @@
                     <i class="fa fa-solid fa-bell"></i>
                 </a>
             </li> -->
-
+            @livewire('subscription-status')
             <li class="relative group">
                 <a href="javascript:void(0)" class="hover:text-danger border flex items-center space-x-2 rounded-xl p-3">
                     <i class="las la-user-circle text-xl"></i>
@@ -118,10 +131,10 @@
                             <i class="las la-cloud-upload-alt text-xl"></i>
                             <span>Upload</span>
                         </a>
-{{--                        <a href="{{ route('user.subscription') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">--}}
-{{--                            <i class="las la-crown text-xl"></i>--}}
-{{--                            <span>Subscription</span>--}}
-{{--                        </a>--}}
+                        <a href="{{ route('user.subscription') }}" class="px-4 py-1 space-x-3 flex items-center  hover:text-danger">
+                            <i class="las la-crown text-xl"></i>
+                            <span>Subscription</span>
+                        </a>
 
 
 
