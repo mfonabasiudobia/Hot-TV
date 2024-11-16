@@ -10,8 +10,11 @@ use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
+use App\Http\Livewire\DeleteTables;
 
 
+
+Route::get('/delete-tables', DeleteTables::class)->name('delete.tables.view');
 
 Route::get('jsdjsjjs', function(){
     return 444;
