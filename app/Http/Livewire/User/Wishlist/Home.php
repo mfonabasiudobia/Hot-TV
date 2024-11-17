@@ -13,8 +13,8 @@ class Home extends BaseComponent
     
     public function render()
     {
-        $wishlists = Wishlist::where('customer_id', auth()->id())->paginate(12);
+        // $wishlists = Wishlist::where('customer_id', auth()->id())->paginate(12);
 
-        return view('livewire.user.wishlist.home', compact('wishlists'));
+        // return view('livewire.user.wishlist.home', compact('wishlists'));
     }
 }

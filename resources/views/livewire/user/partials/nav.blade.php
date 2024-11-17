@@ -41,7 +41,7 @@
 
                     <span
                         class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
-                        {{ \Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->count() }}
+                        {{-- \Botble\Ecommerce\Models\Wishlist::where('customer_id', auth()->id())->count() --}}
                     </span>
                 </a>
             </li> -->
