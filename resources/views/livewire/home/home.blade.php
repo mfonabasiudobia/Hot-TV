@@ -27,7 +27,7 @@
               aliqua.</p>
           </div>
     
-          <div class="flex items-center space-x-5">
+          <!-- <div class="flex items-center space-x-5">
             <a 
               href="{{ route('live-channel.show') }}"
               class="btn btn-danger btn-lg rounded-xl py-3 flex justify-between items-center space-x-5">
@@ -39,7 +39,7 @@
             <button class="btn border btn-lg rounded-xl py-3 hover:bg-danger hover:border-danger">
               Add to Watchlist
             </button>
-          </div>
+          </div> -->
         </section>
     
         <section class="order-1 md:order-2 relative">

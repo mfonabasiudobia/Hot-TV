@@ -56,7 +56,7 @@
                         <a href="{{ route('contact') }}">Contact</a>
                     </li>
                     <li>
-                        <a href="{{ route('merchandize.home') }}">Products</a>
+                        <!-- <a href="{{ route('merchandize.home') }}">Products</a> -->
                     </li>
                     <li>
                         <a href="{{ route('faqs') }}">FAQ</a>
@@ -92,7 +92,7 @@
                     <p class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
 
                     <div>
-                        <a href="#" class="btn btn-xl bg-white font-bold text-dark whitespace-nowrap">
+                        <a href="/pricing" class="btn btn-xl bg-white font-bold text-dark whitespace-nowrap">
                             Get Premium Access
                         </a>
                     </div>

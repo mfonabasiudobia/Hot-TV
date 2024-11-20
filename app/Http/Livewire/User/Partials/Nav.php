@@ -10,6 +10,30 @@ use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 class Nav extends Component
 {
 
+    public function show()
+{
+    $this->user = Auth::user();
+
+    if (request()->has('p')) {
+        $this->currentNav = request('p');
+    }
+
+    $order = SubscriptionOrder::where('user_id', $this->user->id)
+        ->where('status', 'paid')
+        ->first();
+
+    if ($order) {
+        $this->subscriptionPlan = $order->subscription->name;
+    } else {
+        $this->subscriptionPlan = 'Not subscribe';
+    }
+
+    return view('your.view.name', [
+        'subscriptionPlan' => $this->subscriptionPlan,
+    ]);
+}
+
+
     public $currentNav = 'wishlist';
     public $avatar = null;
     public $user;
@@ -64,4 +88,6 @@ class Nav extends Component
     {
         return view('livewire.user.partials.nav');
     }
+
+    
 }
