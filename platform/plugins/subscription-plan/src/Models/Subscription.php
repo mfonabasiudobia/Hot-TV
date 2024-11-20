@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 
 class Subscription extends BaseModel
@@ -20,6 +21,7 @@ class Subscription extends BaseModel
         'name',
         'price',
         'subscription_plan_id',
+        'paypal_subscription_id',
         'stripe_plan_id',
         'paypal_plan_id',
         'status'
@@ -48,10 +50,10 @@ class Subscription extends BaseModel
         );
     }
 
-
-
     public function order(): HasOne
     {
-        return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true);
+        $user = Auth::user();
+        return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true)->where('user_id', $user->id);
     }
+
 }

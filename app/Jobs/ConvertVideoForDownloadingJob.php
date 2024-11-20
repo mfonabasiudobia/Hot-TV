@@ -33,6 +33,10 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
     {
         $lowBitrateFormat = (new X264)->setKiloBitrate(500);
 
+        //$lowBitrateFormat = (new X264)->setKiloBitrate(500);
+        $midBitrateFormat = (new X264)->setKiloBitrate(1500);
+        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
+
         FFMpeg::fromDisk($this->video->disk)
             ->open($this->video->path)
             ->addFilter(function($filters) {
@@ -41,6 +45,8 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
             ->export()
             ->toDisk(VideoDiskEnum::DISK->value)
             ->inFormat($lowBitrateFormat)
+            ->inFormat($midBitrateFormat)
+            ->inFormat($highBitrateFormat)
             ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '.mp4');
         \Log::info('video converted into mp4 successfully');
         $this->video->update([

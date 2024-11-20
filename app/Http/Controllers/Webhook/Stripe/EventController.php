@@ -22,7 +22,7 @@ class EventController extends Controller
         Stripe::setApiKey(gs()->payment_stripe_secret);
 
         // This is your Stripe CLI webhook secret for testing your endpoint locally.
-        $endpoint_secret = config('webhook-client.signing_secret'); //env('WEBHOOK_CLIENT_SECRET');
+        $endpoint_secret = config('webhook-client.configs.0.signing_secret'); //env('WEBHOOK_CLIENT_SECRET');
 
         $payload = $request->getContent();
         $sig_header = $request->header('Stripe-Signature');

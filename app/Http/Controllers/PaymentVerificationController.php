@@ -18,6 +18,7 @@ class PaymentVerificationController extends Controller
 {
     public function __invoke(Request $request)
     {
+
         $sessionId = $request->get('session_id');
 
 

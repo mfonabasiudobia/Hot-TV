@@ -23,11 +23,9 @@ use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 
 class Checkout extends BaseController
 {
-
-
-
     public function checkoutSubmit(RegistrationRequest $request)
     {
+
 
         $firstName = $request->input('first_name');
         $lastName = $request->input('last_name');
@@ -123,6 +121,7 @@ class Checkout extends BaseController
             return redirect()->route("login");
 
         } catch(\Exception $e) {
+
             throw new NotFoundHttpException();
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\UpgratePlan;
+namespace App\Http\Controllers\UpgradePlan;
 
 use App\Http\Controllers\Controller;
 use Botble\SubscriptionPlan\Models\Subscription;
@@ -15,7 +15,7 @@ class StripeController extends Controller
     {
         Stripe::setApiKey(gs()->payment_stripe_secret);
         $order = $subscription->order;
-        $subscriptionId = $subscription->stripe_subscription_id;
+        $subscriptionId = $order->stripe_subscription_id;
         $newStripePriceId = $subscription->price;
         $subscription = SubscriptionStripe::retrieve($subscriptionId);
 

@@ -3,8 +3,8 @@
 
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\PaypalPaymentVerificationController;
-use App\Http\Controllers\UpgratePlan\PaypalController;
-use App\Http\Controllers\UpgratePlan\StripeController;
+use App\Http\Controllers\UpgradePlan\PaypalController;
+use App\Http\Controllers\UpgradePlan\StripeController;
 use App\Http\Controllers\VideoStreamController;
 use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
