@@ -64,6 +64,9 @@ class Login extends BaseComponent
 
     public function logout(){
         auth()->logout();
+
+        request()->session()->invalidate();
+
         if(!auth()->check()) return redirect()->route('login');
     }
 

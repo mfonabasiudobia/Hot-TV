@@ -17,9 +17,14 @@ class Home extends Component
     public function mount()
     {
         if(Auth::check()) {
-
+            
             $this->user = Auth::user();
         }
+
+        if (session()->has('success')) {
+            toast()->success(session()->get('success'))->push();
+        }
+
         $this->plans = SubscriptionPlan::whereStatus('published')->get();
 
     }

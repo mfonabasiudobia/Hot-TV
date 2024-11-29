@@ -62,7 +62,11 @@ class User extends AuthenticatableBaseModel
     public function getFullnameAttribute(){
         return "$this->first_name $this->last_name";
     }
-
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+    
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(

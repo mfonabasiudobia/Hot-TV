@@ -47,7 +47,7 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
             ->inFormat($lowBitrateFormat)
             ->inFormat($midBitrateFormat)
             ->inFormat($highBitrateFormat)
-            ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '.mp4');
+            ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '_download.mp4');
         \Log::info('video converted into mp4 successfully');
         $this->video->update([
             'converted_for_downloading_at' => Carbon::now()

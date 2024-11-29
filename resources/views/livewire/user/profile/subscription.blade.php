@@ -13,7 +13,7 @@
                         <strong>{{ $order->subscription->name }} </strong>
                     </div>
 
-                    <button class="font-bold" x-on:click="$dispatch('trigger-file-modal')">Upgrade</button>
+                    <a href="{{ route('pricing.home') }}" class="font-bold">Upgrade</a>
                 </div>
 
                 <div class="flex justify-between items-center py-5 border-b border-secondary">

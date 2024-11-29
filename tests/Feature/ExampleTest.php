@@ -12,7 +12,7 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        $response = $this->get('https://8000-idx-hot-tv-sikandar-1732557707291.cluster-e3wv6awer5h7kvayyfoein2u4a.cloudworkstations.dev/livewire/message/sendmail');
 
         $response->assertStatus(200);
     }

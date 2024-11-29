@@ -41,3 +41,5 @@ Route::group(['prefix' => 'v1/subscribe', 'as' => 'v1.subscribe.'], function() {
     Route::get('paypal-checkout-success', PaypalCheckoutController::class)->name('paypal-checkout-success');
 
 });
+
+Route::get('sendmail', "App\Http\Controllers\Api\V1\AuthController@sendEmail");

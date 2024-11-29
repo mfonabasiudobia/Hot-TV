@@ -46,13 +46,14 @@ class Create extends BaseComponent
             ];
 
             $podcast = throw_unless(PodcastRepository::createPodcast($data), "Please try again");
-
+            $uuid = Str::uuid();
+            $filename = $uuid . '.' . $this->recorded_video->getClientOriginalExtension();
             $video = $podcast->video()->create([
-                'uuid' => Str::uuid(),
+                'uuid' => $uuid,
                 'title' => $this->title,
                 'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
-                'path' => $this->recorded_video->store(VideoDiskEnum::PODCASTS->value . $podcast->slug, VideoDiskEnum::DISK->value),
+                'path' => $this->recorded_video->storeAs(VideoDiskEnum::PODCASTS->value . $podcast->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
 
             dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::PODCASTS->value, $video, $podcast->slug));

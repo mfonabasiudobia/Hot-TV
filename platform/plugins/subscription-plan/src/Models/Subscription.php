@@ -55,5 +55,6 @@ class Subscription extends BaseModel
         $user = Auth::user();
         return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true)->where('user_id', $user->id);
     }
+    
 
 }

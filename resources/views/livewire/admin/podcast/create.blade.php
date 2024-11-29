@@ -21,7 +21,8 @@
                     <div class="form-group">
                         <label>Description</label>
                         <div wire:ignore>
-                            <x-text-editor model="description" placeholder="Description" class="text-dark" />
+                            <!-- <x-text-editor model="description" placeholder="Description" class="text-dark" /> -->
+                            <textarea class="form-control" placeholder="Meta Description" wire:model="description"></textarea>
                         </div>
                         @error('description') <span class="error">{{ $message }}</span> @endError
                     </div>

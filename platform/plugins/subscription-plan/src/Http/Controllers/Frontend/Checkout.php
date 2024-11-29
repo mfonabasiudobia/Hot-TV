@@ -109,6 +109,7 @@ class Checkout extends BaseController
 
             if($order->status == OrderStatusEnum::PENDING->value) {
                 $order->status = OrderStatusEnum::PAID->value;
+                $order->stripe_subscription_id = $session->subscription;
                 $order->save();
             }
 

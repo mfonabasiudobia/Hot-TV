@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\AuthRepository;
+use App\Mail\OtpNotification;
+use App\Models\User;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -161,5 +164,13 @@ class AuthController extends Controller
             }
     }
 
+    public function sendEmail() 
+    {
+        $user = User::first();
+        $otp = 'asdfhjlksahfjklhfsjdkf';
+
+        Mail::to('uniqueuser@yopmail.com')->send(new OtpNotification($user, $otp));
+        // throw_unless($otp = AuthRepository::sendOtp('uniqueuser@yopmail.com'), "Failed to send OTP");
+    }
 
 }

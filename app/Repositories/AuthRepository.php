@@ -196,7 +196,7 @@ class AuthRepository {
                 DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
                 if(request()->is('api/*')) {
-                    //Mail::to($user->email)->send(new OtpNotification($user, $otp));
+                    // Mail::to($user->email)->send(new OtpNotification($user, $otp));
 
                     DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $otp, 'created_at' => now() ]);
                  }else{

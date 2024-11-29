@@ -13,7 +13,7 @@
                 <div class="form-group md:col-span-2">
                     <label>Video Description</label>
                    <div wire:ignore>
-                        <x-text-editor model="description" placeholder="Video Description" class="text-dark" id="description" />
+                        <x-text-editor model="description" placeholder="Video Description" class="text-dark" id="description" default="Description"/>
                     </div>
                     @error('description') <span class="error">{{ $message }}</span> @endError
                 </div>
@@ -172,14 +172,14 @@
 @push('script')
 <script>
 
-    window.addEventListener('added-tv-episode', function(event){
-        // Get the TinyMCE editor instance
-        var editor = tinymce.get('description');
+    // window.addEventListener('added-tv-episode', function(event){
+    //     // Get the TinyMCE editor instance
+    //     var editor = tinymce.get('description');
         
-        if (editor) {
-        editor.setContent(event.detail);
-        }
-    })
+    //     if (editor) {
+    //     editor.setContent(event.detail);
+    //     }
+    // })
 
     window.addEventListener("update-time-range", function (event) {
 

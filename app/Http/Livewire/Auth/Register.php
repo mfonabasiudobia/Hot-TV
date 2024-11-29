@@ -42,13 +42,11 @@ class Register extends BaseComponent
         }
 
         $this->plans = SubscriptionPlan::whereStatus('published')->get();
-        $this->paymentMethod = 'paypal';
+        $this->paymentMethod = 'stripe';
 
 
     }
     public function submit(){
-
-
 
         if($this->paymentMethod == 'stripe') {
             $stripePlanId = $this->subscription->stripe_plan_id;
@@ -173,19 +171,19 @@ class Register extends BaseComponent
 
     public function next(): void
     {
-
         if(auth()->check()) {
             $this->show = 'checkout';
         } else {
             $validated = $this->validate([
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'username' => 'required|unique:users,username',
+                'username' => 'required|unique:users,username|alpha_num',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|confirmed|min:6'
             ]);
 
             if($validated) {
+                
                 if(!$this->subscription) {
                     $this->show = 'plans';
                 } else {
