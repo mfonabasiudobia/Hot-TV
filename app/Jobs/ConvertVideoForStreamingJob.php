@@ -60,9 +60,9 @@ class ConvertVideoForStreamingJob implements ShouldQueue
                 ->addFormat($hdBitrateFormat1080, function($media) {
                     $media->scale(1920, 1080); // 1080p
                 })
-                ->onProgress(function ($progress) {
-                    event(new JobProgress($this->video->id, $progress['percentage'], $this->totalSteps));
-                })
+                // ->onProgress(function ($progress) {
+                //     event(new JobProgress($this->video->id, $progress['percentage'], $this->totalSteps));
+                // })
                 ->save($this->basePath . $this->title . '/' . $this->video->uuid . '.m3u8');
 
             \Log::info('video converted into m3u8 successfully');
