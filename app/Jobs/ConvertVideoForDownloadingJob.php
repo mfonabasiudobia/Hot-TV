@@ -31,26 +31,30 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
 
     public function handle(): void
     {
-        $lowBitrateFormat = (new X264)->setKiloBitrate(500);
+        try {
+            $lowBitrateFormat = (new X264)->setKiloBitrate(500);
 
-        //$lowBitrateFormat = (new X264)->setKiloBitrate(500);
-        $midBitrateFormat = (new X264)->setKiloBitrate(1500);
-        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
+            //$lowBitrateFormat = (new X264)->setKiloBitrate(500);
+            $midBitrateFormat = (new X264)->setKiloBitrate(1500);
+            $highBitrateFormat = (new X264)->setKiloBitrate(3000);
 
-        FFMpeg::fromDisk($this->video->disk)
-            ->open($this->video->path)
-            ->addFilter(function($filters) {
-                $filters->resize(new Dimension(960, 540));
-            })
-            ->export()
-            ->toDisk(VideoDiskEnum::DISK->value)
-            ->inFormat($lowBitrateFormat)
-            ->inFormat($midBitrateFormat)
-            ->inFormat($highBitrateFormat)
-            ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '_download.mp4');
-        \Log::info('video converted into mp4 successfully');
-        $this->video->update([
-            'converted_for_downloading_at' => Carbon::now()
-        ]);
+            FFMpeg::fromDisk($this->video->disk)
+                ->open($this->video->path)
+                ->addFilter(function($filters) {
+                    $filters->resize(new Dimension(960, 540));
+                })
+                ->export()
+                ->toDisk(VideoDiskEnum::DISK->value)
+                ->inFormat($lowBitrateFormat)
+                ->inFormat($midBitrateFormat)
+                ->inFormat($highBitrateFormat)
+                ->save( $this->basePath . $this->title . '/' . $this->video->uuid . '_download.mp4');
+            \Log::info('video converted into mp4 successfully');
+            $this->video->update([
+                'converted_for_downloading_at' => Carbon::now()
+            ]);   
+        } catch (\Throwable $th) {
+            \Log::error('Exception occurred: ' . $e->getMessage(), ['exception' => $e]);
+        }
     }
 }
