@@ -49,7 +49,7 @@ class AuthRepository {
 
         //Mail::to($user->email)->send(new WelcomeNotification($user));
 
-        $user->roles()->attach([2]); //Assigning User to a Role of Streamer
+        $user->roles()->attach([4]); //Assigning User to a Role of Streamer
 
         return $user->refresh();
     }

@@ -37,12 +37,13 @@ class LoginController extends Controller
 
         if(Auth::attempt($credentials, true)) {
             $user = Auth::user();
-            if(!$user->inRole(RoleEnum::SUBSCRIBER->value)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
-                ], 422);
-            }
+            
+            // if(!$user->inRole(RoleEnum::SUBSCRIBER->value)) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
+            //     ], 422);
+            // }
 
             if(!$user->hasDevice($device_id)) {
                 $user->devices()->create([

@@ -54,7 +54,7 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
                 'converted_for_downloading_at' => Carbon::now()
             ]);   
         } catch (\Throwable $th) {
-            \Log::error('Exception occurred: ' . $e->getMessage(), ['exception' => $e]);
+            \Log::error('Exception occurred: ' . $th->getMessage(), ['exception' => $th]);
         }
     }
 }
