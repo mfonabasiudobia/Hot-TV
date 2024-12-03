@@ -18,12 +18,13 @@
 
 @push('script')
 <script>
-    // document.addEventListener('livewire:load', function () {
-    //     const jobId = @json($jobId);
+    document.addEventListener('livewire:load', function () {
+        const jobId = @json($jobId);
 
-    //     Echo.private(`video-processing.${jobId}`)
-    //         .listen('.job-progress', (e) => {
-    //             Livewire.emit('jobProgressUpdated', e.percentage);
-    //         });
-    // });
+        Echo.private(`video-processing.${jobId}`)
+            .listen('.job-progress', (e) => {
+                Livewire.emit('jobProgressUpdated', e.percentage);
+                alert('notification recieved')
+            });
+    });
 </script>

@@ -16,7 +16,7 @@ class JobProgress extends Component
     {
         $this->progress = $percentage;
         $this->jobId = $jobId;
-        $this->showToast(true);
+        $this->showToast = true;
     }
 
     public function render()

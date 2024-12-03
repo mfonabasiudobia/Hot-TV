@@ -50,7 +50,9 @@ class ConvertVideoForStreamingJob implements ShouldQueue
             ->open($this->video->path)
             ->exportForHLS()
             ->toDisk('s3'); // Replace with your actual disk
-
+            toast()
+                ->info('Job With ID' . $this->job->getJobId() . 'In Progress')
+                ->push();
             foreach ($formats as $index => $config) {
                 $hlsExporter->addFormat($config['format'], function ($media) use ($config) {
                     $media->scale($config['scale'][0], $config['scale'][1]);
@@ -101,7 +103,7 @@ class ConvertVideoForStreamingJob implements ShouldQueue
             \Log::info('video converted into m3u8 successfully');
             $this->video->update([
                 'converted_for_streaming_at' => Carbon::now()
-            ]);   
+            ]);
         } catch (\Throwable $th) {
             \Log::error('Exception occurred: ' . $th->getMessage(), ['exception' => $th]);
         }
