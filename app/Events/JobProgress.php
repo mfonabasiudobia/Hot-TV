@@ -15,13 +15,15 @@ class JobProgress implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $title;
     public $jobId;
     public $progress;
 
-    public function __construct($jobId, $progress)
+    public function __construct($jobId, $progress, $title)
     {
         $this->jobId = $jobId;
         $this->progress = $progress;
+        $this->title = $title;
     }
 
     /**
@@ -31,9 +33,7 @@ class JobProgress implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        \Log::info("Broadcasting Event: {$this->jobId}");
-
-        return new PrivateChannel('job-progress.' . $this->jobId);
+        return new PrivateChannel('job-progress.1');
     }
 
     public function broadcastAs()
