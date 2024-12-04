@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\VideoDiskEnum;
 use App\Models\Video;
+use App\Events\JobProgress;
 use Carbon\Carbon;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Format\Video\X264;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\Storage;
 
 class ConvertVideoForDownloadingJob implements ShouldQueue
 {
@@ -33,22 +35,37 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
     {
         try {
             $this->updateProgress(0);
+            $fullPath = Storage::disk($this->video->disk)->url($this->video->path);
+
+            $videoStream = FFMpeg::fromDisk($this->video->disk)
+                ->open($this->video->path)
+                ->getFFProbe()
+                ->streams($fullPath)
+                ->videos()
+                ->first();
+
+            $originalWidth = $videoStream->get('width');
+            $originalHeight = $videoStream->get('height');
 
             $formats = [
-                ['format' => (new X264)->setKiloBitrate(500), 'scale' => [960, 540]],
-                ['format' => (new X264)->setKiloBitrate(1500), 'scale' => [1280, 720]],
-                ['format' => (new X264)->setKiloBitrate(3000), 'scale' => [1920, 1080]],
+                ['format' => (new X264)->setKiloBitrate(250), 'scale' => [366, 166]],
+                ['format' => (new X264)->setKiloBitrate(400), 'scale' => [480, 270]],
+                ['format' => (new X264)->setKiloBitrate(800), 'scale' => [640, 360]],
+                ['format' => (new X264)->setKiloBitrate(1200), 'scale' => [854, 480]],
+                ['format' => (new X264)->setKiloBitrate(2000), 'scale' => [1280, 720]],
+                ['format' => (new X264)->setKiloBitrate(4000), 'scale' => [1920, 1080]],
             ];
+
+            $filteredFormats = array_filter($formats, function ($config) use ($originalWidth, $originalHeight) {
+                return $config['scale'][0] <= $originalWidth && $config['scale'][1] <= $originalHeight;
+            });
 
             $exporter = FFMpeg::fromDisk($this->video->disk)
                 ->open($this->video->path)
-                ->addFilter(function($filters) {
-                    $filters->resize(new Dimension(960, 540));
-                })
                 ->export()
                 ->toDisk(VideoDiskEnum::DISK->value);
 
-            foreach ($formats as $index => $config) {
+            foreach ($filteredFormats as $index => $config) {
                 $exporter->inFormat($config['format'])
                     ->addFilter(function($filters) use ($config) {
                         $filters->resize(new Dimension($config['scale'][0], $config['scale'][1]));
