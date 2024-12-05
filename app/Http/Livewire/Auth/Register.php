@@ -47,7 +47,6 @@ class Register extends BaseComponent
 
     }
     public function submit(){
-
         if($this->paymentMethod == 'stripe') {
             $stripePlanId = $this->subscription->stripe_plan_id;
 
@@ -116,11 +115,11 @@ class Register extends BaseComponent
 
 
             if($this->subscription->plan->trail) {
-
                 $paypalPlanId = $this->subscription->paypal_plan_id[str_replace(' ', '_', $this->subscription->plan->trail_period_paypal)];
                 $subscriptionStatus = OrderStatusEnum::TRAIL->value;
             } else {
-                $paypalPlanId = $this->subscription->paypal_plan_id['without_trail'];
+                // $paypalPlanId = $this->subscription->paypal_plan_id['without_trail'];
+                $paypalPlanId = $this->subscription->paypal_plan_id;
                 $subscriptionStatus = OrderStatusEnum::PENDING->value;
 
             }
@@ -183,7 +182,7 @@ class Register extends BaseComponent
             ]);
 
             if($validated) {
-                
+
                 if(!$this->subscription) {
                     $this->show = 'plans';
                 } else {
