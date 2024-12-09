@@ -14,6 +14,8 @@ use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Checkout\Session;
 use Stripe\Customer;
 use Stripe\Stripe;
+use Stripe\Price;
+use Stripe\Product;
 
 class Register extends BaseComponent
 {
@@ -48,10 +50,23 @@ class Register extends BaseComponent
     }
     public function submit(){
         if($this->paymentMethod == 'stripe') {
-            $stripePlanId = $this->subscription->stripe_plan_id;
-
             Stripe::setApiKey(gs()->payment_stripe_secret);
 
+            $stripePlanId = $this->subscription->stripe_plan_id;
+
+            try {
+                $price = Price::retrieve($stripePlanId);
+                if(!$price) {
+                    dd('chcking it');
+                }
+            } catch (InvalidRequestException $e) {
+                $product = $this->getOrCreateProduct($this->subscription->name);
+                dd($product);
+                $price = $this->createPrice($product->id, $this->subscription->price, 'usd');
+
+                $this->subscription->stripe_plan_id = $price->id;
+                $this->subscription->save();
+            }
 
             $customer = Customer::create([
                 'email' => $this->email,
@@ -103,6 +118,17 @@ class Register extends BaseComponent
             $token = $provider->getAccessToken();
             $provider->setAccessToken($token);
 
+            try {
+                $paypalPlan = $this->getPayPalPlan($this->subscription->paypal_plan_id);
+            } catch (Exception $e) {
+                $product = $this->getOrCreatePayPalProduct($this->subscription->name);
+                $paypalPlan = $this->createPayPalPlan($product['id'], $this->subscription->price);
+            
+                // Update subscription with new PayPal plan ID
+                $this->subscription->paypal_plan_id = $paypalPlan['id'];
+                $this->subscription->save();
+            }
+
             $user = AuthRepository::register([
                 'username' => $this->username,
                 'email' => $this->email,
@@ -121,8 +147,8 @@ class Register extends BaseComponent
                 // $paypalPlanId = $this->subscription->paypal_plan_id['without_trail'];
                 $paypalPlanId = $this->subscription->paypal_plan_id;
                 $subscriptionStatus = OrderStatusEnum::PENDING->value;
-
             }
+
             $subscription = $provider->createSubscription([
                 'plan_id' => $paypalPlanId,
                 'subscriber' => [
@@ -210,5 +236,109 @@ class Register extends BaseComponent
     public function render()
     {
         return view('livewire.auth.register');
+    }
+
+    private function getOrCreateProduct($name)
+    {
+        $products = Product::all();
+        foreach ($products->data as $existingProduct) {
+            if ($existingProduct->name === $name) {
+                return $existingProduct;
+            }
+        }
+
+        return Product::create([
+            'name' => $name,
+            'active' => true,
+        ]);
+    }
+    
+    private function getPayPalPlan(string $paypalPlanId): array
+    {
+        $provider = $this->getPayPalProvider();
+        return $provider->showPlanDetails($paypalPlanId);
+    }
+
+    private function getPayPalProvider()
+    {
+        $provider = new PayPalClient([]);
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
+
+        return $provider;
+    }
+
+    private function getOrCreateProductPaypal($name)
+    {
+        $provider = $this->getPayPalProvider();
+
+        $products = $provider->getProducts();
+
+        foreach ($products->items as $existingProduct) {
+            if ($existingProduct->name === $name) {
+                return $existingProduct;
+            }
+        }
+        $paypalProduct = $provider->createProduct([
+            'name' => $request->input('name'),
+            'description' => $request->input('name'),
+            'type' => 'SERVICE',
+            'category' =>   'SOFTWARE'
+        ]);
+
+        $paypalProductId = $paypalProduct['id'];
+
+        return $paypalProduct;
+    }
+
+    private function getOrCreatePaypalPlan($name, $amount, $paypalProductId)
+    {
+        $paypalPlan = $provider->createPlan([
+            'product_id' => $paypalProductId,
+            'name' => $name,
+            'description' => $name,
+            'billing_cycles' => [
+                [
+                    'frequency' => [
+                        'interval_unit' => $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR',
+                        'interval_count' => 1,
+                    ],
+                    'tenure_type' => 'REGULAR',
+                    'sequence' => 1,
+                    'total_cycles' => 0,
+                    'pricing_scheme' => [
+                        'fixed_price' => [
+                            'value' => $amount,
+                            'currency_code' => 'USD'
+                        ],
+                    ],
+                ],
+            ],
+            'payment_preferences' => [
+                'auto_bill_outstanding' => true,
+                'setup_fee' => [
+                    'value' => 0,
+                    'currency_code' => 'USD'
+                ],
+                'setup_fee_failure_action' => 'CONTINUE',
+                'payment_failure_threshold' => 3
+            ],
+        ]);
+
+        return $paypalPlan;
+    }
+
+    private function createPrice($productId, $amount, $currency)
+    {
+        $interval = $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR';
+
+        return Price::create([
+            'unit_amount' => $amount,
+            'currency' => $currency,
+            'recurring' => [
+                'interval' => $interval,
+            ],
+            'product' => $productId,
+        ]);
     }
 }

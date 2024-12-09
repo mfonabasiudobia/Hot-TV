@@ -17,6 +17,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Botble\SubscriptionPlan\Models\Subscription;
 
 class PaymentController extends Controller
 {
@@ -94,6 +95,20 @@ class PaymentController extends Controller
     {
         $type = $request->input('type');
         $data = $request->except(['_token', 'type']);
+        
+        if($type === 'stripe' && array_key_exists('payment_stripe_client_id', $data)) {
+            // delete all stripe products and prices
+            if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_stripe_client_id') !== $data['payment_stripe_client_id']) {
+                
+            }
+            $subscriptions = Subscription::with('plan')->get();
+
+            dd($subscriptions);
+            // loop throug all subscription plans 
+            // create a new product and price for reach plan 
+            // attach created price ids to subsciption plans
+        }
+
         foreach ($data as $settingKey => $settingValue) {
             $settingStore
                 ->set($settingKey, $settingValue);
