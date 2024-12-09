@@ -128,12 +128,90 @@ class SubscriptionsController extends BaseController
 
     public function update(Subscription $subscriptions, SubscritionsRequest $request, BaseHttpResponse $response)
     {
+        $provider = new PayPalClient([]);
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
+
         $subscriptions->fill($request->input());
+
+        $price = Price::retrieve($$subscriptions->stripe_plan_id);
+        $product = Product::retrieve($price->product);
+
+        $planDetails = $provider->showPlanDetails($subscription->paypal_plan_id);
+        $paypalProductId = $planDetails['product_id'];
+
+        if($subscriptions->isDirty(['name'])) {
+            $product->update(['name' => $request->input('name')]);
+
+            $provider->updateProduct($paypalProductId, [
+                [
+                    'op' => 'replace',
+                    'path' => '/name',
+                    'value' => $request->input('name'),
+                ],
+                [
+                    'op' => 'replace',
+                    'path' => '/description',
+                    'value' => $request->input('name'),
+                ],
+            ]);
+        }
+
+        if($subscriptions->isDirty(['price'])) {
+            $price->delete();
+            $amount = $request->input('price');
+
+            $price = Price::create([
+                'currency' => 'usd',
+                'unit_amount' => $amount * 100,
+                'recurring' =>[ 'interval' =>  $request->input('subscription_plan_id') == 1 ? 'month' : 'year'],
+                'product' => $product->id
+            ]);
+
+            $provider->updatePlan($subscription->paypal_plan_id, [
+                'op' => 'replace',
+                'path' => '/status',
+                'value' => 'INACTIVE',
+            ]);
+
+            $paypalPlan = $provider->createPlan([
+                'product_id' => $paypalProductId,
+                'name' => $request->input('name'),
+                'description' => $request->input('name'),
+                'billing_cycles' => [
+                    [
+                        'frequency' => [
+                            'interval_unit' => $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR',
+                            'interval_count' => 1,
+                        ],
+                        'tenure_type' => 'REGULAR',
+                        'sequence' => 1,
+                        'total_cycles' => 0,
+                        'pricing_scheme' => [
+                            'fixed_price' => [
+                                'value' => $amount,
+                                'currency_code' => 'USD'
+                            ],
+                        ],
+                    ],
+                ],
+                'payment_preferences' => [
+                    'auto_bill_outstanding' => true,
+                    'setup_fee' => [
+                        'value' => 0,
+                        'currency_code' => 'USD'
+                    ],
+                    'setup_fee_failure_action' => 'CONTINUE',
+                    'payment_failure_threshold' => 3
+                ],
+            ]);
+
+            $subscription->stripe_plan_id = $price->id;
+        }
 
         $subscriptions->save();
         $subscriptions->features()->detach();
         $subscriptions->features()->attach($request->input('features'));
-
 
         event(new UpdatedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscriptions));
 
@@ -146,6 +224,10 @@ class SubscriptionsController extends BaseController
     {
         try {
             $subscriptions->delete();
+
+            $this->deleteStripeProduct($subscriptions);
+            $this->deletePaypalProduct($subscription);
+
             event(new DeletedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscriptions));
             return $response->setMessage(trans('core/base::notices.delete_success_message'));
         } catch (Exception $exception) {
@@ -167,9 +249,42 @@ class SubscriptionsController extends BaseController
         foreach ($ids as $id) {
             $subscription = Subscription::query()->findOrFail($id);
             $subscription->delete();
+
+            $this->deleteStripeProduct($subscription);
+            $this->deletePaypalProduct($subscription);
+
             event(new DeletedContentEvent(SUBSCRIPTIONS_MODULE_SCREEN_NAME, $request, $subscription));
         }
 
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
+    }
+
+    private function deleteStripeProduct($subscription)
+    {
+        $price = Price::retrieve($subscription->stripe_plan_id);
+        $product = Product::retrieve($price->product);
+        $product->delete();
+    }
+
+    private function deletePaypalProduct($subscription)
+    {
+        $provider = new PayPalClient([]);
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
+
+        $planDetails = $provider->showPlanDetails($subscription->paypal_plan_id);
+        $paypalProductId = $planDetails['product_id'];
+
+        $provider->updatePlan($subscription->paypal_plan_id, [
+            'op' => 'replace',
+            'path' => '/status',
+            'value' => 'INACTIVE'
+        ]);
+
+        $provider->updateProduct($paypalProductId, [
+            'op' => 'replace',
+            'path' => '/status',
+            'value' => 'ARCHIVED'
+        ]);
     }
 }

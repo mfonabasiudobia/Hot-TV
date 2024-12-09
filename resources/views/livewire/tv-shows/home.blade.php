@@ -43,6 +43,9 @@
                                 <span>{{ convert_seconds_to_time($show->episodes()->sum('duration')) }}</span>
                             </div>
                         </div>
+                        @if (\Carbon\Carbon::parse($show->release_date)->isFuture())
+                            <span class="rounded-b-lg bg-danger py-1 px-5 absolute left-1/2 transform -translate-x-1/2 top-1/2 whitespace-nowrap"> Coming Soon... </span>
+                        @endif
 
                         <span class="rounded-b-lg bg-danger py-1 px-5 absolute left-1/2 transform -translate-x-1/2 top-0 whitespace-nowrap">{{ $show->categories[0]->name }}</span>
                     </a>
