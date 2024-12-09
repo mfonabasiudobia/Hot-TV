@@ -55,7 +55,7 @@ class Edit extends BaseComponent
             'thumbnail' => 'required',
             'categories_id' => 'required|array',
             'casts_id' => 'required|array',
-            'trailer' => 'required',
+            // 'trailer' => 'required',
             'tags' => 'array',
             'meta_title' => 'nullable',
             'meta_description' => 'nullable',

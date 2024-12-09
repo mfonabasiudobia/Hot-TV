@@ -77,7 +77,7 @@ final class Home extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return ['tvShow'];
     }
 
     /*
@@ -98,6 +98,9 @@ final class Home extends PowerGridComponent
             ->addColumn('title')
             ->addColumn('created_at_formatted', function(Episode $model){
                 return $model->createdAt();
+            })
+            ->addColumn('show', function(Episode $model){
+                return $model->tvShow->title;
             })
             ->addColumn('season_number_formatted', function(Episode $model){
 
@@ -136,6 +139,9 @@ final class Home extends PowerGridComponent
             Column::make('Season', 'season_number_formatted')
                 ->searchable()
                 ->sortable(),
+
+            Column::make('Show', 'show'),
+
 
             Column::make('Episode', 'episode_number')
                 ->searchable()

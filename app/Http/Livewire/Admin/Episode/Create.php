@@ -8,6 +8,7 @@ use App\Jobs\ConvertVideoForDownloadingJob;
 use App\Jobs\ConvertVideoForStreamingJob;
 use App\Repositories\SeasonRepository;
 use App\Repositories\EpisodeRepository;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Illuminate\Support\Str;
 
 class Create extends BaseComponent
@@ -42,7 +43,7 @@ class Create extends BaseComponent
             'description' => 'required',
             'season_id' => 'required',
             'episode_number' => 'required|numeric|min:0',
-            'duration' => 'required|numeric|min:0',
+            // 'duration' => 'required|numeric|min:0',
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'recorded_video' => 'required',
@@ -64,7 +65,6 @@ class Create extends BaseComponent
                 'tv_show_id' => $this->tv_show_id,
                 'season_id' => $this->season_id,
                 'episode_number' => $this->episode_number,
-                'duration' => $this->duration
             ];
 
             $episode = throw_unless(EpisodeRepository::createEpisode($data), "Please try again");
@@ -75,6 +75,11 @@ class Create extends BaseComponent
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
                 'path' => $this->recorded_video->store(VideoDiskEnum::TV_SHOWS->value . $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug, VideoDiskEnum::DISK->value),
             ]);
+
+            $ffmpegVideo = FFMpeg::fromDisk($video->disk)->open($video->path);
+            $durationInSeconds = $ffmpegVideo->getFormat()->get('duration');
+            $episode->duration = gmdate('H:i:s', $durationInSeconds);
+            $episode->save();
 
             dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
             dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));

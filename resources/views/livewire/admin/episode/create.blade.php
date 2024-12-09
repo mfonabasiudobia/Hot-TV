@@ -71,7 +71,7 @@
                     @error('episode_number') <span class="error">{{ $message }}</span> @endError
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Duration</label>
                     <select wire:model.defer='duration' class="form-control">
                         <option>--Select Duration--</option>
@@ -81,7 +81,7 @@
                     </select>
 
                     @error('duration') <span class="error">{{ $message }}</span> @endError
-                </div>
+                </div> -->
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
