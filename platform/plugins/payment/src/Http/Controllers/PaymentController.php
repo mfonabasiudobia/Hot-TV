@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Botble\SubscriptionPlan\Models\Subscription;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Stripe;
@@ -134,7 +135,7 @@ class PaymentController extends Controller
         }
 
         if($type === 'paypal' && array_key_exists('payment_paypal_client_id', $data)) {
-            if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_paypal_client_id') !== $data['payment_paypal_client_id']) {
+            if(isset($data['payment_paypal_client_id']) && $settingStore->get('payment_paypal_client_id') !== $data['payment_paypal_client_id']) {
                 $provider = new PayPalClient([]);
                 $token = $provider->getAccessToken();
                 $provider->setAccessToken($token);
@@ -161,8 +162,8 @@ class PaymentController extends Controller
                     ]);
 
                     $paypalProduct = $provider->createProduct([
-                        'name' => $request->input('name'),
-                        'description' => $request->input('name'),
+                        'name' => $plan->name,
+                        'description' => $plan->name,
                         'type' => 'SERVICE',
                         'category' =>   'SOFTWARE'
                     ]);
@@ -171,8 +172,8 @@ class PaymentController extends Controller
 
                     $paypalPlan = $provider->createPlan([
                         'product_id' => $paypalProductId,
-                        'name' => $request->input('name'),
-                        'description' => $request->input('name'),
+                        'name' => $plan->name,
+                        'description' => $plan->name,
                         'billing_cycles' => [
                             [
                                 'frequency' => [
@@ -184,7 +185,7 @@ class PaymentController extends Controller
                                 'total_cycles' => 0,
                                 'pricing_scheme' => [
                                     'fixed_price' => [
-                                        'value' => $amount,
+                                        'value' => $plan->price * 100,
                                         'currency_code' => 'USD'
                                     ],
                                 ],
