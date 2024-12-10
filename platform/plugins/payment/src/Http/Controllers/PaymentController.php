@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Botble\SubscriptionPlan\Models\Subscription;
+use Stripe\Price;
+use Stripe\Product;
+use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
@@ -95,18 +98,113 @@ class PaymentController extends Controller
     {
         $type = $request->input('type');
         $data = $request->except(['_token', 'type']);
-        
-        if($type === 'stripe' && array_key_exists('payment_stripe_client_id', $data)) {
-            // delete all stripe products and prices
-            if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_stripe_client_id') !== $data['payment_stripe_client_id']) {
-                
-            }
-            $subscriptions = Subscription::with('plan')->get();
+        Stripe::setApiKey(gs()->payment_stripe_secret);
 
-            dd($subscriptions);
-            // loop throug all subscription plans 
-            // create a new product and price for reach plan 
-            // attach created price ids to subsciption plans
+        if($type === 'stripe' && array_key_exists('payment_stripe_client_id', $data)) {
+            if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_stripe_client_id') !== $data['payment_stripe_client_id']) {
+                $products = Product::all();
+                foreach ($products->data as $product) {
+                    $prices = Price::all(['product' => $product->id]);
+
+                    foreach ($prices->data as $price) {
+                        Price::update($price->id, ['active' => false]);
+                    }
+
+                    Product::update($product->id, ['active' => false]);
+                }
+
+                $subscriptions = Subscription::with('plan')->get();
+                foreach($subscriptions as $plan) {
+                    $stripeProduct = Product::create([
+                        'name' => $plan->name,
+                        'active' => true,
+                    ]);
+
+                    $stripProductPrice = Price::create([
+                        'currency' => 'usd',
+                        'unit_amount' => $plan->price * 100,
+                        'recurring' =>[ 'interval' =>  $plan->subscription_plan_id == 1 ? 'month' : 'year'],
+                        'product' => $stripeProduct->id
+                    ]);
+
+                    $plan->stripe_plan_id = $stripProductPrice->id;
+                    $plan->save();
+                }
+            }
+        }
+
+        if($type === 'paypal' && array_key_exists('payment_paypal_client_id', $data)) {
+            if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_paypal_client_id') !== $data['payment_paypal_client_id']) {
+                $provider = new PayPalClient([]);
+                $token = $provider->getAccessToken();
+                $provider->setAccessToken($token);
+
+                $plans = $subscriptions = Subscription::with('plan')->get();
+                foreach($plans as $plan) {
+                    $planDetails = $provider->showPlanDetails($plan->paypal_plan_id);
+
+                    $productId = $planDetails['product_id'];
+                    $provider->updatePlan($plan->paypal_plan_id, [
+                        [
+                            'op' => 'replace',
+                            'path' => '/status',
+                            'value' => 'INACTIVE',
+                        ],
+                    ]);
+
+                    $provider->updateProduct($productId, [
+                        [
+                            'op' => 'replace',
+                            'path' => '/status',
+                            'value' => 'INACTIVE',
+                        ],
+                    ]);
+
+                    $paypalProduct = $provider->createProduct([
+                        'name' => $request->input('name'),
+                        'description' => $request->input('name'),
+                        'type' => 'SERVICE',
+                        'category' =>   'SOFTWARE'
+                    ]);
+
+                    $paypalProductId = $paypalProduct['id'];
+
+                    $paypalPlan = $provider->createPlan([
+                        'product_id' => $paypalProductId,
+                        'name' => $request->input('name'),
+                        'description' => $request->input('name'),
+                        'billing_cycles' => [
+                            [
+                                'frequency' => [
+                                    'interval_unit' => $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR',
+                                    'interval_count' => 1,
+                                ],
+                                'tenure_type' => 'REGULAR',
+                                'sequence' => 1,
+                                'total_cycles' => 0,
+                                'pricing_scheme' => [
+                                    'fixed_price' => [
+                                        'value' => $amount,
+                                        'currency_code' => 'USD'
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'payment_preferences' => [
+                            'auto_bill_outstanding' => true,
+                            'setup_fee' => [
+                                'value' => 0,
+                                'currency_code' => 'USD'
+                            ],
+                            'setup_fee_failure_action' => 'CONTINUE',
+                            'payment_failure_threshold' => 3
+                        ],
+                    ]);
+
+                    $plan->paypal_plan_id = $paypalPlan['id'];
+                    $plan->save();
+                }
+            }
         }
 
         foreach ($data as $settingKey => $settingValue) {
