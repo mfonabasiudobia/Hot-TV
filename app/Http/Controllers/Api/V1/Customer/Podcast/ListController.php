@@ -13,7 +13,7 @@ class ListController extends Controller
     public function __invoke()
     {
         $pageSize = 6;
-        $podcasts = Podcast::where('status', BaseStatusEnum::PUBLISHED()->getValue())->paginate($pageSize);
+        $podcasts = Podcast::with('video')->where('status', BaseStatusEnum::PUBLISHED()->getValue())->paginate($pageSize);
 
         return response()->json([
             'success' => true,

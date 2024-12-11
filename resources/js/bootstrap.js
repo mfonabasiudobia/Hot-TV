@@ -53,7 +53,7 @@ window.Echo.private('job-progress.1')
     .listen('.job-progress', (event) => {
         if (!jobProgressToasts[event.jobId]) {
             jobProgressToasts[event.jobId] = Swal.fire({
-                title: `Job ${event.title} is at ${event.progress}% progress.`,
+                title: `Job ${event.title} is at ${Math.round(event.progress)}% progress.`,
                 html: '<b>Progress:</b><br><div id="progress-bar-container"></div>',
                 timer: 0,
                 showCancelButton: false,
@@ -62,7 +62,7 @@ window.Echo.private('job-progress.1')
                 didOpen: () => {
                     const progressBarContainer = document.getElementById('progress-bar-container');
                     progressBarContainer.innerHTML = `
-                        <progress id="job-progress" value="${event.progress}" max="100"></progress>
+                        <progress id="job-progress" value="${Math.round(event.progress)}" max="100"></progress>
                     `;
                 },
                 willClose: () => {
@@ -71,12 +71,12 @@ window.Echo.private('job-progress.1')
             });
         } else {
             jobProgressToasts[event.jobId].update({
-                title: `Job #${event.jobId} is at ${event.progress}% progress.`,
+                title: `Job #${event.jobId} is at ${Math.round(event.progress)}% progress.`,
                 html: '<b>Progress:</b><br><div id="progress-bar-container"></div>',
             });
             const progressBarContainer = document.getElementById('progress-bar-container');
             progressBarContainer.innerHTML = `
-                <progress id="job-progress" value="${event.progress}" max="100"></progress>
+                <progress id="job-progress" value="${Math.round(event.progress)}" max="100"></progress>
             `;
             // const progressBar = document.getElementById('job-progress');
             // progressBar.value = event.progress;

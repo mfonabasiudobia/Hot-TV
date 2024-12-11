@@ -14,6 +14,11 @@ class Video extends Model
 
     protected $guarded = [];
 
+    public function getPathAttribute($value)
+    {
+        return preg_replace('/\.[^.]+$/', '.m3u8', $value);
+    }
+
     public function videoable(): MorphTo
     {
         return $this->morphTo();
