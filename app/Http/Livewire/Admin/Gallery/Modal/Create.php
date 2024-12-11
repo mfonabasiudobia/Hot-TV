@@ -11,12 +11,10 @@ use AppHelper;
 
 class Create extends Component
 {
-
     public $uploadedFile, $show = false, $uniqueid;
     use Filterable, WithFileUploads, WithPagination;
 
-    protected $listeners = ['openGallery']; 
-
+    protected $listeners = ['openGallery'];
 
     public function openGallery($detail = null){
         $this->show = true;
@@ -28,39 +26,31 @@ class Create extends Component
         $this->reset(['uploadedFile']);
     }
 
-    public function uploadImage(){
+    public function uploadImage()
+    {
+        $this->validate(["uploadedFile" => "required"]);
 
-            $this->validate(["uploadedFile" => "required"]);
+        $gallery = Gallery::create([
+            'url' => AppHelper::uploadFile($this->uploadedFile, 'files'),
+            'type' => 'external',
+            'mime_type' => $this->uploadedFile->getMimeType(),
+            'size' => $this->uploadedFile->getSize(),
+            'name' => $this->uploadedFile->getClientOriginalName(),
+            'alt' => $this->uploadedFile->getClientOriginalName(),
+            'user_id' => 0
+        ]);
 
+        toast()->success("File has been uploaded")->push();
 
-            $gallery = Gallery::create([
-                'url' => AppHelper::uploadFile($this->uploadedFile, 'files'),
-                'type' => 'external',
-                'mime_type' => $this->uploadedFile->getMimeType(),
-                'size' => $this->uploadedFile->getSize(),
-                'name' => $this->uploadedFile->getClientOriginalName(),
-                'alt' => $this->uploadedFile->getClientOriginalName(),
-                'user_id' => 0
-            ]);
-
-
-            toast()->success("File has been uploaded")->push();
-
-            $this->reset(['uploadedFile']);
-            $this->show = true;
-
-            $this->dispatchBrowserEvent('trigger-close-modal');
-
-            $this->dispatchBrowserEvent('set-push-file', ['unique_key' => $this->uniqueid, 'path' => $gallery->url, 'id' => $gallery->id ]);
-
-      }
-
+        $this->reset(['uploadedFile']);
+        $this->show = true;
+        $this->dispatchBrowserEvent('trigger-close-modal');
+        $this->dispatchBrowserEvent('set-push-file', ['unique_key' => $this->uniqueid, 'path' => $gallery->url, 'id' => $gallery->id ]);
+    }
 
     public function render()
     {
-
         $files = $this->sort(Gallery::query())->paginate(20);
-
         return view('livewire.admin.gallery.modal.create', ['files' => $files]);
     }
 }

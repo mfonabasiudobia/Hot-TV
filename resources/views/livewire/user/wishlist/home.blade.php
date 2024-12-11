@@ -54,7 +54,7 @@
             <div
                 class="flex flex-col justify-center items-center space-y-3 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center py-7">
                 <h1 class="text-xl md:text-2xl font-bold">Nothing Found</h1>
-                <p>No Item has been added to wishlist. <a href="{{ route('merchandize.home') }}" class="text-danger">Click here</a> to continue shopping</p>
+                <!-- <p>No Item has been added to wishlist. <a href="{{ route('merchandize.home') }}" class="text-danger">Click here</a> to continue shopping</p> -->
             </div>
         @endIf
     </section>

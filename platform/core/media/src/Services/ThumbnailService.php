@@ -6,6 +6,7 @@ use Botble\Media\Facades\RvMedia;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManager;
+use Livewire\TemporaryUploadedFile;
 
 class ThumbnailService
 {
@@ -106,6 +107,7 @@ class ThumbnailService
 
     public function save(string $type = 'fit'): bool|string
     {
+
         $this->imageManager = $this->imageManager->configure([
             'driver' => RvMedia::getImageProcessingLibrary(),
         ]);
@@ -187,6 +189,7 @@ class ThumbnailService
         try {
             $this->uploadManager->saveFile($destinationPath, $thumbImage->stream()->__toString());
         } catch (Exception $exception) {
+
             Log::error($exception->getMessage());
 
             return false;

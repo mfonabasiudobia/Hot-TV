@@ -10,6 +10,8 @@ use Botble\Base\Exceptions\DisabledInDemoModeException;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\Html;
 use Botble\Table\Abstracts\TableAbstract;
+use Botble\Table\Actions\DeleteAction;
+use Botble\Table\Actions\EditAction;
 use Botble\Table\BulkActions\DeleteBulkAction;
 use Botble\Table\Columns\Column;
 use Botble\Table\Columns\CreatedAtColumn;
@@ -26,6 +28,10 @@ class UserTable extends TableAbstract
     public function setup(): void
     {
         $this->model(User::class);
+//            ->addActions([
+//                EditAction::make()->route('users.profile.view'),
+//                DeleteAction::make()->route('roles.destroy'),
+//            ]);
     }
 
     public function ajax(): JsonResponse
@@ -52,6 +58,7 @@ class UserTable extends TableAbstract
                 return $item->super_user ? trans('core/base::base.yes') : trans('core/base::base.no');
             })
             ->editColumn('status_name', function (User $item) {
+
                 if ($item->activations()->where('completed', true)->exists()) {
                     return UserStatusEnum::ACTIVATED()->toHtml();
                 }
@@ -120,6 +127,7 @@ class UserTable extends TableAbstract
             CreatedAtColumn::make(),
             Column::make('status_name')
                 ->title(trans('core/base::tables.status'))
+                ->searchable(false)
                 ->width(100),
             Column::make('super_user')
                 ->title(trans('core/acl::users.is_super'))

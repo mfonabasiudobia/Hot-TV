@@ -36,6 +36,14 @@ return [
             'throw' => false,
         ],
 
+        'video_disk' => [
+            'driver' => 'local',
+            'root' => public_path('storage/app/public/videos'),
+            'url' => env('APP_URL').'storage/app/public/videos/',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => env('APP_URL').'/storage/app/public',

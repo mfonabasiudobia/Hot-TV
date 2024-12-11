@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta_data')
 
-    {{-- <link rel="shortcut icon" href="{{ asset('storage/images/logo/logo.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <title>{{ $seo_title ?? env('APP_NAME') }}</title>
     <meta name="description" content="{{ $seo_description ?? NULL }}">
@@ -19,7 +20,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('header')
 
@@ -78,7 +79,7 @@
         window.addEventListener('load', function () {
             // Get the "page-loading" element by its ID
             var pageLoading = document.getElementById('page-loading');
-            
+
             // Hide the "page-loading" element
             pageLoading.style.display = 'none';
         });

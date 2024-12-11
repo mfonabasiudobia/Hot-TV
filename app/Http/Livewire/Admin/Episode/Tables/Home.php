@@ -77,7 +77,7 @@ final class Home extends PowerGridComponent
      */
     public function relationSearch(): array
     {
-        return [];
+        return ['tvShow'];
     }
 
     /*
@@ -99,6 +99,14 @@ final class Home extends PowerGridComponent
             ->addColumn('created_at_formatted', function(Episode $model){
                 return $model->createdAt();
             })
+            ->addColumn('show', function(Episode $model){
+                return $model->tvShow->title;
+            })
+            ->addColumn('season_number_formatted', function(Episode $model){
+
+                return $model->season ? $model->season->season_number : null;
+            })
+
             ->addColumn('status_formatted', function(Episode $model){
                 return $model->status == 'published' ? "<span class='px-3 py-1 rounded-full bg-green-800'>Published</span>" : "<span
                     class='px-3 py rounded-full bg-red-200'>Unpublished</span>";
@@ -128,14 +136,17 @@ final class Home extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Season', 'season_number')
+            Column::make('Season', 'season_number_formatted')
                 ->searchable()
                 ->sortable(),
+
+            Column::make('Show', 'show'),
+
 
             Column::make('Episode', 'episode_number')
                 ->searchable()
                 ->sortable(),
-            
+
             Column::make('Status', 'status_formatted'),
 
             Column::make('Created At', 'created_at_formatted'),
@@ -170,7 +181,7 @@ final class Home extends PowerGridComponent
      *
      * @return array<int, Button>
      */
-    
+
 
 
     public function actions(): array
@@ -194,7 +205,7 @@ final class Home extends PowerGridComponent
                 ])
         ];
     }
-    
+
 
     /*
     |--------------------------------------------------------------------------

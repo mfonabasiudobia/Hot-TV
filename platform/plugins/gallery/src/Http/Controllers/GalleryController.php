@@ -43,6 +43,7 @@ class GalleryController extends BaseController
 
     public function store(GalleryRequest $request, BaseHttpResponse $response)
     {
+
         $gallery = $this->galleryRepository->getModel();
         $gallery->fill($request->input());
         $gallery->user_id = Auth::id();

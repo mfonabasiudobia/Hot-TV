@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @stack('meta_data')
+    <title>{{ $seo_title ?? env('APP_NAME') }}</title>
 
-    {{--
-    <link rel="shortcut icon" href="{{ asset('storage/images/logo/logo.png') }}" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
@@ -16,12 +15,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('header')
-
     @livewireStyles
-
 </head>
 
 <body>
@@ -31,7 +27,7 @@
         {{$slot}}
         @livewire("partials.footer")
 
-        @livewire("user.videos.modal.upload-video")
+{{--        @livewire("user.videos.modal.upload-video")--}}
     </section>
 
 
@@ -50,7 +46,7 @@
     <script src="{{asset('js/js.js')}}?v={{uniqid()}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/4286a4e89d.js"></script>
-    
+
 
     @stack("script")
 

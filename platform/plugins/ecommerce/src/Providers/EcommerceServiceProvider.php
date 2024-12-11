@@ -354,7 +354,7 @@ class EcommerceServiceProvider extends ServiceProvider
         SlugHelper::setPrefix(Brand::class, 'brands');
         SlugHelper::setPrefix(ProductTag::class, 'product-tags');
         SlugHelper::setPrefix(ProductCategory::class, 'product-categories');
-        
+
 
         SiteMapManager::registerKey([
             'product-categories',
@@ -896,12 +896,15 @@ class EcommerceServiceProvider extends ServiceProvider
 
         $this->app['events']->listen(
             ['cart.removed', 'cart.stored', 'cart.restored', 'cart.updated'],
-            function ($cart) {
-                $coupon = session('applied_coupon_code');
-                if ($coupon) {
-                    $this->app->make(HandleRemoveCouponService::class)->execute();
-                    if (Cart::count() || ($cart instanceof \Botble\Ecommerce\Cart\Cart && $cart->count())) {
-                        $this->app->make(HandleApplyCouponService::class)->execute($coupon);
+            function ($cart = null) {
+                if($cart) {
+                    $coupon = session('applied_coupon_code');
+
+                    if ($coupon) {
+                        $this->app->make(HandleRemoveCouponService::class)->execute();
+                        if (Cart::count() || ($cart instanceof \Botble\Ecommerce\Cart\Cart && $cart->count())) {
+                            $this->app->make(HandleApplyCouponService::class)->execute($coupon);
+                        }
                     }
                 }
             }

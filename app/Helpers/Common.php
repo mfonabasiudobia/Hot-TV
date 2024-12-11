@@ -1,6 +1,8 @@
-<?php 
+<?php
 
+use Botble\Ecommerce\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 function gs(){
     return (object) \DB::table('settings')->pluck("value","key")->toArray();
@@ -25,15 +27,52 @@ function upload_file($file, $filePath, $previousPath = null, $isupdating = false
     return 'storage/' . $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
 }
 
+function upload_gallery_file($file, $filePath, $previousPath = null, $isUpdating = false) {
+    if(!$file && $isUpdating) return $previousPath;// return previous path if we updating file and file upload exists
+
+    if (file_exists($previousPath)) unlink($previousPath);
+    $uuid = Str::uuid();
+    if(!$file) return null;
+    $extension = $file->extension();
+    $fileName = $uuid . '.' .$extension;
+    $fileNameThumbnail = $uuid . '-150x150.' .$extension;
+    $fileSaveAs = $file->storeAs($filePath, $fileName);
+    $fileSaveAsThumbnail = $file->storeAs($filePath, $fileNameThumbnail);
+    $path = 'storage/' . $fileSaveAs;
+    $size = filesize($path);
+
+    $thumb_img = Image::make('storage/' . $fileSaveAsThumbnail)->resize(150, 150, function ($constraint) {
+        $constraint->aspectRatio();
+    });
+
+    return [
+        'file_path' => $fileSaveAs,
+        'name' => $fileName,
+        'mime_type' => "mime/$extension",
+        'size' => $size
+
+    ];
+}
+
+function upload_avatar($file, $filePath, $previousPath = null, $isupdating = false) {
+    if(!$file && $isupdating) return $previousPath;// return previous path if we updating file and file upload exists
+
+    if (file_exists($previousPath)) unlink($previousPath);
+
+    if(!$file) return null;
+
+    return $file->storeAs($filePath, Str::uuid() . '.' .$file->extension());
+}
+
 function file_path($file = null){
     return asset('storage') . '/' . $file;
 }
 
-function get_seconds_in_time_array(){
+function get_seconds_in_time_array() {
      $intervals = [];
 
-     for ($i = 1; $i <= 180; $i++) { 
-        // 180 minutes=3 hours 
+     for ($i = 1; $i <= 180; $i++) {
+        // 180 minutes=3 hours
         $seconds=$i * 60; // Convert minutes to seconds
 
         $hours = floor($i / 60);
@@ -52,7 +91,7 @@ function get_seconds_in_time_array(){
             $title .= $minutes === 1 ? '1 minute' : $minutes . ' minutes';
         }
 
-        $intervals[]=[ 
+        $intervals[]=[
             'seconds'=> $seconds,
             'title' => $title,
          ];
@@ -113,6 +152,7 @@ function sanitize_seo_description($value, $limit = 100){
 }
 
 function admin_id_array(){
+
     return [1, 3];
 }
 
@@ -145,4 +185,80 @@ function diff_start_end_time_seconds($startTime, $endTime){
         $timeDifferenceInSeconds = $endSeconds - $startSeconds;
 
         return $timeDifferenceInSeconds;
+}
+
+function customPagination(LengthAwarePaginator $lengthAwarePaginator): array
+{
+    return [
+        'total'         => $lengthAwarePaginator->total(),
+        'per_page'      => $lengthAwarePaginator->perPage(),
+        'current_page'  => $lengthAwarePaginator->currentPage(),
+        'last_page'     => $lengthAwarePaginator->lastPage(),
+        'next_page_url' => $lengthAwarePaginator->nextPageUrl(),
+        'prev_page_url' => $lengthAwarePaginator->previousPageUrl(),
+        'from'          => $lengthAwarePaginator->firstItem(),
+        'to'            => $lengthAwarePaginator->lastItem(),
+    ];
+}
+
+function getProductSalePrice(Product $product): array
+{
+    $now = \Carbon\Carbon::now();
+    $price = $product->price;
+    $oldPrice = null;
+
+    if($product->start_date != null && $product->end_date == null) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date))) {
+            $price = $product->sale_price;
+            //$oldPrice = $this->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } elseif($product->start_date && $product->end_date) {
+
+        if($now->gt(\Carbon\Carbon::parse($product->start_date)) && $now->lt(\Carbon\Carbon::parse($product->end_date))) {
+
+            $price = $product->sale_price;
+            $oldPrice = $product->price;
+        } else {
+            $price = $product->price;
+            $oldPrice = null;
+        }
+    } else {
+        $price = $product->price;
+        $oldPrice = null;
+    }
+
+    return [
+        'price' => $price,
+        'old_price' => $oldPrice
+    ];
+}
+
+function calculateDiscount($cart)
+{
+    $discount = 0;
+    foreach($cart as $item) {
+        if(!is_null($item->options->old_price)) {
+            $discount +=  $item->options->old_price - $item->price;
+        }
+    }
+    return number_format($discount, 2);
+
+}
+
+function getSubTotal($cart)
+{
+    $subTotal = 0;
+    foreach($cart as $item) {
+        if(!is_null($item->options->old_price)) {
+            $subTotal +=  $item->options->old_price;
+        } else {
+            $subTotal +=  $item->price;
+        }
+    }
+    return number_format($subTotal, 2);
+
 }

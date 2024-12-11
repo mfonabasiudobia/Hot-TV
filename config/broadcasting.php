@@ -37,10 +37,11 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'encrypted' => env('PUSHER_ENCRYPTED', true),
+                'encrypted' => env('PUSHER_ENCRYPTED', false),
                 'host' => env('PUSHER_HOST', '127.0.0.1'),
                 'port' => env('PUSHER_PORT', '6001'),
-                'scheme' => env('PUSHER_SCHEME', 'http')
+                'scheme' => env('PUSHER_SCHEME', 'http'),
+                'useTLS' => true
             ],
         ],
         'ably' => [

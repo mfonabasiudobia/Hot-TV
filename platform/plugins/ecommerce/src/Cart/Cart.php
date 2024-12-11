@@ -450,6 +450,7 @@ class Cart
      */
     public function store($identifier)
     {
+
         $content = $this->getContent();
 
         if ($this->storedCartWithIdentifierExists($identifier)) {

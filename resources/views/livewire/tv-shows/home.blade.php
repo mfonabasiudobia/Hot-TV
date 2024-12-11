@@ -34,18 +34,22 @@
                @forelse ($tvShows as $show)
                    <a class="relative space-y-5 p-5 bg-dark rounded-xl group hover:scale-125 transition-all" href="{{ route('tv-shows.show', ['slug' => $show->slug ]) }}">
                         <img src="{{ file_path($show->thumbnail) }}" alt="" class="h-[321px] rounded-lg object-cover w-full" />
-                    
+
                         <div class="space-y-3">
                             <h2 class="text-center font-semibold">{{ $show->title }}</h2>
-                    
+
                             <div class="flex items-center justify-between opacity-60 text-sm">
                                 <span>{{ view_count($show->views->count()) }} views</span>
                                 <span>{{ convert_seconds_to_time($show->episodes()->sum('duration')) }}</span>
                             </div>
                         </div>
-                    
+                        @if (\Carbon\Carbon::parse($show->release_date)->isFuture())
+                            <span class="rounded-b-lg bg-danger py-1 px-5 absolute left-1/2 transform -translate-x-1/2 top-1/2 whitespace-nowrap"> Coming Soon... </span>
+                        @endif
+
                         <span class="rounded-b-lg bg-danger py-1 px-5 absolute left-1/2 transform -translate-x-1/2 top-0 whitespace-nowrap">{{ $show->categories[0]->name }}</span>
                     </a>
+
                 @empty
                     <div class="flex flex-col justify-center items-center space-y-3 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center py-7">
                         <h1 class="text-xl md:text-2xl font-bold">Nothing Found</h1>
@@ -54,16 +58,14 @@
                @endforelse
 
             </section>
-
             <x-pagination :items="$tvShows" />
+
         </section>
     </div>
 
 
-
-
     @livewire("home.partials.partners")
-    
-    
+
+
     @livewire("home.partials.newsletter")
 </div>

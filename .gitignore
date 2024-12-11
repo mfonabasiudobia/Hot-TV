@@ -7,6 +7,7 @@
 Thumbs.db
 /bower_components
 .env
+firebase_credentials.json
 .env.backup
 /.idea
 /.vscode

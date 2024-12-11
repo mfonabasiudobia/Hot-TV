@@ -38,7 +38,7 @@ Route::group(['namespace' => 'Botble\ACL\Http\Controllers', 'middleware' => ['we
             Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
                 Route::resource('', 'UserController')->except(['edit', 'update'])->parameters(['' => 'users']);
 
-                Route::post('update-profile/{id}', [
+                Route::post('update-profile/{user}', [
                     'as' => 'update-profile',
                     'uses' => 'UserController@postUpdateProfile',
                     'permission' => false,
@@ -58,7 +58,7 @@ Route::group(['namespace' => 'Botble\ACL\Http\Controllers', 'middleware' => ['we
                     'middleware' => 'preventDemo',
                 ]);
 
-                Route::get('profile/{id}', [
+                Route::get('profile/{user}', [
                     'as' => 'profile.view',
                     'uses' => 'UserController@getUserProfile',
                     'permission' => false,

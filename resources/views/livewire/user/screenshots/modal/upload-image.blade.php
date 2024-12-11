@@ -7,23 +7,28 @@
             <header class="space-y-2">
                 <div class="flex items-center justify-between">
                     <h1 class="text-xl md:text-2xl font-semibold">Upload Image</h1>
-                
+
                     <button class="text-xl" x-on:click.prevent="status = !status">
                         <i class="las la-times"></i>
                     </button>
                 </div>
-                
+
                 <p>Showcase your travel photos and experiences.</p>
             </header>
 
-            <form wire:submit.prevent='submit' class="grid gap-5" autocomplete="off" x-data="{ video_type : @entangle('video_type')}">
+            <form wire:submit.prevent='submit' class="grid gap-5" autocomplete="off" >
 
                     <div class="form-group">
                         <label>Image Title *</label>
-                        <input type="text" class="form-control" placeholder="Video Title" wire:model.defer="title" />
+                        <input type="text" class="form-control" placeholder="Image Title" wire:model.defer="title" />
                         @error('title') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <input type="text" class="form-control" placeholder="Image Description" wire:model.defer="description" />
+                        @error('description') <span class="error"> {{ $message }}</span> @endError
+                    </div>
 
                     <div class="form-group">
                         <label>Image</label>
@@ -34,10 +39,8 @@
                         @error('images.*') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-
-
                 <div class="form-group">
-                    <x-atoms.loading-button text="Upload Image" target="submit" class="btn btn-lg btn-danger" />
+                    <x-atoms.loading-button text="Upload Image" target="submit" class="btn btn-lg btn-danger"  />
                 </div>
             </form>
 

@@ -8,12 +8,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class EpisodeRepository {
 
-    public static function all() 
+    public static function all()
     {
         return Episode::query();
     }
 
-    public static function getEpisodeById(int $id) : Episode 
+    public static function getEpisodeById(int $id) : Episode
     {
             return Episode::findOrFail($id);
     }
@@ -33,20 +33,21 @@ class EpisodeRepository {
     public static function updateEpisode(array $data, int $id) : Episode
     {
          $episode = Episode::find($id);
-         
+
          $episode->update($data);
 
          return $episode;
     }
 
     public static function getEpisodesBySeason($tvshowId, $seasonNumber){
-        return Episode::where('season_number', $seasonNumber)->where('tv_show_id', $tvshowId)->get();
+        return Episode::where('season_id', $seasonNumber)->get();
     }
 
     public static function delete(int $id) : bool {
         return Episode::find($id)->delete();
     }
 
-
-
+    public static function getEpisodesByTvShow($tvshowId){
+        return Episode::where('tv_show_id', $tvshowId)->get();
+    }
 }

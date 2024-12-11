@@ -15,9 +15,11 @@ class Show extends BaseComponent
     public $product;
 
     public function mount($slug){
+
          $slug = Slug::where('key', $slug)->firstorFail();
 
          $this->product = Product::findOrFail($slug->reference_id);
+        //dd($this->product);
     }
 
     public function addToCart($product, $qty = 1){
@@ -27,6 +29,7 @@ class Show extends BaseComponent
             throw_if($qty < 1, 'Invalid Quantity Supplied');
 
             Cart::instance('product')->content()->search(function ($cartItem, $rowId) use($product, $qty) {
+
             if($cartItem->id === $product['id']){
                 throw_if($product['quantity'] < ($cartItem->qty + $qty), "Max Quantity Reached");
 
@@ -39,7 +42,7 @@ class Show extends BaseComponent
             toast()->success('Product Added to Cart')->push();
 
             $this->emit('refreshCart');
-            
+
         } catch (\Throwable $e) {
             toast()->danger($e->getMessage())->push();
         }
@@ -48,7 +51,7 @@ class Show extends BaseComponent
 
     public function saveToWishList($productId){
         try {
-            
+
             $wishlist = Wishlist::where('product_id', $productId)->where('customer_id', auth()->id())->first();
 
             if(!$wishlist){

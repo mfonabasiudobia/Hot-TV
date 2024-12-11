@@ -2,6 +2,10 @@
 
 namespace Botble\ACL\Models;
 
+use App\Enums\User\RoleEnum;
+use App\Models\Device;
+use App\Models\Ride;
+use App\Models\RideBooking;
 use Botble\ACL\Notifications\ResetPasswordNotification;
 use Botble\ACL\Traits\PermissionTrait;
 use Botble\Base\Casts\SafeContent;
@@ -9,6 +13,7 @@ use Botble\Base\Models\BaseModel;
 use Botble\Base\Supports\Avatar;
 use Botble\Media\Facades\RvMedia;
 use Botble\Media\Models\MediaFile;
+use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -20,9 +25,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Botble\Ecommerce\Models\Wishlist;
 use Botble\Ecommerce\Models\Discount;
 use Botble\Ecommerce\Models\Product;
@@ -103,8 +109,9 @@ class User extends BaseModel implements
     {
         return Attribute::make(
             get: function () {
-                if ($this->avatar->url) {
-                    return RvMedia::url($this->avatar->url);
+
+                if (!empty($this->avatar()->url) ) {
+                    return RvMedia::url($this->avatar()->url);
                 }
 
                 try {
@@ -116,9 +123,12 @@ class User extends BaseModel implements
         );
     }
 
-    public function avatar(): BelongsTo
+    public function avatar()
     {
-        return $this->belongsTo(MediaFile::class)->withDefault();
+        return MediaFile::where('id', $this->avatar_id)->first();
+
+
+        //return $this->belongsTo(MediaFile::class)->withDefault();
     }
 
     public function roles(): BelongsToMany
@@ -150,7 +160,7 @@ class User extends BaseModel implements
 
         return $this->hasAnyAccess($permissions);
     }
-    
+
 
     public function sendPasswordResetNotification($token): void
     {
@@ -236,6 +246,45 @@ class User extends BaseModel implements
     public function usedCoupons(): BelongsToMany
     {
         return $this->belongsToMany(Discount::class, 'ec_customer_used_coupons');
+    }
+
+    public function rides(): HasMany
+    {
+        if($this->inRole(RoleEnum::DRIVER->value)) {
+            return $this->hasMany(Ride::class, 'driver_id');
+        }
+        return $this->hasMany(Ride::class)->whereRaw('1 = 0');
+    }
+
+    public function rideBookings(): HasMany
+    {
+        if($this->inRole(RoleEnum::SUBSCRIBER->value)) {
+            return $this->hasMany(RideBooking::class);
+        }
+        return $this->hasMany(RideBooking::class)->whereRaw('1 = 0');
+    }
+
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(SubscriptionOrder::class)->where('current_subscription', true);
+    }
+
+    public function myRides(): HasMany
+    {
+        if($this->inRole(RoleEnum::SUBSCRIBER->value)) {
+            return $this->hasMany(Ride::class, 'user_id');
+        }
+        return $this->hasMany(Ride::class)->whereRaw('1 = 0');
+    }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
+    public function hasDevice($deviceId): bool
+    {
+        return $this->devices()->where('device_id', $deviceId)->exists();
     }
 
 }

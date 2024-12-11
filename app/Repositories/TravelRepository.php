@@ -24,6 +24,6 @@ class TravelRepository {
             'user_id' => $userId
         ]));
    }
-   
+
 
 }

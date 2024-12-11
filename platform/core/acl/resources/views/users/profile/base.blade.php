@@ -1,5 +1,4 @@
 @extends(BaseHelper::getAdminMasterLayoutTemplate())
-
 @section('content')
     <div class="user-profile row">
         <div class="col-md-3 col-sm-5 crop-avatar">
@@ -7,7 +6,8 @@
                 <div class="profile-userpic mt-card-item">
                     <div>
                         <div class="avatar-view mt-card-avatar mt-overlay-1">
-                            <img src="{{ $user->avatar_url }}" alt="avatar">
+{{--                            <img src="{{ //$media->avatar_url }}" alt="avatar">--}}
+                            <img src="{{ $avatarUrl }}" alt="avatar">
                             @if ($canChangeProfile)
                                 <div class="mt-overlay">
                                     <ul class="mt-info">

@@ -1,4 +1,4 @@
-<section :class="toggleSidebar ? '' : 'sidebar-wrapper'" x-on:click="toggleSidebar = !toggleSidebar" x-cloak>
+<section :class="toggleSidebar ? '' : 'sidebar-wrapper'"  x-cloak>
     <div x-on:click="event.stopPropagation()" class=" h-screen relative overflow-hidden"
         :class="toggleSidebar ? 'w-0 md:w-[250px]' : 'w-[270px] md:w-0'">
         <div class="flex justify-center py-3">
@@ -29,8 +29,8 @@
                     <span>Manage Podcast</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
-            
-            
+
+
                 <ul class="list-2" x-show="show">
                     <li>
                         <a href="{{ route('admin.podcast.list')  }}">
@@ -47,6 +47,31 @@
                 </ul>
             </li>
 
+            <li class="{{$status = request()->routeIs('admin.shoutout.*') ? 'active' : ''}}"
+                x-data="{ show : '{{$status ? true : false}}'}">
+                <a href="#" x-on:click="show = !show">
+                    <i class="las la-podcast"></i>
+                    <span>Manage Celebrity Shoutouts</span>
+                    <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </a>
+
+
+                <ul class="list-2" x-show="show">
+                    <li>
+                        <a href="{{ route('admin.shoutout.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Shoutout List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.shoutout.create')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Create Shoutout</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="{{$status = request()->routeIs('admin.show-category.*') ? 'active' : ''}}"
                 x-data="{ show : '{{$status ? true : false}}'}">
                 <a href="#" x-on:click="show = !show">
@@ -54,8 +79,8 @@
                     <span>Manage Shows Content</span>
                     <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                 </a>
-            
-            
+
+
                 <ul class="list-2" x-show="show">
                     <li>
                         <a href="{{ route('admin.show-category.list')  }}">
@@ -81,11 +106,35 @@
                     <li x-data="{ show : false}">
                         <a href="#" x-on:click="show = !show">
                             <i class="las la-video"></i>
+                            <span>Manage Seasons</span>
+                            <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                        </a>
+
+
+                        <ul class="list-3" x-show="show">
+                            <li>
+                                <a href="{{ route('admin.tv-show.season.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Add New Season</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.tv-show.season.list')  }}">
+                                    <i class="las la-circle"></i>
+                                    <span>Season List</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li x-data="{ show : false}">
+                        <a href="#" x-on:click="show = !show">
+                            <i class="las la-video"></i>
                             <span>Manage Episodes</span>
                             <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
                         </a>
-                    
-                    
+
+
                         <ul class="list-3" x-show="show">
                             <li>
                                 <a href="{{ route('admin.tv-show.episode.list')  }}">
@@ -103,6 +152,33 @@
                     </li>
                 </ul>
             </li>
+
+            <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}"
+                x-data="{ show : '{{$status ? true : false}}'}">
+                <a href="#" x-on:click="show = !show">
+                    <i class="las la-tv"></i>
+                    <span>Manage Pedicabs</span>
+                    <i class="las la-angle-right arrow-right" :class="show ? 'rotate-90' : ''"></i>
+                </a>
+
+
+                <ul class="list-2" x-show="show">
+                    <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                        <a href="{{ route('admin.ride.durations')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Ride Durations</span>
+                        </a>
+                    </li>
+
+                    <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                        <a href="{{ route('admin.ride.list')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Ride List</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
 
         </ul>
 

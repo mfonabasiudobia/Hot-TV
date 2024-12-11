@@ -75,6 +75,7 @@ class LoginController extends BaseController
 
         $user = User::query()->where([$this->username() => $request->input($this->username())])->first();
         if (! empty($user)) {
+
             if (! $user->activated) {
                 return $this->response
                     ->setError()
@@ -110,7 +111,7 @@ class LoginController extends BaseController
 
                     return $this->sendFailedLoginResponse();
                 }
-        
+
                 return $this->sendLoginResponse($request);
             });
     }

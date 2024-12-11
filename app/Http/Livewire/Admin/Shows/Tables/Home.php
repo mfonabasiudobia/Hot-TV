@@ -126,14 +126,14 @@ final class Home extends PowerGridComponent
                 ->searchable()
                 ->sortable()
                 ->toggleable(false, 'yes', 'no'),
-            
+
             Column::make('Status', 'status_formatted'),
 
             Column::make('Created At', 'created_at_formatted'),
         ];
     }
 
-    public function onUpdatedEditable($id, $field, $value): void{   
+    public function onUpdatedEditable($id, $field, $value): void{
         TvShow::query()->find($id)->update([
             $field => $value,
         ]);
@@ -166,18 +166,18 @@ final class Home extends PowerGridComponent
      *
      * @return array<int, Button>
      */
-    
+
 
 
     public function actions(): array
     {
        return [
 
-            // Button::add('view')
-            //     ->caption("<i class='las la-eye'></i>")
-            //     ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
-            //     ->target('_self')
-            //     ->route('admin.tv-show.show', ['slug' => 'slug']),
+             Button::add('season')
+                 ->caption("<i class='las la-eye'></i>")
+                 ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+                 ->target('_self')
+                 ->route('admin.seasons.home', ['slug' => 'slug']),
 
            Button::add('edit')
                 ->caption("<i class='las la-pencil-alt'></i>")
@@ -196,7 +196,7 @@ final class Home extends PowerGridComponent
                 ])
         ];
     }
-    
+
 
     /*
     |--------------------------------------------------------------------------

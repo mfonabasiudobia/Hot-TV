@@ -7,7 +7,7 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
     Route::group(['middleware'=> ['AdminAuth']], function() {
 
         Route::get('dashboard',"Dashboard\Home")->name('dashboard');
-        
+
         Route::group(['prefix'=> 'video'], function() {
             Route::get('create',"Video\Create")->name('video.create');
             Route::get('{id}/edit',"Video\Edit")->name('video.edit');
@@ -27,7 +27,13 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
                 Route::get('create',"Podcast\Create")->name('create');
                 Route::get('{id}/edit',"Podcast\Edit")->name('edit');
                 Route::get('list',"Podcast\Home")->name('list');
-         });   
+         });
+
+        Route::group(['prefix'=> 'shoutout', 'as' => 'shoutout.'], function() {
+            Route::get('create',"Shoutout\Create")->name('create');
+            Route::get('{id}/edit',"Shoutout\Edit")->name('edit');
+            Route::get('list',"Shoutout\Home")->name('list');
+        });
 
 
         Route::group(['prefix'=> 'tv-shows', 'as' => 'tv-show.'], function() {
@@ -36,12 +42,19 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
             Route::get('{id}/edit',"Shows\Edit")->name('edit');
             Route::get('{slug}/show',"Shows\Show")->name('show');
 
-               Route::group(['prefix'=> 'episode', 'as' => 'episode.'], function() {
-                    Route::get('create',"Episode\Create")->name('create');
-                    Route::get('{id}/edit',"Episode\Edit")->name('edit');
-                    Route::get('list',"Episode\Home")->name('list');
-               });   
-               
+            Route::group(['prefix'=> 'season', 'as' => 'season.'], function() {
+                Route::get('create',"Season\Create")->name('create');
+                Route::get('{id}/edit',"Season\Edit")->name('edit');
+                Route::get('list',"Season\Home")->name('list');
+            });
+
+
+            Route::group(['prefix'=> 'episode', 'as' => 'episode.'], function() {
+                Route::get('create',"Episode\Create")->name('create');
+                Route::get('{id}/edit',"Episode\Edit")->name('edit');
+                Route::get('list',"Episode\Home")->name('list');
+           });
+
                Route::group(['prefix'=> 'cast', 'as' => 'cast.'], function() {
                     Route::get('create/{tvslug?}',"Cast\Create")->name('create');
                     Route::get('edit/{id}/{tvslug?}',"Cast\Edit")->name('edit');
@@ -49,10 +62,22 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
                });
         });
 
-     
+        Route::group(['namespace' => 'Season', 'prefix' => 'seasons'], function() {
+            Route::get('/',"Home")->name('seasons.home');
+            //Route::get('{slug}',"Show")->name('seasons.show');
+        });
+
+        Route::group(['prefix' => 'ride', 'as' => 'ride.'], function() {
+            Route::get('durations', 'RideDuration\Home')->name('durations');
+            Route::get('edit-duration/{id}', 'RideDuration\Edit')->name('edit-duration');
+            Route::get('create-duration', 'RideDuration\Create')->name('create-duration');
+            Route::get('/', 'Ride\Home')->name('list');
+        });
+
+
 
 
     });
-    
-    
+
+
 });

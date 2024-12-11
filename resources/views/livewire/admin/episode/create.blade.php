@@ -34,21 +34,12 @@
                     @error('release_date') <span class="error">{{ $message }}</span> @endError
                 </div>
 
-                <div class="form-group">
-                    <label>Season Number</label>
-                    <select wire:model.defer='season_number' class="form-control">
-                        <option>--Select Season--</option>
-                        @foreach (range(1, 50) as $item)
-                        <option value="{{ $item }}">Season {{ $item }}</option>
-                        @endforeach
-                    </select>
-                    @error('season_number') <span class="error">{{ $message }}</span> @endError
-                </div>
+
 
                 <div class="form-group">
                     <label>Select TV Show</label>
                     <div wire:ignore>
-                        <select wire:model.defer='tv_show_id' class="form-control tv-show">
+                        <select wire:model.defer='tv_show_id' class="form-control tv-show" wire:change="UpdateSeasons">
                             <option>--Select TV Show--</option>
                             @foreach (\App\Models\TvShow::get() as $item)
                             <option value="{{ $item->id }}">{{ $item->title }}</option>
@@ -56,6 +47,17 @@
                         </select>
                     </div>
                     @error('tv_show_id') <span class="error">{{ $message }}</span> @endError
+                </div>
+
+                <div class="form-group">
+                    <label>Season Number</label>
+                    <select wire:model.defer='season_id' class="form-control">
+                        <option>--Select Season--</option>
+                        @foreach ($seasons as $season)
+                            <option value="{{ $season->id }}">Season {{ $season->season_number }}</option>
+                        @endforeach
+                    </select>
+                    @error('season_number') <span class="error">{{ $message }}</span> @endError
                 </div>
 
                 <div class="form-group">
@@ -69,7 +71,7 @@
                     @error('episode_number') <span class="error">{{ $message }}</span> @endError
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Duration</label>
                     <select wire:model.defer='duration' class="form-control">
                         <option>--Select Duration--</option>
@@ -79,7 +81,7 @@
                     </select>
 
                     @error('duration') <span class="error">{{ $message }}</span> @endError
-                </div>
+                </div> -->
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
@@ -96,13 +98,20 @@
                 <div class="form-group md:col-span-2" x-data="{ recorded_video : @entangle('recorded_video').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
                     <label>Upload Video</label>
-                    <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+                    <x-atoms.progress-indicator>
+                        <input type="file" wire:model="recorded_video" class="form-control" accept="video/*" />
+                    </x-atoms.progress-indicator>
+                    @if($recorded_video)
+                        <video class='w-auto h-[20vh]' src="{{ $recorded_video->temporaryUrl() }}" controls></video>
+                    @endif
 
-                    <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                    <video class='w-auto h-[20vh]' controls>
-                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">
-                        Your browser does not support HTML5 video.
-                    </video> 
+{{--                    <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />--}}
+
+{{--                    <span x-text="'{{ file_path() }}' + recorded_video"></span>--}}
+{{--                    <video class='w-auto h-[20vh]' controls>--}}
+{{--                        <source x-bind:src="'{{ file_path() }}' + recorded_video" type="video/mp4">--}}
+{{--                        Your browser does not support HTML5 video.--}}
+{{--                    </video>--}}
 
                     @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
                 </div>

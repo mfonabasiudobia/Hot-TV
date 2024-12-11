@@ -11,13 +11,13 @@
                         <input type="text" placeholder="Title" wire:model='title' class="form-control" />
                         @error('title') <span class="error">{{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Slug</label>
                         <input type="text" placeholder="Slug" wire:model.defer='slug' class="form-control" />
                         @error('slug') <span class="error">{{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Description</label>
                         <div wire:ignore>
@@ -25,7 +25,7 @@
                         </div>
                         @error('description') <span class="error">{{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Show Categories</label>
                         <div class="relative" wire:ignore>
@@ -40,7 +40,6 @@
                         @error('categories_id') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
-
                     <div class="form-group">
                         <label>Casts</label>
                         <div class="relative" wire:ignore>
@@ -54,7 +53,7 @@
                         </div>
                         @error('casts_id') <span class="error"> {{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Release Date</label>
                         <div wire:ignore>
@@ -63,7 +62,7 @@
                         </div>
                         @error('release_date') <span class="error">{{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group col-span-2" >
                         <label>Tags</label>
 
@@ -72,37 +71,47 @@
                         </div>
                         @error('tags') <span class="error"> {{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                         @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
                         <label>Thumbnail</label>
                         <input type="file" class="form-control" placeholder="Upload Image"
                             x-on:click.prevent="$wire.emit('openGallery', 'thumbnail')" />
-                    
+
                         <img x-bind:src="'{{ file_path('/') }}/' + thumbnail" x-show="thumbnail ? true : false" class="image-preview"
                             x-cloak />
-                    
+
                         @error('thumbnail') <span class="error"> {{ $message }}</span> @endError
                     </div>
-                    
+
                     <div class="form-group" x-data="{ trailer : @entangle('trailer').defer }"
                         @set-push-file.window="if($event.detail.unique_key == 'trailer') trailer = $event.detail.path;">
                         <label>Upload Trailer</label>
-                        <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />
-                    
-                        <span x-text="'{{ file_path() }}' + trailer"></span>
-                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
-                    
+
+                        <x-atoms.progress-indicator>
+                            <input type="file" wire:model="trailer" class="form-control" accept="video/*" />
+                        </x-atoms.progress-indicator>
+                        @if($trailer)
+                            <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
+                        @endif
+
+
+{{--                        <input type="file" class="form-control" x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />--}}
+
+{{--                        <span x-text="'{{ file_path() }}' + trailer"></span>--}}
+{{--                        <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>--}}
+
                         @error('trailer') <span class="error"> {{ $message }}</span> @endError
                     </div>
 
                     <div class="form-group">
                         <x-atoms.toggle model="is_recommended" label="Is Recommended" />
                     </div>
-                    
+                    <div class="form-group">
+                        <x-atoms.toggle model="status" label="Status" />
+                    </div>
+
                 </section>
-
-
 
                 <div class="space-y-5 content-wrapper">
                     <div class="space-y-1">
@@ -115,8 +124,8 @@
                         <input type="text" class="form-control" placeholder="Meta Title" wire:model.defer="meta_title" />
                         @error('meta_title') <span class="error"> {{ $message }}</span> @endError
                     </div>
-                
-                
+
+
                     <div class="form-group">
                         <label>Meta Description</label>
                         <textarea class="form-control" placeholder="Meta Description" wire:model.defer="meta_description"></textarea>
@@ -150,11 +159,11 @@
         tagify = new Tagify(input, {
         maxTags: 10,
         dropdown: {
-                maxItems: 20, // <- mixumum allowed rendered suggestions 
-                classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted 
-                enabled: 0, // <- show suggestions on focus 
-                closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected 
-            } 
+                maxItems: 20, // <- mixumum allowed rendered suggestions
+                classname: "tags-look" , // <- custom classname for this dropdown, so it could be targeted
+                enabled: 0, // <- show suggestions on focus
+                closeOnSelect: false // <- do not hidethe suggestions dropdown once an item has been selected
+            }
         })
 
         input.addEventListener('change', () => {

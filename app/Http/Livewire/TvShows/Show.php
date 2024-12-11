@@ -2,22 +2,30 @@
 
 namespace App\Http\Livewire\TvShows;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
 use App\Repositories\CastRepository;
 use App\Models\TvShowView;
 use App\Models\Watchlist;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Show extends BaseComponent
 {
 
-    public $tvShow, $seasons = [], $season_number = 1, $episodes = [];
+    public $tvShow, $seasons = [], $season_number = 1, $seasonId, $episodes = [];
 
     public $selectedEpisode, $casts = [];
+    public $user;
 
     public function mount($slug){
 
+        if(Auth::check()) {
+            $this->user = Auth::user();
+        }
         $this->fill([
             'tvShow' => TvShowRepository::getTvShowBySlug($slug)
         ]);
@@ -31,29 +39,120 @@ class Show extends BaseComponent
 
         $this->fill([
             'seasons' => TvShowRepository::getTvShowSeasons($this->tvShow->id),
-            'episodes' => EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->season_number),
+
             'casts' => CastRepository::getCastsByShow($this->tvShow->id)
         ]);
 
-        $data = [
-            'user_id' => auth()->id(),
-            'tv_show_id' => $this->tvShow->id,
-            'episode_id' => $this->selectedEpisode->id ?? NULL,
-            'ip_address' => request()->ip()
-        ];
+        if($this->tvShow->seasons()->exists()) {
+            $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
+        }
+        //dd(Storage::disk('video_disk')->url(Str::slug($this->tvShow->title) . '/' . $this->tvShow->video->uuid . '.mp4'));
 
-        TvShowView::firstOrCreate($data, $data);
+//        $data = [
+//            'user_id' => auth()->id(),
+//            'tv_show_id' => $this->tvShow->id,
+//            'episode_id' => $this->selectedEpisode->id ?? NULL,
+//            'ip_address' => request()->ip()
+//        ];
+
+
+        $tvShowViews = TvShowView::where('user_id',  auth()->id())
+            ->where('ip_address',  request()->ip())
+            ->where('tv_show_id', $this->tvShow->id)
+            ->first();
+
+        if($this->selectedEpisode) {
+            if(!$tvShowViews) {
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                    'episode_id' => $this->selectedEpisode->id,
+                    'season' => $this->season_number
+                ]);
+            } else {
+
+                if($tvShowViews->episode_id == null) {
+
+                    $tvShowViews->episode_id = $this->selectedEpisode->id;
+                    $tvShowViews->season = $this->season_number;
+                    $tvShowViews->save();
+                } else {
+
+                    TvShowView::create([
+                        'user_id' => auth()->id(),
+                        'ip_address' => request()->ip(),
+                        'tv_show_id' => $this->tvShow->id,
+                        'episode_id' => $this->selectedEpisode->id,
+                        'season' => $this->season_number,
+                    ]);
+                }
+            }
+
+        } else {
+            if(!$tvShowViews) {
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                ]);
+            }
+
+        }
+
     }
 
     public function updatedSeasonNumber($value){
-        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->season_number);
+        $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $value);
     }
 
     public function selectEpisode($episodeId){
+
         $this->selectedEpisode = EpisodeRepository::getEpisodeById($episodeId);
 
+        $tvShowViews = TvShowView::where('user_id',  auth()->id())
+            ->where('ip_address',  request()->ip())
+            ->where('tv_show_id', $this->tvShow->id)
+            ->first();
+
+        if(!$tvShowViews) {
+            TvShowView::create([
+                'user_id' => auth()->id(),
+                'ip_address' => request()->ip(),
+                'tv_show_id' => $this->tvShow->id,
+                'episode_id' => $this->selectedEpisode->id,
+                'season' => $this->season_number
+            ]);
+        } else {
+
+            if($tvShowViews->episode_id == null) {
+
+                $tvShowViews->episode_id = $this->selectedEpisode->id;
+                $tvShowViews->season = $this->season_number;
+                $tvShowViews->save();
+            } else {
+
+                TvShowView::create([
+                    'user_id' => auth()->id(),
+                    'ip_address' => request()->ip(),
+                    'tv_show_id' => $this->tvShow->id,
+                    'episode_id' => $this->selectedEpisode->id,
+                    'season' => $this->season_number,
+                ]);
+            }
+        }
+
+        if($this->user && $this->user->subscription) {
+            $episodeVideo = $this->tvShow->video ? Storage::disk(VideoDiskEnum::DISK->value)->url(Str::slug($this->tvShow->title) . '/' . $this->selectedEpisode->video->uuid . '.mp4') : file_path($this->selectedEpisode->recorded_video);
+            $notSubscribed = false;
+        } else {
+            $episodeVideo = null;
+            $notSubscribed = true;
+        }
+
         $this->dispatchBrowserEvent("change-episode", [
-            'video_url' => file_path($this->selectedEpisode->recorded_video),
+            'not_subscribed' => $notSubscribed,
+            'video_url' => $episodeVideo,
             'episode' => $this->selectedEpisode->slug,
             'season' => $this->selectedEpisode->season_number
         ]);
@@ -61,7 +160,7 @@ class Show extends BaseComponent
 
     public function saveToWatchlist($tvShowId){
         try {
-            
+
             $watchlist =  $this->tvShow->watchlists()->where('user_id', auth()->id())->first();
 
             if(!$watchlist){

@@ -6,6 +6,8 @@ use App\Http\Livewire\BaseComponent;
 use App\Repositories\TvShowRepository;
 use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Edit extends BaseComponent
 {
@@ -14,7 +16,7 @@ class Edit extends BaseComponent
 
     public $categories = [], $categories_id = [], $tvShow, $trailer, $casts_id = [], $casts = [];
 
-    public $tags = [], $meta_title, $meta_description, $is_recommended;
+    public $tags = [], $meta_title, $meta_description, $is_recommended, $status;
 
 
     public function mount($id){
@@ -29,12 +31,13 @@ class Edit extends BaseComponent
             'tags' => $this->tvShow->tags,
             'thumbnail' => $this->tvShow->thumbnail,
             'release_date' => $this->tvShow->release_date,
-            'trailer' => $this->tvShow->trailer,
+            //'trailer' => $this->tvShow->trailer,
             'meta_title' => $this->tvShow->meta_title,
             'meta_description' => $this->tvShow->meta_description,
             'categories_id' => $this->tvShow->categories()->get()->pluck('id'),
             'casts_id' =>  $this->tvShow->casts()->get()->pluck('id'),
-            'is_recommended' => $this->tvShow->is_recommended
+            'is_recommended' => $this->tvShow->is_recommended,
+            'status' => $this->tvShow->status == 'published'
         ]);
     }
 
@@ -43,6 +46,7 @@ class Edit extends BaseComponent
     }
 
     public function submit(){
+
         $this->validate([
             'title' => 'required|string',
             'slug' => 'required|unique:tv_shows,slug,' . $this->tvShow->id,
@@ -51,7 +55,7 @@ class Edit extends BaseComponent
             'thumbnail' => 'required',
             'categories_id' => 'required|array',
             'casts_id' => 'required|array',
-            'trailer' => 'required',
+            // 'trailer' => 'required',
             'tags' => 'array',
             'meta_title' => 'nullable',
             'meta_description' => 'nullable',
@@ -63,6 +67,14 @@ class Edit extends BaseComponent
 
 
         try {
+            $directory = 'videos';
+            $files = Storage::disk('public')->allFiles($directory);
+
+            foreach ($files as $file){
+                if(Str::startsWith($file,$directory. "/". $this->tvShow->video->id)){
+                    Storage::disk('public')->delete($file);
+                }
+            }
 
             $data = [
                 'title' => $this->title,
@@ -74,7 +86,8 @@ class Edit extends BaseComponent
                 'trailer' => $this->trailer,
                 'meta_title' => $this->meta_title,
                 'meta_description' => $this->meta_description,
-                'is_recommended' => $this->is_recommended
+                'is_recommended' => $this->is_recommended,
+                'status' => $this->status ? 'published' : 'unpublished'
             ];
 
             throw_unless(TvShowRepository::updateTvShow($data, [

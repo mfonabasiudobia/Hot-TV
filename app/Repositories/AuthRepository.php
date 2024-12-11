@@ -2,12 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Models\OtpVerification;
 use App\Models\User;
 use App\Mail\WelcomeNotification;
 use App\Mail\OtpNotification;
 use App\Mail\OtpNotificationWeb;
 use App\Mail\ForgotPasswordNotification;
 use App\Mail\ForgotPasswordNotificationWeb;
+use Botble\ACL\Models\Role;
 use Mail;
 use DB;
 use URL;
@@ -39,15 +41,38 @@ class AuthRepository {
     }
 
     public static function register($data) : User {
-        $user = User::create(array_merge($data, 
+        $user = User::create(array_merge($data,
         [
             'password' => bcrypt($data['password']),
             'temporary_token' => str()->random(15)
         ]));
 
-        Mail::to($user->email)->send(new WelcomeNotification($user));
+        //Mail::to($user->email)->send(new WelcomeNotification($user));
 
-        $user->roles()->attach([2]); //Assigning User to a Role of Streamer
+        $user->roles()->attach([4]); //Assigning User to a Role of Streamer
+
+        return $user->refresh();
+    }
+
+    public static function registerAsSubscriber($data) : User {
+        $user = User::create(array_merge($data,
+            [
+                'password' => bcrypt($data['password']),
+                'temporary_token' => str()->random(15)
+            ]));
+
+        $subscriberRole = Role::updateOrCreate([
+            'slug' => 'subscriber',
+            'name' => 'Subscriber'
+        ], [
+            'permissions' => [],
+            'description' => 'Subscriber',
+            'is_default' => 0,
+            'create_by' => 1,
+            'updated_by' => 1
+        ]);
+
+        $user->roles()->attach($subscriberRole->id); //Assigning User to a Role of Streamer
 
         return $user->refresh();
     }
@@ -88,7 +113,7 @@ class AuthRepository {
                 session()->flash('email-already-verified-message', true);
 
             }
-            
+
 
             return $user;
         }
@@ -104,9 +129,16 @@ class AuthRepository {
 
 
             if (request()->is('api/*')) {
-                DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
-                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $rand, 'created_at' => now() ]);
+                OtpVerification::updateOrCreate([
+                   'email' => $email
+                ], [
+                    'otp' => $code
+                ]);
+
+//                DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
+//
+//                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $code, 'created_at' => now() ]);
 
                 //Send Forgot token Mail to User here
                 Mail::to($email)->send(new ForgotPasswordNotification($user, $code));
@@ -125,7 +157,7 @@ class AuthRepository {
     }
 
     public static function resetPassword($data) : bool | User {
-    
+
          if (request()->is('api/*')) {
             //We may disable the first condition soon
              if($user = self::getUserByEmail($data['email'], $data['temporary_token'])){
@@ -155,7 +187,7 @@ class AuthRepository {
     }
 
 
-    public static function sendOtp($email, $temporaryToken = null) : bool | int 
+    public static function sendOtp($email, $temporaryToken = null) : bool | int
     {
             $otp = rand(111111, 999999);
 
@@ -164,7 +196,7 @@ class AuthRepository {
                 DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
                 if(request()->is('api/*')) {
-                    Mail::to($user->email)->send(new OtpNotification($user, $otp)); 
+                    // Mail::to($user->email)->send(new OtpNotification($user, $otp));
 
                     DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $otp, 'created_at' => now() ]);
                  }else{
@@ -186,6 +218,6 @@ class AuthRepository {
         })->first();
     }
 
-   
+
 
 }

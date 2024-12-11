@@ -1,7 +1,7 @@
 <section>
     @livewire("admin.gallery.modal.create")
     <section class="space-y-5">
-        <h2 class="font-medium text-xl capitalize">Create Episode</h2>
+        <h2 class="font-medium text-xl capitalize">Update Episode</h2>
 
         <section>
             <form class="grid md:grid-cols-2 gap-5" wire:submit.prevent='submit'>
@@ -34,21 +34,12 @@
                     @error('release_date') <span class="error">{{ $message }}</span> @endError
                 </div>
 
-                <div class="form-group">
-                    <label>Season Number</label>
-                    <select wire:model.defer='season_number' class="form-control">
-                        <option>--Select Season--</option>
-                        @foreach (range(1, 50) as $item)
-                        <option value="{{ $item }}">Season {{ $item }}</option>
-                        @endforeach
-                    </select>
-                    @error('season_number') <span class="error">{{ $message }}</span> @endError
-                </div>
+
 
                 <div class="form-group">
                     <label>Select TV Show</label>
                     <div wire:ignore>
-                        <select wire:model.defer='tv_show_id' class="form-control tv-show">
+                        <select wire:model.defer='tv_show_id' class="form-control tv-show" wire:change="UpdateSeasons">
                             <option>--Select TV Show--</option>
                             @foreach (\App\Models\TvShow::get() as $item)
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>
@@ -57,7 +48,18 @@
                     </div>
                     @error('tv_show_id') <span class="error">{{ $message }}</span> @endError
                 </div>
-                
+
+                <div class="form-group">
+                    <label>Season Number</label>
+                    <select wire:model.defer='season_id' class="form-control">
+                        <option>--Select Season--</option>
+                        @foreach ($seasons as $season)
+                            <option value="{{ $season->id }}">Season {{ $season->season_number }}</option>
+                        @endforeach
+                    </select>
+                    @error('season_number') <span class="error">{{ $message }}</span> @endError
+                </div>
+
                 <div class="form-group">
                     <label>Episode Number</label>
                     <select wire:model.defer='episode_number' class="form-control">
@@ -68,7 +70,7 @@
                     </select>
                     @error('episode_number') <span class="error">{{ $message }}</span> @endError
                 </div>
-                
+
                 <div class="form-group">
                     <label>Duration</label>
                     <select wire:model.defer='duration' class="form-control">
@@ -77,7 +79,7 @@
                         <option value="{{ $item['seconds'] }}">{{ $item['title'] }}</option>
                         @endforeach
                     </select>
-                
+
                     @error('duration') <span class="error">{{ $message }}</span> @endError
                 </div>
 

@@ -2,10 +2,15 @@
 
 namespace App\Http\Livewire\Admin\Shows;
 
+use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
+use App\Repositories\SeasonRepository;
 use App\Repositories\TvShowRepository;
 use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
+use Illuminate\Support\Str;
 
 class Create extends BaseComponent
 {
@@ -14,7 +19,7 @@ class Create extends BaseComponent
 
     public $categories = [], $categories_id = [], $trailer, $casts_id = [], $casts = [];
 
-    public $tags = [], $meta_title, $meta_description, $is_recommended = 0;
+    public $tags = [], $meta_title, $meta_description, $is_recommended = 0, $status = 'unpublished';
 
     public function mount(){
         $this->fill([
@@ -59,20 +64,43 @@ class Create extends BaseComponent
                 'trailer' => $this->trailer,
                 'meta_title' => $this->meta_title,
                 'meta_description' => $this->meta_description,
-                'is_recommended' => $this->is_recommended
+                'is_recommended' => $this->is_recommended,
+                'status' => $this->status ? 'published' : 'unpublished'
             ];
 
-            throw_unless(TvShowRepository::createTvShow($data, [
+            $tvShow = throw_unless(TvShowRepository::createTvShow($data, [
                 'categories' => $this->categories_id,
                 'casts' => $this->casts_id,
             ]), "Please try again");
+
+            $season = SeasonRepository::createSeason([
+                'title' => 'Season 1',
+                'slug' => 'season-1',
+                'description' => $this->description,
+                'release_date' => $this->release_date,
+                'tv_show_id' => $tvShow->id,
+                'season_number' => 'Season 1',
+            ]);
+
+            $video = $tvShow->video()->create([
+                'uuid' => Str::uuid(),
+                'title' => $this->title,
+                'disk' => VideoDiskEnum::DISK->value,
+                'original_name' =>  $this->trailer->getClientOriginalName(),
+                'path' => $this->trailer->store(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/'. $season->slug, VideoDiskEnum::DISK->value),
+            ]);
+
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug . '/'. $season->slug));
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 
             return redirect()->route('admin.tv-show.list');
 
         } catch (\Throwable $e) {
-            toast()->danger($e->getMessage())->push();
+            dd($e->getMessage());
+            //toast()->danger($e->getMessage())->push();
+
         }
     }
 

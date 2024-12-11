@@ -15,11 +15,12 @@ class Home extends BaseComponent
         $slug = Slug::where('key', "homepage")->firstorFail();
 
         $this->page = Page::findOrFail($slug->reference_id);
+
     }
 
      public function saveToWatchlist($item){
         try {
-            
+
             $watchlist =  $item->watchlists()->where('user_id', auth()->id())->first();
 
             if(!$watchlist){

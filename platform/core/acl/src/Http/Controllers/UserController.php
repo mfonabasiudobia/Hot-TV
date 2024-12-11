@@ -93,10 +93,9 @@ class UserController extends BaseController
         }
     }
 
-    public function getUserProfile(int|string $id, Request $request, FormBuilder $formBuilder)
+    public function getUserProfile(User $user, Request $request, FormBuilder $formBuilder)
     {
-        $user = User::query()->findOrFail($id);
-
+        $avatarUrl = $user->avatarUrl;
         Assets::addScripts(['bootstrap-pwstrength', 'cropper'])
             ->addScriptsDirectly('vendor/core/core/acl/js/profile.js');
 
@@ -131,12 +130,11 @@ class UserController extends BaseController
         $form = $form->renderForm();
         $passwordForm = $passwordForm->renderForm();
 
-        return view('core/acl::users.profile.base', compact('user', 'form', 'passwordForm', 'canChangeProfile'));
+        return view('core/acl::users.profile.base', compact('user', 'form', 'passwordForm', 'canChangeProfile', 'avatarUrl'));
     }
 
-    public function postUpdateProfile(int|string $id, UpdateProfileRequest $request, BaseHttpResponse $response)
+    public function postUpdateProfile(User $user, UpdateProfileRequest $request, BaseHttpResponse $response)
     {
-        $user = User::query()->findOrFail($id);
 
         $currentUser = $request->user();
 

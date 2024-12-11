@@ -18,7 +18,7 @@
                     {!! $shortcode->description !!}
                 </div>
 
-                <div class="flex items-center space-x-5">
+                <!-- <div class="flex items-center space-x-5">
                     <a href="{!! $shortcode->button_primary_url !!}"
                         class="btn btn-danger btn-lg rounded-xl py-3 flex justify-between items-center space-x-5">
                         <span>{!! $shortcode->button_primary_label !!}</span>
@@ -29,21 +29,22 @@
                     <button class="btn border btn-lg rounded-xl py-3 hover:bg-danger hover:border-danger">
                         {!! $shortcode->button_secondary_label !!}
                     </button>
-                </div>
+                </div> -->
             </section>
 
             <section class="order-1 md:order-2 relative">
-                <img src="{{ file_path($shortcode->tv_channel_thumbnail) }}" alt="" />
+{{--                <img src="{{ file_path($shortcode->tv_channel_thumbnail) }}" alt="" />--}}
 
-                {{-- <section class="w-full max-h-screen relative">
-                    <video id="player" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
+                <section class="w-full max-h-screen relative">
+                    <video id="player" src="{{ file_path('files/BringemInBountyTrailer-Final.mov') }}" controls autoplay loop playsinline style="width: 100%;" class="max-h-screen"></video>
                     <div class="custom-loader absolute left-[45%] top-[45%]" id="loading-button"></div>
-                </section> --}}
+                </section>
 
-                <a href="{{ route('live-channel.show') }}">
-                    <img src="{{ asset('svg/btn-play-white.svg') }}" alt=""
-                        class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-                </a>
+{{--                <a href="{{ route('live-channel.show') }}">--}}
+{{--                    <img src="{{ asset('svg/btn-play-white.svg') }}" alt=""--}}
+{{--                        class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />--}}
+{{--                </a>--}}
             </section>
         </div>
-</section>
+    </section>
+

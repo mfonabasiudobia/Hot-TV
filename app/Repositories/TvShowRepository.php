@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Season;
 use App\Models\TvShow;
 use App\Models\Episode;
 use App\Models\TvShowView;
@@ -10,36 +11,38 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TvShowRepository {
 
-    public static function all($sort, $s= null) 
+    public static function all($sort, $s= null)
     {
         return TvShow::query()
-        ->when($sort['sortByTitle'], function($q) use($sort) {
-            $q->orderBy('title', $sort['sortByTitle']);
-        })
-        ->when($sort['sortByDate'], function($q) use($sort) {
-            $q->orderBy('created_at', $sort['sortByDate']);
-        })
-        ->when($sort['sortByTime'] === "month", function($q) use($sort) {
-            $q->whereYear('created_at', now()->year)
-                ->whereMonth('created_at', now()->month);
-        })
-        ->when($sort['sortByTime'] === "today", function($q) use($sort) {
-            $q->whereDate('created_at', now()->toDateString());
-        })
-        ->when($sort['sortByTime'] === "week", function($q) use($sort) {
-            $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-        })
-        ->when($s, function($q) use($s) {
-            $q->where('title', 'like', '%' . $s . '%')
-            ->orWhereHas('categories', function ($q) use ($s) {
-                $q->where('name', 'like', '%' . $s . '%');
-            });
-        });
+            ->when($sort['sortByTitle'], function($q) use($sort) {
+                $q->orderBy('title', $sort['sortByTitle']);
+            })
+            ->when($sort['sortByDate'], function($q) use($sort) {
+                $q->orderBy('created_at', $sort['sortByDate']);
+            })
+            ->when($sort['sortByTime'] === "month", function($q) use($sort) {
+                $q->whereYear('created_at', now()->year)
+                    ->whereMonth('created_at', now()->month);
+            })
+            ->when($sort['sortByTime'] === "today", function($q) use($sort) {
+                $q->whereDate('created_at', now()->toDateString());
+            })
+            ->when($sort['sortByTime'] === "week", function($q) use($sort) {
+                $q->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            })
+            ->when($s, function($q) use($s) {
+                $q->where('title', 'like', '%' . $s . '%')
+                ->orWhereHas('categories', function ($q) use ($s) {
+                    $q->where('name', 'like', '%' . $s . '%');
+                });
+            })
+            //->has('seasons')
+            ->where('status', 'published');
 
-        
+
     }
 
-    public static function getTvShowById(int $id) : TvShow 
+    public static function getTvShowById(int $id) : TvShow
     {
             return TvShow::findOrFail($id);
     }
@@ -63,7 +66,7 @@ class TvShowRepository {
     public static function updateTvShow(array $data, $others, int $id) : TvShow
     {
          $tvShow = TvShow::find($id);
-         
+
          $tvShow->update($data);
 
          $tvShow->categories()->sync($others['categories']);
@@ -73,9 +76,12 @@ class TvShowRepository {
          return $tvShow;
     }
 
-    public static function getTvShowSeasons($tvshowId) : array{
-        return Episode::groupBy('tv_show_id', 'season_number')->distinct()->where('tv_show_id',
-        $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
+    public static function getTvShowSeasons($tvshowId)
+    {
+//        return Episode::groupBy('tv_show_id', 'season_number')->distinct()->where('tv_show_id',
+//        $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
+
+        return Season::where('tv_show_id', $tvshowId)->get();
     }
 
     public static function getTvShowsByCategory($categoryId) : Collection{
@@ -85,7 +91,8 @@ class TvShowRepository {
     }
 
     public static function recentlyWatched($user = null) : Collection {
-         return Episode::whereHas('views', function($q) use($user) {
+
+        return Episode::whereHas('views', function($q) use($user) {
             $q->when($user, function($q) use($user) {
                 $q->latest()->where('user_id', $user->id);
             });

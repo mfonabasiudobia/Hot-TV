@@ -2,20 +2,81 @@
 
 namespace App\Http\Livewire\User\Partials;
 
+use Botble\Media\Models\MediaFile;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 
 class Nav extends Component
 {
 
-    public $currentNav = 'favourites';
+    public function show()
+{
+    $this->user = Auth::user();
 
-    public function mount(){
+    if (request()->has('p')) {
+        $this->currentNav = request('p');
+    }
+
+    $order = SubscriptionOrder::where('user_id', $this->user->id)
+        ->where('status', 'paid')
+        ->first();
+
+    if ($order) {
+        $this->subscriptionPlan = $order->subscription->name;
+    } else {
+        $this->subscriptionPlan = 'Not subscribe';
+    }
+
+    return view('your.view.name', [
+        'subscriptionPlan' => $this->subscriptionPlan,
+    ]);
+}
+
+
+    public $currentNav = 'wishlist';
+    public $avatar = null;
+    public $user;
+    public $subscriptionPlan;
+
+    protected $listeners = ['reRender'];
+
+    public function mount()
+    {
+
+        $this->user = Auth::user();
         if(request()->has('p')){
             $this->currentNav = request('p');
         }
+
+        $order = SubscriptionOrder::where('user_id', $this->user->id)
+        ->where('status', 'paid')
+        ->first();
+
+        if($order) {
+            $this->subscriptionPlan = $order->subscription->name;
+        } else {
+            $this->subscriptionPlan = 'Not subscribe';
+        }
+
+        $this->avatar = $this->user->avatarUrl;
+//        $media = MediaFile::query()->where('id', user()->avatar_id)->first();
+//
+//        if($media) {
+//            $this->avatar = asset('storage/' . $media->url);
+//        } else {
+//            $this->avatar = asset('images/user-icon.jpg');
+//        }
     }
 
-    public function setNav($value){
+    public function reRender()
+    {
+        $this->mount();
+        $this->render();
+    }
+
+    public function setNav($value)
+    {
         $this->currentNav = $value;
 
         $this->emit('setNav', $value);
@@ -27,4 +88,6 @@ class Nav extends Component
     {
         return view('livewire.user.partials.nav');
     }
+
+    
 }

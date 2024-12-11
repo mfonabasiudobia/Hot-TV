@@ -17,6 +17,9 @@
                 @foreach (\App\Repositories\TvShowRepository::getRecommendedTvShows(15) as $item)
                 <a href="{{ route('tv-shows.show', ['slug' => $item->slug]) }}"
                     class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
+                    @if (\Carbon\Carbon::parse($item->release_date)->isFuture())
+                        <span class="p-3 mb-2 bg-danger text-white">Coming Soon...</span>
+                    @endif
                     <img src="{{ file_path($item->thumbnail) }}" alt=""
                         class="object-cover h-[284px] w-full rounded-lg" />
 
