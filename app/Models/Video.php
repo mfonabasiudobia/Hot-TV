@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -16,7 +17,8 @@ class Video extends Model
 
     public function getPathAttribute($value)
     {
-        return preg_replace('/\.[^.]+$/', '.m3u8', $value);
+
+        return Storage::disk(\App\Enums\VideoDiskEnum::DISK->value)->url(preg_replace('/\.[^.]+$/', '.m3u8', $value));
     }
 
     public function videoable(): MorphTo
