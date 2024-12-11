@@ -15,7 +15,8 @@ class PodcastResource extends JsonResource
             "description" => $this->description,
             "thumbnail" => asset('storage/' . $this->thumbnail),
             "recorded_video" => asset('storage/' .$this->recorded_video),
-            "views" => $this->views
+            "views" => $this->views,
+            "video" =>$this->video,
         ];
     }
 }
