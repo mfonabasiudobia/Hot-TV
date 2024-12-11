@@ -11,20 +11,21 @@
                             $isSubscribed = $user && $user->subscription && $user->subscription->subscription_id == $subscription->id;
                             $hasSubscription = $user && $user->subscription;
                             $isUpgrade = $hasSubscription && $user->subscription->subscription->price < ($subscription->price ?? 0);
-                            
+
                             if ($isSubscribed) {
+
                                 $urlText = 'Current Plan';
                                 $url = null;
                             } elseif ($hasSubscription) {
                                 $urlText = $isUpgrade ? 'Upgrade' : 'Downgrade';
-                                $url = $user->subscription->payment_method_type == 'stripe' 
+                                $url = $user->subscription->payment_method_type == 'stripe'
                                     ? route('upgrade-plan-stripe', $subscription->id)
-                                    : route('upgrade-plan-paypal', ['planId' => $subscription->id]);
+                                    : route('upgrade-plan-paypal', $subscription->id);
                             } else {
                                 $urlText = $plans[0]->trail ? "Start {$plans[0]->trail_period}-Day Free Trial" : 'Select Plan';
-                                $url = $plans[0]->trail 
+                                $url = $plans[0]->trail
                                     ? route('register', $subscription->id)
-                                    : route('register', ['planId' => $subscription->id]);
+                                    : route('register', $subscription->id);
                             }
                         @endphp
                         {
@@ -67,20 +68,20 @@
                                                 $isSubscribed = $user && $user->subscription && $user->subscription->subscription_id == $subscription->id;
                                                 $hasSubscription = $user && $user->subscription;
                                                 $isUpgrade = $hasSubscription && $user->subscription->price < ($subscription->price ?? 0);
-                                                
+
                                                 if ($isSubscribed) {
                                                     $urlText = 'Current Plan';
                                                     $url = null;
                                                 } elseif ($hasSubscription) {
                                                     $urlText = $isUpgrade ? 'Upgrade' : 'Downgrade';
-                                                    $url = $user->subscription->payment_method_type == 'stripe' 
+                                                    $url = $user->subscription->payment_method_type == 'stripe'
                                                         ? route('upgrade-plan-stripe', $subscription->id)
-                                                        : route('upgrade-plan-paypal', ['planId' => $subscription->id]);
+                                                        : route('upgrade-plan-paypal', $subscription->id);
                                                 } else {
                                                     $urlText = $plan->trail ? 'Start ' . $plan->trail_period . '-Day Free Trial' : 'Select Plan';
-                                                    $url = $plan->trail 
+                                                    $url = $plan->trail
                                                         ? route('register', $subscription->id)
-                                                        : route('register', ['planId' => $subscription->id]);
+                                                        : route('register', $subscription->id);
                                                 }
                                             @endphp
                                             {

@@ -18,8 +18,8 @@ class PaypalController extends Controller
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
-        $oldSubscriptionId = $subscription->paypal_subscription_id; // Old subscription ID
-        $newPlanId = $subscriptionPlan->id; // New plan ID
+        $oldSubscriptionId = auth()->user()->subscription->paypal_subscription_id; // Old subscription ID
+        $newPlanId = $subscription->paypal_plan_id; // New plan ID
 
         // Step 1: Cancel the old subscription
         $provider->cancelSubscription($oldSubscriptionId, 'Upgrading to a new plan');
@@ -44,16 +44,17 @@ class PaypalController extends Controller
                     'payer_selected' => 'PAYPAL',
                     'payee_preferred' => 'IMMEDIATE_PAYMENT_REQUIRED',
                 ],
-                'return_url' => route('paypal-checkout'),
+                // 'return_url' => route('paypal-checkout'),
+                'return_url' => route('plan.paypal.payment-verification.success'),
                 'cancel_url' => route('plan.paypal.payment-cancel'),
             ],
         ]);
 
         $newSubscriptionId = $newSubscription['id'];
 
-// Save the new subscription
+        // Save the new subscription
         $user->subscription->paypal_subscription_id = $newSubscriptionId;
-        $user->subscription->plan_id = $newPlanId;
+        // $user->subscription->plan_id = $newPlanId;
         $user->subscription->status = 'active';
         $user->subscription->save();
 

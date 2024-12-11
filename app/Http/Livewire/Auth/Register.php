@@ -54,20 +54,6 @@ class Register extends BaseComponent
 
             $stripePlanId = $this->subscription->stripe_plan_id;
 
-            try {
-                $price = Price::retrieve($stripePlanId);
-                if(!$price) {
-                    dd('chcking it');
-                }
-            } catch (InvalidRequestException $e) {
-                $product = $this->getOrCreateProduct($this->subscription->name);
-                dd($product);
-                $price = $this->createPrice($product->id, $this->subscription->price, 'usd');
-
-                $this->subscription->stripe_plan_id = $price->id;
-                $this->subscription->save();
-            }
-
             $customer = Customer::create([
                 'email' => $this->email,
                 'name' => "$this->first_name $this->last_name"
@@ -123,7 +109,7 @@ class Register extends BaseComponent
             } catch (Exception $e) {
                 $product = $this->getOrCreatePayPalProduct($this->subscription->name);
                 $paypalPlan = $this->createPayPalPlan($product['id'], $this->subscription->price);
-            
+                
                 // Update subscription with new PayPal plan ID
                 $this->subscription->paypal_plan_id = $paypalPlan['id'];
                 $this->subscription->save();
@@ -252,7 +238,7 @@ class Register extends BaseComponent
             'active' => true,
         ]);
     }
-    
+
     private function getPayPalPlan(string $paypalPlanId): array
     {
         $provider = $this->getPayPalProvider();
