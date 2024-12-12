@@ -198,6 +198,7 @@ class Show extends BaseComponent
                 ->selectRaw('SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) as total_duration')
                 ->value('total_duration');
         $duration = preg_replace('/\..*/', '', $duration);
+        if($duration == '') return 0;
 
         list($hours, $minutes, $seconds) = explode(':', $duration);
 
