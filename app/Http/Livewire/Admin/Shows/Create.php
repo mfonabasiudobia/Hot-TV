@@ -82,12 +82,15 @@ class Create extends BaseComponent
                 'season_number' => 'Season 1',
             ]);
 
+            $uuid = Str::uuid();
+            $filename = $uuid . '.' . $this->trailer->getClientOriginalExtension();
+
             $video = $tvShow->video()->create([
-                'uuid' => Str::uuid(),
+                'uuid' => $uuid,
                 'title' => $this->title,
                 'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->trailer->getClientOriginalName(),
-                'path' => $this->trailer->store(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/'. $season->slug, VideoDiskEnum::DISK->value),
+                'path' => $this->trailer->storeAs(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/'. $season->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
 
             dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug . '/'. $season->slug));

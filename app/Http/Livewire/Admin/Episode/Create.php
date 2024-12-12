@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Episode;
 
 use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\CalculateDuration;
 use App\Jobs\ConvertVideoForDownloadingJob;
 use App\Jobs\ConvertVideoForStreamingJob;
 use App\Repositories\SeasonRepository;
@@ -68,19 +69,18 @@ class Create extends BaseComponent
             ];
 
             $episode = throw_unless(EpisodeRepository::createEpisode($data), "Please try again");
+            $uuid = Str::uuid();
+            $filename = $uuid . '.' . $this->recorded_video->getClientOriginalExtension();
+
             $video = $episode->video()->create([
-                'uuid' => Str::uuid(),
+                'uuid' => $uuid,
                 'title' => $this->title,
                 'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
-                'path' => $this->recorded_video->store(VideoDiskEnum::TV_SHOWS->value . $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug, VideoDiskEnum::DISK->value),
+                'path' => $this->recorded_video->storeAs(VideoDiskEnum::TV_SHOWS->value . $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
 
-            $ffmpegVideo = FFMpeg::fromDisk($video->disk)->open($video->path);
-            $durationInSeconds = $ffmpegVideo->getFormat()->get('duration');
-            $episode->duration = gmdate('H:i:s', $durationInSeconds);
-            $episode->save();
-
+            dispatch(new CalculateDuration($video, $episode));
             dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
             dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
 

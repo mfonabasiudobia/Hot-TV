@@ -94,7 +94,7 @@
                             @if($trailer)
                                 <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
                             @else
-                                <video class='w-auto h-[20vh]' src="{{ Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') }}" controls></video>
+                                <video class='w-auto h-[20vh]' src="{{ Storage::disk('s3')->url($tvShow->video->path) }}" controls></video>
                             @endif
 
                         @else

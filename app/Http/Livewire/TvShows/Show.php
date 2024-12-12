@@ -17,6 +17,7 @@ class Show extends BaseComponent
 {
 
     public $tvShow, $seasons = [], $season_number = 1, $seasonId, $episodes = [];
+    public $showDuration;
 
     public $selectedEpisode, $casts = [];
     public $user;
@@ -29,6 +30,8 @@ class Show extends BaseComponent
         $this->fill([
             'tvShow' => TvShowRepository::getTvShowBySlug($slug)
         ]);
+
+        // dd($this->tvShow->video);
 
         if(request()->has(['season', 'episode'])){
             $this->fill([
@@ -99,6 +102,8 @@ class Show extends BaseComponent
             }
 
         }
+
+        $this->setShowDuration();
 
     }
 
@@ -185,5 +190,19 @@ class Show extends BaseComponent
             'seo_title' => $this->tvShow->title,
             'seo_description' => sanitize_seo_description($this->tvShow->description)
         ]);
+    }
+
+    public function setShowDuration()
+    {
+        $duration = $this->tvShow->episodes()
+                ->selectRaw('SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) as total_duration')
+                ->value('total_duration');
+        $duration = preg_replace('/\..*/', '', $duration);
+
+        list($hours, $minutes, $seconds) = explode(':', $duration);
+
+        $totalSeconds = ($hours * 3600) + ($minutes * 60) + $seconds;
+
+        $this->showDuration = $totalSeconds;
     }
 }
