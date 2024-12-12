@@ -24,7 +24,8 @@ class ListResource extends JsonResource
             'seasons' => SeasonResource::collection($this->seasons),
             'duration' => convert_seconds_to_time($this->episodes()->sum('duration')),
             'cast' => CastResource::collection($this->whenLoaded('casts')),
-            'categories' => ShowCategoryResource::collection($this->whenLoaded('categories'))
+            'categories' => ShowCategoryResource::collection($this->whenLoaded('categories')),
+            "video" => $this->video
         ];
     }
 }

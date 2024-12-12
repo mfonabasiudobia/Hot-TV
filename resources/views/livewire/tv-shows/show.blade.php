@@ -11,7 +11,7 @@
                 <div class="video-container" wire:ignore>
                     @if(now()->lt($tvShow->release_date))
                         <div class="p-3 mb-2 bg-danger text-white">
-                            Coming Soon... (This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }})
+                            This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }}
                         </div>
                     @endif
                     @if(!(!is_null($user) && $user->subscription))
@@ -71,7 +71,7 @@
                             @if($selectedEpisode)
                                 <span>{{ convert_seconds_to_time($selectedEpisode->duration) }}</span>
                             @else
-                                <span>{{ convert_seconds_to_time($tvShow->episodes()->sum('duration')) }}</span>
+                                <span>{{ convert_seconds_to_time($showDuration) }}</span>
                             @endIf
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                     @endIf
                 </section>
 
-                @if(count($seasons) > 1)
+                @if(count($seasons) > 0)
                 <section class="bg-dark p-5 rounded-2xl space-y-2">
                     <div class="flex justify-end text-sm space-x-2 relative" wire:ignore>
                         <select
@@ -212,6 +212,90 @@
 </div>
 
 @push('script')
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const defaultOptions = {
+            muted : true,
+            autoplay: true,
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+            settings: ['captions', 'quality', 'speed', 'loop'],
+            quality: {
+                default: 720,
+                options: [360, 480, 720, 1080],
+                forced: true,
+                onChange: (quality) => {
+                    console.log(`Selected quality: ${quality}`);
+                }
+            }
+        };
+
+        // const player = new Plyr('#player', defaultOptions);
+        const video = document.getElementById('player');
+        // const source = "https://hts-hot-tv-2.s3.eu-north-1.amazonaws.com/podcasts/Cumque%20nisi%20architec/2ce7d537-d5c9-4041-8384-583f0f91f93b.m3u8";
+        const source = "{{ $tvShow->video ? $tvShow->video->stream_path : file_path($tvShow->trailer) }}";
+
+        if (!Hls.isSupported()) {
+            video.src = source;
+            var player = new Plyr(video, defaultOptions);
+        } else {
+            // For more Hls.js options, see https://github.com/dailymotion/hls.js
+            const hls = new Hls();
+            hls.loadSource(source);
+
+            // From the m3u8 playlist, hls parses the manifest and returns
+            // all available video qualities. This is important, in this approach,
+            // we will have one source on the Plyr player.
+            hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                // Transform available levels into an array of integers (height values).
+                const availableQualities = hls.levels.map((l) => l.height)
+                availableQualities.unshift(0) //prepend 0 to quality array
+                console.log('available qualities', hls.levels)
+                // Add new qualities to option
+                defaultOptions.quality = {
+                    default: 0, //Default - AUTO
+                    options: availableQualities,
+                    forced: true,
+                    onChange: (e) => updateQuality(e),
+                }
+                // Add Auto Label
+                defaultOptions.i18n = {
+                    qualityLabel: {
+                        0: 'Auto',
+                    },
+                }
+
+                hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
+                    var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
+                    if (hls.autoLevelEnabled) {
+                        span.innerHTML = `AUTO (${hls.levels[data.level].height}p)`
+                    } else {
+                        span.innerHTML = `AUTO`
+                    }
+                })
+
+                // Initialize new Plyr player with quality options
+                var player = new Plyr(video, defaultOptions);
+            });
+
+            hls.attachMedia(video);
+            window.hls = hls;
+        }
+
+        function updateQuality(newQuality) {
+            if (newQuality === 0) {
+                window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+            } else {
+                window.hls.levels.forEach((level, levelIndex) => {
+                if (level.height === newQuality) {
+                    console.log("Found quality match with " + newQuality);
+                    window.hls.currentLevel = levelIndex;
+                }
+                });
+            }
+        }
+    });
+</script>
 <script>
     function savePlaybackProgress(currentTime) {
         fetch('/api/v1/playedtime', {
@@ -263,13 +347,13 @@
              // }
          });
 
-         document.addEventListener('DOMContentLoaded', () => {
-             const player = new Plyr('#player', {
-                settings: ['captions', 'quality', 'speed', 'loop'],
-                
-                autoplay: true, // Autoplay is initially set to false
-             });
-         });
+        //  document.addEventListener('DOMContentLoaded', () => {
+        //      const player = new Plyr('#player', {
+        //         settings: ['captions', 'quality', 'speed', 'loop'],
+
+        //         autoplay: true, // Autoplay is initially set to false
+        //      });
+        //  });
 
          document.addEventListener('change-episode', (event) => {
              if(!event.detail.not_subscribed) {

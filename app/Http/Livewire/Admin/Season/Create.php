@@ -57,16 +57,20 @@ class Create extends BaseComponent
                 'recorded_video' => $this->recorded_video,
                 'tv_show_id' => $this->tv_show_id,
                 'season_number' => $this->season_number,
+                'status'    => 'published'
             ];
 
             $season = throw_unless(SeasonRepository::createSeason($data), "Please try again");
 
+            $uuid = Str::uuid();
+            $filename = $uuid . "." . $this->recorded_video->getClientOriginalName();
+
             $video = $season->video()->create([
-                'uuid' => Str::uuid(),
+                'uuid' => $uuid,
                 'title' => $this->title,
                 'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
-                'path' => $this->recorded_video->store(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug . '/'. $season->slug, VideoDiskEnum::DISK->value),
+                'path' => $this->recorded_video->storeAs(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug . '/'. $season->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
 
             dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $season->tvShow->slug . '/'. $season->slug));

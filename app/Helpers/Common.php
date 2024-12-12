@@ -102,6 +102,8 @@ function get_seconds_in_time_array() {
 
 function convert_seconds_to_time($seconds){
     // Calculate hours and minutes
+    $seconds = (float) $seconds;
+
     $hours = floor($seconds / 3600);
     $minutes = floor(($seconds % 3600) / 60);
 

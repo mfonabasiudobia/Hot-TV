@@ -33,7 +33,7 @@ class Season extends Model
 
     public function tvShow()
     {
-        return $this->hasOne(TvShow::class);
+        return $this->belongsTo(TvShow::class);
     }
 
     public function createdAt()
