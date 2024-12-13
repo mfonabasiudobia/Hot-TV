@@ -39,7 +39,7 @@ class RideRequestEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('ride-request.' . $this->drive->id);
+        return new PrivateChannel('cusomter.' . $this->customer_id);
     }
 
     public function broadcastAs()

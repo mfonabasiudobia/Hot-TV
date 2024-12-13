@@ -9,6 +9,8 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Ride;
+use App\Models\User;
 
 class RideAccepted
 {
@@ -36,7 +38,7 @@ class RideAccepted
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`ride-request.${$this->ride->user_id}`);
+        return new PrivateChannel(`driver.${$this->ride->user_id}`);
     }
 
     public function broadcastAs()
