@@ -9,6 +9,8 @@ use App\Models\RideDuration;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Events\RideRequestEvent;
+use App\Repositories\DriverRepository;
 
 class RequestController extends Controller
 {
@@ -85,6 +87,12 @@ class RequestController extends Controller
                         "ride_id" => ["integerValue" => $rideRequest->id],
                     ]
                 ];
+
+                $riders = DriverRepository::onlineRiders();
+
+                foreach ($riders as $rider) {
+                    dispatch(event(new RideRequestEvent($rideRequest, $rider, $rideRequest->user_id)))->toOthers();
+                }
 
                 $response = Http::withToken($tokenString)
                     ->patch($firestoreUrl, $updateData);
