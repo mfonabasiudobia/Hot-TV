@@ -21,3 +21,13 @@ Broadcast::channel('job-progress.{jobId}', function () {
     return true;
     return auth()->user()->super_user;
 });
+
+Broadcast::channel('customer.{userId}', function () {
+    return true;
+});
+
+Broadcast::channel('driver.{userId}', function () {
+    return true;
+});
+
+
