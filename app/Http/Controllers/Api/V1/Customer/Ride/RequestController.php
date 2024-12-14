@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1\Customer\Ride;
 
-use App\Enums\Ride\StatusEnum;
+use App\Enums\Ride\DriverRideStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Customer\Ride\Request;
+use App\Jobs\ProcessRideRequest;
 use App\Models\RideDuration;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Auth;
@@ -88,11 +89,16 @@ class RequestController extends Controller
                 //     ]
                 // ];
 
-                $riders = DriverRepository::onlineRiders();
+                // $riders = DriverRepository::onlineRiders($rideRequest);
+                // dispatch(new ProcessRideRequest($rideRequest, $riders, $rideRequest->customer));
 
-                foreach ($riders as $rider) {
-                    event(new RideRequestEvent($rideRequest, $rider, $rideRequest->user_id));
-                }
+                $driver = DriverRepository::getNextAvailableDriver($rideRequest);
+                $driver->ride_responses()->create([
+                    'ride_id' => $rideRequest->id,
+                    'status' => DriverRideStatusEnum::PENDING,
+                ]);
+
+                event(new RideRequestEvent($rideRequest, $driver, $rideRequest->user_id));
 
                 // $response = Http::withToken($tokenString)
                 //     ->patch($firestoreUrl, $updateData);
@@ -103,8 +109,7 @@ class RequestController extends Controller
                     'message' => 'Ride request created',
                     'data' => [
                         'id' => $rideRequest->id,
-                        // 'document_id' => $documentId,
-                        'riders' => $riders
+                        // 'document_id' => $documentId
                     ]
                 ]);
             // } else {

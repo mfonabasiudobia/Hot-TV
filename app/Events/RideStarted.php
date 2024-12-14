@@ -40,7 +40,7 @@ class RideStarted implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`customer.{$this->customer->user_id}`);
+        return new PrivateChannel('customer'. $this->customer->id);
     }
 
     public function broadcastAs()

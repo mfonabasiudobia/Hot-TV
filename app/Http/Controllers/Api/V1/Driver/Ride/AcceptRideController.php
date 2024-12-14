@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Driver\Ride;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Enums\Ride\StatusEnum;
+use App\Enums\Ride\DriverRideStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Driver\Ride\DriverRideRequest;
 use App\Models\User;
@@ -55,25 +56,49 @@ class AcceptRideController extends Controller
             // ->patch($firestoreUrl, $updateData);
 
             // if ($response->successful()) {
-
-                $ride->driver_latitude = $latitude;
-                $ride->driver_longitude = $longitude;
-                $ride->status = StatusEnum::ACCEPTED->value;
-                $ride->driver_id = $user->id;
-
-                $ride->save();
-
-                $driver = User::find($user->id);
-                event(new RideAccepted($ride, $driver, $ride->customer));
-
+            if(! $user->hasRideEntry($ride)){
                 return response()->json([
                     'success' => true,
-                    'message' => ApiResponseMessageEnum::RIDE_REQUESTED->value,
+                    'message' => ApiResponseMessageEnum::RIDE_RESPONSE_ENTRY_MISSING->value,
                     'data' => [
                         'id' => $ride->id,
                         'document_id' => $ride->document_id
                     ]
                 ]);
+            }
+
+            if($ride->status == StatusEnum::ACCEPTED) {
+                return response()->json([
+                    'success' => true,
+                    'message' => ApiResponseMessageEnum::RIDE_ALREADY_ACCEPTED->value,
+                    'data' => [
+                        'id' => $ride->id,
+                        'document_id' => $ride->document_id
+                    ]
+                ]);
+            }
+
+            $ride->driver_latitude = $latitude;
+            $ride->driver_longitude = $longitude;
+            $ride->status = StatusEnum::ACCEPTED->value;
+            $ride->driver_id = $user->id;
+
+            $ride->save();
+
+            $user->ride_responses()->where('ride_id', $ride->id)->update([
+                'status' => DriverRideStatusEnum::ACCEPTED,
+            ]);
+
+            event(new RideAccepted($ride, $ride->driver, $ride->customer));
+
+            return response()->json([
+                'success' => true,
+                'message' => ApiResponseMessageEnum::RIDE_ACCEPTED->value,
+                'data' => [
+                    'id' => $ride->id,
+                    'document_id' => $ride->document_id
+                ]
+            ]);
             // } else {
             //     return response()->json([
             //         'success' => false,

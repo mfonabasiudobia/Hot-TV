@@ -6,6 +6,7 @@ use App\Enums\User\RoleEnum;
 use App\Models\Device;
 use App\Models\Ride;
 use App\Models\RideBooking;
+use App\Models\DriverRideResponse;
 use Botble\ACL\Notifications\ResetPasswordNotification;
 use Botble\ACL\Traits\PermissionTrait;
 use Botble\Base\Casts\SafeContent;
@@ -282,9 +283,33 @@ class User extends BaseModel implements
         return $this->hasMany(Device::class);
     }
 
+    public function ride_responses(): HasMany
+    {
+        return $this->hasMany(DriverRideResponse::class, 'driver_id', 'id');
+    }
+
     public function hasDevice($deviceId): bool
     {
         return $this->devices()->where('device_id', $deviceId)->exists();
     }
 
+    public function hasRideEntry($ride): bool
+    {
+        return $this->ride_responses()->where('ride_id', $ride->id)->exists();
+    }
+
+    public function hasRejectedRide($ride): bool
+    {
+        return $this->ride_responses()->where('ride_id', $ride->id)->where('status', 'rejected')->exists();
+    }
+
+    public function hasAcceptedRide($ride): bool
+    {
+        return $this->ride_responses()->where('ride_id', $ride->id)->where('status', 'accepted')->exists();
+    }
+
+    public function hasPendingRide($ride): bool
+    {
+        return $this->ride_responses()->where('ride_id', $ride->id)->where('status', 'pending')->exists();
+    }
 }

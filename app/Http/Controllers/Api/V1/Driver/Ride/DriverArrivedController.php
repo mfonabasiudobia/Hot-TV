@@ -68,7 +68,7 @@ class DriverArrivedController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => ApiResponseMessageEnum::RIDE_REQUESTED->value,
+                    'message' => ApiResponseMessageEnum::DRIVER_ARRIVED->value,
                     'data' => [
                         'id' => $ride->id,
                         'document_id' => $ride->document_id

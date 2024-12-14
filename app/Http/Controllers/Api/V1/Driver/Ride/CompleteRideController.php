@@ -63,8 +63,7 @@ class CompleteRideController extends Controller
 
                 $ride->save();
 
-                $driver = User::find($user->id);
-                EVENT(new RideCompleted($ride, $driver, $ride->customer));
+                event(new RideCompleted($ride, $ride->driver, $ride->customer));
 
                 return response()->json([
                     'success' => true,
