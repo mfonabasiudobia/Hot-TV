@@ -93,10 +93,12 @@ class RequestController extends Controller
                 // dispatch(new ProcessRideRequest($rideRequest, $riders, $rideRequest->customer));
 
                 $driver = DriverRepository::getNextAvailableDriver($rideRequest);
-                $driver->ride_responses()->create([
-                    'ride_id' => $rideRequest->id,
-                    'status' => DriverRideStatusEnum::PENDING,
-                ]);
+                if($driver) {
+                    $driver->ride_responses()->create([
+                        'ride_id' => $rideRequest->id,
+                        'status' => DriverRideStatusEnum::PENDING,
+                    ]);
+                }
 
                 event(new RideRequestEvent($rideRequest, $driver, $rideRequest->user_id));
 
