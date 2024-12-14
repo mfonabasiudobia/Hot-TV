@@ -41,6 +41,8 @@ enum ApiResponseMessageEnum:string
     case PAYMENT_METHODS = 'payment methods';
     case RIDE_DURATIONS = 'ride durations';
     case RIDE_REQUESTED = 'ride requested';
+    case RIDE_STARTED = 'ride started';
+    case RIDE_COMPLETED = 'ride completed';
     case USER_PROFILE = 'user profile';
     case WATCH_LISTS = 'watch lists';
     case WISH_LISTS = 'wish lists';

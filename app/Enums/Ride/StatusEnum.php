@@ -8,4 +8,6 @@ enum StatusEnum:string
     case IN_PROGRESS = 'in-progress';
     case COMPLETED = 'completed';
     case CANCELLED = 'cancelled';
+    case STARTED = 'started';
+    case ARRIVED = 'driver-arrived';
 }

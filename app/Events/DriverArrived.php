@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Ride;
 use App\Models\User;
 
-class RideRequestEvent implements ShouldBroadcastNow
+class DriverArrived implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -26,7 +26,7 @@ class RideRequestEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(Ride $ride, $driver, $customer)
+    public function __construct($ride, $driver, $customer)
     {
         $this->ride = $ride;
         $this->driver = $driver;
@@ -40,11 +40,11 @@ class RideRequestEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`driver.{$this->ride->id}`);
+        return new PrivateChannel(`customer.{$this->customer->id}`);
     }
 
     public function broadcastAs()
     {
-        return 'ride.requested';
+        return ('driver.arrived');
     }
 }

@@ -16,19 +16,19 @@ class RequestController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $serviceAccountKeyFile = config('services.firebase.credentials');
+        // $serviceAccountKeyFile = config('services.firebase.credentials');
 
-        $scopes = ['https://www.googleapis.com/auth/datastore'];
+        // $scopes = ['https://www.googleapis.com/auth/datastore'];
 
-        // Create a credentials object with the service account file and the scope
-        $credentials = new ServiceAccountCredentials($scopes, $serviceAccountKeyFile);
+        // // Create a credentials object with the service account file and the scope
+        // $credentials = new ServiceAccountCredentials($scopes, $serviceAccountKeyFile);
 
         // Fetch the OAuth2 token
-        $accessToken = $credentials->fetchAuthToken();
+        // $accessToken = $credentials->fetchAuthToken();
 
-        if (isset($accessToken['access_token'])) {
+        // if (isset($accessToken['access_token'])) {
 
-            $tokenString = $accessToken['access_token'];
+            // $tokenString = $accessToken['access_token'];
 
             $duration = $request->input('duration');
             $stream = $request->input('stream');
@@ -46,28 +46,28 @@ class RequestController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
 
-            $rideData = [
-                'fields' => [
-                    'customer_id' => ['integerValue' => $user->id],
-                    'customer_location' => [
-                        'mapValue' => [
-                            'fields' => [
-                                'latitude' => ['doubleValue' => $latitude],
-                                'longitude' => ['doubleValue' => $longitude],
-                            ]
-                        ]
-                    ],
-                    'status' => ['stringValue' => StatusEnum::REQUESTED->value],
-                ]
-            ];
+            // $rideData = [
+            //     'fields' => [
+            //         'customer_id' => ['integerValue' => $user->id],
+            //         'customer_location' => [
+            //             'mapValue' => [
+            //                 'fields' => [
+            //                     'latitude' => ['doubleValue' => $latitude],
+            //                     'longitude' => ['doubleValue' => $longitude],
+            //                 ]
+            //             ]
+            //         ],
+            //         'status' => ['stringValue' => StatusEnum::REQUESTED->value],
+            //     ]
+            // ];
 
             // Use the access token to make an authenticated request to Firestore
-            $response = Http::withToken($tokenString)
-                ->post('https://firestore.googleapis.com/v1/projects/hot-tv-a57ea/databases/(default)/documents/rides', $rideData);
-            $documentName = $response->json()['name'];
-            $documentId = last(explode('/', $documentName));
+            // $response = Http::withToken($tokenString)
+            //     ->post('https://firestore.googleapis.com/v1/projects/hot-tv-a57ea/databases/(default)/documents/rides', $rideData);
+            // $documentName = $response->json()['name'];
+            // $documentId = last(explode('/', $documentName));
 
-            if ($response->successful()) {
+            // if ($response->successful()) {
 
                 $rideRequest = $user->myRides()->create([
                     'street_name' => $streetName,
@@ -77,25 +77,25 @@ class RequestController extends Controller
                     'ride_type' => $rideDuration->stream ? 'Ride & Stream' : 'Ride Only',
                     'customer_latitude' => $latitude,
                     'customer_longitude' => $longitude,
-                    'document_id' => $documentId
+                    // 'document_id' => $documentId
                 ]);
 
-                $firestoreUrl = "https://firestore.googleapis.com/v1/projects/hot-tv-a57ea/databases/(default)/documents/rides/{$documentId}?updateMask.fieldPaths=ride_id";
+                // $firestoreUrl = "https://firestore.googleapis.com/v1/projects/hot-tv-a57ea/databases/(default)/documents/rides/{$documentId}?updateMask.fieldPaths=ride_id";
 
-                $updateData = [
-                    "fields" => [
-                        "ride_id" => ["integerValue" => $rideRequest->id],
-                    ]
-                ];
+                // $updateData = [
+                //     "fields" => [
+                //         "ride_id" => ["integerValue" => $rideRequest->id],
+                //     ]
+                // ];
 
                 $riders = DriverRepository::onlineRiders();
 
                 foreach ($riders as $rider) {
-                    dispatch(event(new RideRequestEvent($rideRequest, $rider, $rideRequest->user_id)))->toOthers();
+                    event(new RideRequestEvent($rideRequest, $rider, $rideRequest->user_id));
                 }
 
-                $response = Http::withToken($tokenString)
-                    ->patch($firestoreUrl, $updateData);
+                // $response = Http::withToken($tokenString)
+                //     ->patch($firestoreUrl, $updateData);
 
 
                 return response()->json([
@@ -103,23 +103,24 @@ class RequestController extends Controller
                     'message' => 'Ride request created',
                     'data' => [
                         'id' => $rideRequest->id,
-                        'document_id' => $documentId
+                        // 'document_id' => $documentId,
+                        'riders' => $riders
                     ]
                 ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to create ride request',
-                    'error' => $response->body()
-                ], $response->status());
-            }
-        } else {
-            // Handle the case where the access token could not be generated
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to generate access token',
-                'error' => 'OAuth token generation failed'
-            ], 500);
-        }
+            // } else {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'Failed to create ride request',
+            //         'error' => $response->body()
+            //     ], $response->status());
+            // }
+        // } else {
+        //     // Handle the case where the access token could not be generated
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Failed to generate access token',
+        //         'error' => 'OAuth token generation failed'
+        //     ], 500);
+        // }
     }
 }
