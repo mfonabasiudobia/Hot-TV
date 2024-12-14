@@ -41,6 +41,14 @@ enum ApiResponseMessageEnum:string
     case PAYMENT_METHODS = 'payment methods';
     case RIDE_DURATIONS = 'ride durations';
     case RIDE_REQUESTED = 'ride requested';
+    case RIDE_STARTED = 'ride started';
+    case RIDE_COMPLETED = 'ride completed';
+    case RIDE_ALREADY_REQUESTED = 'ride already requested';
+    case RIDE_ALREADY_ACCEPTED = 'ride already accepted';
+    case RIDE_ALREADY_REJECTED = 'ride already rejected';
+    case RIDE_RESPONSE_ENTRY_MISSING = 'ride reponse missing';
+    case RIDE_ACCEPTED= 'ride accepted';
+    case DRIVER_ARRIVED = 'driver arrived';
     case USER_PROFILE = 'user profile';
     case WATCH_LISTS = 'watch lists';
     case WISH_LISTS = 'wish lists';

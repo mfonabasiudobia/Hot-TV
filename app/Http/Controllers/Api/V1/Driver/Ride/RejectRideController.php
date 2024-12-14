@@ -14,7 +14,7 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-class AcceptRideController extends Controller
+class RejectRideController extends Controller
 {
     public function __invoke(Ride $ride, DriverRideRequest $request)
     {
@@ -67,6 +67,17 @@ class AcceptRideController extends Controller
                 ]);
             }
 
+            if($user->hasRejectedRide($ride)) {
+                return response()->json([
+                    'success' => true,
+                    'message' => ApiResponseMessageEnum::RIDE_ALREADY_REJECTED->value,
+                    'data' => [
+                        'id' => $ride->id,
+                        'document_id' => $ride->document_id
+                    ]
+                ]);
+            }
+
             if($ride->status == StatusEnum::ACCEPTED) {
                 return response()->json([
                     'success' => true,
@@ -78,22 +89,13 @@ class AcceptRideController extends Controller
                 ]);
             }
 
-            $ride->driver_latitude = $latitude;
-            $ride->driver_longitude = $longitude;
-            $ride->status = StatusEnum::ACCEPTED->value;
-            $ride->driver_id = $user->id;
-
-            $ride->save();
-
             $user->ride_responses()->where('ride_id', $ride->id)->update([
-                'status' => DriverRideStatusEnum::ACCEPTED,
+                'status' => DriverRideStatusEnum::REJECTED,
             ]);
-
-            event(new RideAccepted($ride, $ride->driver, $ride->customer));
 
             return response()->json([
                 'success' => true,
-                'message' => ApiResponseMessageEnum::RIDE_ACCEPTED->value,
+                'message' => ApiResponseMessageEnum::RIDE_REQUESTED->value,
                 'data' => [
                     'id' => $ride->id,
                     'document_id' => $ride->document_id

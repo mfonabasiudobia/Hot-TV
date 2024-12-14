@@ -19,17 +19,18 @@ class RideAccepted implements ShouldBroadcastNow
 
     public $ride;
     public $driver;
-    public $customer_id;
+    public $customer;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Ride $ride, User $driver)
+    public function __construct($ride, $driver, $customer)
     {
         $this->ride = $ride;
         $this->driver = $driver;
+        $this->customer = $customer;
     }
 
     /**
@@ -39,7 +40,7 @@ class RideAccepted implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(`driver.${$this->ride->user_id}`);
+        return new PrivateChannel('customer'.$this->customer->id);
     }
 
     public function broadcastAs()

@@ -15,10 +15,11 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
-    // protected function schedule(Schedule $schedule): void
-    // {
-    //     $schedule->command('app:tv-channel')->everySecond();
-    // }
+    protected function schedule(Schedule $schedule): void
+    {
+        // $schedule->command('app:tv-channel')->everySecond();
+        $schedule->command('ride:send-request-to-nearest-driver')->everyMinute();
+    }
 
     protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $shortSchedule)
     {

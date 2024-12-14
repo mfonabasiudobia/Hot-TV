@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Api\V1\Driver\Ride;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Enums\Ride\StatusEnum;
-use App\Enums\Ride\DriverRideStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Driver\Ride\DriverRideRequest;
-use App\Models\User;
 use App\Models\Ride;
-use App\Events\RideAccepted;
+use App\Events\RideStarted;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-class AcceptRideController extends Controller
+class StartRideController extends Controller
 {
     public function __invoke(Ride $ride, DriverRideRequest $request)
     {
@@ -40,7 +38,7 @@ class AcceptRideController extends Controller
             // $updateData = [
             //     "fields" => [
             //         "driver_id" => ["integerValue" => $user->id],
-            //         "status" => ["stringValue" => StatusEnum::ACCEPTED->value],
+            //         "status" => ["stringValue" => StatusEnum::STARTED->value],
             //         "driver_location" => [
             //             "mapValue" => [
             //                 "fields" => [
@@ -56,49 +54,23 @@ class AcceptRideController extends Controller
             // ->patch($firestoreUrl, $updateData);
 
             // if ($response->successful()) {
-            if(! $user->hasRideEntry($ride)){
+                // $ride->driver_latitude = $latitude;
+                // $ride->driver_longitude = $longitude;
+                $ride->status = StatusEnum::STARTED->value;
+                $ride->driver_id = $user->id;
+
+                $ride->save();
+
+                event(new RideStarted($ride, $ride->driver, $ride->customer));
+
                 return response()->json([
                     'success' => true,
-                    'message' => ApiResponseMessageEnum::RIDE_RESPONSE_ENTRY_MISSING->value,
+                    'message' => ApiResponseMessageEnum::RIDE_STARTED->value,
                     'data' => [
                         'id' => $ride->id,
                         'document_id' => $ride->document_id
                     ]
                 ]);
-            }
-
-            if($ride->status == StatusEnum::ACCEPTED) {
-                return response()->json([
-                    'success' => true,
-                    'message' => ApiResponseMessageEnum::RIDE_ALREADY_ACCEPTED->value,
-                    'data' => [
-                        'id' => $ride->id,
-                        'document_id' => $ride->document_id
-                    ]
-                ]);
-            }
-
-            $ride->driver_latitude = $latitude;
-            $ride->driver_longitude = $longitude;
-            $ride->status = StatusEnum::ACCEPTED->value;
-            $ride->driver_id = $user->id;
-
-            $ride->save();
-
-            $user->ride_responses()->where('ride_id', $ride->id)->update([
-                'status' => DriverRideStatusEnum::ACCEPTED,
-            ]);
-
-            event(new RideAccepted($ride, $ride->driver, $ride->customer));
-
-            return response()->json([
-                'success' => true,
-                'message' => ApiResponseMessageEnum::RIDE_ACCEPTED->value,
-                'data' => [
-                    'id' => $ride->id,
-                    'document_id' => $ride->document_id
-                ]
-            ]);
             // } else {
             //     return response()->json([
             //         'success' => false,
