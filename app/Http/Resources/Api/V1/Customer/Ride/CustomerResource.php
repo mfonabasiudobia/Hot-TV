@@ -19,6 +19,12 @@ class CustomerResource extends JsonResource
             'phone' => $this->phone,
             'dob' => $this->dob,
             'description' => $this->description,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'online_status' => $this->online_status,
+            'username' => $this->username,
+            'name' => $this->name,
+            'status' => $this->status,
         ];
     }
 }

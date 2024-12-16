@@ -76,6 +76,7 @@ class RequestController extends Controller
                     'duration' => $rideDuration->duration,
                     'ride_duration_id' => $rideDuration->id,
                     'ride_type' => $rideDuration->stream ? 'Ride & Stream' : 'Ride Only',
+                    'stream' => $stream,
                     'customer_latitude' => $latitude,
                     'customer_longitude' => $longitude,
                     // 'document_id' => $documentId

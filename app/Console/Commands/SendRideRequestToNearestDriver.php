@@ -38,7 +38,7 @@ class SendRideRequestToNearestDriver extends Command
     public function handle()
     {
         $rides = \App\Models\Ride::where('status', 'requested')->get();
-
+        // TODO: save seconds in config file
         $timeLimit = Carbon::now()->subSeconds(20);
 
         foreach ($rides as $ride) {
@@ -60,8 +60,12 @@ class SendRideRequestToNearestDriver extends Command
 
                 event(new RideRequestEvent($ride, $driver, $ride->customer));
             }else{
-                $ride->status = StatusEnum::NO_DRIVER_FOUND;
-                $ride->save();
+                // TODO: save minutes in config file
+                $requestExpiredTime = Carbon::now()->subMinutes(10);
+                if($ride->created_at >= $requestExpiredTime) {
+                    $ride->status = StatusEnum::NO_DRIVER_FOUND;
+                    $ride->save();
+                }
             }
         }
 

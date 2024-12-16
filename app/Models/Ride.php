@@ -17,6 +17,7 @@ class Ride extends Model
         'price',
         'duration',
         'ride_type',
+        'stream',
         'ride_duration_id',
         'customer_latitude',
         'customer_longitude',
