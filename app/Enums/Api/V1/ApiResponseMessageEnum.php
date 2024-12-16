@@ -43,6 +43,7 @@ enum ApiResponseMessageEnum:string
     case RIDE_REQUESTED = 'ride requested';
     case RIDE_STARTED = 'ride started';
     case RIDE_COMPLETED = 'ride completed';
+    case RIDE_REJECTED = 'ride rejected';
     case RIDE_ALREADY_REQUESTED = 'ride already requested';
     case RIDE_ALREADY_ACCEPTED = 'ride already accepted';
     case RIDE_ALREADY_REJECTED = 'ride already rejected';
