@@ -93,9 +93,19 @@ class RejectRideController extends Controller
                 'status' => DriverRideStatusEnum::REJECTED,
             ]);
 
+            $driver = DriverRepository::getNextAvailableDriver($ride);
+            if($driver) {
+                $driver->ride_responses()->create([
+                    'ride_id' => $ride->id,
+                    'status' => DriverRideStatusEnum::PENDING,
+                ]);
+
+                event(new RideRequestEvent($ride, $driver, $ride->customer));
+            }
+
             return response()->json([
                 'success' => true,
-                'message' => ApiResponseMessageEnum::RIDE_REQUESTED->value,
+                'message' => ApiResponseMessageEnum::RIDE_REJECTED->value,
                 'data' => [
                     'id' => $ride->id,
                     'document_id' => $ride->document_id

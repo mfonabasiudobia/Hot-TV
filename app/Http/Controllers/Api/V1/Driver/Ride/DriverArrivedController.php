@@ -63,8 +63,7 @@ class DriverArrivedController extends Controller
 
                 $ride->save();
 
-                $driver = User::find($user->id);
-                event(new DriverArrived($ride, $driver, $ride->customer));
+                event(new DriverArrived($ride, $ride->driver, $ride->customer));
 
                 return response()->json([
                     'success' => true,

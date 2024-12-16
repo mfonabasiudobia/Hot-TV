@@ -7,6 +7,7 @@ use App\Repositories\DriverRepository;
 use Illuminate\Console\Command;
 use App\Enums\Ride\StatusEnum;
 use App\Enums\Ride\DriverRideStatusEnum;
+use Carbon\Carbon;
 
 class SendRideRequestToNearestDriver extends Command
 {
@@ -38,10 +39,14 @@ class SendRideRequestToNearestDriver extends Command
     {
         $rides = \App\Models\Ride::where('status', 'requested')->get();
 
+        $timeLimit = Carbon::now()->subSeconds(20);
+
         foreach ($rides as $ride) {
             // every no of seconds defined in settings reject or accept will be called
             // if that is not called and this scheduled job runs then it can ovveride update status to rejected
-            $ride->ride_responses()->where('ride_id', $ride->id)->update([
+            $ride->ride_responses()->where('ride_id', $ride->id)
+            ->where('created_at', '<', $timeLimit)
+            ->update([
                 'status'=> DriverRideStatusEnum::AUTO_REJECTED
             ]);
 

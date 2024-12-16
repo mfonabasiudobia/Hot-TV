@@ -98,9 +98,10 @@ class RequestController extends Controller
                         'ride_id' => $rideRequest->id,
                         'status' => DriverRideStatusEnum::PENDING,
                     ]);
+
+                    event(new RideRequestEvent($rideRequest, $driver, $rideRequest->user_id));
                 }
 
-                event(new RideRequestEvent($rideRequest, $driver, $rideRequest->user_id));
 
                 // $response = Http::withToken($tokenString)
                 //     ->patch($firestoreUrl, $updateData);

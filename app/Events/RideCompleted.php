@@ -2,6 +2,9 @@
 
 namespace App\Events;
 
+use App\Http\Resources\Api\V1\Customer\Ride\RideResource;
+use App\Http\Resources\Api\V1\Customer\Ride\DriverResource;
+use App\Http\Resources\Api\V1\Customer\Ride\CustomerResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -27,9 +30,9 @@ class RideCompleted implements ShouldBroadcastNow
      */
     public function __construct($ride, $driver, $customer)
     {
-        $this->ride = $ride;
-        $this->driver = $driver;
-        $this->customer = $customer;
+        $this->ride = new RideResource($ride);
+        $this->driver = new DriverResource($driver);
+        $this->customer = new CustomerResource($customer);
     }
 
     /**
@@ -39,7 +42,7 @@ class RideCompleted implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('customer' . $this->customer->id);
+        return new PrivateChannel('customer.' . $this->customer->id);
     }
 
     public function broadcastAs()
