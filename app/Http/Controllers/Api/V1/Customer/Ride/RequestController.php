@@ -99,7 +99,7 @@ class RequestController extends Controller
                         'status' => DriverRideStatusEnum::PENDING,
                     ]);
 
-                    event(new RideRequestEvent($rideRequest, $driver, $rideRequest->user_id));
+                    event(new RideRequestEvent($rideRequest, $driver, $rideRequest->customer));
                 }
 
 
