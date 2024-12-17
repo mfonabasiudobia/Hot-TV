@@ -57,4 +57,8 @@ enum ApiResponseMessageEnum:string
     case WATCH_HISTORY = 'watch history';
     case GALLERY = 'gallery';
 
+    case STREAM_CREATED = 'stream created';
+    case SERVER_ERROR = 'server error';
+    case STREAM_RECORDING_STARTED = 'stream recording started';
+    case STREAM_RECORDING_STOPPED = 'stream recording stopped';
 }
