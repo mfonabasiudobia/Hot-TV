@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Customer\Ride\DurationController;
+use App\Http\Controllers\Api\V1\Customer\Ride\StreamingController;
 use App\Http\Controllers\Api\V1\Customer\Ride\RequestController;
 use App\Http\Controllers\Api\V1\Customer\Ride\Stripe\PaymentCancelController as StripePaymentCancelController;
 use App\Http\Controllers\Api\V1\Customer\Ride\Stripe\PaymentVerificationController as StripePaymentVerificationController;
@@ -13,6 +14,12 @@ Route::prefix('ride')
         Route::middleware('auth:api')->group(function(){
             Route::post('request', RequestController::class)->name('request');
             Route::get('ride-durations', DurationController::class)->name('ride-durations');
+
+            // Route::post('cancel/{ride}', [RideCancelContoller::class, 'store'])->name('streaming.store');
+            Route::get('{ride}/streaming', [StreamingController::class, 'store'])->name('streaming.store');
+            Route::get('{ride}/streaming/start', [StreamingController::class, 'start'])->name('streaming.start');
+            Route::get('{ride}/streaming/end', [StreamingController::class, 'end'])->name('streaming.end');
+            Route::get('{ride}/streaming/show', [StreamingController::class, 'end'])->name('streaming.show');
         });
 
         Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {

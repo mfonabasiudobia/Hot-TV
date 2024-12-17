@@ -16,7 +16,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\Ride;
 use App\Models\User;
 
-class RideAccepted implements ShouldBroadcastNow
+class RideRejected implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -43,11 +43,11 @@ class RideAccepted implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('customer.'. 87); //$this->customer->id
+        return new PrivateChannel('customer.'. 87); // $this->customer->id
     }
 
     public function broadcastAs()
     {
-        return ('ride.accepted');
+        return ('ride.started');
     }
 }
