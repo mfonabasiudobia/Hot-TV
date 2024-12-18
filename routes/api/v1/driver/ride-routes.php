@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\V1\Driver\Ride\StartRideController;
 use App\Http\Controllers\Api\V1\Driver\Ride\DriverArrivedController;
 use App\Http\Controllers\Api\V1\Driver\Ride\CompleteRideController;
 use App\Http\Controllers\Api\V1\Driver\Ride\RejectRideController;
-use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
 
 Route::prefix('ride')
     ->name('ride.')
@@ -29,9 +28,5 @@ Route::prefix('ride')
 
         Route::middleware('auth:api')->group(function(){
             Route::put('complete/{ride}', CompleteRideController::class)->name('complete');
-        });
-
-        Route::middleware('auth:api')->group(function(){
-            Route::put('payment-intent/{ride}', PaymentIntentController::class)->name('complete');
         });
     });

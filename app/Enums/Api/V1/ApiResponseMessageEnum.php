@@ -39,6 +39,7 @@ enum ApiResponseMessageEnum:string
     case PAYMENT_SUCCESS = 'payment success';
     case REGISTRATION_CLOSED = 'registrations are currently closed';
     case PAYMENT_METHODS = 'payment methods';
+    case STREAM_LIST = 'streams list';
     case RIDE_DURATIONS = 'ride durations';
     case RIDE_REQUESTED = 'ride requested';
     case RIDE_STARTED = 'ride started';

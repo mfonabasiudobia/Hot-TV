@@ -15,12 +15,9 @@ class StreamPlayer extends Component
     public function mount($rideId)
     {
         $this->rideId = $rideId;
-
-        // Fetch the Ride model
         $ride = Ride::findOrFail($this->rideId);
-        $this->channelName = $ride->stream_channel_name;
 
-        // Generate Agora Token
+        $this->channelName = $ride->stream_channel_name;
         $this->token = $this->generateAgoraToken($this->channelName);
     }
 

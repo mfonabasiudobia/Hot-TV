@@ -7,15 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Ride;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
+use Illuminate\Http\Request;
 
 class PaymentIntentController extends Controller
 {
-    public function __invoke(Ride $ride)
+    public function __invoke(Ride $ride, Request $request)
     {
         try {
             Stripe::setApiKey(gs()->payment_stripe_secret);
 
-            $amount = $request->price * 100;
+            $amount = $ride->price * 100;
             $currency = $request->input('currency', 'usd');
 
             $paymentIntent = PaymentIntent::create([
@@ -26,7 +27,7 @@ class PaymentIntentController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => ApiResponseMessageEnum::PAYMENT_INTENT_CREATED->value,
+                'message' => ApiResponseMessageEnum::RIDE_PAYMENT_INTENT_CREATED->value,
                 'data' => [
                     'clientSecret' => $paymentIntent->client_secret,
                 ]
