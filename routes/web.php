@@ -128,6 +128,7 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
 
         Route::group(['namespace' => 'PedicabStream'], function() {
             Route::get('pedicab-streams',"Home")->name('pedicab-streams.home');
+            Route::get('pedicab-streams/{ride}',"Show")->name('pedicab-streams.show');
         });
 
         Route::group(['namespace' => 'Testimonials'], function() {
