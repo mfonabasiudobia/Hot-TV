@@ -68,7 +68,7 @@ class StreamingController extends Controller
             $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId['resourceId']}/mode/mix/start";
 
             $data = [
-                'cname' => 'stream-87-170',
+                'cname' => $ride->stream_channel_name,
                 'uid' => "0",
                 'clientRequest' => [
                     'recordingConfig' => [
@@ -179,7 +179,7 @@ class StreamingController extends Controller
     {
         $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/acquire";
         $data = [
-            'cname' => 'stream-87-170', // $ride->stream_channel_name,
+            'cname' => $ride->stream_channel_name,
             'uid' => "0",
             'clientRequest' => new \stdClass(),
         ];
