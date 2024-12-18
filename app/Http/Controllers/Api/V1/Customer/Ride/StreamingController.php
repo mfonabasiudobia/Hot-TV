@@ -77,6 +77,7 @@ class StreamingController extends Controller
     {
         try{
             $resourceId = $this->getResourceId($ride);
+
             if(! isset($resourceId['resourceId'])){
                 throw new \Exception('Resource Id Not found');
             }
@@ -85,7 +86,7 @@ class StreamingController extends Controller
 
             $data = [
                 'cname' => $ride->stream_channel_name,
-                'uid' => "0",
+                'uid' => $ride->user_id,
                 'clientRequest' => [
                     'recordingConfig' => [
                         'maxIdleTime' => 30,
@@ -100,9 +101,9 @@ class StreamingController extends Controller
                         ],
                     ],
                     'storageConfig' => [
-                        'vendor' => 1,
-                        'region' => 0,
-                        'bucket' => VideoDiskEnum::DISK->value,
+                        'vendor' => 2,
+                        'region' => 11,
+                        'bucket' => env('AWS_BUCKET'),
                         'accessKey' => env('AWS_ACCESS_KEY_ID'),
                         'secretKey' => env('AWS_SECRET_ACCESS_KEY'),
                         'fileNamePrefix' => ['recordings'],
