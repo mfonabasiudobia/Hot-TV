@@ -61,4 +61,6 @@ enum ApiResponseMessageEnum:string
     case SERVER_ERROR = 'server error';
     case STREAM_RECORDING_STARTED = 'stream recording started';
     case STREAM_RECORDING_STOPPED = 'stream recording stopped';
+
+    case RIDE_PAYMENT_INTENT_CREATED = 'ride payment intent created';
 }
