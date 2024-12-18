@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('rides', function (Blueprint $table) {
+            $table->string('stream_channel_token')->default(false);
             $table->boolean('stream')->default(false);
             $table->string('stream_channel_name')->nullable();
             $table->boolean('is_stream_blocked')->default(false);
