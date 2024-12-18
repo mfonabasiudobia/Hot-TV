@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Services\AgoraDynamicKey\RtcTokenBuilder\RtcTokenBuilder;
 use Illuminate\Support\Facades\Http;
 use App\Enums\VideoDiskEnum;
+use Illuminate\Support\Str;
 
 class StreamingController extends Controller
 {
@@ -23,8 +24,8 @@ class StreamingController extends Controller
 
             $channelName = "stream-{$ride->customer->id}-{$ride->id}";
             $appCertificate = env('AGORA_APP_CERTIFICATE');
-            $uid = 0; // User ID (0 for auto-assignment)
-            $role = RtcTokenBuilder::RoleAttendee;
+            $uid = $ride->user_id; // ride customer id
+            $role = RtcTokenBuilder::RolePublisher;
             $expireTimeInSeconds = 3600;
             $currentTimestamp = now()->getTimestamp();
             $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;
@@ -33,6 +34,7 @@ class StreamingController extends Controller
 
             $ride->stream_channel_name = $channelName;
             $ride->is_stream_blocked = false;
+            $ride->stream_channel_token = $token;
             $ride->save();
 
             return response()->json([
@@ -41,7 +43,7 @@ class StreamingController extends Controller
                 'data' => [
                     'token' =>  $token,
                     'channelName' => $channelName,
-                    'user_id' => $uid
+                    'app_id' => $this->appId, // TODO: r&d will this not be security risk to expose api in api endpoint
                 ]
             ]);
         } catch (\Throwable $th) {
@@ -58,13 +60,15 @@ class StreamingController extends Controller
     public function start(Ride $ride, Request $request)
     {
         try{
-            $token  = $request->input('token');
-            // start cloud recording
-            $resourceId = $this->getResourceId($ride->stream_channel_name);
-            $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId}/mode/mix/start";
+            $resourceId = $this->getResourceId($ride);
+            if(! isset($resourceId['resourceId'])){
+                throw new \Exception('Resource Id Not found');
+            }
 
-            $response = Http::post($url, [
-                'cname' => $ride->stream_channel_name,
+            $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId['resourceId']}/mode/mix/start";
+
+            $data = [
+                'cname' => 'stream-87-170',
                 'uid' => "0",
                 'clientRequest' => [
                     'recordingConfig' => [
@@ -83,12 +87,14 @@ class StreamingController extends Controller
                         'vendor' => 1,
                         'region' => 0,
                         'bucket' => VideoDiskEnum::DISK->value,
-                        'accessKey' => 'AWS_ACCESS_KEY_ID',
-                        'secretKey' => 'AWS_SECRET_ACCESS_KEY',
+                        'accessKey' => env('AWS_ACCESS_KEY_ID'),
+                        'secretKey' => env('AWS_SECRET_ACCESS_KEY'),
                         'fileNamePrefix' => ['recordings'],
                     ],
                 ],
-            ]);
+            ];
+
+            $response = $this->sendAgoraRequest($url, $data);
 
             $ride->stream_status = 'streaming';
             $ride->save();
@@ -96,7 +102,7 @@ class StreamingController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => ApiResponseMessageEnum::STREAM_RECORDING_STARTED->value,
-                'data' => $response->json()
+                'data' => $response
             ]);
         } catch (\Throwable $th) {
             app_log_exception($th);
@@ -122,7 +128,7 @@ class StreamingController extends Controller
 
             $response = Http::post($url, [
                 'cname' => $channelName,
-                'uid' => $uid,
+                'uid' => "0",
                 'clientRequest' => []
             ]);
 
@@ -169,15 +175,30 @@ class StreamingController extends Controller
         }
     }
 
-    public function getResourceId($channelName)
+    public function getResourceId($ride)
     {
         $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/acquire";
-        $response = Http::post($url, [
-            'cname' => $channelName,
+        $data = [
+            'cname' => 'stream-87-170', // $ride->stream_channel_name,
             'uid' => "0",
             'clientRequest' => new \stdClass(),
-        ]);
+        ];
 
-        return $response->json()['resourceId'];
+        return $this->sendAgoraRequest($url, $data);
+    }
+
+    private function sendAgoraRequest($url, $data)
+    {
+        $key = env('AGORA_CLIENT_KEY');
+        $secret = env('AGORA_CLIENT_SECRET');
+        $credentials = $key . ":" . $secret;
+
+        $authKey = "basic " . base64_encode($credentials);
+        $response = Http::withHeaders([
+            'Authorization' => $authKey,
+            'Content-Type' => 'application/json'
+        ])->post($url, $data);
+
+        return $response->json();
     }
 }
