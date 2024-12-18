@@ -39,6 +39,7 @@ enum ApiResponseMessageEnum:string
     case PAYMENT_SUCCESS = 'payment success';
     case REGISTRATION_CLOSED = 'registrations are currently closed';
     case PAYMENT_METHODS = 'payment methods';
+    case STREAM_LIST = 'streams list';
     case RIDE_DURATIONS = 'ride durations';
     case RIDE_REQUESTED = 'ride requested';
     case RIDE_STARTED = 'ride started';
@@ -61,4 +62,6 @@ enum ApiResponseMessageEnum:string
     case SERVER_ERROR = 'server error';
     case STREAM_RECORDING_STARTED = 'stream recording started';
     case STREAM_RECORDING_STOPPED = 'stream recording stopped';
+
+    case RIDE_PAYMENT_INTENT_CREATED = 'ride payment intent created';
 }

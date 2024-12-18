@@ -264,3 +264,29 @@ function getSubTotal($cart)
     return number_format($subTotal, 2);
 
 }
+
+
+if (! function_exists('app_log_exception')) {
+    /**
+     * Return the given value, optionally passed through the given callback.
+     *
+     * @template TValue
+     * @template TReturn
+     *
+     * @param  TValue  $value
+     * @param  (callable(TValue): (TReturn))|null  $callback
+     * @return ($callback is null ? TValue : TReturn)
+     */
+    function app_log_exception($exception)
+    {
+        \Log::error('Exception caught', [
+            'message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'url' => request()->fullUrl(),
+            'method' => request()->method(),
+            'user_id' => auth()->id(),
+            'request' => request()->all()
+        ]);
+    }
+}

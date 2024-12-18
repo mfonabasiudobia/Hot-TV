@@ -20,6 +20,7 @@ class RideResource extends JsonResource
             "street_name" => $this->street_name,
             "customer_latitude" => $this->customer_latitude,
             "customer_longitude" => $this->customer_longitude,
+            "status" => $this->status,
         ];
     }
 }

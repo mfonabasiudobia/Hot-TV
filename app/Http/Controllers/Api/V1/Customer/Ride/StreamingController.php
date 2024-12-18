@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Services\AgoraDynamicKey\RtcTokenBuilder\RtcTokenBuilder;
 use Illuminate\Support\Facades\Http;
 use App\Enums\VideoDiskEnum;
+use App\Http\Resources\Api\V1\Customer\Ride\StreamResource;
 use Illuminate\Support\Str;
 
 class StreamingController extends Controller
@@ -18,6 +19,21 @@ class StreamingController extends Controller
     {
         $this->appId = env('AGORA_APP_ID');
     }
+
+    public function index(Request $request)
+    {
+        $streams = Ride::where('stream_status', 'streaming')->get();
+        $streams = StreamResource::collection($streams);
+
+        return response()->json([
+            'success' => true,
+            'message' => ApiResponseMessageEnum::STREAM_LIST->value,
+            'data' => [
+                'streams' => $streams
+            ]
+        ]);
+    }
+
     public function store(Ride $ride, Request $request)
     {
         try {

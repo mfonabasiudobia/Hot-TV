@@ -24,7 +24,6 @@ class CustomerResource extends JsonResource
             'online_status' => $this->online_status,
             'username' => $this->username,
             'name' => $this->name,
-            'status' => $this->status,
         ];
     }
 }
