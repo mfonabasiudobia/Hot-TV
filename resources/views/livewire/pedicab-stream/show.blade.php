@@ -46,15 +46,9 @@
 
         async function playStream() {
             try {
-                // Initialize Agora Client
-                await client.init(appId);
-                console.log("AgoraRTC client initialized");
-
-                // Join Agora Channel
                 await client.join(appId, channelName, token, uid);
                 console.log("Joined the channel successfully");
 
-                // Subscribe to Remote Streams
                 client.on("user-published", async (user, mediaType) => {
                     await client.subscribe(user, mediaType);
                     console.log("Subscribed to remote user");

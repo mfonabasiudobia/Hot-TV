@@ -15,6 +15,8 @@ class StreamResource extends JsonResource
             "stream" => $this->stream,
             "duration" => $this->duration,
             "stream_status" => $this->stream_status,
+            "token" => $this->stream_channel_token,
+            "channel" => $this->stream_channel_name,
         ];
     }
 }
