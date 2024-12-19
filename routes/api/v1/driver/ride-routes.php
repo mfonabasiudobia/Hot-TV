@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\V1\Driver\Ride\CompleteRideController;
 use App\Http\Controllers\Api\V1\Driver\Ride\RejectRideController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\CompletePaymentController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
-use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\DriverStatusContoller;
+use App\Http\Controllers\Api\V1\Driver\Ride\DriverStatusContoller;
 
 Route::prefix('ride')
     ->name('ride.')
@@ -34,11 +34,7 @@ Route::prefix('ride')
         });
 
         Route::middleware('auth:api')->group(function(){
-            Route::put('set-online', [DriverStatusContoller::class, 'setOlnine'])->name('driver.set.online');
-        });
-
-        Route::middleware('auth:api')->group(function(){
-            Route::put('set-offline', [DriverStatusContoller::class, 'setOffline'])->name('driver.set.offline');
+            Route::put('set-online-status', [DriverStatusContoller::class, 'setOlnine'])->name('online-status');
         });
 
         Route::middleware('auth:api')->group(function(){
