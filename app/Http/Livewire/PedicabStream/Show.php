@@ -5,6 +5,7 @@ namespace App\Http\Livewire\PedicabStream;
 use Livewire\Component;
 use App\Models\Ride;
 use App\Services\AgoraDynamicKey\RtcTokenBuilder\RtcTokenBuilder;
+use Illuminate\Support\Str;
 
 class Show extends Component
 {
@@ -24,10 +25,12 @@ class Show extends Component
 
     private function generateAgoraToken($channelName)
     {
+        $user = auth('api')->user();
+
         $appId = env('AGORA_APP_ID');
         $appCertificate = env('AGORA_APP_CERTIFICATE');
         $role = RtcTokenBuilder::RoleSubscriber;
-        $uid = auth('api')->id();
+        $uid = auth('api')->id() ?? Str::uuid();
         $expireTimeInSeconds = 3600;
         $currentTimestamp = now()->timestamp;
         $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;

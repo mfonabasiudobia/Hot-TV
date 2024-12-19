@@ -25,10 +25,15 @@ class PaymentIntentController extends Controller
                 'payment_method_types' => ['card'], // Accept only card payments
             ]);
 
+            $ride->payment_intent_id = $paymentIntent->id;
+            $ride->payment_status = 'pending';
+            $ride->save();
+
             return response()->json([
                 'success' => true,
                 'message' => ApiResponseMessageEnum::RIDE_PAYMENT_INTENT_CREATED->value,
                 'data' => [
+                    'intentId' => $paymentIntent->id,
                     'clientSecret' => $paymentIntent->client_secret,
                 ]
             ]);

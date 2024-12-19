@@ -1,8 +1,11 @@
+@php
+    $streams = \App\Models\Ride::where('stream_status', 'streaming')->get()->take(10);
+@endphp
 <section class="py-16 bg-black">
     <div class="container space-y-10 overflow-hidden">
         <header class="flex items-center justify-between">
             <h1 class="font-semibold text-xl md:text-2xl">{{ $shortcode->title }}</h1>
-            <a href="{{ route('pedicab-streams.home') }}" class="flex text-sm items-center space-x-1">
+            <a href="{{ route('pedicab-streams.home', 1) }}" class="flex text-sm items-center space-x-1">
                 <span class="inline-block">View more</span>
                 <img src="{{ asset('svg/arrow-circle-right.svg') }}" alt="" />
             </a>
@@ -68,31 +71,34 @@
         </section>
 
         <div class="grid md:grid-cols-3 gap-5">
-            @foreach (range(1,3) as $item)
-            <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
-                style="background-image: url('{{ asset('images/stream-02.png') }}');"
-                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
+            @foreach ($streams as $item)
+            @if (!$stream->is_stream_blocked)
+                <a href="{{ route('pedicab-streams.show', $item->id) }}"
+                    style="background-image: url('{{ asset('images/stream-02.png') }}');"
+                    class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-                <button>
-                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                </button>
+                    <button>
+                        <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                            class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                    </button>
 
-                <div
-                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                    <h2 class="font-bold">Pedicab Driver Vloge 13 - Aveneue Street......</h2>
+                    <div
+                        class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                        <h2 class="font-bold">Pedicab Driver Vloge 13 - Aveneue Street......</h2>
 
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <img src="{{ asset('images/user-icon.jpg') }}" alt=""
-                                class="w-[34px] h-[34px] rounded-full object-cover" />
-                            <span class="font-light">John Doe</span>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <img src="{{ asset('images/user-icon.jpg') }}" alt=""
+                                    class="w-[34px] h-[34px] rounded-full object-cover" />
+                                <span class="font-light">John Doe</span>
+                            </div>
+
+                            <span class="font-light">30.5k</span>
                         </div>
-
-                        <span class="font-light">30.5k</span>
                     </div>
-                </div>
-            </a>
+                </a>
+            @endif
+
             @endforeach
         </div>
     </div>
