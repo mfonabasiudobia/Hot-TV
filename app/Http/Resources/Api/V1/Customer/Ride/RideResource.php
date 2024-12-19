@@ -21,6 +21,7 @@ class RideResource extends JsonResource
             "customer_latitude" => $this->customer_latitude,
             "customer_longitude" => $this->customer_longitude,
             "status" => $this->status,
+            "payment_status" => $this->payment_status,
         ];
     }
 }

@@ -14,6 +14,8 @@ use Stripe\Exception\SignatureVerificationException;
 use Stripe\Stripe;
 use Stripe\Subscription;
 use Stripe\Webhook;
+use App\Events\RidePaymentFailed;
+use App\Events\RidePaymentSucceeded;
 
 class EventController extends Controller
 {
@@ -124,7 +126,24 @@ class EventController extends Controller
                     }
                 }
                 break;
+            case 'payment_intent.succeeded':
+                $paymentIntent = $event->data->object;
+                $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
+                $ride->payment_status = 'paid';
+                $ride->save();
 
+                \Log::info('ride succeeded');
+                event(new RidePaymentSucceeded($ride));
+                break;
+            case 'payment_intent.payment_failed':
+                $paymentIntent = $event->data->object;
+                $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
+                $ride->payment_status = 'failed';
+                $ride->save();
+
+                \Log::info('ride failed');
+                event(new RidePaymentFailed($ride));
+                break;
             case 'customer.subscription.trial_will_end':
                 // Todo: send notification few days before trail ends
 
