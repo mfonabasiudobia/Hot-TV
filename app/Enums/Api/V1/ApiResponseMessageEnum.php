@@ -64,4 +64,5 @@ enum ApiResponseMessageEnum:string
     case STREAM_RECORDING_STOPPED = 'stream recording stopped';
 
     case RIDE_PAYMENT_INTENT_CREATED = 'ride payment intent created';
+    case SET_ONLINE_STATUS = 'Driver online status updated';
 }
