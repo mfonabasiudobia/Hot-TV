@@ -18,7 +18,7 @@ class EventController extends Controller
     public function __invoke(Request $request)
     {
         $eventType = $request->input('event_type');
-
+        \Log::info('stripe event'. $eventType);
         switch ($eventType) {
             case 'PAYMENT.SALE.COMPLETED':
                 // Payment succeeded
