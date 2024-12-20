@@ -19,10 +19,13 @@ class PaymentIntentController extends Controller
             $amount = $ride->price * 100;
             $currency = $request->input('currency', 'usd');
 
+            $testPaymentMethod = 'pm_card_visa';
+
             $paymentIntent = PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
-                'payment_method_types' => ['card'], // Accept only card payments
+                'payment_method_types' => ['card'], // Accept only card payments,
+                'payment_method' => $testPaymentMethod,
             ]);
 
             $ride->payment_intent_id = $paymentIntent->id;

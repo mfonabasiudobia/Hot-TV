@@ -18,8 +18,8 @@ class Show extends Component
         $this->ride = $ride;
         // $ride = Ride::findOrFail($this->rideId);
 
-        $this->channelName = $ride->stream_channel_name;
-        // $this->channelName = 'stream-87-149';
+        // $this->channelName = $ride->stream_channel_name;
+        $this->channelName = 'stream-87-149';
         $this->token = $this->generateAgoraToken($this->channelName);
     }
 
@@ -30,7 +30,7 @@ class Show extends Component
         $appId = env('AGORA_APP_ID');
         $appCertificate = env('AGORA_APP_CERTIFICATE');
         $role = RtcTokenBuilder::RoleSubscriber;
-        $uid = auth('api')->id() ?? Str::uuid();
+        $uid =  0; // auth('api')->id() ?? Str::uuid();
         $expireTimeInSeconds = 3600;
         $currentTimestamp = now()->timestamp;
         $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;

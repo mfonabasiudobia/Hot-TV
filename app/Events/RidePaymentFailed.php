@@ -9,7 +9,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RidePaymentSucceeded implements ShouldBroadcastNow
+class RidePaymentFailed implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -38,6 +38,6 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
 
     public function broadcastAs()
     {
-        return ('ride.payment.succeeded');
+        return ('ride.payment.failed');
     }
 }
