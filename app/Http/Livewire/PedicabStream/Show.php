@@ -16,10 +16,7 @@ class Show extends Component
     public function mount(Ride $ride)
     {
         $this->ride = $ride;
-        // $ride = Ride::findOrFail($this->rideId);
-
-        // $this->channelName = $ride->stream_channel_name;
-        $this->channelName = 'stream-87-149';
+        $this->channelName = $ride->stream_channel_name;
         $this->token = $this->generateAgoraToken($this->channelName);
     }
 
