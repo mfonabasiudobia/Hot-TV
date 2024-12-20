@@ -132,7 +132,7 @@ class EventController extends Controller
                 $ride->payment_status = 'paid';
                 $ride->save();
 
-                \Log::info('ride succeeded');
+                \Log::info('ride succeeded', [$ride]);
                 event(new RidePaymentSucceeded($ride));
                 break;
             case 'payment_intent.payment_failed':
@@ -141,7 +141,7 @@ class EventController extends Controller
                 $ride->payment_status = 'failed';
                 $ride->save();
 
-                \Log::info('ride failed');
+                \Log::info('ride failed', [$ride]);
                 event(new RidePaymentFailed($ride));
                 break;
             case 'customer.subscription.trial_will_end':
