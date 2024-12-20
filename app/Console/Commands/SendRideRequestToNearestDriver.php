@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Events\RideRequestEvent;
 use App\Repositories\DriverRepository;
 use Illuminate\Console\Command;
@@ -37,13 +38,25 @@ class SendRideRequestToNearestDriver extends Command
      */
     public function handle()
     {
-        $this->sendNotifications();
-        sleep(20);
-        $this->sendNotifications();
-        sleep(20);
-        $this->sendNotifications();
+        try {
 
-        $this->info('Ride requests have been dispatched to the queue.');
+            $this->sendNotifications();
+            sleep(20);
+            $this->sendNotifications();
+            sleep(20);
+            $this->sendNotifications();
+
+            $this->info('Ride requests have been dispatched to the queue.');
+        } catch (\Throwable $th) {
+            app_log_exception($th);
+
+            return response()->json([
+                'success' => false,
+                'message' => ApiResponseMessageEnum::SERVER_ERROR->value,
+                'error' => $th->getMessage()
+            ]);
+        }
+
     }
 
     private function sendNotifications()
