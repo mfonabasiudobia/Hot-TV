@@ -72,7 +72,7 @@
 
         <div class="grid md:grid-cols-3 gap-5">
             @foreach ($streams as $item)
-            @if (!$stream->is_stream_blocked)
+            @if (!$item->is_stream_blocked)
                 <a href="{{ route('pedicab-streams.show', $item->id) }}"
                     style="background-image: url('{{ asset('images/stream-02.png') }}');"
                     class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">

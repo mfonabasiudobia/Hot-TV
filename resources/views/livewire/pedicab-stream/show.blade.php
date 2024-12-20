@@ -8,11 +8,13 @@
         <section class="grid lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-7 overflow-hidden">
 
-                <div class="video-container" wire:ignore>
-                    <div id="stream-container" style="width: 800px; height: 600px; background-color: black;">
-                        <div id="remote-video" style="width: 100%; height: 100%;"></div>
+                @if (! (bool) $ride->is_stream_blocked)
+                    <div class="video-container" wire:ignore>
+                        <div id="stream-container" style="width: 800px; height: 600px; background-color: black;">
+                            <div id="remote-video" style="width: 100%; height: 100%;"></div>
+                        </div>
                     </div>
-                </div>
+                @endif
 
                 <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="flex items-center justify-between">
@@ -37,6 +39,9 @@
 <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const isBlocked = "{{ $ride->is_stream_blocked }}";
+        if(isBlocked) return false;
+
         const appId = "{{ env('AGORA_APP_ID') }}"; // Agora App ID
         const channelName = "{{ $channelName }}"; // Channel Name from Livewire
         const token = "{{ $token }}"; // Agora Token from Livewire

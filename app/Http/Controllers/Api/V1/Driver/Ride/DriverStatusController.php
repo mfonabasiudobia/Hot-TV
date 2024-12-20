@@ -18,8 +18,8 @@ class DriverStatusController extends Controller
 
         $user = $request->user();
         $user->online_status = $request->online_status;
-        $user->latitude = $request->latitude;
-        $user->longitude = $request->longitude;
+        // $user->latitude = $request->latitude;
+        // $user->longitude = $request->longitude;
         $user->save();
 
         return response()->json([
