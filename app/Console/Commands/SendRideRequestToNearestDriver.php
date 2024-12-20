@@ -37,6 +37,18 @@ class SendRideRequestToNearestDriver extends Command
      */
     public function handle()
     {
+        $this->sendNotifications();
+        sleep(20);
+        $this->sendNotifications();
+        sleep(20);
+        $this->sendNotifications();
+
+        $this->info('Ride requests have been dispatched to the queue.');
+    }
+
+    private function sendNotifications()
+    {
+        \Log::info('send request to next running...');
         $rides = \App\Models\Ride::where('status', 'requested')->get();
         // TODO: save seconds in config file
         $timeLimit = Carbon::now()->subSeconds(20);
@@ -68,7 +80,5 @@ class SendRideRequestToNearestDriver extends Command
                 }
             }
         }
-
-        $this->info('Ride requests have been dispatched to the queue.');
     }
 }

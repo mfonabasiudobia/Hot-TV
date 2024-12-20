@@ -37,11 +37,13 @@ class StreamingController extends Controller
     public function store(Ride $ride, Request $request)
     {
         try {
+            $isPublisher = $ride->user_id == $request->user()->id;
 
             $channelName = "stream-{$ride->customer->id}-{$ride->id}";
+            $channelName = "stream-87-149";
             $appCertificate = env('AGORA_APP_CERTIFICATE');
-            $uid = $ride->user_id; // ride customer id
-            $role = RtcTokenBuilder::RolePublisher;
+            $uid =  $isPublisher ? $request->user()->id : 0; // ride customer id
+            $role = $isPublisher ? RtcTokenBuilder::RolePublisher : RtcTokenBuilder::RoleSubscriber;
             $expireTimeInSeconds = 3600;
             $currentTimestamp = now()->getTimestamp();
             $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;
@@ -101,7 +103,7 @@ class StreamingController extends Controller
                         ],
                     ],
                     'storageConfig' => [
-                        'vendor' => 2,
+                        'vendor' => 1,
                         'region' => 11,
                         'bucket' => env('AWS_BUCKET'),
                         'accessKey' => env('AWS_ACCESS_KEY_ID'),
@@ -136,16 +138,14 @@ class StreamingController extends Controller
     {
         try {
             $resourceId = $this->getResourceId($ride->stream_channel_name);
-            $token = $request->input('token');
             $channelName = $ride->stream_channel_name;
-            $uid = "0";
 
             // Agora Cloud Recording Stop API URL
             $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId}/mode/mix/stop";
 
             $response = Http::post($url, [
                 'cname' => $channelName,
-                'uid' => "0",
+                'uid' => $request->user()->id,
                 'clientRequest' => []
             ]);
 
