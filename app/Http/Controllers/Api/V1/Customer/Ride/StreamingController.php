@@ -40,7 +40,6 @@ class StreamingController extends Controller
             $isPublisher = $ride->user_id == $request->user()->id;
 
             $channelName = "stream-{$ride->customer->id}-{$ride->id}";
-            $channelName = "stream-87-149";
             $appCertificate = env('AGORA_APP_CERTIFICATE');
             $uid =  $isPublisher ? $request->user()->id : 0; // ride customer id
             $role = $isPublisher ? RtcTokenBuilder::RolePublisher : RtcTokenBuilder::RoleSubscriber;
