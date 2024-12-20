@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('rides', function (Blueprint $table) {
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
-            $table->enum('payment_intent_id', ['pending', 'paid', 'failed'])->default('pending');
+            $table->string('payment_intent_id');
         });
     }
 

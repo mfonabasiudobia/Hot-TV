@@ -43,7 +43,7 @@ class RideRequestEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.'. 87); //$this->driver->id
+        return new PrivateChannel('driver.'. $this->driver->id);
     }
 
     public function broadcastAs()
