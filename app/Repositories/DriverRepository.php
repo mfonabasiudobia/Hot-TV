@@ -16,41 +16,37 @@ class DriverRepository
 
     public static function onlineRiders($ride)
     {
-        return DB::table('users')
-            ->select('id', 'latitude', 'longitude')
-            ->where('online_status', true)
-            // ->whereRaw("
-            //     ST_Distance_Sphere(
-            //         point(longitude, latitude),
-            //         point(?, ?)
-            //     ) <= ?
-            // ", [$ride['cusomter_latitude'], $ride['customer_longitude'], $radius * 1000])
+        $radius = Setting::where('key', 'ride-search-radius')->first()->value ?? 10;
+
+        return User::where('online_status', true)
+            ->whereHas('roles', function ($query) {
+                $query->where('slug', RoleEnum::DRIVER->value);
+            })
             ->get();
     }
 
     public static function getNextAvailableDriver($ride)
     {
-        // TODO:
         $radius = Setting::where('key', 'ride-search-radius')->first()->value ?? 10;
+
         return User::where('online_status', true)
-            ->whereHas('roles', function ($query) {
-                $query->where('slug', RoleEnum::DRIVER->value);
-            })
-            ->whereRaw("
-                ST_Distance_Sphere(
-                    point(longitude, latitude),
-                    point(?, ?)
-                ) <= ?
-            ", [$ride['cusomter_latitude'], $ride['customer_longitude'], $radius * 1000])
-            ->whereDoesntHave('ride_responses', function ($query) use ($ride) {
-                $query->where('ride_id', $ride->id);
-            })
-            ->orderByRaw("
-                ST_Distance_Sphere(
-                    point(longitude, latitude),
-                    point(?, ?)
+                ->whereDoesntHave('ride_responses', function ($query) use ($ride) {
+                    $query->where('ride_id', $ride->id);
+                })
+                ->whereHas('roles', function ($query) {
+                    $query->where('slug', RoleEnum::DRIVER->value);
+                })
+                ->select('*')
+                ->selectRaw(
+                    "(3956 * acos(cos(radians(?))
+                    * cos(radians(latitude))
+                    * cos(radians(longitude) - radians(?))
+                    + sin(radians(?))
+                    * sin(radians(latitude)))) AS distance",
+                    [$ride->customer_latitude, $ride->customer_longitude, $ride->customer_latitude]
                 )
-            ", [$ride->customer_latitude, $ride->customer_longitude])
-            ->first();
+                ->having("distance", "<", $radius)
+                ->orderBy('distance')
+                ->first();
     }
 }
