@@ -128,9 +128,17 @@ class EventController extends Controller
                 break;
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object;
+                \Log::info('intent', [$paymentIntent->id]);
                 $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
-                $ride->payment_status = 'paid';
-                $ride->save();
+                \Log::info('intent', [$ride]);
+
+                if($ride) {
+                    $ride->payment_status = 'paid';
+                    $ride->save();
+                }else{
+                    \Log::info('Ride not found using payment intent id', [$paymentIntent->id]);
+                }
+
 
                 \Log::info('ride succeeded', [$ride]);
                 event(new RidePaymentSucceeded($ride));
@@ -138,8 +146,13 @@ class EventController extends Controller
             case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object;
                 $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
-                $ride->payment_status = 'failed';
-                $ride->save();
+
+                if($ride) {
+                    $ride->payment_status = 'paid';
+                    $ride->save();
+                }else{
+                    \Log::info('Ride not found using payment intent id', [$paymentIntent->id]);
+                }
 
                 \Log::info('ride failed', [$ride]);
                 event(new RidePaymentFailed($ride));
