@@ -45,6 +45,18 @@ class AcceptRideController extends Controller
             ]);
         }
 
+        $autoRejected = $ride->ride_responses()->where('user_id', $user->id)->where('status', DriverRideStatusEnum::AUTO_REJECTED)->first();
+
+        if($autoRejected) {
+            return response()->json([
+                'success' => false,
+                'message' => ApiResponseMessageEnum::RIDE_AUTOREJECTED->value,
+                'data' => [
+                    'id' => $ride->id
+                ]
+            ]);
+        }
+
         $ride->driver_latitude = $latitude;
         $ride->driver_longitude = $longitude;
         $ride->status = StatusEnum::ACCEPTED->value;
