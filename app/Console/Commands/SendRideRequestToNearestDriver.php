@@ -72,6 +72,8 @@ class SendRideRequestToNearestDriver extends Command
             // if that is not called and this scheduled job runs then it can ovveride update status to rejected
             $responses = $ride->ride_responses()->where('ride_id', $ride->id)
             ->where('created_at', '<', $timeLimit)
+            ->where('status','!=', DriverRideStatusEnum::AUTO_REJECTED)
+            ->where('status','!=', DriverRideStatusEnum::REJECTED)
             ->get();
 
             foreach($responses as $ride_response) {

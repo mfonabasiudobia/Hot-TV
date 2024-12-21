@@ -23,7 +23,7 @@ class NoDriverFound implements ShouldBroadcastNow
     {
         $this->ride = new RideResource($ride);
 
-        \Log::info('ride.driver.not.found', ['ride_id' => $ride->id, 'customer_id', $ride->customer_id]);
+        \Log::info('ride.driver.not.found', ['ride_id' => $ride->id, 'customer_id' => $ride->customer_id]);
     }
 
     /**
