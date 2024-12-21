@@ -9,13 +9,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RidePaymentSucceeded implements ShouldBroadcastNow
+class NoDriverFound implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
     public $ride;
-
     /**
      * Create a new event instance.
      *
@@ -25,7 +23,7 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
     {
         $this->ride = new RideResource($ride);
 
-        \Log::info('ride.payment.succeeded', ['ride' => $ride->id, 'driver', $ride->driver_id, 'customer' => $ride->user_id]);
+        \Log::info('ride.driver.not.found', ['ride_id' => $ride->id, 'customer_id', $ride->customer_id]);
     }
 
     /**
@@ -35,11 +33,11 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.' . $this->ride->driver_id);
+        return new PrivateChannel('customer.'. $this->ride->customer->id);
     }
 
     public function broadcastAs()
     {
-        return ('ride.payment.succeeded');
+        return ('ride.driver.not.found');
     }
 }

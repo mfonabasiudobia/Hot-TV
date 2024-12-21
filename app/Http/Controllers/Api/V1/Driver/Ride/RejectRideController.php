@@ -60,6 +60,7 @@ class RejectRideController extends Controller
             ]);
 
             $driver = DriverRepository::getNextAvailableDriver($ride);
+            \Log::info('next driver in reject ride', [$driver]);
             if($driver) {
                 $driver->ride_responses()->create([
                     'ride_id' => $ride->id,
