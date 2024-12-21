@@ -34,6 +34,8 @@ class RideStarted implements ShouldBroadcastNow
         $this->ride = new RideResource($ride);
         $this->driver = new DriverResource($driver);
         $this->customer = new CustomerResource($customer);
+
+        \Log::info('ride.started', ['ride' => $ride->id, 'driver', $ride->driver_id, 'customer' => $ride->user_id]);
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Events\RideRequestEvent;
+use App\Events\RideAutoRejected;
+use App\Events\NoDriverFound;
 use App\Repositories\DriverRepository;
 use Illuminate\Console\Command;
 use App\Enums\Ride\StatusEnum;
@@ -39,7 +41,6 @@ class SendRideRequestToNearestDriver extends Command
     public function handle()
     {
         try {
-
             $this->sendNotifications();
             sleep(20);
             $this->sendNotifications();
@@ -61,7 +62,7 @@ class SendRideRequestToNearestDriver extends Command
 
     private function sendNotifications()
     {
-        \Log::info('send request to next running...');
+        \Log::info('send request to next running...', [Carbon::now()->toDateTimeString()]);
         $rides = \App\Models\Ride::where('status', 'requested')->get();
         // TODO: save seconds in config file
         $timeLimit = Carbon::now()->subSeconds(20);
@@ -69,11 +70,17 @@ class SendRideRequestToNearestDriver extends Command
         foreach ($rides as $ride) {
             // every no of seconds defined in settings reject or accept will be called
             // if that is not called and this scheduled job runs then it can ovveride update status to rejected
-            $ride->ride_responses()->where('ride_id', $ride->id)
+            $responses = $ride->ride_responses()->where('ride_id', $ride->id)
             ->where('created_at', '<', $timeLimit)
-            ->update([
-                'status'=> DriverRideStatusEnum::AUTO_REJECTED
-            ]);
+            ->get();
+
+            foreach($responses as $ride_response) {
+                $ride_response->update([
+                    'status'=> DriverRideStatusEnum::AUTO_REJECTED
+                ]);
+
+                event(new RideAutoRejected($ride, $ride_response->driver_id));
+            }
 
             $driver = DriverRepository::getNextAvailableDriver($ride);
 
@@ -87,8 +94,12 @@ class SendRideRequestToNearestDriver extends Command
             }else{
                 // TODO: save minutes in config file
                 $requestExpiredTime = Carbon::now()->subMinutes(10);
-                if($ride->created_at >= $requestExpiredTime) {
+
+                if(Carbon::parse($ride->created_at)->lessThanOrEqualTo($requestExpiredTime)) {
                     \Log::info('no driver found', [$ride->created_at, $requestExpiredTime]);
+
+                    event(new NoDriverFound($ride));
+
                     $ride->status = StatusEnum::NO_DRIVER_FOUND;
                     $ride->save();
                 }

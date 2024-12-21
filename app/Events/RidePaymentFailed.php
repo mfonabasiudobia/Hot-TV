@@ -24,6 +24,7 @@ class RidePaymentFailed implements ShouldBroadcastNow
     public function __construct($ride)
     {
         $this->ride = new RideResource($ride);
+        \Log::info('ride.payment.failed', ['ride' => $ride->id, 'driver', $ride->driver_id, 'customer' => $ride->user_id]);
     }
 
     /**
