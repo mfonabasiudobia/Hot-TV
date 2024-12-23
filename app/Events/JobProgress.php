@@ -33,7 +33,7 @@ class JobProgress implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('job-progress.1');
+        return new PrivateChannel('job-progress');
     }
 
     public function broadcastAs()
