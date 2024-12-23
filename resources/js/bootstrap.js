@@ -19,16 +19,16 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
+console.log('app key', import.meta.env.VITE_PUSHER_APP_KEY)
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
     wsHost: 'realtime-pusher.ably.io',
-    wsPort: 6001,
-    wssPort: 443,
-    forceTLS: false,
+    wsPort: 443,
+    disableStats: true,
     encrypted: true,
-    enabledTransports: ['ws', 'wss'],
+    cluster: 'mt1',
 });
 
 console.log("Hostname", window.location.hostname);
@@ -46,7 +46,7 @@ console.log("Worign!")
 import Swal from 'sweetalert2';
 const jobProgressToasts = {};
 
-window.Echo.private('job-progress.1')
+window.Echo.private('job-progress')
     .subscribed(() => {
         console.log("Echo connected to job-progress channel!");
     })

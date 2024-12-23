@@ -65,5 +65,6 @@ enum ApiResponseMessageEnum:string
 
     case RIDE_PAYMENT_INTENT_CREATED = 'ride payment intent created';
     case SET_ONLINE_STATUS = 'Driver online status updated';
+    case LOCATION_UPDATED = 'location updated';
     case RIDE_AUTOREJECTED = 'Ride auto rejected due to no response';
 }

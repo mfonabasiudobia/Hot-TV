@@ -45,7 +45,7 @@ class AcceptRideController extends Controller
             ]);
         }
 
-        $autoRejected = $ride->ride_responses()->where('user_id', $user->id)->where('status', DriverRideStatusEnum::AUTO_REJECTED)->first();
+        $autoRejected = $ride->ride_responses()->where('driver_id', $user->id)->where('status', DriverRideStatusEnum::AUTO_REJECTED)->first();
 
         if($autoRejected) {
             return response()->json([

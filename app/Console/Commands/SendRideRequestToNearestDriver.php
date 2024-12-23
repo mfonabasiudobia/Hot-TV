@@ -63,9 +63,11 @@ class SendRideRequestToNearestDriver extends Command
     private function sendNotifications()
     {
         \Log::info('send request to next running...', [Carbon::now()->toDateTimeString()]);
-        $rides = \App\Models\Ride::where('status', 'requested')->get();
         // TODO: save seconds in config file
         $timeLimit = Carbon::now()->subSeconds(20);
+        $rides = \App\Models\Ride::where('status', 'requested')
+            ->where('created_at', '<', $timeLimit)
+            ->get();
 
         foreach ($rides as $ride) {
             // every no of seconds defined in settings reject or accept will be called
@@ -95,7 +97,7 @@ class SendRideRequestToNearestDriver extends Command
                 event(new RideRequestEvent($ride, $driver, $ride->customer));
             }else{
                 // TODO: save minutes in config file
-                $requestExpiredTime = Carbon::now()->subMinutes(10);
+                $requestExpiredTime = Carbon::now()->subMinutes(2);
 
                 if(Carbon::parse($ride->created_at)->lessThanOrEqualTo($requestExpiredTime)) {
                     \Log::info('no driver found', [$ride->created_at, $requestExpiredTime]);

@@ -71,7 +71,7 @@
                             @if($selectedEpisode)
                                 <span>{{ convert_seconds_to_time($selectedEpisode->duration) }}</span>
                             @else
-                                <span>{{ convert_seconds_to_time($showDuration) }}</span>
+                                <span>{{ convert_seconds_to_time($tvShow->episodes()->sum('duration')) }}</span>
                             @endIf
                         </div>
                     </div>
@@ -144,16 +144,16 @@
                         wire:target="season_number"
                         class="overflow-y-auto min-h-[20vh] space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                         @foreach ($episodes as $key => $episode)
-                        <button class="flex items-center space-x-3 text-left" wire:click="selectEpisode({{ $episode->id }})">
-                            <img src="{{ file_path($episode->thumbnail) }}" alt="" class="h-[80px] w-[80px] rounded-xl" />
-                            <div>
-                                <h2 class="font-semibold">{{ $key + 1 }}. {{ $episode->title }}</h2>
-                                <div class="opacity-50 text-sm">
-                                    <span>{{ convert_seconds_to_time($episode->duration) }}</span><br />
-                                    <span>Published on {{ $episode->releaseAt() }}</span>
+                            <button class="flex items-center space-x-3 text-left" wire:click="selectEpisode({{ $episode->id }})">
+                                <img src="{{ file_path($episode->thumbnail) }}" alt="" class="h-[80px] w-[80px] rounded-xl" />
+                                <div>
+                                    <h2 class="font-semibold">{{ $key + 1 }}. {{ $episode->title }}</h2>
+                                    <div class="opacity-50 text-sm">
+                                        <span>{{ convert_seconds_to_time($episode->duration) }}</span><br />
+                                        <span>Published on {{ $episode->releaseAt() }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </button>
+                            </button>
                         @endforeach
                     </section>
                 </section>
@@ -214,56 +214,35 @@
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const defaultOptions = {
-            muted : true,
-            autoplay: true,
-            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-            settings: ['captions', 'quality', 'speed', 'loop'],
-            quality: {
-                default: 720,
-                options: [360, 480, 720, 1080],
-                forced: true,
-                onChange: (quality) => {
-                    console.log(`Selected quality: ${quality}`);
-                }
-            }
-        };
-
-        // const player = new Plyr('#player', defaultOptions);
+    function playVideo(source){
         const video = document.getElementById('player');
-        // const source = "https://hts-hot-tv-2.s3.eu-north-1.amazonaws.com/podcasts/Cumque%20nisi%20architec/2ce7d537-d5c9-4041-8384-583f0f91f93b.m3u8";
-        const source = "{{ $tvShow->video ? $tvShow->video->stream_path : file_path($tvShow->trailer) }}";
 
         if (!Hls.isSupported()) {
             video.src = source;
             var player = new Plyr(video, defaultOptions);
         } else {
-            // For more Hls.js options, see https://github.com/dailymotion/hls.js
             const hls = new Hls();
             hls.loadSource(source);
 
-            // From the m3u8 playlist, hls parses the manifest and returns
-            // all available video qualities. This is important, in this approach,
-            // we will have one source on the Plyr player.
             hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                // Transform available levels into an array of integers (height values).
                 const availableQualities = hls.levels.map((l) => l.height)
-                availableQualities.unshift(0) //prepend 0 to quality array
+                availableQualities.unshift(0)
                 console.log('available qualities', hls.levels)
-                // Add new qualities to option
+
                 defaultOptions.quality = {
                     default: 0, //Default - AUTO
                     options: availableQualities,
                     forced: true,
                     onChange: (e) => updateQuality(e),
                 }
-                // Add Auto Label
+
                 defaultOptions.i18n = {
                     qualityLabel: {
                         0: 'Auto',
                     },
                 }
+
+                defaultOptions.autoplay = true;
 
                 hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
                     var span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
@@ -281,6 +260,25 @@
             hls.attachMedia(video);
             window.hls = hls;
         }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const defaultOptions = {
+            muted : true,
+            autoplay: true,
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+            settings: ['captions', 'quality', 'speed', 'loop'],
+            quality: {
+                default: 720,
+                options: [360, 480, 720, 1080],
+                forced: true,
+                onChange: (quality) => {
+                    console.log(`Selected quality: ${quality}`);
+                }
+            }
+        };
+
+        const source = "{{  $tvShow->video ? $tvShow->video->stream_path : file_path($tvShow->trailer) }}";
+        playVideo(source)
 
         function updateQuality(newQuality) {
             if (newQuality === 0) {
@@ -333,11 +331,11 @@
              const currentTime = this.currentTime;
 
              const playedSeconds = Math.round(currentTime);
-             if (playedSeconds > lastSavedTime) {
-                 lastSavedTime = playedSeconds;
-                 savePlaybackProgress(Math.round(playedSeconds));
+            //  if (playedSeconds > lastSavedTime) {
+            //      lastSavedTime = playedSeconds;
+            //      savePlaybackProgress(Math.round(playedSeconds));
 
-             }
+            //  }
 
 
              // Save playback progress every 10 seconds
@@ -356,17 +354,19 @@
         //  });
 
          document.addEventListener('change-episode', (event) => {
-             if(!event.detail.not_subscribed) {
-                 videoPlayer.src = event.detail.video_url;
-                 videoPlayer.load(); // Load the new video source
-                 videoPlayer.play(); // Play the new video
+            // debugger
+            //  if(!event.detail.not_subscribed) {
+                //  videoPlayer.src = event.detail.video_url;
+                //  videoPlayer.load(); // Load the new video source
+                //  videoPlayer.play(); // Play the new video
+                playVideo(event.detail.video_url)
 
                  setTimeout(() => {
                      window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
                  }, 2000);
-             } else {
-                 videoPlayer.style.display = 'none';
-             }
+            //  } else {
+            //      videoPlayer.style.display = 'none';
+            //  }
 
 
          })

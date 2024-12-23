@@ -17,7 +17,6 @@ class Show extends BaseComponent
 {
 
     public $tvShow, $seasons = [], $season_number = 1, $seasonId, $episodes = [];
-    public $showDuration;
 
     public $selectedEpisode, $casts = [];
     public $user;
@@ -103,7 +102,7 @@ class Show extends BaseComponent
 
         }
 
-        $this->setShowDuration();
+        // $this->setShowDuration();
 
     }
 
@@ -112,9 +111,8 @@ class Show extends BaseComponent
     }
 
     public function selectEpisode($episodeId){
-
         $this->selectedEpisode = EpisodeRepository::getEpisodeById($episodeId);
-
+        // dd($this->selectedEpisode->video);
         $tvShowViews = TvShowView::where('user_id',  auth()->id())
             ->where('ip_address',  request()->ip())
             ->where('tv_show_id', $this->tvShow->id)
@@ -148,13 +146,13 @@ class Show extends BaseComponent
         }
 
         if($this->user && $this->user->subscription) {
-            $episodeVideo = $this->tvShow->video ? Storage::disk(VideoDiskEnum::DISK->value)->url(Str::slug($this->tvShow->title) . '/' . $this->selectedEpisode->video->uuid . '.mp4') : file_path($this->selectedEpisode->recorded_video);
+            $episodeVideo = $this->selectedEpisode && $this->selectedEpisode->video ? $this->selectedEpisode->video->stream_path : file_path($this->tvShow->video->recorded_video);
             $notSubscribed = false;
         } else {
-            $episodeVideo = null;
+            $episodeVideo = $this->selectedEpisode && $this->selectedEpisode->video ? $this->selectedEpisode->video->stream_path : file_path($this->tvShow->video->recorded_video);
             $notSubscribed = true;
         }
-
+        // dd($episodeVideo);
         $this->dispatchBrowserEvent("change-episode", [
             'not_subscribed' => $notSubscribed,
             'video_url' => $episodeVideo,
@@ -192,18 +190,18 @@ class Show extends BaseComponent
         ]);
     }
 
-    public function setShowDuration()
-    {
-        $duration = $this->tvShow->episodes()
-                ->selectRaw('SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) as total_duration')
-                ->value('total_duration');
-        $duration = preg_replace('/\..*/', '', $duration);
-        if($duration == '') return 0;
+    // public function setShowDuration()
+    // {
+    //     $duration = $this->tvShow->episodes()
+    //             ->selectRaw('SEC_TO_TIME(SUM(TIME_TO_SEC(duration))) as total_duration')
+    //             ->value('total_duration');
+    //     $duration = preg_replace('/\..*/', '', $duration);
+    //     if($duration == '') return 0;
 
-        list($hours, $minutes, $seconds) = explode(':', $duration);
+    //     list($hours, $minutes, $seconds) = explode(':', $duration);
 
-        $totalSeconds = ($hours * 3600) + ($minutes * 60) + $seconds;
+    //     $totalSeconds = ($hours * 3600) + ($minutes * 60) + $seconds;
 
-        $this->showDuration = $totalSeconds;
-    }
+    //     $this->showDuration = $totalSeconds;
+    // }
 }
