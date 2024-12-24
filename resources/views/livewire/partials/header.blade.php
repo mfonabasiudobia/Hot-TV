@@ -4,7 +4,7 @@
             inherits: false;
             initial-value: 0deg;
             syntax: '<angle>';
-        }        
+        }
     </style>
 <nav class="bg-[#0d0d0d] text-white">
     <div class="container flex items-center justify-between py-2">
@@ -13,67 +13,99 @@
                 <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
             </a>
 
-            <form action="{{ route('search') }}" class="hidden xl:flex items-center bg-[#000000] w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
-                <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
-                <input type="text" placeholder="Search titles here..." name="q" class="form-control border-0" />
-            </form>
+            <ul class="hidden xl:flex items-center space-x-5">
+                <li class="relative group">
+                    <a href="javascript:void(0)" class="hover:text-danger" id="browse">
+                        <span>Browse</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
+                    <ul class="absolute top-[56px] py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="browseMenu">
+                        <div class="flex p-4">
+                            <div class="border-r-2 border-white" style="border-right: 2px solid white;">
+                                <li class="relative group">
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('tv-shows.home') }}">Tv Shows</a>
+                                </li>
+
+                                <li>
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('live-channel.show') }}">
+                                        <span class="text-danger">&bull;</span>
+                                        Live Channel
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('pedicab-streams.home') }}">Pedicab Streams</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('podcast.home') }}" class="px-4 py-4 block hover:text-danger">Podcast</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('gallery.home') }}" class="px-4 py-4 block hover:text-danger">Gallery</a>
+                                </li>
+                            </div>
+                            <div class="flex flex-wrap" style="width: 700px">
+                                @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)
+                                    <div class="px-4 py-2 rounded-md" style="width: 33%;">
+                                        <li>
+                                            <a class="block hover:text-danger" href="{{ route('search', ['q' => $category->name ]) }}">
+                                                {{ \Illuminate\Support\Str::limit($category->name, 15) }}
+                                            </a>
+                                        </li>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+    {{--            <li>--}}
+    {{--                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>--}}
+    {{--            </li>--}}
+
+                <li class="relative group tile-group">
+                    <a href="javascript:void(0)" class="hover:text-danger" id="socialMedia">
+                        <span>Social Media</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
+                    <ul id="socialMediaMenu" class="absolute top-[56px] min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
+                        <div style="width: 400px;">
+                            <li class="tile">
+                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-facebook"></i></div>
+                                    <div class="text-left">Facbook</div>
+                                </a>
+                            </li>
+                            <li class="tile">
+                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-linkedin"></i></div>
+                                    <div class="text-left">LinkedIn</div>
+                                </a>
+                            </li>
+                            <li class="tile">
+                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-twitter"></i></div>
+                                    <div class="text-left">Twitter</div>
+                                </a>
+                            </li>
+                        </div>
+                    </ul>
+                </li>
+
+
+
+                <li class="relative group">
+                    <a href="#" class="hover:text-danger">
+                        <span>News & Blog</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        <ul class="hidden xl:flex items-center space-x-5">
-{{--            <li>--}}
-{{--                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>--}}
-{{--            </li>--}}
-
-            <li class="relative group">
-                <a href="{{ route('tv-shows.home') }}">Tv Shows</a>
-            </li>
-
-            <li>
-                <a href="{{ route('live-channel.show') }}" class="hover:text-danger">
-                    <span class="text-danger">&bull;</span>
-                    Live Channel
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('pedicab-streams.home') }}" class="hover:text-danger">Pedicab Streams</a>
-            </li>
-            <li>
-                <a href="{{ route('pricing.home') }}" class="hover:text-danger">Pricing</a>
-            </li>
-
-            <li class="relative group">
-                <a href="javascript:void(0)" class="hover:text-danger">
-                    <span>More</span>
-                    <i class="fa-solid fa-angle-down"></i>
-                </a>
-
-                <ul class="absolute py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl min-w-[150px] text-sm z-50 hidden group-hover:block">
-                    <li>
-                        <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
-                    </li>
-                    <!-- <li>
-                        <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                    </li> -->
-                    <li>
-                        <a href="{{ route('podcast.home') }}" class="px-4 py-2 block hover:text-danger">Podcast</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebrity shoutout</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
+        <form action="{{ route('search') }}" class="hidden xl:flex items-center bg-[#000000] w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
+            <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
+            <input type="text" placeholder="Search titles here..." name="q" class="form-control border-0" />
+        </form>
 
         <ul class="hidden xl:flex items-center space-x-5">
             <!-- <li title="Cart">
@@ -86,18 +118,45 @@
             @if(!is_user_logged_in())
             <li>
             <a href="{{ route('pricing.home') }}" class="py-3.5 px-8 w-full max-w-[422px] animate-border rounded-xl border border-transparent [background:linear-gradient(45deg,#172033,theme(colors.slate.800)_50%,#172033)_padding-box,conic-gradient(from_var(--border-angle),theme(colors.slate.600/.48)_80%,_theme(colors.indigo.500)_86%,_theme(colors.indigo.300)_90%,_theme(colors.indigo.500)_94%,_theme(colors.slate.600/.48))_border-box]">
-  <span >Subscribe Now</span>
-</a>
+                <span >Subscribe Now</span>
+            </a>
 
-                
+
             </li>
 
-            <li>
-                <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">Sign in</a>
+            <li class="relative group">
+                <a href="javascript:void(0)" class="hover:text-danger" id="authDropDown">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+
+                <ul style="width: 350px; right: -55px;" class="absolute top-[56px] py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="authDropDownMenu">
+                    <li>
+                        <a href="{{ route('register') }}" class="btn btn-xl py-4 text-left hover:bg-slate-500">
+                            Create Account
+                            <div>
+                                <small> Join for free or go premuim </small>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('login') }}" class="btn btn-xl py-4 text-left">
+                            Login
+                            <div> <small> Already joined hottv? Welcome Back </small> </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('login') }}" class="btn btn-xl py-4 text-center" style="width: 100%; background: red">
+                            <i class="fa-solid fa-crown"></i>
+                            7 Day Free Trial
+                        </a>
+                    </li>
+
+                </ul>
             </li>
 
-            
-            
+
+
             @else
 
             <!-- <li title="Notification">
@@ -170,7 +229,7 @@
         @if(is_user_logged_in())
         <div class="relative group">
             <a href="javascript:void(0)" class="hover:text-danger flex items-center">
-                <i class="las la-user-circle text-2xl"></i>
+                <i class="fas la-user-circle text-2xl"></i>
             </a>
 
             <ul
@@ -330,3 +389,50 @@
     </section>
 </nav>
 @livewire("partials.search")
+@push('script')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const browse = document.querySelector("#browse");
+    const browseMenu = document.querySelector("#browseMenu");
+
+    const socialMedia = document.querySelector("#socialMedia");
+    const socialMediaMenu = document.querySelector("#socialMediaMenu");
+
+    const authDropDown = document.querySelector("#authDropDown");
+    const authDropDownMenu = document.querySelector("#authDropDownMenu");
+
+    browse.addEventListener("click", function () {
+        browseMenu.style.display = 'block';
+    });
+
+    // Optional: Close the dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!browse.contains(event.target) && !browse.contains(event.target)) {
+            browseMenu.style.display = 'none';
+        }
+    });
+
+    socialMedia.addEventListener("click", function () {
+        socialMediaMenu.style.display = 'block';
+    });
+
+    // Optional: Close the dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!socialMedia.contains(event.target) && !socialMediaMenu.contains(event.target)) {
+            socialMediaMenu.style.display = 'none';
+        }
+    });
+
+    authDropDown.addEventListener("click", function () {
+        authDropDownMenu.style.display = 'block';
+    });
+
+    // Optional: Close the dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!authDropDown.contains(event.target) && !authDropDownMenu.contains(event.target)) {
+            authDropDownMenu.style.display = 'none';
+        }
+    });
+});
+</script>
+@endpush
