@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Customer\Ride\CancelRideController;
 use App\Http\Controllers\Api\V1\Customer\Ride\DurationController;
 use App\Http\Controllers\Api\V1\Customer\Ride\StreamingController;
 use App\Http\Controllers\Api\V1\Customer\Ride\RequestController;
@@ -22,6 +23,8 @@ Route::prefix('ride')
             Route::get('{ride}/streaming/start', [StreamingController::class, 'start'])->name('streaming.start');
             Route::get('{ride}/streaming/end', [StreamingController::class, 'end'])->name('streaming.end');
             Route::get('{ride}/streaming/show', [StreamingController::class, 'end'])->name('streaming.show');
+
+            Route::get('{ride}/cancel', [CancelRideController::class, 'end'])->name('ride.cancel');
         });
 
         Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {
