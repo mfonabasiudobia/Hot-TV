@@ -22,7 +22,9 @@ Route::prefix('ride')
             Route::get('{ride}/streaming', [StreamingController::class, 'store'])->name('streaming.store');
             Route::get('{ride}/streaming/start', [StreamingController::class, 'start'])->name('streaming.start');
             Route::get('{ride}/streaming/end', [StreamingController::class, 'end'])->name('streaming.end');
-            Route::get('{ride}/streaming/show', [StreamingController::class, 'end'])->name('streaming.show');
+            Route::get('{ride}/streaming/show', [StreamingController::class, 'show'])->name('streaming.show');
+
+            Route::get('{ride}/cancel', CancelRideController::class)->name('ride.cancel');
 
             Route::get('{ride}/cancel', [CancelRideController::class, 'end'])->name('ride.cancel');
         });
