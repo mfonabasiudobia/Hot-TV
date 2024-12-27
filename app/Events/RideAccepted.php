@@ -45,7 +45,7 @@ class RideAccepted implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('customer.'. $this->customer->id);
+        return new PrivateChannel('customer.'. 87); // $this->customer->id
     }
 
     public function broadcastAs()
