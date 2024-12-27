@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\Driver\Ride\RejectRideController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\CompletePaymentController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
 use App\Http\Controllers\Api\V1\Driver\Ride\DriverStatusController;
+use App\Http\Controllers\Api\V1\Driver\Ride\LocationController;
 use App\Http\Controllers\Api\V1\Driver\Ride\RideListController;
 
 Route::prefix('ride')
