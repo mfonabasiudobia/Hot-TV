@@ -34,7 +34,7 @@ class RidePaymentFailed implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.' . $this->ride->driver_id);
+        return new PrivateChannel('driver.' . 87); // $this->ride->driver_id
     }
 
     public function broadcastAs()

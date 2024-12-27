@@ -34,11 +34,11 @@ class RideCancelled
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.' . $this->ride->driver->id);
+        return new PrivateChannel('driver.' . 87); // $this->ride->driver->id
     }
 
     public function broadcastAs()
     {
-        return 'ride.cancelled;
+        return 'ride.cancelled';
     }
 }
