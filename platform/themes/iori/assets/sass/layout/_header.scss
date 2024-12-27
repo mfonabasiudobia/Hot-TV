@@ -579,3 +579,44 @@
         }
     }
 }
+
+.tile-group ul {
+    display: none;
+    grid-template-columns: repeat(2, 1fr); /* Adjust columns as needed */
+    gap: 10px; /* Space between tiles */
+}
+
+.tile-group:hover ul {
+    display: grid;
+}
+
+.tile {
+    background: #333; /* Tile background color */
+    padding: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.tile:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+.tile a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.tile a:hover {
+    color: #e63946; /* Hover color */
+}
+
+#browse li,#socialMedia li, #authDropDown li {
+    height: 600px;
+}
+
+
+// #authDropDownMenu li a:hover {
+//     background: #555 !important;
+// }

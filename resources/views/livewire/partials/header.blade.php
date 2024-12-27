@@ -43,6 +43,10 @@
                                 <li>
                                     <a href="{{ route('gallery.home') }}" class="px-4 py-4 block hover:text-danger">Gallery</a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity
+                                        shoutouts</a>
+                                </li>
                             </div>
                             <div class="flex flex-wrap" style="width: 700px">
                                 @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)
@@ -58,9 +62,6 @@
                         </div>
                     </ul>
                 </li>
-    {{--            <li>--}}
-    {{--                <a href="{{ route('home') }}" class="hover:text-danger">Home</a>--}}
-    {{--            </li>--}}
 
                 <li class="relative group tile-group">
                     <a href="javascript:void(0)" class="hover:text-danger" id="socialMedia">
@@ -131,7 +132,7 @@
 
                 <ul style="width: 350px; right: -55px;" class="absolute top-[56px] py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="authDropDownMenu">
                     <li>
-                        <a href="{{ route('register') }}" class="btn btn-xl py-4 text-left hover:bg-slate-500">
+                        <a href="{{ route('register') }}" class="btn btn-xl py-4 text-left">
                             Create Account
                             <div>
                                 <small> Join for free or go premuim </small>
@@ -289,57 +290,77 @@
             </header>
 
             <ul class="flex-1 space-y-5 text-lg md:text-2xl text-white">
-                <li>
-                    <a href="{{ route('home') }}" class="hover:text-secondary">Home</a>
-                </li>
-
-                <li>
-                    <a href="{{ route('tv-shows.home') }}" class="hover:text-secondary">Tv Shows</a>
-                </li>
-
-                <li>
-                    <a href="{{ route('live-channel.show') }}" class="hover:text-secondary">
-                        <span class="text-danger">&bull;</span>
-                        Live Channel
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{{ route('pedicab-streams.home') }}" class="hover:text-secondary">Pedicab Streams</a>
-                </li>
-
-                <li class="relative group">
-                    <a href="javascript:void(0)" class="hover:text-danger flex items-center justify-between">
-                        <span>More</span>
+                <li class="relative group tile-group">
+                    <a href="javascript:void(0)" class="hover:text-danger flex items-center justify-between" id="browse">
+                        <span>Browse</span>
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
 
-                    <ul
-                        class="py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl  z-50 hidden group-hover:block">
-                        <li>
-                            <a href="{{ route('blog.home') }}" class="px-4 py-2 block hover:text-danger">Our Blog</a>
-                        </li>
-                        <!-- <li>
-                            <a href="{{ route('merchandize.home') }}" class="px-4 py-2 block hover:text-danger">Our Products</a>
-                        </li> -->
-                        <li>
-                            <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity
-                                shoutouts</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('gallery.home') }}" class="px-4 py-2 block hover:text-danger">Our Gallery</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('about') }}" class="px-4 py-2 block hover:text-danger">About Us</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('contact') }}" class="px-4 py-2 block hover:text-danger">Contact Us</a>
-                        </li>
+                    <ul class="class="py-1 whitespace-nowrap space-y-1 bg-dark rounded-xl  z-50 hidden group-hover:block" id="browseMenu">
+                        <div class="flex p-4">
+                            <div class="border-r-2 border-white" style="border-right: 2px solid white;">
+                                <li class="relative group">
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('tv-shows.home') }}">Tv Shows</a>
+                                </li>
+
+                                <li>
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('live-channel.show') }}">
+                                        <span class="text-danger">&bull;</span>
+                                        Live Channel
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('pedicab-streams.home') }}">Pedicab Streams</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('podcast.home') }}" class="px-4 py-4 block hover:text-danger">Podcast</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('gallery.home') }}" class="px-4 py-4 block hover:text-danger">Gallery</a>
+                                </li>
+                            </div>
+
+                        </div>
+                    </ul>
+                </li>
+                <li class="relative group tile-group">
+                    <a href="javascript:void(0)" class="hover:text-danger flex align-center justify-between" id="socialMedia">
+                        <span>Social Media</span>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </a>
+
+                    <ul id="socialMediaMenu" class="absolute top-[56px] min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden group-hover:block">
+                        <div style="width: 400px;">
+                            <li class="tile">
+                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-facebook"></i></div>
+                                    <div class="text-left">Facbook</div>
+                                </a>
+                            </li>
+                            <li class="tile">
+                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-linkedin"></i></div>
+                                    <div class="text-left">LinkedIn</div>
+                                </a>
+                            </li>
+                            <li class="tile">
+                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                    <div class="mr-2"><i class="fa-brands fa-twitter"></i></div>
+                                    <div class="text-left">Twitter</div>
+                                </a>
+                            </li>
+                        </div>
                     </ul>
                 </li>
 
-            </ul>
 
+                <li class="relative group">
+                    <a href="#" class="hover:text-danger">
+                        <span>News & Blog</span>
+                    </a>
+                </li>
+            </ul>
             <ul class="flex justify-center items-center space-x-5 border-t border-secondary py-7">
                 <li>
                     <a href="{{ route('login') }}" class="btn btn-xl rounded-2xl border hover:bg-danger hover:border-danger">
@@ -349,40 +370,6 @@
 
                 <li>
                     <a href="{{ route('pricing.home') }}" class="btn btn-xl rounded-2xl btn-danger">Register</a>
-                </li>
-            </ul>
-
-
-            <ul class="flex items-center justify-center">
-                <li>
-                    <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
-                        <i class="lab la-facebook-f"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
-                        <i class="lab la-youtube"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
-                        <i class="lab la-twitter"></i>
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
-                        <i class="lab la-linkedin"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="text-2xl flex items-center justify-center rounded-2xl h-[50px] min-w-[50px] hover:bg-danger">
-                        <i class="lab la-instagram"></i>
-                    </a>
                 </li>
             </ul>
         </section>
