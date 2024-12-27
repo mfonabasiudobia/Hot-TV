@@ -13,11 +13,14 @@ class CancelRideController extends Controller
     public function __invoke(Ride $ride)
     {
         try {
-            if($ride->status == StatusEnum::ACCEPTED) {
+            if($ride->status === StatusEnum::ACCEPTED->value) {
                event(new RideCancelled($ride));
-            }else if($ride->status == StatusEnum::REQUESTED) {
-                //
-            } else {
+            }
+
+            if($ride->status == StatusEnum::IN_PROGRESS->value ||
+                $ride->status == StatusEnum::COMPLETED->value ||
+                $ride->status == StatusEnum::STARTED->value ||
+                $ride->status == StatusEnum::ARRIVED->value) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Ride cannot be cancelled, because its in status' . $ride->status,
@@ -38,7 +41,13 @@ class CancelRideController extends Controller
                 ]
             ]);
         } catch (\Throwable $th) {
-            //throw $th;
+            app_log_exception($th);
+
+            return response()->json([
+                'success' => false,
+                'message' => ApiResponseMessageEnum::SERVER_ERROR->value,
+                'error' => $th->getMessage()
+            ]);
         }
     }
 }

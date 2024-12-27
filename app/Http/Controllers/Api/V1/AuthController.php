@@ -164,7 +164,7 @@ class AuthController extends Controller
             }
     }
 
-    public function sendEmail() 
+    public function sendEmail()
     {
         $user = User::first();
         $otp = 'asdfhjlksahfjklhfsjdkf';
@@ -173,4 +173,14 @@ class AuthController extends Controller
         // throw_unless($otp = AuthRepository::sendOtp('uniqueuser@yopmail.com'), "Failed to send OTP");
     }
 
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->user->tokens()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User Logged Out',
+        ]);
+    }
 }

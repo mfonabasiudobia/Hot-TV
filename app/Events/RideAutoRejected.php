@@ -26,7 +26,7 @@ class RideAutoRejected implements ShouldBroadcastNow
         $this->ride = new RideResource($ride);
         $this->driver_id = $driver_id;
 
-        \Log::info('ride.auto.rejected', ['driver_id'=> $this->driver_id, 'ride_id' => $ride->id, 'customer_id' => $ride->customer_id]);
+        \Log::info('ride.auto.rejected', ['driver_id'=> $this->driver_id, 'ride_id' => $ride->id, 'customer_id' => $ride->user_id]);
     }
 
     /**
