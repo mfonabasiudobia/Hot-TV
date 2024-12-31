@@ -31,7 +31,9 @@ class User extends AuthenticatableBaseModel
         'super_user',
         'manage_supers',
         'permissions',
-        'stripe_customer_id'
+        'stripe_customer_id',
+        'first_name',
+        'last_name'
     ];
 
     protected $guarded = [];
@@ -66,7 +68,7 @@ class User extends AuthenticatableBaseModel
     {
         return $this->hasOne(Subscription::class);
     }
-    
+
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(

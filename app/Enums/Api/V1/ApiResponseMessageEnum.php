@@ -50,6 +50,7 @@ enum ApiResponseMessageEnum:string
     case RIDE_ALREADY_REJECTED = 'ride already rejected';
     case RIDE_RESPONSE_ENTRY_MISSING = 'ride reponse missing';
     case RIDE_ACCEPTED= 'ride accepted';
+    case RIDE_LIST= 'ride list';
     case DRIVER_ARRIVED = 'driver arrived';
     case USER_PROFILE = 'user profile';
     case WATCH_LISTS = 'watch lists';
@@ -67,4 +68,7 @@ enum ApiResponseMessageEnum:string
     case SET_ONLINE_STATUS = 'Driver online status updated';
     case LOCATION_UPDATED = 'location updated';
     case RIDE_AUTOREJECTED = 'Ride auto rejected due to no response';
+
+    case STREAM_JOINED_SUCCESS = 'User joined Stream';
+    case STREAM_LEFT_SUCCESS = 'User left Stream';
 }

@@ -1,5 +1,5 @@
 @php
-    $streams = \App\Models\Ride::where('stream_status', 'streaming')->get()->take(10);
+    $streams = \App\Models\Ride::orderBy('id', 'desc')->get()->take(9);
 @endphp
 <section class="py-16 bg-black">
     <div class="container space-y-10 overflow-hidden">
@@ -11,94 +11,47 @@
             </a>
         </header>
 
-
-        <section class="grid md:grid-cols-3 gap-7">
-            <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
-                style="background-image: linear-gradient(to left, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0)), url('{{ asset('images/pedicab-image1.png') }}');"
-                class="md:col-span-2 h-[384px] rounded-2xl relative group">
-
-
-                <button
-                    class="absolute top-0 bottom-0 m-auto left-0 right-0 md:right-auto md:left-[15%] w-[70px] h-[70px] invisible group-hover:visible">
-                    <img src="{{ asset('svg/btn-play.svg') }}" alt="" class="animate-pulse" />
-                </button>
-
-                <div
-                    class="md:text-center absolute p-5 right-0 md:top-0 -bottom-[200px] group-hover:bottom-0 flex flex-col justify-center space-y-3 md:space-y-7 md:h-full w-full md:w-[300px] transition-all bg-gradient-to-t from-[#000] md:from-[transparent] to-[rgba(0,0,0,0.5)] md:to-[transparent] shadow-2xl invisible group-hover:visible">
-                    <section class="space-y-2">
-                        <h2 class="md:racing-sans md:text-6xl ">
-                            PEDICAB
-                            TOUR
-                        </h2>
-                        <div class="md:text-lg font-semibold">SEASONAL TOUR</div>
-                    </section>
-
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <img src="{{ asset('images/user-icon.jpg') }}" alt=""
-                                class="w-[34px] h-[34px] rounded-full object-cover" />
-                            <span class="font-light">John Doe</span>
-                        </div>
-
-                        <span class="font-light">30.5k</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
-                style="background-image: url('{{ asset('images/stream-02.png') }}');"
-                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
-                <button>
-                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                </button>
-
-                <div
-                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                    <h2 class="font-bold">Pedicab Driver Vloge 13 - Aveneue Street......</h2>
-
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <img src="{{ asset('images/user-icon.jpg') }}" alt=""
-                                class="w-[34px] h-[34px] rounded-full object-cover" />
-                            <span class="font-light">John Doe</span>
-                        </div>
-
-                        <span class="font-light">30.5k</span>
-                    </div>
-                </div>
-            </a>
-        </section>
-
         <div class="grid md:grid-cols-3 gap-5">
             @foreach ($streams as $item)
-            @if (!$item->is_stream_blocked)
-                <a href="{{ route('pedicab-streams.show', $item->id) }}"
-                    style="background-image: url('{{ asset('images/stream-02.png') }}');"
-                    class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
+                @if (!$item->is_stream_blocked)
+                    <a href="{{ route('pedicab-streams.show', $item->id) }}"
+                        style="background-image: url('{{ asset("images/stream-02.png") }}');"
+                        class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-                    <button>
-                        <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                            class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                    </button>
+                        <button class="absolute top-1 p-2">
+                            @if($item->stream_status === 'streaming')
+                                <i class="fas fa-eye"></i>
+                            @else
+                                <i class="fas fa-eye-slash"></i>
+                            @endif
+                        </button>
 
-                    <div
-                        class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                        <h2 class="font-bold">Pedicab Driver Vloge 13 - Aveneue Street......</h2>
+                        <button>
+                            <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                                class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                        </button>
 
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <img src="{{ asset('images/user-icon.jpg') }}" alt=""
-                                    class="w-[34px] h-[34px] rounded-full object-cover" />
-                                <span class="font-light">John Doe</span>
+                        <div
+                            class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                            <div class="flex justify-between">
+                                <h2 class="font-bold">{{$item->customer->username}} - {{$item->street_name}}</h2>
+                                <div>
+                                    watching: {{$item->watching}}
+                                </div>
                             </div>
 
-                            <span class="font-light">30.5k</span>
-                        </div>
-                    </div>
-                </a>
-            @endif
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <img src="{{ $item->customer->avatar_url }}" alt=""
+                                        class="w-[34px] h-[34px] rounded-full object-cover" />
+                                    <span class="font-light">{{$item->customer->username}}</span>
+                                </div>
 
+                                <span class="font-light">{{$item->views}}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endif
             @endforeach
         </div>
     </div>

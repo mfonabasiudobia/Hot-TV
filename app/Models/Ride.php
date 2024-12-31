@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ride extends Model
 {
+    protected $appends = ['views', 'watching'];
+
     protected $fillable = [
         'user_id',
         'driver_id',
@@ -48,5 +50,31 @@ class Ride extends Model
             get: fn (mixed $value) => $value / 100,
             set: fn (mixed $value) => $value * 100
         );
+    }
+
+    public function getWatchingAttribute()
+    {
+        $views = PedicabStreamView::where('ride_id', $this->attributes['id'])->where('status', 'watching')->count();
+
+        if ($views >= 1000000) {
+            return number_format($views / 1000000, 1) . 'M'; // For millions
+        } elseif ($views >= 1000) {
+            return number_format($views / 1000, 1) . 'K';
+        }
+
+        return number_format($views);
+    }
+
+    public function getViewsAttribute()
+    {
+        $views =  PedicabStreamView::where('ride_id', $this->attributes['id'])->count();
+
+        if ($views >= 1000000) {
+            return number_format($views / 1000000, 1) . 'M'; // For millions
+        } elseif ($views >= 1000) {
+            return number_format($views / 1000, 1) . 'K';
+        }
+
+        return number_format($views);
     }
 }

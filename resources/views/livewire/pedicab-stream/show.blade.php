@@ -38,6 +38,10 @@
 @push('script')
 <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
 <script>
+    window.addEventListener("beforeunload", () => {
+        Livewire.emit('userLeft');
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         const isBlocked = "{{ $ride->is_stream_blocked }}";
         if(isBlocked) return false;
