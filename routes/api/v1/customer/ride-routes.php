@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\V1\Customer\Ride\Stripe\PaymentVerificationControll
 use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentCancelController as PaypalPaymentCancelController;
 use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentVerificationController as PaypalPaymentVerificationController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
+use App\Http\Controllers\Api\V1\Customer\Ride\StreamViewController;
+// use App\Http\Controllers\Api\V1\Customer\Ride\LocationController;
 
 Route::prefix('ride')
     ->name('ride.')
@@ -24,9 +26,12 @@ Route::prefix('ride')
             Route::get('{ride}/streaming/end', [StreamingController::class, 'end'])->name('streaming.end');
             Route::get('{ride}/streaming/show', [StreamingController::class, 'show'])->name('streaming.show');
 
+            Route::get('{ride}/streaming/joined', [StreamViewController::class, 'joined'])->name('stream.view.joined');
+            Route::get('{ride}/streaming/left', [StreamViewController::class, 'left'])->name('stream.view.left');
+
             Route::get('{ride}/cancel', CancelRideController::class)->name('ride.cancel');
 
-            Route::get('{ride}/cancel', [CancelRideController::class, 'end'])->name('ride.cancel');
+            // Route::post('/location', LocationController::class)->name('customer.location.update');
         });
 
         Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {

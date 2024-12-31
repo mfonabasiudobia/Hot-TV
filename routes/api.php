@@ -4,6 +4,7 @@
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\CheckoutPaypalController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
+use App\Http\Controllers\Api\V1\Customer\Auth\LoginController;
 
 Route::group(['prefix' => 'v1/customer', 'as' => 'v1.customer.'], function() {
     require __DIR__ . '/api/v1/customer/auth-routes.php';
@@ -43,3 +44,7 @@ Route::group(['prefix' => 'v1/subscribe', 'as' => 'v1.subscribe.'], function() {
 });
 
 Route::get('sendmail', "App\Http\Controllers\Api\V1\AuthController@sendEmail");
+
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
+    Route::get('logout', 'App\Http\Controllers\Api\V1\AuthController@logout');
+});

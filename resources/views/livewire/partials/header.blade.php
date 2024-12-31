@@ -47,6 +47,9 @@
                                     <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-2 block hover:text-danger">Celebritity
                                         shoutouts</a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('pricing.home') }}" class="px-4 py-2 block hover:text-danger">Pricing</a>
+                                </li>
                             </div>
                             <div class="flex flex-wrap" style="width: 700px">
                                 @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)

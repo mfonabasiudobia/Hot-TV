@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('stream')->default(false);
             $table->string('stream_channel_name')->nullable();
             $table->boolean('is_stream_blocked')->default(false);
-            $table->enum('stream_status', ['pending', 'streaming', 'completed'])->default('pending');
+            $table->enum('stream_status', ['streaming', 'completed'])->default('pending');
         });
     }
 
