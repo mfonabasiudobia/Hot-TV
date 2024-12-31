@@ -10,7 +10,7 @@
     <div class="container flex items-center justify-between py-2">
         <div class="flex items-center space-x-10">
             <a href="{{ route('home') }}">
-                <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[80px] w-auto" />
+                <img src="{{ asset('images/logo-white.png') }}" alt="" class="h-[50px] w-auto" />
             </a>
 
             <ul class="hidden xl:flex items-center space-x-5">
@@ -69,22 +69,22 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
 
-                    <ul id="socialMediaMenu" class="absolute top-[56px] min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
+                    <ul id="socialMediaMenu" class="absolute top-[45px] min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
                         <div style="width: 400px;">
                             <li class="tile">
-                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 block hover:bg-secondary hover:text-danger flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-facebook"></i></div>
                                     <div class="text-left">Facbook</div>
                                 </a>
                             </li>
                             <li class="tile">
-                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 block hover:bg-secondary hover:text-danger flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-linkedin"></i></div>
                                     <div class="text-left">LinkedIn</div>
                                 </a>
                             </li>
                             <li class="tile">
-                                <a class="px-4 py-4 block hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 block hover:bg-secondary hover:text-danger flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-twitter"></i></div>
                                     <div class="text-left">Twitter</div>
                                 </a>

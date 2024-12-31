@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Botble\SubscriptionPlan\Models\Subscription;
+use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Stripe\Price;
 use Stripe\Product;
@@ -104,6 +105,7 @@ class PaymentController extends Controller
         if($type === 'stripe' && array_key_exists('payment_stripe_client_id', $data)) {
             if(isset($data['payment_stripe_client_id']) && $settingStore->get('payment_stripe_client_id') !== $data['payment_stripe_client_id']) {
                 $products = Product::all();
+
                 foreach ($products->data as $product) {
                     $prices = Price::all(['product' => $product->id]);
 
@@ -130,6 +132,49 @@ class PaymentController extends Controller
 
                     $plan->stripe_plan_id = $stripProductPrice->id;
                     $plan->save();
+                }
+
+                $orders = SubscriptionOrder::where('payment_method_type', 'stripe')
+                    ->whereNotNull('stripe_subscription_id')
+                    ->get();
+
+                foreach($orders as $order) {
+                    $user = $order->user;
+
+                    $stripeCustomer = \Stripe\Customer::create([
+                        'email' => $user->email,
+                        'name' => $user->name,
+                    ]);
+
+                    $user->stripe_customer_id = $stripeCustomer->id;
+                    $user->save();
+
+
+                    if($order->subscription) {
+                        $nextBillingDate = strtotime($order->next_billing_date ?? $order->subscription->trial_ended_at ?? now());
+
+                        $stripeSubscription = \Stripe\Subscription::create([
+                            'customer' => $user->stripe_customer_id,
+                            'items' => [
+                                ['price' => $order->subscription->stripe_plan_id],
+                            ],
+                            'billing_cycle_anchor' => $nextBillingDate,
+                            'proration_behavior' => 'none', // Ensures no extra charge for aligning billing cycle
+                            'trial_end' => $order->subscription->trial_ended_at ? strtotime($order->subscription->trial_ended_at) : 'now',
+                            'payment_behavior' => 'default_incomplete', // Allows subscription creation without immediate payment method
+                            'trial_settings' => [
+                                'end_behavior' => [
+                                    'missing_payment_method' => 'cancel',
+                                ],
+                            ]
+                        ]);
+
+                        $order->stripe_subscription_id = $stripeSubscription->id;
+                        $order->recurring_status = $stripeSubscription->status; // Example: active, incomplete, etc.
+                        $order->next_billing_date = date('Y-m-d H:i:s', $stripeSubscription->current_period_end);
+                        $order->save();
+                    }
+
                 }
             }
         }

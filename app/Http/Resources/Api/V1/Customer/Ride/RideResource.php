@@ -13,7 +13,7 @@ class RideResource extends JsonResource
             "id" => $this->id,
             "user_id" => $this->user_id,
             "driver_id" => $this->driver_id,
-            "stream" => $this->stream,
+            "stream" => (bool) $this->stream,
             "ride_type" => $this->ride_type,
             "price" => $this->price,
             "duration" => $this->duration,
