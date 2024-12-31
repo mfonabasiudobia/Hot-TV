@@ -2,14 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Enums\Ride\DriverRideStatusEnum;
 use App\Enums\User\RoleEnum;
 use Botble\ACL\Models\User;
-use App\Models\RideDuration;
 use Botble\Setting\Models\Setting;
-use App\Models\ShowCategory;
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 
 class DriverRepository
 {
@@ -25,6 +21,15 @@ class DriverRepository
             ->get();
     }
 
+    public static function allOnlineDrivers()
+    {
+        return User::where('online_status', true)
+            ->whereHas('roles', function ($query) {
+                $query->where('slug', RoleEnum::DRIVER->value);
+            })
+            ->get();
+    }
+
     public static function getNextAvailableDriver($ride)
     {
         $radius = Setting::where('key', 'ride-search-radius')->first()->value ?? 10;
@@ -32,6 +37,11 @@ class DriverRepository
         return User::where('online_status', true)
                 ->whereDoesntHave('ride_responses', function ($query) use ($ride) {
                     $query->where('ride_id', $ride->id);
+                })
+                ->whereDoesntHave('ride_responses', function ($query) use ($ride) {
+                    $query->where('ride_id', '!=', $ride->id)
+                    ->where('status', DriverRideStatusEnum::PENDING->value)
+                    ->where('status', DriverRideStatusEnum::ACCEPTED->value);
                 })
                 ->whereHas('roles', function ($query) {
                     $query->where('slug', RoleEnum::DRIVER->value);

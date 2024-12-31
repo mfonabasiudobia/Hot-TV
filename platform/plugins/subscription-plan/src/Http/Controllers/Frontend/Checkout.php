@@ -98,7 +98,8 @@ class Checkout extends BaseController
             $order = SubscriptionOrder::where('session_id', $session->id)
                 ->where(function($query) {
                     return $query->where('status', OrderStatusEnum::PENDING->value)
-                        ->orWhere('status', OrderStatusEnum::TRAIL->value)  ;
+                        ->orWhere('status', OrderStatusEnum::TRAIL->value)
+                        ->orWhere('status', OrderStatusEnum::PAID->value)  ;
                 })
                 ->where('current_subscription', true)
                 ->first();
@@ -107,7 +108,7 @@ class Checkout extends BaseController
                 throw new NotFoundHttpException();
             }
 
-            if($order->status == OrderStatusEnum::PENDING->value) {
+            if($order->status == OrderStatusEnum::PENDING->value || $order->status == OrderStatusEnum::PAID->value) {
                 $order->status = OrderStatusEnum::PAID->value;
                 $order->stripe_subscription_id = $session->subscription;
                 $order->save();
