@@ -10,6 +10,7 @@ class WatchHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'show_id' => $this->tvShow->id,
             'slug' => $this->tvShow->slug,
             'thumbnail' => file_path($this->tvShow->thumbnail),
             'views' => view_count($this->tvShow->views->count()),
