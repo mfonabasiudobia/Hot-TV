@@ -36,7 +36,7 @@ class RideAutoRejected implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.' . 87); // $this->driver_id
+        return new PrivateChannel('driver.' . $this->driver_id);
     }
 
     public function broadcastAs()

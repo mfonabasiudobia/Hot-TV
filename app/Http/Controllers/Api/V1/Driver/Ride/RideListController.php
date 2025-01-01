@@ -14,7 +14,7 @@ class RideListController extends Controller
 
         // $autoRejected = $ride->ride_responses()->where('driver_id', $user->id)->where('status', DriverRideStatusEnum::AUTO_REJECTED)->first();
 
-        $responses = $user->ride_responses()->with("ride")->get();
+        $responses = $user->ride_responses()->with("ride")->paginate(10);
 
         return response()->json([
             'success' => true,
