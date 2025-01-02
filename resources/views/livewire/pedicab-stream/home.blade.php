@@ -8,7 +8,7 @@
                 desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que vamos encontrar
                 como desenvolvedores e desenvolvedoras web.</p>
             </header>
-
+<!--
         <section class="grid md:grid-cols-3 gap-7">
             <a
                 href="{{ route('tv-shows.show', ['slug' => 'open-tv-show']) }}"
@@ -131,57 +131,113 @@
             </a>
 
 
-        </section>
-
-
-            <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
-                @foreach ($streams['data'] as $item)
-                    @if (!$item->is_stream_blocked)
-                        <a href="{{ route('pedicab-streams.show', $item->id) }}"
-                            style="background-image: url('{{ asset("images/stream-02.png") }}');"
-                            class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
-
-                            <button class="absolute top-1 p-2">
-                                @if($item->stream_status === 'streaming')
-                                    <i class="fas fa-eye"></i>
-                                @else
-                                    <i class="fas fa-eye-slash"></i>
-                                @endif
-                            </button>
-
-                            <button>
-                                <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                                    class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                            </button>
-
-                            <div
-                                class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                                <div class="flex justify-between">
-                                    <h2 class="font-bold">{{$item->customer->username}} - {{$item->street_name}}</h2>
-                                    <div>
-                                        watching: {{$item->watching}}
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center space-x-2">
-                                        <img src="{{ $item->customer->avatar_url }}" alt=""
-                                            class="w-[34px] h-[34px] rounded-full object-cover" />
-                                        <span class="font-light">{{$item->customer->username}}</span>
-                                    </div>
-
-                                    <span class="font-light">{{$item->views}}</span>
-                                </div>
-                            </div>
+        </section> -->
+            <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px">
+                    <li class="me-2">
+                        <a href="#" wire:click="selectTab('live-streams')" class="{{ $activeTab === 'live-streams' ? 'border-b-2' : '' }} inline-block p-4 text-blue-600  border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500">
+                            Live Streams
                         </a>
-                    @endif
-                @endforeach
+                    </li>
+                    <li class="me-2">
+                        <a href="#" wire:click="selectTab('ended-streams')" class="{{ $activeTab === 'ended-streams' ? 'border-b-2' : '' }} inline-block p-4 text-blue-600  border-blue-600 rounded-t-lg dark:text-blue-500 dark:border-blue-500" aria-current="page">
+                            Ended Streams
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                {{ $streams->links() }}
+            <section class="{{ $activeTab === 'live-streams' ? 'block' : 'hidden' }}">
+                <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+                    @foreach ($liveStreamsData as $item)
+                        @if (!$item['is_stream_blocked'])
+                            <a href="{{ route('pedicab-streams.show', $item['id']) }}"
+                                style="background-image: url('{{ $item['thumbnail'] ?? 'https://placehold.co/600x400' }}');"
+                                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
+
+                                <button class="absolute top-1 p-2 bg-secondary b-r-2">
+                                    <span class="text-danger">&bull;</span>
+                                    Live
+                                </button>
+
+                                <button>
+                                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                                </button>
+
+                                <div
+                                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                                    <div class="flex justify-between">
+                                        <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
+                                        <div>
+                                            watching: {{$item['watching']}}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <img src="{{ $item['customer']['avatar_url'] ?? '' }}" alt=""
+                                                class="w-[34px] h-[34px] rounded-full object-cover" />
+                                            <span class="font-light">{{$item['customer']['username']}}</span>
+                                        </div>
+
+                                        <span class="font-light">{{$item['views']}}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endif
+                    @endforeach
+                </section>
+
             </section>
 
+            <section class="{{ $activeTab === 'ended-streams' ? 'block' : 'hidden' }}">
+                <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+                    @foreach ($endedStreamsData as $item)
+                        @if (!$item['is_stream_blocked'])
+                            <a href="{{ route('pedicab-streams.show', $item['id']) }}"
+                                style="background-image: url('{{ $item['thumbnail'] ?? 'https://placehold.co/600x400' }}');"
+                                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-            <div class="flex justify-center md:justify-end text-sm">
+                                <button class="absolute top-1 p-2">
+                                    @if($item['stream_status'] === 'streaming')
+                                        <i class="fas fa-eye"></i>
+                                    @else
+                                        <i class="fas fa-eye-slash"></i>
+                                    @endif
+                                </button>
+
+                                <button>
+                                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                                </button>
+
+                                <div
+                                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                                    <div class="flex justify-between">
+                                        <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
+                                        <div>
+                                            watching: {{$item['watching']}}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-2">
+                                            <img src="{{ $item['customer']['avatar_url'] ?? ''}}" alt=""
+                                                class="w-[34px] h-[34px] rounded-full object-cover" />
+                                            <span class="font-light">{{$item['customer']['username']}}</span>
+                                        </div>
+
+                                        <span class="font-light">{{$item['views']}}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endif
+                    @endforeach
+                </section>
+
+            </section>
+            <!-- <div class="flex justify-center md:justify-end text-sm">
                 <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-7">
                     <span class="opacity-60">Showing 10 from 10 data</span>
 
@@ -201,7 +257,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </section>
     </div>
 </div>

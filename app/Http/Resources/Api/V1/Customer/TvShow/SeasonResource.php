@@ -18,7 +18,7 @@ class SeasonResource extends JsonResource
             // "recorded_video" =>  $this->video ? Storage::disk('public')->url('videos/' . $this->video->id . '._2_3000.m3u8') : asset('storage/'. $this->recorded_video),
             "release_date" =>  $this->release_date,
             'episodes' => EpisodeResource::collection($this->episodes),
-            "video" => $this->video
+            "trailer" => $this->video
         ];
     }
 }

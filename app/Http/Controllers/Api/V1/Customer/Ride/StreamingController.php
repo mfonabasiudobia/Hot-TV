@@ -22,7 +22,14 @@ class StreamingController extends Controller
 
     public function index(Request $request)
     {
-        $streams = Ride::where('stream_status', 'streaming')->get();
+        $status = $request->status;
+
+        $streams = Ride::with(['customer']);
+
+        if($status) $streams->where('status', $status);
+
+        $streams = $streams->paginate(10);
+
         $streams = StreamResource::collection($streams);
 
         return response()->json([
@@ -209,7 +216,7 @@ class StreamingController extends Controller
         $secret = env('AGORA_CLIENT_SECRET');
         $credentials = $key . ":" . $secret;
 
-        $authKey = "basic " . base64_encode($credentials);
+        $authKey = "Basic " . base64_encode($credentials);
         $response = Http::withHeaders([
             'Authorization' => $authKey,
             'Content-Type' => 'application/json'

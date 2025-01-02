@@ -25,7 +25,7 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
     {
         $this->ride = new RideResource($ride);
 
-        \Log::info('ride.payment.succeeded', ['ride' => $ride->id, 'driver', $ride->driver_id, 'customer' => $ride->user_id]);
+        \Log::info('ride.payment.succeeded', ['ride' => $ride]);
     }
 
     /**
