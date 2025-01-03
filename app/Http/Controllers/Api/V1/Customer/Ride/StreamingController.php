@@ -8,9 +8,9 @@ use App\Models\Ride;
 use Illuminate\Http\Request;
 use App\Services\AgoraDynamicKey\RtcTokenBuilder\RtcTokenBuilder;
 use Illuminate\Support\Facades\Http;
-use App\Enums\VideoDiskEnum;
 use App\Http\Resources\Api\V1\Customer\Ride\StreamResource;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class StreamingController extends Controller
 {
@@ -196,6 +196,27 @@ class StreamingController extends Controller
                 'error' => $th->getMessage()
             ]);
         }
+    }
+
+    public function uploadThumbnail(Ride $ride, Request $request)
+    {
+        $uuid = Str::uuid();
+        $thumbnail = $request->file('image');
+        $filename = $uuid . "." . $thumbnail->getClientOriginalName();
+
+        $path = $thumbnail->storeAs('pedicab', $filename, env('FILESYSTEM_DISK'));
+
+        $ride->thumbnail = $path;
+        $ride->thumbnail_storage = 's3';
+        $ride->save();
+
+        $path = Storage::disk('s3')->url($path);
+
+        return response()->json([
+            'success' => true,
+            'message' => ApiResponseMessageEnum::STREAM_THUMBNAIL_UPLOAD->value,
+            "result"   =>   $path
+        ]);
     }
 
     public function getResourceId($ride)
