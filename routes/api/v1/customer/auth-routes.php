@@ -17,6 +17,6 @@ Route::prefix('auth')
         Route::post('forgot-password-verification', ForgotPasswordVerificationController::class)->name('forgot-password-verification');
         Route::get('payment-methods', PaymentMethodController::class)->name('payment-methods');
         Route::middleware('auth:api')->group(function() {
-            Route::post('reset-password', ResetPasswordController::class)->name('forgot-password-verification');
+            Route::post('reset-password', ResetPasswordController::class)->name('reset-password');
         });
     });

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Customer\Auth;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
-use App\Enums\User\RoleEnum;
+use App\Repositories\AuthRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Customer\Auth\LoginRequest;
 use App\Http\Resources\Api\V1\Customer\Auth\AuthUserResource;
@@ -35,6 +35,7 @@ class LoginController extends Controller
         $device_id = $request->input('device_id');
         $credentials = $request->only(['email', 'password']);
 
+        if(AuthRepository::login([ 'username' => $request->username, 'password' => $request->password])) {
         if(Auth::attempt($credentials, true)) {
             $user = Auth::user();
             
