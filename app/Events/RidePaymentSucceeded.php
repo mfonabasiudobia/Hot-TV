@@ -25,7 +25,7 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
     {
         $this->ride = new RideResource($ride);
 
-        \Log::info('ride.payment.succeeded', ['ride' => $ride->id, 'driver', $ride->driver_id, 'customer' => $ride->user_id]);
+        \Log::info('ride.payment.succeeded', ['ride' => $ride]);
     }
 
     /**
@@ -35,7 +35,7 @@ class RidePaymentSucceeded implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.' . 87); // $this->ride->driver_id
+        return new PrivateChannel('driver.' . $this->ride->driver_id);
     }
 
     public function broadcastAs()

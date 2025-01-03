@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 
-Broadcast::channel('job-progress.{jobId}', function () {
+Broadcast::channel('job-progress', function () {
     return true;
-    return auth()->user()->super_user;
+    // return auth()->user()->super_user;
 });
 
 Broadcast::channel('customer.{userId}', function () {

@@ -71,4 +71,7 @@ enum ApiResponseMessageEnum:string
 
     case STREAM_JOINED_SUCCESS = 'User joined Stream';
     case STREAM_LEFT_SUCCESS = 'User left Stream';
+
+    case STREAM_THUMBNAIL_UPLOAD_ERROR = 'Stream thumbnail upload error';
+    case STREAM_THUMBNAIL_UPLOAD = 'Stream thumbnail uploaded';
 }

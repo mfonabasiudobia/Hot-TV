@@ -8,9 +8,9 @@ use App\Models\Ride;
 use Illuminate\Http\Request;
 use App\Services\AgoraDynamicKey\RtcTokenBuilder\RtcTokenBuilder;
 use Illuminate\Support\Facades\Http;
-use App\Enums\VideoDiskEnum;
 use App\Http\Resources\Api\V1\Customer\Ride\StreamResource;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class StreamingController extends Controller
 {
@@ -22,7 +22,14 @@ class StreamingController extends Controller
 
     public function index(Request $request)
     {
-        $streams = Ride::where('stream_status', 'streaming')->get();
+        $status = $request->status;
+
+        $streams = Ride::with(['customer']);
+
+        if($status) $streams->where('status', $status);
+
+        $streams = $streams->paginate(10);
+
         $streams = StreamResource::collection($streams);
 
         return response()->json([
@@ -191,6 +198,27 @@ class StreamingController extends Controller
         }
     }
 
+    public function uploadThumbnail(Ride $ride, Request $request)
+    {
+        $uuid = Str::uuid();
+        $thumbnail = $request->file('image');
+        $filename = $uuid . "." . $thumbnail->getClientOriginalName();
+
+        $path = $thumbnail->storeAs('pedicab', $filename, env('FILESYSTEM_DISK'));
+
+        $ride->thumbnail = $path;
+        $ride->thumbnail_storage = 's3';
+        $ride->save();
+
+        $path = Storage::disk('s3')->url($path);
+
+        return response()->json([
+            'success' => true,
+            'message' => ApiResponseMessageEnum::STREAM_THUMBNAIL_UPLOAD->value,
+            "result"   =>   $path
+        ]);
+    }
+
     public function getResourceId($ride)
     {
         $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/acquire";
@@ -209,7 +237,7 @@ class StreamingController extends Controller
         $secret = env('AGORA_CLIENT_SECRET');
         $credentials = $key . ":" . $secret;
 
-        $authKey = "basic " . base64_encode($credentials);
+        $authKey = "Basic " . base64_encode($credentials);
         $response = Http::withHeaders([
             'Authorization' => $authKey,
             'Content-Type' => 'application/json'

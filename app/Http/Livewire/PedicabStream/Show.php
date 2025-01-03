@@ -22,7 +22,7 @@ class Show extends Component
     {
         $this->ride = $ride;
         $this->channelName = $ride->stream_channel_name;
-        $this->token = $this->generateAgoraToken($this->channelName);
+        // $this->token = $this->generateAgoraToken($this->channelName);
         $this->ip = request()->ip() ?? '127.0.0.1';
 
         $streamView = PedicabStreamView::where('user_id',  auth()->id())

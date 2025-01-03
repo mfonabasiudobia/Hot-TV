@@ -10,6 +10,7 @@ class WatchListResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'show_id' => $this->watchable_id,
             'slug' => $this->tvShow->slug,
             'title' => $this->tvShow->title,
             'thumbnail' => file_path($this->tvShow->thumbnail),

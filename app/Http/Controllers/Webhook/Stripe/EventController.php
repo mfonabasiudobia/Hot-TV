@@ -128,9 +128,9 @@ class EventController extends Controller
                 break;
             case 'payment_intent.succeeded':
                 $paymentIntent = $event->data->object;
-                \Log::info('intent', [$paymentIntent->id]);
+                \Log::info('intent', [$paymentIntent]);
                 $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
-                \Log::info('intent', [$ride]);
+                \Log::info('ride', [$ride]);
 
                 if($ride) {
                     $ride->payment_status = 'paid';
