@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Botble\ACL\Models\Role;
 use Botble\ACL\Models\Activation;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends AuthenticatableBaseModel
 {
@@ -93,5 +93,10 @@ class User extends AuthenticatableBaseModel
 
         dd($mediaFile);
         //return $this->belongsTo(MediaFile::class)->withDefault();
+    }
+
+    public function verification_documents(): HasMany
+    {
+        return $this->hasMany(VerificationDocument::class, 'user_id');
     }
 }
