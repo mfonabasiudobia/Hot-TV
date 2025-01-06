@@ -20,7 +20,7 @@ class AuthUserResource extends JsonResource
             'subscription' => $this->subscription->subscription->name ?? null,
             'plan' => $this->subscription->subscription->plan->name ?? null,
             'next_billing_date' => $this->subscription->next_billing_date ?? null,
-            'subscription_status' => $this->subscription->status,
+            'subscription_status' => $this->subscription->status ?? null,
         ];
     }
 }

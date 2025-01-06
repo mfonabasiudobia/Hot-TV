@@ -411,6 +411,22 @@ app()->booted(function () {
         return Theme::partial('shortcodes.new-shortcodes.recommended-tv-shows.index', compact('shortcode'));
     });
 
+    add_shortcode('released-tv-shows', __('Released Tv Shows'), __('Released Tv Shows'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.released-tv-shows.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('released-tv-shows', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.released-tv-shows.admin-config', compact('attributes'));
+    });
+
+    add_shortcode('upcoming-tv-shows', __('Upcoming Tv Shows'), __('Upcoming Tv Shows'), function (Shortcode $shortcode) {
+        return Theme::partial('shortcodes.new-shortcodes.upcoming-tv-shows.index', compact('shortcode'));
+    });
+
+    shortcode()->setAdminConfig('upcoming-tv-shows', function (array $attributes) {
+        return Theme::partial('shortcodes.new-shortcodes.upcoming-tv-shows.admin-config', compact('attributes'));
+    });
+
     shortcode()->setAdminConfig('recommended-tv-shows', function (array $attributes) {
         return Theme::partial('shortcodes.new-shortcodes.recommended-tv-shows.admin-config', compact('attributes'));
     });

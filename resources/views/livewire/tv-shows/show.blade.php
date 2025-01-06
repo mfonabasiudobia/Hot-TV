@@ -21,6 +21,7 @@
                     @endif
                     <video
                         id="player"
+                        style="width: 100%;"
                         src="{{ $tvShow->video ? Storage::disk(\App\Enums\VideoDiskEnum::DISK->value)->url( \App\Enums\VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/' . $tvShow->video->uuid . '.mp4') : file_path($tvShow->trailer) }}"
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
@@ -131,7 +132,7 @@
                     <div class="flex justify-end text-sm space-x-2 relative" wire:ignore>
                         <select
                             class="text-white select-season-form appearance-none mr-2 overflow-hidden season_number bg-black"
-                            wire:model='season_number' id="season_number">
+                            wire:model='season_number' id="season_number" wire:change="selectSeason()">
                             @foreach ($seasons as $season)
                                 <option value="{{ $season->id }}" class="bg-black hover:bg-danger">Season {{ $season->season_number }}</option>
                             @endforeach
@@ -354,7 +355,6 @@
         //  });
 
          document.addEventListener('change-episode', (event) => {
-            // debugger
             //  if(!event.detail.not_subscribed) {
                 //  videoPlayer.src = event.detail.video_url;
                 //  videoPlayer.load(); // Load the new video source

@@ -15,6 +15,7 @@ enum ApiResponseMessageEnum:string
     case OTP_VERIFIED = 'otp verified successfully';
     case PASSWORD_RESET_SUCCESS = 'password reset successfully';
     case NOT_FOUND = 'not found';
+    case ORDER_NOT_FOUND = 'order not found';
     case SUBSCRIPTION_PLANS= 'subscription plans';
     case PROFILE_UPDATED = 'profile updated';
     case TV_SHOW_CATEGORIES = 'tv show categories';

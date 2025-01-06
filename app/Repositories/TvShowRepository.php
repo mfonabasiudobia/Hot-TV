@@ -6,6 +6,7 @@ use App\Models\Season;
 use App\Models\TvShow;
 use App\Models\Episode;
 use App\Models\TvShowView;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -107,6 +108,16 @@ class TvShowRepository {
         return TvShow::where("is_recommended", 1)->get()->take($limit);
     }
 
+    public static function getReleasedTvShows($limit = 20) : Collection
+    {
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+        return TvShow::where("release_date", '>', $now)->get()->take($limit);
+    }
 
+    public static function getUpcomingTvShows($limit = 20) : Collection
+    {
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+        return TvShow::where("release_date", '<=', $now)->get()->take($limit);
+    }
 
 }
