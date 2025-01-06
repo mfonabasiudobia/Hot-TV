@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class TvShow extends BaseModel
 {
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($show) {
+            $show->watchlists->each->delete();
+        });
+    }
+
     protected $casts = ['tags' => 'array'];
 
     public function categories(){

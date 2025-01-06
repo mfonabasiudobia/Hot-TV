@@ -10,7 +10,10 @@
                         @php
                             $isSubscribed = $user && $user->subscription && $user->subscription->subscription_id == $subscription->id;
                             $hasSubscription = $user && $user->subscription;
-                            $isUpgrade = $hasSubscription && $user->subscription->subscription->price < ($subscription->price ?? 0);
+                            $isUpgrade = $hasSubscription && $user->subscription->subscription && $user->subscription->subscription->price < ($subscription->price ?? 0);
+                            if($user->subscription && !$user->subscription->subscription) {
+                                $isUpgrade = true;
+                            }
 
                             if ($isSubscribed) {
 

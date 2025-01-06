@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Models\Ride;
 use App\Models\RideBooking;
 use App\Models\DriverRideResponse;
+use App\Models\VerificationDocument;
 use Botble\ACL\Notifications\ResetPasswordNotification;
 use Botble\ACL\Traits\PermissionTrait;
 use Botble\Base\Casts\SafeContent;
@@ -122,6 +123,10 @@ class User extends BaseModel implements
                 }
             },
         );
+    }
+    public function verification_documents(): HasMany
+    {
+        return $this->hasMany(VerificationDocument::class, 'user_id');
     }
 
     public function avatar()

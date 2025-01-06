@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\Customer\Auth;
+namespace App\Http\Requests\Api\V1\Driver\Auth;
 
 use App\Enums\Api\V1\ApiResponseMessageEnum;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class RegistrationRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'username' => 'required|exists:users,username',
-            'password' => 'required',
-            'device_id' => 'required'
+            'email' => 'required|email|unique:users,email',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'username' => 'required|unique:users,username',
+            'password' => 'required|confirmed',
+            'verification_docs' => 'required|array',
+            'verification_docs.*' => 'file|mimes:jpeg,png,pdf|max:5120',
         ];
     }
 

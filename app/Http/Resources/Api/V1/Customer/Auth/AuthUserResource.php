@@ -16,8 +16,11 @@ class AuthUserResource extends JsonResource
             'email' => $this->email,
             'email_verified' => !is_null($this->email_verified_at),
             'status' => $this->status,
-            'avatar' =>  $this->avatarUrl
-
+            'avatar' =>  $this->avatarUrl,
+            'subscription' => $this->subscription->subscription->name ?? null,
+            'plan' => $this->subscription->subscription->plan->name ?? null,
+            'next_billing_date' => $this->subscription->next_billing_date ?? null,
+            'subscription_status' => $this->subscription->status ?? null,
         ];
     }
 }

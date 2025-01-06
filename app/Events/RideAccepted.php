@@ -50,6 +50,6 @@ class RideAccepted implements ShouldBroadcastNow
 
     public function broadcastAs()
     {
-        return ('ride.accepted');
+        return 'ride.accepted';
     }
 }

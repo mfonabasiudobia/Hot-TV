@@ -10,8 +10,10 @@ use App\Mail\OtpNotificationWeb;
 use App\Mail\ForgotPasswordNotification;
 use App\Mail\ForgotPasswordNotificationWeb;
 use Botble\ACL\Models\Role;
+use App\Enums\User\RoleEnum;
 use Mail;
 use DB;
+use Exception;
 use URL;
 use Hash;
 
@@ -49,7 +51,14 @@ class AuthRepository {
 
         //Mail::to($user->email)->send(new WelcomeNotification($user));
 
-        $user->roles()->attach([4]); //Assigning User to a Role of Streamer
+        $subscriber = Role::where('slug', RoleEnum::SUBSCRIBER->value)->first();
+
+        if(!$subscriber) {
+            \Log::warning('subscirber role does not exist');
+            throw new Exception('Subscriber role does not exists');
+        }
+
+        $user->roles()->attach([$subscriber->id]);
 
         return $user->refresh();
     }
