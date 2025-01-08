@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Mail\WelcomeNotification;
 use App\Mail\OtpNotification;
 use App\Mail\OtpNotificationWeb;
-use App\Mail\ForgotPasswordNotification;
+use App\Mail\ForgotPasswordNotificationApi;
 use App\Mail\ForgotPasswordNotificationWeb;
 use Botble\ACL\Models\Role;
 use App\Enums\User\RoleEnum;
@@ -150,7 +150,7 @@ class AuthRepository {
 //                DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $code, 'created_at' => now() ]);
 
                 //Send Forgot token Mail to User here
-                Mail::to($email)->send(new ForgotPasswordNotification($user, $code));
+                Mail::to($email)->send(new ForgotPasswordNotificationApi($user, $code));
             }else{
 
                 //Send Forgot token Mail to User here

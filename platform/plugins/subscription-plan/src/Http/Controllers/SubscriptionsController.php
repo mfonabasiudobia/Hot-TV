@@ -134,7 +134,7 @@ class SubscriptionsController extends BaseController
 
         $subscriptions->fill($request->input());
 
-        $price = Price::retrieve($$subscriptions->stripe_plan_id);
+        $price = Price::retrieve($subscriptions->stripe_plan_id);
         $product = Product::retrieve($price->product);
 
         $planDetails = $provider->showPlanDetails($subscription->paypal_plan_id);

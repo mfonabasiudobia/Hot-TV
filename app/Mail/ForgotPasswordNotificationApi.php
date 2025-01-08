@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ForgotPasswordNotification extends Mailable
+class ForgotPasswordNotificationApi extends Mailable
 {
     use Queueable, SerializesModels;
 
