@@ -4,6 +4,7 @@ namespace App\Http\Livewire\TvShows;
 
 use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Models\Season;
 use App\Repositories\TvShowRepository;
 use App\Repositories\EpisodeRepository;
 use App\Repositories\CastRepository;
@@ -108,6 +109,19 @@ class Show extends BaseComponent
 
     public function updatedSeasonNumber($value){
         $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $value);
+    }
+
+    public function selectSeason()
+    {
+        $season = Season::find($this->season_number);
+        $episodeVideo = $season && $season->video ? $season->video->stream_path : file_path($season->recorded_video);
+
+        $this->dispatchBrowserEvent("change-episode", [
+            'not_subscribed' => !($this->user && $this->user->subscription),
+            'video_url' => $episodeVideo,
+            'episode' => 1,
+            'season' => $season->id
+        ]);
     }
 
     public function selectEpisode($episodeId){

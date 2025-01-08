@@ -37,15 +37,14 @@ class LoginController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if(AuthRepository::login([ 'username' => $request->username, 'password' => $request->password])) {
-        if(Auth::attempt($credentials, true)) {
             $user = Auth::user();
 
-            if(!$user->inRole(RoleEnum::SUBSCRIBER->value)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
-                ], 422);
-            }
+            // if(!$user->inRole(RoleEnum::SUBSCRIBER->value)) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
+            //     ], 422);
+            // }
 
             if(!$user->hasDevice($device_id)) {
                 $user->devices()->create([
@@ -59,7 +58,7 @@ class LoginController extends Controller
                 'success' => true,
                 'message' => ApiResponseMessageEnum::LOGIN_USER_SUCCESS->value,
                 'data' => [
-                    'user' => new AuthUserResource($user)
+                    'user' => new AuthUserResource($user),
                 ],
                 'token' => $token
             ]);

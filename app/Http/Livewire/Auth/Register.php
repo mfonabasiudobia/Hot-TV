@@ -109,7 +109,7 @@ class Register extends BaseComponent
             } catch (Exception $e) {
                 $product = $this->getOrCreatePayPalProduct($this->subscription->name);
                 $paypalPlan = $this->createPayPalPlan($product['id'], $this->subscription->price);
-                
+
                 // Update subscription with new PayPal plan ID
                 $this->subscription->paypal_plan_id = $paypalPlan['id'];
                 $this->subscription->save();
@@ -182,7 +182,7 @@ class Register extends BaseComponent
 
     public function next(): void
     {
-        if(auth()->check()) {
+        if(auth()->check() && $this->subscription) {
             $this->show = 'checkout';
         } else {
             $validated = $this->validate([
@@ -224,21 +224,6 @@ class Register extends BaseComponent
         return view('livewire.auth.register');
     }
 
-    private function getOrCreateProduct($name)
-    {
-        $products = Product::all();
-        foreach ($products->data as $existingProduct) {
-            if ($existingProduct->name === $name) {
-                return $existingProduct;
-            }
-        }
-
-        return Product::create([
-            'name' => $name,
-            'active' => true,
-        ]);
-    }
-
     private function getPayPalPlan(string $paypalPlanId): array
     {
         $provider = $this->getPayPalProvider();
@@ -252,79 +237,5 @@ class Register extends BaseComponent
         $provider->setAccessToken($token);
 
         return $provider;
-    }
-
-    private function getOrCreateProductPaypal($name)
-    {
-        $provider = $this->getPayPalProvider();
-
-        $products = $provider->getProducts();
-
-        foreach ($products->items as $existingProduct) {
-            if ($existingProduct->name === $name) {
-                return $existingProduct;
-            }
-        }
-        $paypalProduct = $provider->createProduct([
-            'name' => $request->input('name'),
-            'description' => $request->input('name'),
-            'type' => 'SERVICE',
-            'category' =>   'SOFTWARE'
-        ]);
-
-        $paypalProductId = $paypalProduct['id'];
-
-        return $paypalProduct;
-    }
-
-    private function getOrCreatePaypalPlan($name, $amount, $paypalProductId)
-    {
-        $paypalPlan = $provider->createPlan([
-            'product_id' => $paypalProductId,
-            'name' => $name,
-            'description' => $name,
-            'billing_cycles' => [
-                [
-                    'frequency' => [
-                        'interval_unit' => $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR',
-                        'interval_count' => 1,
-                    ],
-                    'tenure_type' => 'REGULAR',
-                    'sequence' => 1,
-                    'total_cycles' => 0,
-                    'pricing_scheme' => [
-                        'fixed_price' => [
-                            'value' => $amount,
-                            'currency_code' => 'USD'
-                        ],
-                    ],
-                ],
-            ],
-            'payment_preferences' => [
-                'auto_bill_outstanding' => true,
-                'setup_fee' => [
-                    'value' => 0,
-                    'currency_code' => 'USD'
-                ],
-                'setup_fee_failure_action' => 'CONTINUE',
-                'payment_failure_threshold' => 3
-            ],
-        ]);
-
-        return $paypalPlan;
-    }
-
-    private function createPrice($productId, $amount, $currency)
-    {
-        $interval = $request->input('subscription_plan_id') == 1 ? 'MONTH' : 'YEAR';
-
-        return Price::create([
-            'unit_amount' => $amount,
-            'currency' => $currency,
-            'recurring' => [
-                'interval' => $interval,
-            ],
-            'product' => $productId,
-        ]);
     }
 }

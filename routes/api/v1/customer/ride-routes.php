@@ -10,12 +10,14 @@ use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentCancelController as 
 use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentVerificationController as PaypalPaymentVerificationController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
 use App\Http\Controllers\Api\V1\Customer\Ride\StreamViewController;
+use App\Http\Middleware\SubscriptionStatus;
+
 // use App\Http\Controllers\Api\V1\Customer\Ride\LocationController;
 
 Route::prefix('ride')
     ->name('ride.')
     ->group(function() {
-        Route::middleware('auth:api')->group(function(){
+        Route::middleware(['auth:api', SubscriptionStatus::class])->group(function(){
             Route::post('request', RequestController::class)->name('request');
             Route::get('ride-durations', DurationController::class)->name('ride-durations');
 

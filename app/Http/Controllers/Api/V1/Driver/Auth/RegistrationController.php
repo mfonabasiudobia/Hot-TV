@@ -17,7 +17,6 @@ class RegistrationController extends Controller
     public function __invoke(RegistrationRequest $request)
     {
         try {
-            // dd($request->file("verification_docs"));
             $firstName = $request->input('first_name');
             $lastName = $request->input('last_name');
             $email = $request->input('email');
@@ -39,7 +38,7 @@ class RegistrationController extends Controller
                 $uuid = Str::uuid();
                 $filename = $uuid . "." . $file->getClientOriginalName();
                 $path = $file->storeAs('verficationdocs/' . $user->id , $filename, $disk);
-                // dd($path);
+
                 VerificationDocument::create([
                     'user_id'=> $user->id,
                     'filename'=> $filename,
