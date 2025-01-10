@@ -63,7 +63,7 @@ class Create extends BaseComponent
             $season = throw_unless(SeasonRepository::createSeason($data), "Please try again");
 
             $uuid = Str::uuid();
-            $filename = $uuid . "." . $this->recorded_video->getClientOriginalName();
+            $filename = $uuid . "." . $this->recorded_video->getClientOriginalExtension();
 
             $video = $season->video()->create([
                 'uuid' => $uuid,

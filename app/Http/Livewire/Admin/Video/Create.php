@@ -11,7 +11,7 @@ use App\Repositories\PodcastRepository;
 class Create extends BaseComponent
 {
 
-    public $title, $description, $start_time, $end_time, $schedule_date, $recorded_video, $thumbnail;
+    public $title, $description, $start_time, $end_time, $schedule_date, $recorded_video, $thumbnail, $disk = 'local';
 
     public $timeRangedAlreadyScheduled = [];
 
@@ -43,8 +43,8 @@ class Create extends BaseComponent
         $episode = EpisodeRepository::getEpisodeById($value);
         $this->description = $episode->description;
         $this->title = $episode->title;
-        $this->recorded_video = $episode->recorded_video;
-
+        $this->recorded_video = $episode->video->path;
+        $this->disk = $episode->video->disk;
         $this->dispatchBrowserEvent('added-tv-episode', $this->description);
     }
 
@@ -52,7 +52,8 @@ class Create extends BaseComponent
         $podcast = PodcastRepository::getPodcastById($value);
         $this->description = $podcast->description;
         $this->title = $podcast->title;
-        $this->recorded_video = $podcast->recorded_video;
+        $this->recorded_video = $podcast->video->path;
+        $this->disk = $podcast->video->disk;
 
         $this->dispatchBrowserEvent('added-tv-episode', $this->description);
     }
@@ -99,6 +100,7 @@ class Create extends BaseComponent
                 'start_time' => $this->start_time,
                 'end_time' => $this->end_time,
                 'recorded_video' => $this->recorded_video,
+                'disk'  => $this->disk,
                 'thumbnail' => $this->thumbnail,
                 'stream_type' => $this->stream_type,
                 'uploaded_video_type' => $this->uploaded_video_type,

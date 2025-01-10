@@ -1,7 +1,7 @@
 <div class="py-5 bg-black text-white space-y-5 min-h-screen">
     <x-atoms.breadcrumb :routes="[['title' => 'HTS Live Channel', 'route' => null ]]" />
     <div class="container">
-       
+
 
         <section>
            <section class="w-full max-h-screen relative">
@@ -63,17 +63,17 @@
                     videoPlayer.muted = false;
                 }, 3000);
             }
-            
+
         }
 
         //Subscribe to public.tv-channel.1 channel and listen for NewOrder events
-        window.Echo.channel(`public.tv-channel.1`)
+        window.Echo.channel(`tv-channel`)
         .subscribed(() => {
             console.log("Echo connected to PieSocket channel!");
         })
         .listen('.tv-channel', (data) => {
             console.log("New Subscription Data", data);
-            
+
             playVideo(data);
 
             start_time = data.start_time;
@@ -83,9 +83,9 @@
                 document.getElementById("loading-button").classList.remove("hidden");
             }else{
                 document.getElementById("loading-button").classList.add("hidden");
-            }  
+            }
         });
-        
+
     });
     </script>
 @endpush

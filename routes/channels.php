@@ -30,4 +30,8 @@ Broadcast::channel('driver.{userId}', function () {
     return true;
 });
 
+Broadcast::channel('tv-channel', function () {
+    return true;
+});
+
 

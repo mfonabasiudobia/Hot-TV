@@ -9,7 +9,7 @@ use App\Events\TvChannelEvent;
 class Edit extends BaseComponent
 {
 
-     public $title, $description, $start_time, $end_time, $schedule_date, $recorded_video, $stream, $thumbnail;
+     public $title, $description, $start_time, $end_time, $schedule_date, $recorded_video, $stream, $thumbnail, $disk = 'local';
 
      public $recorded_video_path, $thumbnail_path;
 
@@ -60,7 +60,8 @@ class Edit extends BaseComponent
         $episode = EpisodeRepository::getEpisodeById($value);
         $this->description = $episode->description;
         $this->title = $episode->title;
-        $this->recorded_video = $episode->recorded_video;
+        $this->recorded_video = $episode->video->path;
+        $this->disk = $episode->video->disk;
 
         $this->dispatchBrowserEvent('added-tv-episode', $this->description);
     }
@@ -69,7 +70,8 @@ class Edit extends BaseComponent
         $podcast = PodcastRepository::getPodcastById($value);
         $this->description = $podcast->description;
         $this->title = $podcast->title;
-        $this->recorded_video = $podcast->recorded_video;
+        $this->recorded_video = $podcast->video->path;
+        $this->disk = $podcast->video->disk;
 
         $this->dispatchBrowserEvent('added-tv-episode', $this->description);
     }
@@ -94,7 +96,7 @@ class Edit extends BaseComponent
             'end_time.required' => 'Invalid End Time Selected'
         ]);
 
-        
+
             // throw_unless($acceptedTimeRange, "Streaming time must be within 5 minutes, 10, 20, 30 and 120 minutes");
 
 
@@ -120,7 +122,8 @@ class Edit extends BaseComponent
                 'thumbnail' => $this->thumbnail,
                 'stream_type' => $this->stream_type,
                 'uploaded_video_type' => $this->uploaded_video_type,
-                'show_category_id' => $this->show_category_id
+                'show_category_id' => $this->show_category_id,
+                'disk'  => $this->disk,
             ];
 
             throw_unless(StreamRepository::update($this->stream->id, $data), "Please try again");

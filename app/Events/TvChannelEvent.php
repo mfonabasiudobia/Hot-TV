@@ -12,8 +12,9 @@ use App\Repositories\StreamRepository;
 use Illuminate\Queue\SerializesModels;
 use Carbon\Carbon; 
 use App\Models\Stream;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class TvChannelEvent implements ShouldBroadcast
+class TvChannelEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -96,7 +97,7 @@ class TvChannelEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('public.tv-channel.1');
+        return new Channel('tv-channel');
     }
 
      public function broadcastAs(){

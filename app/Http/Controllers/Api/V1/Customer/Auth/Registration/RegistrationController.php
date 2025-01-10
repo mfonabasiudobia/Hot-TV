@@ -68,7 +68,7 @@ class RegistrationController extends Controller
             $stripSessionObject['line_items'] = [['price' => $stripePlanId,'quantity' => 1,],];
             $stripSessionObject['customer'] = $customer->id;
             $stripSessionObject['mode'] = 'subscription';
-            $stripSessionObject['success_url'] = config('app.url'). '/plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}';
+            $stripSessionObject['success_url'] = config('app.url'). 'plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}';
             //$stripSessionObject['cancel_url'] = 'http://localhost/cancel',//route('checkout'),
             
             $session = Session::create([

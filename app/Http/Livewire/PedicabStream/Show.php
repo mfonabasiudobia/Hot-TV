@@ -22,7 +22,7 @@ class Show extends Component
     {
         $this->ride = $ride;
         $this->channelName = $ride->stream_channel_name;
-        // $this->token = $this->generateAgoraToken($this->channelName);
+        $this->token = $this->generateAgoraToken($this->channelName);
         $this->ip = request()->ip() ?? '127.0.0.1';
 
         $streamView = PedicabStreamView::where('user_id',  auth()->id())
@@ -45,12 +45,13 @@ class Show extends Component
 
     private function generateAgoraToken($channelName)
     {
-        $user = auth('api')->user();
+        $user = request()->user();
 
         $appId = env('AGORA_APP_ID');
         $appCertificate = env('AGORA_APP_CERTIFICATE');
         $role = RtcTokenBuilder::RoleSubscriber;
-        $uid =  0; // auth('api')->id() ?? Str::uuid();
+        $uid =  $user->id ?? Str::uuid();
+
         $expireTimeInSeconds = 3600;
         $currentTimestamp = now()->timestamp;
         $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;

@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('app:tv-channel')->everySecond();
         $schedule->command('ride:send-request-to-nearest-driver')->everyMinute()->withoutOverlapping();
+        $schedule->command('app:tv-channel')->everyMinute()->withoutOverlapping();
     }
 
     protected function shortSchedule(\Spatie\ShortSchedule\ShortSchedule $shortSchedule)

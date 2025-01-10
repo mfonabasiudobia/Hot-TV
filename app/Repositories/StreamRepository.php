@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use AppHelper;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
+use Illuminate\Support\Facades\Storage;
 
 class StreamRepository
 {
@@ -24,7 +25,7 @@ class StreamRepository
     public static function update(int $id, array $data){
 
         $stream = Stream::findOrFail($id);
-        
+
         $stream->update(array_merge($data, []));
 
         return $stream;
@@ -60,7 +61,7 @@ class StreamRepository
 
         return $timeDifferenceInSeconds;
     }
-    
+
     public static function getTimeRangeAlreadyScheduled($selectedDate){
         return Stream::whereDate('schedule_date', $selectedDate)->pluck('start_time', 'end_time')
          ->map(function($startTime, $endTime) {
@@ -92,7 +93,7 @@ class StreamRepository
             ->get()
             ->map(function($stream) {
                 return [
-                    'title' => $stream->title, 
+                    'title' => $stream->title,
                     'id' => $stream->id,
                     'description' => $stream->description,
                     'start' => $stream->schedule_date . ' ' . $stream->start_time,
@@ -105,15 +106,17 @@ class StreamRepository
 
     public static function getCurrentStreamingInformation(){
 
-        $records = Stream::whereDate('schedule_date', now())->get();
-        $result = [];   
-
+        // $records = Stream::whereDate('schedule_date', now())->get();
+        $records = Stream::orderBy('id', 'desc')->limit(1)->get();
+        $result = [];
         // Initialize an array to store the formatted data
         $timeArray = [];
         $infoArray = [];
 
         // Iterate through the data and format it as required
         foreach ($records as $item){
+            // \Log::info('url', [Storage::disk($item->disk)->url($item->recorded_video)]);
+            // \Log::info('file', [asset('storage/'. $item->recorded_video)]);
 
             $timeArray[] = [
                 'start' => convert_time_to_streaming_time($item->start_time),
@@ -125,10 +128,10 @@ class StreamRepository
                 'description' => $item->description,
                 'start_time' => $item->start_time,
                 'id' => $item->id,
-                'src' => file_path($item->recorded_video)
+                'src' => Storage::disk($item->disk)->url($item->recorded_video)
             ];
         }
-
+        \Log::info('time array' . json_encode($timeArray));
         $now = Carbon::now();
         $currentHour = $now->hour;
         $currentMinute = $now->minute / 60;
@@ -140,8 +143,8 @@ class StreamRepository
             $start = $schedule["start"];
             $end = $schedule["end"];
 
-            if ($currentTime >= $start && $currentTime < $end) {
-
+            // if ($currentTime >= $start && $currentTime < $end) {
+                \Log::info('time matched........');
                   // Define your start time
                 $startTime = Carbon::createFromTimeString($infoArray[$i]["start_time"]);
 
@@ -157,7 +160,7 @@ class StreamRepository
                 $result['id'] = $infoArray[$i]["id"];
                 $result['seconds_passed'] = $secondsPassed;
                 break;
-            }
+            // }
         }
 
 
