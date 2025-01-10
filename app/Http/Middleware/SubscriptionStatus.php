@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
 
 class SubscriptionStatus
 {
@@ -26,8 +27,8 @@ class SubscriptionStatus
         }
 
         if(!$user->subscription
-            || $user->subscription->status !== "active"
-            || $user->subscription->status !== "trialing")
+            || ($user->subscription->status !== OrderStatusEnum::PAID->value
+            && $user->subscription->status !== OrderStatusEnum::TRAIL->value))
         {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Not Subscribed'], 402);
