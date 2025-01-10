@@ -48,13 +48,14 @@ class StripeSubscriptionCheckoutController extends Controller
                 $stripSessionObject['line_items'] = [['price' => $subscription->stripe_plan_id,'quantity' => 1,],];
                 $stripSessionObject['customer'] = $user->stripe_customer_id;
                 $stripSessionObject['mode'] = 'subscription';
-                $stripSessionObject['success_url'] = config('app.url'). '/plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}';
+                $stripSessionObject['success_url'] = config('app.url'). 'plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}';
 
                 $session = Session::create([
                     $stripSessionObject
                 ]);
 
                 $order->status = $subscriptionStatus;
+                $order->session_id = $session->id;
                 $order->save();
 
                 return response()->json([

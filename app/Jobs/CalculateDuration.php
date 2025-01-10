@@ -34,7 +34,7 @@ class CalculateDuration implements ShouldQueue
         try {
             $ffmpegVideo = FFMpeg::fromDisk($this->video->disk)->open($this->video->path);
             $durationInSeconds = $ffmpegVideo->getFormat()->get('duration');
-            $this->model->duration = gmdate('H:i:s', $durationInSeconds);
+            $this->model->duration =  $durationInSeconds;
             $this->model->save();
         } catch (\Exception $th) {
             \Log::error('Exception occurred: ' . $th->getMessage(), ['exception' => $th]);
