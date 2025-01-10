@@ -98,7 +98,7 @@
                         <select class="form-control" wire:model="season_number">
                             <option value="">--Select Season Number--</option>
                             @foreach ($tv_show_seasons as $item)
-                            <option value="{{ $item }}">{{ $item }}</option>
+                            <option value="{{ $item->id }}">{{ $item->title }}</option>
                             @endforeach
                         </select>
                         @error('season_number') <span class="error">{{ $message }}</span> @endError
