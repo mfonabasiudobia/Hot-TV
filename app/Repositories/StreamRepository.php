@@ -125,7 +125,7 @@ class StreamRepository
                 'description' => $item->description,
                 'start_time' => $item->start_time,
                 'id' => $item->id,
-                'src' => file_path($item->recorded_video)
+                'src' => Storage::disk($item->disk)->url($item->recorded_video)
             ];
         }
 
