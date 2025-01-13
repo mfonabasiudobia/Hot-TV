@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentCancelController as 
 use App\Http\Controllers\Api\V1\Customer\Ride\Paypal\PaymentVerificationController as PaypalPaymentVerificationController;
 use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
 use App\Http\Controllers\Api\V1\Customer\Ride\StreamViewController;
+use App\Http\Controllers\Api\V1\Customer\Ride\RideCotrroller;
 use App\Http\Middleware\SubscriptionStatus;
 
 // use App\Http\Controllers\Api\V1\Customer\Ride\LocationController;
@@ -20,6 +21,7 @@ Route::prefix('ride')
         Route::middleware(['auth:api', SubscriptionStatus::class])->group(function(){
             Route::post('request', RequestController::class)->name('request');
             Route::get('ride-durations', DurationController::class)->name('ride-durations');
+            Route::get('ongoing', [RideCotrroller::class, 'ongoing'])->name('ride.ongoing');
 
             // Route::post('cancel/{ride}', [RideCancelContoller::class, 'store'])->name('streaming.store');
             Route::get('streaming/list', [StreamingController::class, 'index'])->name('streaming.index');

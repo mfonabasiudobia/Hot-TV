@@ -80,6 +80,7 @@ class Create extends BaseComponent
                 'release_date' => $this->release_date,
                 'tv_show_id' => $tvShow->id,
                 'season_number' => 'Season 1',
+                'status'    => 'published'
             ]);
 
             $uuid = Str::uuid();

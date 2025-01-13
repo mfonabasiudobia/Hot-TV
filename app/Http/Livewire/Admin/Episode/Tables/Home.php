@@ -104,7 +104,7 @@ final class Home extends PowerGridComponent
             })
             ->addColumn('season_number_formatted', function(Episode $model){
 
-                return $model->season ? $model->season->season_number : null;
+                return $model->season ? $model->season->title : null;
             })
 
             ->addColumn('status_formatted', function(Episode $model){

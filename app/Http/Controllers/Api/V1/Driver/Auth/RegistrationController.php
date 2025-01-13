@@ -31,7 +31,7 @@ class RegistrationController extends Controller
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'status' => StatusEnum::LOCKED->value,
-            ]);
+            ], 'driver');
 
             if($request->filled('vehicle_reg_number')) {
                 $regDetails = [
