@@ -26,6 +26,7 @@ class CompleteRideController extends Controller
             // $ride->driver_longitude = $longitude;
             $ride->status = StatusEnum::COMPLETED->value;
             $ride->driver_id = $user->id;
+            $ride->stream_status = 'completed';
 
             $ride->save();
 
