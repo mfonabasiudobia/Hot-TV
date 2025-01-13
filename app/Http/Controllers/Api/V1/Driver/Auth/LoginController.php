@@ -33,38 +33,45 @@ class LoginController extends Controller
             }
         }
 
-        $device_id = $request->input('device_id');
-        $credentials = $request->only(['email', 'password']);
+        try {
+            $device_id = $request->input('device_id');
+            $credentials = $request->only(['email', 'password']);
 
-        if(AuthRepository::login([ 'username' => $request->username, 'password' => $request->password])) {
-            $user = Auth::user();
+            if(AuthRepository::login([ 'username' => $request->username, 'password' => $request->password])) {
+                $user = Auth::user();
 
-            if(!$user->inRole(RoleEnum::DRIVER->value)) {
+                if(!$user->inRole(RoleEnum::DRIVER->value)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
+                    ], 422);
+                }
+                if(!$user->hasDevice($device_id)) {
+                    $user->devices()->create([
+                        'device_id' => $device_id
+                    ]);
+                }
+                $token = $user->createToken('apiToken')->accessToken;
+
+                return response()->json([
+                    'success' => true,
+                    'message' => ApiResponseMessageEnum::LOGIN_USER_SUCCESS->value,
+                    'data' => [
+                        'user' => new AuthUserResource($user)
+                    ],
+                    'token' => $token
+                ]);
+            } else {
                 return response()->json([
                     'success' => false,
-                    'message' => ApiResponseMessageEnum::YOU_DO_NOT_HAVE_PERMISSION->value,
+                    'message' => ApiResponseMessageEnum::LOGIN_USER_FAILED->value
                 ], 422);
             }
-            if(!$user->hasDevice($device_id)) {
-                $user->devices()->create([
-                    'device_id' => $device_id
-                ]);
-            }
-            $token = $user->createToken('apiToken')->accessToken;
-
-            return response()->json([
-                'success' => true,
-                'message' => ApiResponseMessageEnum::LOGIN_USER_SUCCESS->value,
-                'data' => [
-                    'user' => new AuthUserResource($user)
-                ],
-                'token' => $token
-            ]);
-        } else {
+        } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => ApiResponseMessageEnum::LOGIN_USER_FAILED->value
-            ], 422);
+                'message' => $th->getMessage()
+            ], 423);
         }
     }
 }
