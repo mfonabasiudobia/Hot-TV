@@ -42,7 +42,7 @@ class AuthRepository {
             return $user;
     }
 
-    public static function register($data) : User {
+    public static function register($data, $role = 'subscriber') : User {
         $user = User::create(array_merge($data,
         [
             'password' => bcrypt($data['password']),
@@ -50,15 +50,18 @@ class AuthRepository {
         ]));
 
         //Mail::to($user->email)->send(new WelcomeNotification($user));
-
-        $subscriber = Role::where('slug', RoleEnum::SUBSCRIBER->value)->first();
-
-        if(!$subscriber) {
-            \Log::warning('subscirber role does not exist');
-            throw new Exception('Subscriber role does not exists');
+        if($role === 'subscriber') {
+            $roleRecord = Role::where('slug', RoleEnum::SUBSCRIBER->value)->first();
+        }else{
+            $roleRecord = Role::where('slug', RoleEnum::DRIVER->value)->first();
         }
 
-        $user->roles()->attach([$subscriber->id]);
+        if(!$roleRecord) {
+            \Log::warning('role' . $role . 'does not exist');
+            throw new Exception('role' . $role . 'does not exist');
+        }
+
+        $user->roles()->attach([$roleRecord->id]);
 
         return $user->refresh();
     }
@@ -205,7 +208,7 @@ class AuthRepository {
                 DB::table('otp_verifications')->where('email', $email)->delete(); //disable previous otps
 
                 if(request()->is('api/*')) {
-                    // Mail::to($user->email)->send(new OtpNotification($user, $otp));
+                    Mail::to($user->email)->send(new OtpNotification($user, $otp));
 
                     DB::table('otp_verifications')->insert([ 'email' => $email, 'otp' => $otp, 'created_at' => now() ]);
                  }else{

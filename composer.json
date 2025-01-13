@@ -10,7 +10,7 @@
         "ext-gd": "*",
         "ext-json": "*",
         "ext-zip": "*",
-        "beyondcode/laravel-websockets": "^1.14",
+        "ably/ably-php": "^1.1",
         "botble/api": "*@dev",
         "botble/get-started": "*@dev",
         "botble/installer": "*@dev",

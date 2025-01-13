@@ -97,6 +97,9 @@ final class Home extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('id')
             ->addColumn('title')
+            ->addColumn('show', function(Season $model){
+                return $model->tvShow->title;
+            })
             ->addColumn('created_at_formatted', function(Season $model){
                 return $model->createdAt();
             })
@@ -132,6 +135,8 @@ final class Home extends PowerGridComponent
             Column::make('Season', 'season_number')
                 ->searchable()
                 ->sortable(),
+
+            Column::make('Show', 'show'),
 
             Column::make('Status', 'status_formatted'),
 
