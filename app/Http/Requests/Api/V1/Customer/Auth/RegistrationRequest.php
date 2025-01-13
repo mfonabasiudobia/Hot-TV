@@ -14,6 +14,7 @@ class RegistrationRequest extends FormRequest
         return [
             'subscription_id' => 'required',
             'email' => 'required|email|unique:users,email',
+            'phone_number' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'username' => 'required|unique:users,username',
