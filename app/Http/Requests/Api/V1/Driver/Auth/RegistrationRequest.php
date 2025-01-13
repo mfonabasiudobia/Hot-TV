@@ -19,6 +19,12 @@ class RegistrationRequest extends FormRequest
             'password' => 'required|confirmed',
             'verification_docs' => 'required|array',
             'verification_docs.*' => 'file|mimes:jpeg,png,pdf|max:5120',
+            'vehicle_reg_number' => 'nullable',
+            'make' => 'nullable',
+            'model' => 'nullable',
+            'year' => 'nullable',
+            'color' => 'nullable',
+
         ];
     }
 

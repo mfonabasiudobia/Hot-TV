@@ -99,4 +99,9 @@ class User extends AuthenticatableBaseModel
     {
         return $this->hasMany(VerificationDocument::class, 'user_id');
     }
+
+    public function vehicles(): HasMany
+    {
+        return $this->hasMany(RideVehicle::class, 'driver_id');
+    }
 }

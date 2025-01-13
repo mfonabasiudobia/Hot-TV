@@ -91,7 +91,7 @@ final class Home extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('id')
             ->addColumn('driver_formatted', function(Ride $model) {
-                return $model->driver->username;
+                return $model->driver->username ?? 'NA';
             })
             ->addColumn('duration')
             ->addColumn('ride_type')

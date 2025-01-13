@@ -55,15 +55,15 @@
                     </div>
 
                     <div class="flex flex-col items-end space-y-5">
-                        <button>
+                        <!-- <button>
                             <img src="{{ asset('svg/3-dots-horizontal.svg') }}" alt="" />
-                        </button>
+                        </button> -->
 
                         <div class="flex items-center space-x-3">
                             <div>
                                 <i class="lar la-eye"></i>
                                 @if($selectedEpisode)
-                                    <span>{{ view_count($selectedEpisode->views->count()) }} viewers</span>
+                                    <span>{{ view_count($selectedEpisode->views->count()) }} views</span>
                                 @else
                                     <span>{{ view_count($tvShow->views->count()) }} viewers</span>
                                 @endIf
