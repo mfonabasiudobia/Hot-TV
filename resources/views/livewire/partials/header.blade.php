@@ -14,7 +14,7 @@
             </a>
 
             <ul class="hidden xl:flex items-center space-x-5">
-                <li class="relative group p-2 hover:bg-secondary hover:text-danger">
+                <li class="relative group p-2 hover:bg-secondary">
                     <a href="javascript:void(0)" class="hover:text-danger flex items-center" id="browse">
                         <span style="margin-right: 5px;">Browse</span>
                         <i class="fa-solid fa-angle-down"></i>
@@ -47,9 +47,6 @@
                                     <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-4 block hover:text-danger">Celebritity
                                         shoutouts</a>
                                 </li>
-                                /* <li class="hover:bg-secondary hover:text-danger">
-                                    <a href="{{ route('pricing.home') }}" class="px-4 py-4 block hover:text-danger">Pricing</a>
-                                </li> */
                             </div>
                             <div class="flex flex-wrap" style="width: 700px">
                                 @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)
@@ -66,7 +63,7 @@
                     </ul>
                 </li>
 
-                <li class="relative group tile-group p-2 hover:bg-secondary hover:text-danger">
+                <li class="relative group tile-group p-2 hover:bg-secondary">
                     <a href="javascript:void(0)" class="hover:text-danger flex items-center whitespace-nowrap" id="socialMedia">
                         <span style="margin-right: 5px;">Social Media</span>
                         <i class="fa-solid fa-angle-down"></i>

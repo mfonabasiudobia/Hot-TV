@@ -20,7 +20,9 @@
                                 <p class="text-sm opacity-60">Episode {{ $item->episode_number }}</p>
                             </div>
 
-                            <img src="{{ asset('images/progress.svg') }}" alt="" />
+                            <p>{{ $item->title }}</p>
+
+                            <!-- <img src="{{ asset('images/progress.svg') }}" alt="" /> -->
                         </div>
                     </div>
                 </a>

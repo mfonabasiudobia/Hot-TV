@@ -148,7 +148,7 @@
             </div>
 
             <section class="{{ $activeTab === 'live-streams' ? 'block' : 'hidden' }}">
-                <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+                <section class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
                     @foreach ($liveStreamsData as $item)
                         @if (!$item['is_stream_blocked'])
                             <a href="{{ route('pedicab-streams.show', $item['id']) }}"
@@ -169,9 +169,6 @@
                                     class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
                                     <div class="flex justify-between">
                                         <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
-                                        <div>
-                                            watching: {{$item['watching']}}
-                                        </div>
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -181,7 +178,7 @@
                                             <span class="font-light">{{$item['customer']['username']}}</span>
                                         </div>
 
-                                        <span class="font-light">{{$item['views']}}</span>
+                                        <span class="font-light">watching: {{$item['watching']}}</span>
                                     </div>
                                 </div>
                             </a>
@@ -192,7 +189,7 @@
             </section>
 
             <section class="{{ $activeTab === 'ended-streams' ? 'block' : 'hidden' }}">
-                <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-7">
+                <section class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
                     @foreach ($endedStreamsData as $item)
                         @if (!$item['is_stream_blocked'])
                             <a href="{{ route('pedicab-streams.show', $item['id']) }}"
@@ -216,9 +213,6 @@
                                     class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
                                     <div class="flex justify-between">
                                         <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
-                                        <div>
-                                            watching: {{$item['watching']}}
-                                        </div>
                                     </div>
 
                                     <div class="flex items-center justify-between">
@@ -228,7 +222,7 @@
                                             <span class="font-light">{{$item['customer']['username']}}</span>
                                         </div>
 
-                                        <span class="font-light">{{$item['views']}}</span>
+                                        <span class="font-light">views: {{$item['views']}}</span>
                                     </div>
                                 </div>
                             </a>

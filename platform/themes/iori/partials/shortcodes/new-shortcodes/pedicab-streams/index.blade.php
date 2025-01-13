@@ -1,23 +1,24 @@
 @php
-    $liveStreams = \App\Models\Ride::where('stream_status', 'streaming')->orderBy('id', 'desc')->get()->take(9);
-    $endedStreams = \App\Models\Ride::where('stream_status', 'completed')->orderBy('id', 'desc')->get()->take(9);
+    $liveStreams = \App\Models\Ride::where('stream_status', 'streaming')->orderBy('id', 'desc')->get()->take(12);
+    $endedStreams = \App\Models\Ride::where('stream_status', 'completed')->orderBy('id', 'desc')->get()->take(12);
 @endphp
 <section class="py-16 bg-black">
     <div class="container space-y-10 overflow-hidden">
         <header class="flex items-center justify-between">
-            <h1 class="font-semibold text-xl md:text-2xl">{{ $shortcode->title }}</h1>
-            <p>Esse curso tem como objetivo de te dar os fundamentos da programação e entender um pouco mais sobre o web, precisamos
-                desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que vamos encontrar
-                como desenvolvedores e desenvolvedoras web.</p>
-            <a href="{{ route('pedicab-streams.home', 1) }}" class="flex text-sm items-center space-x-1">
+            <div>
+                <h1 class="font-semibold text-xl md:text-2xl">{{ $shortcode->title }}</h1>
+                <p>Esse curso tem como objetivo de te dar os fundamentos da programação e entender um pouco mais sobre o web, precisamos
+                    desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que vamos encontrar
+                    como desenvolvedores e desenvolvedoras web.</p>
+            </div>
+            <a href="{{ route('pedicab-streams.home', 1) }}" class="whitespace-nowrap flex text-sm items-center space-x-1">
                 <span class="inline-block">View more</span>
                 <img src="{{ asset('svg/arrow-circle-right.svg') }}" alt="" />
             </a>
         </header>
 
 
-        <h1> Live Streams </h1>
-        <div class="grid md:grid-cols-3 gap-5">
+        <div class="grid md:grid-cols-4 gap-2">
             @foreach ($liveStreams as $item)
                 @if (!$item->is_stream_blocked)
                     <a href="{{ route('pedicab-streams.show', $item->id) }}"
@@ -38,9 +39,6 @@
                             class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
                             <div class="flex justify-between">
                                 <h2 class="font-bold">{{$item->customer->username}} - {{$item->street_name}}</h2>
-                                <div>
-                                    watching: {{$item->watching}}
-                                </div>
                             </div>
 
                             <div class="flex items-center justify-between">
@@ -50,16 +48,28 @@
                                     <span class="font-light">{{$item->customer->username}}</span>
                                 </div>
 
-                                <span class="font-light">{{$item->views}}</span>
+                                <span class="font-light">watching: {{$item->watching}}</span>
                             </div>
                         </div>
                     </a>
                 @endif
             @endforeach
         </div>
-
-        <h1> Ended Streams </h1>
-        <div class="grid md:grid-cols-3 gap-5">
+    </div>
+    <div class="container space-y-10 overflow-hidden mt-4">
+        <header class="flex items-center justify-between">
+            <div>
+                <h1 class="font-semibold text-xl md:text-2xl">{{ $shortcode->title }}</h1>
+                <p>Esse curso tem como objetivo de te dar os fundamentos da programação e entender um pouco mais sobre o web, precisamos
+                    desse conhecimento para então nos tornarmos aptos a estudar as diversas linguagens e tecnologias que vamos encontrar
+                    como desenvolvedores e desenvolvedoras web.</p>
+            </div>
+            <a href="{{ route('pedicab-streams.home', 1) }}" class="whitespace-nowrap flex text-sm items-center space-x-1">
+                <span class="inline-block">View more</span>
+                <img src="{{ asset('svg/arrow-circle-right.svg') }}" alt="" />
+            </a>
+        </header>
+        <div class="grid md:grid-cols-4 gap-2">
             @foreach ($endedStreams as $item)
                 @if (!$item->is_stream_blocked)
                     <a href="{{ route('pedicab-streams.show', $item->id) }}"
@@ -79,9 +89,6 @@
                             class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
                             <div class="flex justify-between">
                                 <h2 class="font-bold">{{$item->customer->username}} - {{$item->street_name}}</h2>
-                                <div>
-                                    watching: {{$item->watching}}
-                                </div>
                             </div>
 
                             <div class="flex items-center justify-between">
@@ -91,7 +98,7 @@
                                     <span class="font-light">{{$item->customer->username}}</span>
                                 </div>
 
-                                <span class="font-light">{{$item->views}}</span>
+                                <span class="font-light">views: {{$item->views}}</span>
                             </div>
                         </div>
                     </a>
