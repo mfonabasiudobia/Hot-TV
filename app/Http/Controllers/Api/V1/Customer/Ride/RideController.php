@@ -16,13 +16,14 @@ class RideController extends Controller
 {
     public function ongoing(Request $request)
     {
-        $streams = Ride::where('user_id', $request->user()->id)
+        $ride = Ride::where('user_id', $request->user()->id)
             ->whereIn('status', ['started', 'requested'])
-            ->with(['customer']);
+            ->with(['customer'])
+            ->first();
 
         return response()->json([
             'success' => true,
-            'message' => ApiResponseMessageEnum::STREAM_LIST->value,
+            'message' => 'Inprogress ride',
             'data' => [
                 'ride' => $ride
             ]
