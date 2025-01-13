@@ -31,12 +31,11 @@ class Show extends BaseComponent
             'tvShow' => TvShowRepository::getTvShowBySlug($slug)
         ]);
 
-        // dd($this->tvShow->video);
 
         if(request()->has(['season', 'episode'])){
             $this->fill([
                 'selectedEpisode' => EpisodeRepository::getEpisodeBySlug(request('episode'), $this->tvShow->id),
-                'season_number' => request('season')
+                'season_number' => request('season'),
             ]);
         }
 
@@ -47,7 +46,7 @@ class Show extends BaseComponent
         ]);
 
         if($this->tvShow->seasons()->exists()) {
-            $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, $this->seasons[0]->id);
+            $this->episodes = EpisodeRepository::getEpisodesBySeason($this->tvShow->id, request('season') ?? $this->seasons[0]->id);
         }
         //dd(Storage::disk('video_disk')->url(Str::slug($this->tvShow->title) . '/' . $this->tvShow->video->uuid . '.mp4'));
 
@@ -74,14 +73,13 @@ class Show extends BaseComponent
                     'season' => $this->season_number
                 ]);
             } else {
-
                 if($tvShowViews->episode_id == null) {
 
                     $tvShowViews->episode_id = $this->selectedEpisode->id;
                     $tvShowViews->season = $this->season_number;
                     $tvShowViews->save();
-                } else {
-
+                }
+                if($tvShowViews->episode_id != $this->selectedEpisode->id) {
                     TvShowView::create([
                         'user_id' => auth()->id(),
                         'ip_address' => request()->ip(),
@@ -102,9 +100,6 @@ class Show extends BaseComponent
             }
 
         }
-
-        // $this->setShowDuration();
-
     }
 
     public function updatedSeasonNumber($value){
@@ -119,14 +114,13 @@ class Show extends BaseComponent
         $this->dispatchBrowserEvent("change-episode", [
             'not_subscribed' => !($this->user && $this->user->subscription),
             'video_url' => $episodeVideo,
-            'episode' => 1,
+            'episode' => $season->episodes[0]->slug ?? null,
             'season' => $season->id
         ]);
     }
 
     public function selectEpisode($episodeId){
         $this->selectedEpisode = EpisodeRepository::getEpisodeById($episodeId);
-        // dd($this->selectedEpisode->video);
         $tvShowViews = TvShowView::where('user_id',  auth()->id())
             ->where('ip_address',  request()->ip())
             ->where('tv_show_id', $this->tvShow->id)
@@ -147,8 +141,9 @@ class Show extends BaseComponent
                 $tvShowViews->episode_id = $this->selectedEpisode->id;
                 $tvShowViews->season = $this->season_number;
                 $tvShowViews->save();
-            } else {
+            }
 
+            if($tvShowViews->episode_id != $this->selectedEpisode->id) {
                 TvShowView::create([
                     'user_id' => auth()->id(),
                     'ip_address' => request()->ip(),

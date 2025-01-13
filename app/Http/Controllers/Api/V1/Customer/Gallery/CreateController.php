@@ -17,9 +17,14 @@ class CreateController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $request->validate(["uploadedFiles" => "required"]);
+        $request->validate([
+            "uploadedFiles" => "required",
+            "ride_id"   =>  "required|exists:rides,id"
+        ]);
+
         $user = auth('api')->user();
         $path = "appuploads/{$user->id}";
+        $rideId = $request->ride_id;
 
         $uploadsFolder = MediaFolder::updateOrCreate([
             'slug' => 'appuploads'
@@ -30,23 +35,28 @@ class CreateController extends Controller
         ]);
 
         $userFolder = MediaFolder::updateOrCreate([
-            'slug' => "appuploads-{$user->id}"
+            'slug' => "appuploads-ride-{$rideId}"
         ], [
             'name' => $user->id,
             'user_id' => 0,
             'parent_id' => $uploadsFolder->id,
         ]);
 
-        $uploadedImage = upload_gallery_file($request->uploadedFiles[0], $path);
-        $gallery = Gallery::create([
-            'name' => $request->title,
-            'description' => $request->description,
-            'is_featured' => 0,
-            'image' => $uploadedImage['file_path'],
-            'order' => 1,
-            'user_id' => $user->id,
-            'status' => BaseStatusEnum::PENDING()->getValue()
-        ]);
+        $gallery = Gallery::where('user_id', $user->id)->where('ride_id', $rideId)->first();
+
+        if(! $gallery) {
+            $uploadedImage = upload_gallery_file($request->uploadedFiles[0], $path);
+            $gallery = Gallery::create([
+                'name' => $request->title,
+                'description' => $request->description,
+                'is_featured' => 0,
+                'image' => $uploadedImage['file_path'],
+                'order' => 1,
+                'user_id' => $user->id,
+                'ride_id' => $rideId,
+                'status' => BaseStatusEnum::PENDING()->getValue()
+            ]);
+        }
 
         foreach($request->uploadedFiles as $image){
             $uploadedImage = upload_gallery_file($image, $path);

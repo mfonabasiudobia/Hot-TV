@@ -57,7 +57,7 @@
             <li>
                 <a href="#" wire:click.prevent="setNav('screenshots')"
                     class="relative py-3 space-x-1 transition-all hover:text-danger {{ $currentNav === 'screenshots' ? 'border-b-2 border-danger font-semibold' : '' }}">
-                    <span>Screenshots</span>
+                    <span>Gallery</span>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
                         {{ Botble\Gallery\Models\Gallery::where('user_id', auth()->id())->count() }}
@@ -70,7 +70,7 @@
                     <span>Watch History</span>
 
                     <span class="min-w-[15px] min-h-[15px] text-xs text-center rounded-full text-white bg-danger inline-block">
-                        {{ \App\Models\TvShowView::where('user_id', auth()->user()->id)->groupBy('tv_show_id')->selectRaw('tv_show_views.tv_show_id')->count() }}
+                        {{ count(\App\Models\TvShowView::where('user_id', auth()->user()->id)->groupBy('tv_show_id')->selectRaw('tv_show_views.tv_show_id')->get()) }}
                     </span>
                 </a>
             </li>

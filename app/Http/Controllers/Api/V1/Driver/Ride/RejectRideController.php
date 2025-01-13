@@ -33,16 +33,16 @@ class RejectRideController extends Controller
                 ]);
             }
 
-            if($user->hasRejectedRide($ride)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => ApiResponseMessageEnum::RIDE_ALREADY_REJECTED->value,
-                    'data' => [
-                        'id' => $ride->id,
-                        'document_id' => $ride->document_id
-                    ]
-                ]);
-            }
+            // if($user->hasRejectedRide($ride)) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => ApiResponseMessageEnum::RIDE_ALREADY_REJECTED->value,
+            //         'data' => [
+            //             'id' => $ride->id,
+            //             'document_id' => $ride->document_id
+            //         ]
+            //     ]);
+            // }
 
             if($ride->status == StatusEnum::ACCEPTED) {
                 return response()->json([

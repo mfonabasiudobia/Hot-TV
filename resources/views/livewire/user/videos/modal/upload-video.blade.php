@@ -7,12 +7,12 @@
             <header class="space-y-2">
                 <div class="flex items-center justify-between">
                     <h1 class="text-xl md:text-2xl font-semibold">Submit Video</h1>
-                
+
                     <button class="text-xl" x-on:click.prevent="status = !status">
                         <i class="las la-times"></i>
                     </button>
                 </div>
-                
+
                 <p>Please fill in all information bellow to submit video.</p>
             </header>
 
@@ -34,13 +34,13 @@
                         <label>Choose Video Submit Method</label>
                         <select  class="form-control-inline bg-dark" x-model="video_type">
                             <option value="file" selected="selected">Upload Video</option>
-                            <option value="url">Video URL or Embed</option>
+                            <!-- <option value="url">Video URL or Embed</option> -->
                         </select>
                     </div>
 
                     <div class="form-group" x-show="video_type === 'file'">
                         <label>Video File</label>
-                        <span class="text-secondary block text-xs">Support *.mp4, *.m4v, *.webm, *.ogv, *.flv, *.mov. Maximun upload file size: 5mb.</span>                       
+                        <span class="text-secondary block text-xs">Support *.mp4, *.m4v, *.webm, *.ogv, *.flv, *.mov. Maximun upload file size: 5mb.</span>
 
                         <x-atoms.progress-indicator>
                             <input type="file" wire:model="video_file" class="form-control" accept="video/*" />

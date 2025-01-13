@@ -32,7 +32,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => env('APP_URL').'/storage',
+            'root' => public_path('storage'),
+            'url' => env('APP_URL').'storage',
             'throw' => false,
         ],
 

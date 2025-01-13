@@ -6,6 +6,7 @@ use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Enums\User\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Driver\Auth\RegistrationRequest;
+use App\Models\RideVehicle;
 use App\Models\User;
 use App\Models\VerificationDocument;
 use App\Repositories\AuthRepository;
@@ -32,6 +33,19 @@ class RegistrationController extends Controller
                 'status' => StatusEnum::LOCKED->value,
             ]);
 
+            if($request->filled('vehicle_reg_number')) {
+                $regDetails = [
+                    'driver_id' => $user->id,
+                    'vehicle_reg_number' => $request->vehicle_reg_number,
+                    'vehicle_make' => $request->make,
+                    'vehicle_model' => $request->model,
+                    'vehicle_year' => $request->year,
+                    'vehicle_color' => $request->color,
+                ];
+
+                RideVehicle::create($regDetails);
+            }
+
             $disk = env('FILESYSTEM_DISK');
 
             foreach($request->file("verification_docs") as $key => $file) {
@@ -51,7 +65,7 @@ class RegistrationController extends Controller
                 'success' => true,
                 'message' => ApiResponseMessageEnum::REGISTRATION_PROCESS->value,
                 'data' => [
-                    'driver' => $user->load('verification_documents')
+                    'driver' => $user->load('verification_documents', 'vehicles')
                 ]
             ]);
         } catch (\Throwable $th) {
