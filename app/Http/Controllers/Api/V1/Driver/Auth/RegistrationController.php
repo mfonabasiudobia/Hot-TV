@@ -23,6 +23,7 @@ class RegistrationController extends Controller
             $email = $request->input('email');
             $username = $request->input('username');
             $password = $request->input('password');
+            $phone = $request->input('phone_number');
 
             $user = AuthRepository::register([
                 'username' => $username,
@@ -31,6 +32,7 @@ class RegistrationController extends Controller
                 'first_name' => $firstName,
                 'last_name' => $lastName,
                 'status' => StatusEnum::LOCKED->value,
+                'phone_number'  => $phone
             ], 'driver');
 
             if($request->filled('vehicle_reg_number')) {

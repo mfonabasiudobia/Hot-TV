@@ -27,6 +27,7 @@ class RegistrationController extends Controller
         $email = $request->input('email');
         $username = $request->input('username');
         $password = $request->input('password');
+        $phone = $request->input('phone_number');
         $subscriptionId = $request->input('subscription_id');
 
         $subscription = Subscription::where('id', $subscriptionId)->first();
@@ -56,6 +57,7 @@ class RegistrationController extends Controller
                 'last_name' => $lastName,
                 'status' => StatusEnum::LOCKED->value,
                 'stripe_customer_id' => $customer->id,
+                'phone_number'  => $phone
             ]);
             if($subscription->plan->trail == 1) {
                 $stripSessionObject['subscription_data'] =['trial_period_days' => $subscription->plan->trail_period_stripe];
@@ -70,7 +72,7 @@ class RegistrationController extends Controller
             $stripSessionObject['mode'] = 'subscription';
             $stripSessionObject['success_url'] = config('app.url'). 'plan/stripe/payment-verification/{CHECKOUT_SESSION_ID}';
             //$stripSessionObject['cancel_url'] = 'http://localhost/cancel',//route('checkout'),
-            
+
             $session = Session::create([
                 $stripSessionObject
             ]);

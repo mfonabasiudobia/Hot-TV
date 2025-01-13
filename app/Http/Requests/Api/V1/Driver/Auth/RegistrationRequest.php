@@ -18,6 +18,7 @@ class RegistrationRequest extends FormRequest
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed',
             'verification_docs' => 'required|array',
+            'phone_number' => 'required',
             'verification_docs.*' => 'file|mimes:jpeg,png,pdf|max:5120',
             'vehicle_reg_number' => 'nullable',
             'make' => 'nullable',
