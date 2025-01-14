@@ -40,7 +40,7 @@ class EpisodeRepository {
     }
 
     public static function getEpisodesBySeason($tvshowId, $seasonNumber){
-        return Episode::where('season_id', $seasonNumber)->get();
+        return Episode::where('season_id', $seasonNumber)->where('status', 'published')->get();
     }
 
     public static function delete(int $id) : bool {

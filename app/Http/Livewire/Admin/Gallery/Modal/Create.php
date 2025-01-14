@@ -50,7 +50,14 @@ class Create extends Component
 
     public function render()
     {
-        $files = $this->sort(Gallery::query())->paginate(20);
+        if(in_array($this->uniqueid, ['thumbnail', 'image', 'media_image'])) {
+            $files = $this->sort(Gallery::query()->where('mime_type', 'like', "%image/%"))->paginate(20);
+        }else if(in_array($this->uniqueid, ['recorded_video', 'trailer'])) {
+            $files = $this->sort(Gallery::query()->where('mime_type', 'like', "%video/%"))->paginate(20);
+        } else {
+            $files = $this->sort(Gallery::query())->paginate(20);
+        }
+
         return view('livewire.admin.gallery.modal.create', ['files' => $files]);
     }
 }

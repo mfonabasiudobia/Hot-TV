@@ -78,7 +78,7 @@ class ConvertVideoForStreamingJob implements ShouldQueue
                 $this->updateProgress(($index + 1) / $this->steps * 100);
             }
 
-            $hlsExporter->save($this->basePath . $this->title . '/' . $this->video->uuid . '.m3u8');
+            $hlsExporter->save($this->basePath . '/' . $this->title . '/' . $this->video->uuid . '.m3u8');
 
             \Log::info('video converted into m3u8 successfully');
             $this->video->update([

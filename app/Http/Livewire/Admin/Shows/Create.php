@@ -91,11 +91,11 @@ class Create extends BaseComponent
                 'title' => $this->title,
                 'disk' => VideoDiskEnum::DISK->value,
                 'original_name' =>  $this->trailer->getClientOriginalName(),
-                'path' => $this->trailer->storeAs(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug . '/'. $season->slug, $filename, VideoDiskEnum::DISK->value),
+                'path' => $this->trailer->storeAs(VideoDiskEnum::TV_SHOWS->value . $tvShow->slug , $filename, VideoDiskEnum::DISK->value),
             ]);
 
-            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug . '/'. $season->slug));
-            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $tvShow->slug));
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 

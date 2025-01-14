@@ -51,7 +51,7 @@
 
                 <div class="form-group">
                     <label>Season Number</label>
-                    <select wire:model.defer='season_id' class="form-control">
+                    <select wire:model.defer='season_id' class="form-control" wire:change="UpdateStartRange">
                         <option>--Select Season--</option>
                         @foreach ($seasons as $season)
                             <option value="{{ $season->id }}">Season {{ $season->season_number }}</option>
@@ -65,7 +65,9 @@
                     <select wire:model.defer='episode_number' class="form-control">
                         <option>--Select Episode--</option>
                         @foreach (range(1, 50) as $item)
-                        <option value="{{ $item }}">Episode {{ $item }}</option>
+                            @if(! in_array($item, $selectedEpisodes))
+                                <option value="{{ $item }}">Episode {{ $item }}</option>
+                            @endif
                         @endforeach
                     </select>
                     @error('episode_number') <span class="error">{{ $message }}</span> @endError
@@ -82,6 +84,10 @@
 
                     @error('duration') <span class="error">{{ $message }}</span> @endError
                 </div> -->
+
+                <div class="form-group">
+                    <x-atoms.toggle model="status" label="Status" />
+                </div>
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                     @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">

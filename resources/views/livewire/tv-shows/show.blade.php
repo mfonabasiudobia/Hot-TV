@@ -8,7 +8,7 @@
         <section class="grid lg:grid-cols-3 gap-10">
             <div class="lg:col-span-2 space-y-7 overflow-hidden">
 
-                <div class="video-container" wire:ignore>
+                <div class="video-container relative" wire:ignore>
                     @if(now()->lt($tvShow->release_date))
                         <div class="p-3 mb-2 bg-danger text-white">
                             This show will release on {{ \Carbon\Carbon::parse($tvShow->release_date)->format('M, d Y') }}
@@ -26,6 +26,9 @@
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
                     </video>
+                    <div style="top: 50%;" class="absolute left-[45%] hidden" id="notSubscribed">
+                        Not Subscribed
+                    </div>
                     <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
                         <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
                         <p>Please <a href="{{route('register')}}">register</a> or <a href="{{ route('login') }}">login</a> to watch the full video.</p>
@@ -353,22 +356,25 @@
         //         autoplay: true, // Autoplay is initially set to false
         //      });
         //  });
-
+        let notSubscribed = document.getElementById('notSubscribed')
          document.addEventListener('change-episode', (event) => {
-            //  if(!event.detail.not_subscribed) {
-                //  videoPlayer.src = event.detail.video_url;
-                //  videoPlayer.load(); // Load the new video source
-                //  videoPlayer.play(); // Play the new video
-                playVideo(event.detail.video_url)
+            if(event.detail.type === 'episode' && event.detail.not_subscribed) {
+                notSubscribed.style.display = 'block'
+                videoPlayer.style.opacity = .5
+                return false
+            }
 
-                 setTimeout(() => {
-                     window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
-                 }, 2000);
-            //  } else {
-            //      videoPlayer.style.display = 'none';
-            //  }
+            playVideo(event.detail.video_url)
+            notSubscribed.style.display = 'none'
+            videoPlayer.style.opacity = 1
 
+             setTimeout(() => {
+                 window.history.replaceState(null, null, `?season=${event.detail.season}&episode=${event.detail.episode}`);
+             }, 2000);
 
+            //  videoPlayer.src = event.detail.video_url;
+            //  videoPlayer.load(); // Load the new video source
+            //  videoPlayer.play(); // Play the new video
          })
      // });
 

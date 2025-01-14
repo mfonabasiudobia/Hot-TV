@@ -90,16 +90,22 @@
 {{--                            x-on:click.prevent="$wire.emit('openGallery', 'trailer')" />--}}
 
                         @if($tvShow->video)
-                            <span>{{ Storage::disk('public')->url('videos/' . $tvShow->video->id . '.mp4') }}</span>
                             @if($trailer)
+                                <span>{{ $trailer->temporaryUrl() }}</span>
                                 <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
                             @else
-                                <video class='w-auto h-[20vh]' src="{{ Storage::disk('s3')->url($tvShow->video->path) }}" controls></video>
+                                <span>{{ Storage::disk($tvShow->video->disk ?? 'public')->url($tvShow->video->path) }}</span>
+                                <video class='w-auto h-[20vh]' src="{{ Storage::disk($tvShow->video->disk ?? 'public')->url($tvShow->video->path) }}" controls></video>
                             @endif
 
                         @else
-                            <span x-text="'{{ file_path() }}' + trailer"></span>
-                            <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
+                            @if($trailer)
+                                <span>{{ $trailer->temporaryUrl() }}</span>
+                                <video class='w-auto h-[20vh]' src="{{ $trailer->temporaryUrl() }}" controls></video>
+                            @else
+                                <span x-text="'{{ file_path() }}' + trailer"></span>
+                                <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + trailer" controls></video>
+                            @endif
                         @endif
 
 
@@ -146,6 +152,18 @@
 
 @push('script')
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const releaseDateInput = document.querySelector('.custom-datetime');
+
+        if (releaseDateInput) {
+            flatpickr(releaseDateInput, {
+                enableTime: true,
+                dateFormat: 'Y-m-d H:i',
+                defaultDate: "{{ $release_date }}",
+            });
+        }
+    })
+
     $(document).ready(function () {
                     new SlimSelect({
                         select: '#categories'

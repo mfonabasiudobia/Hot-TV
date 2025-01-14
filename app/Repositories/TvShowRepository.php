@@ -82,7 +82,7 @@ class TvShowRepository {
 //        return Episode::groupBy('tv_show_id', 'season_number')->distinct()->where('tv_show_id',
 //        $tvshowId)->select("episodes.season_number")->pluck('season_number')->toArray();
 
-        return Season::where('tv_show_id', $tvshowId)->get();
+        return Season::where('tv_show_id', $tvshowId)->where('status', 'published')->get();
     }
 
     public static function getTvShowsByCategory($categoryId) : Collection{

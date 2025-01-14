@@ -39,7 +39,9 @@
                     <select wire:model.defer='season_number' class="form-control">
                         <option>--Select Season--</option>
                         @foreach (range(1, 50) as $item)
-                            <option value="{{ $item }}">Season {{ $item }}</option>
+                            @if(! in_array($item, $selectedSeasons) || $season_number == $item)
+                                <option value="{{ $item }}">Season {{ $item }}</option>
+                            @endif
                         @endforeach
                     </select>
                     @error('season_number') <span class="error">{{ $message }}</span> @endError
@@ -48,7 +50,7 @@
                 <div class="form-group">
                     <label>Select TV Show</label>
                     <div wire:ignore>
-                        <select wire:model.defer='tv_show_id' class="form-control tv-show">
+                        <select wire:model.defer='tv_show_id' class="form-control tv-show" wire:change="UpdateStartRange">
                             <option>--Select TV Show--</option>
                             @foreach (\App\Models\TvShow::get() as $item)
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>
@@ -56,6 +58,12 @@
                         </select>
                     </div>
                     @error('tv_show_id') <span class="error">{{ $message }}</span> @endError
+                </div>
+
+                <div class="form-group"></div>
+
+                <div class="form-group">
+                    <x-atoms.toggle model="status" label="Status" />
                 </div>
 
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
@@ -72,15 +80,30 @@
 
                 <div class="form-group md:col-span-2" x-data="{ recorded_video : @entangle('recorded_video').defer }"
                      @set-push-file.window="if($event.detail.unique_key == 'recorded_video') recorded_video = $event.detail.path;">
-                    <label>Upload Video</label>
-                    <input type="file" class="form-control"
-                           x-on:click.prevent="$wire.emit('openGallery', 'recorded_video')" />
+                        <label>Upload Video</label>
 
-                    <span x-text="'{{ file_path() }}' + recorded_video"></span>
-                    <video class='w-auto h-[20vh]' controls>
-                        <source :src="'{{ file_path() }}' + recorded_video" type="video/mp4">
-                        Your browser does not support HTML5 video.
-                    </video>
+                        <x-atoms.progress-indicator>
+                            <input type="file" wire:model="recorded_video" class="form-control" accept="video/*" />
+                        </x-atoms.progress-indicator>
+
+                        @if($season->video)
+                            @if($recorded_video)
+                                <span>{{ $recorded_video->temporaryUrl() }}</span>
+                                <video class='w-auto h-[20vh]' src="{{ $recorded_video->temporaryUrl() }}" controls></video>
+                            @else
+                                <span>{{ Storage::disk($season->video->disk ?? 'public')->url($season->video->path) }}</span>
+                                <video class='w-auto h-[20vh]' src="{{ Storage::disk($season->video->disk ?? 'public')->url($season->video->path) }}" controls></video>
+                            @endif
+
+                        @else
+                            @if($recorded_video)
+                                <span>{{ $recorded_video->temporaryUrl() }}</span>
+                                <video class='w-auto h-[20vh]' src="{{ $recorded_video->temporaryUrl() }}" controls></video>
+                            @else
+                                <span x-text="'{{ file_path() }}' + recorded_video"></span>
+                                <video class='w-auto h-[20vh]' :src="'{{ file_path() }}' + recorded_video" controls></video>
+                            @endif
+                        @endif
 
                     @error('recorded_video') <span class="error"> {{ $message }}</span> @endError
                 </div>

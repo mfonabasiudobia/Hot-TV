@@ -17,7 +17,7 @@ class Create extends BaseComponent
 
      public $title, $slug, $description, $release_date, $end_time, $schedule_date, $thumbnail;
 
-     public $recorded_video, $tvshow;
+     public $recorded_video, $tvshow, $status, $selectedEpisodes = [];
 
      public $season_id, $episode_number, $duration, $tv_show_id;
 
@@ -34,6 +34,11 @@ class Create extends BaseComponent
      public function UpdateSeasons()
      {
          $this->seasons = SeasonRepository::getSeasonsBytvShowId($this->tv_show_id);
+     }
+
+     public function UpdateStartRange()
+     {
+        $this->selectedEpisodes =  EpisodeRepository::getEpisodesBySeason($this->tv_show_id, $this->season_id)->pluck('episode_number')->toArray();
      }
 
      public function submit(){
@@ -66,6 +71,7 @@ class Create extends BaseComponent
                 'tv_show_id' => $this->tv_show_id,
                 'season_id' => $this->season_id,
                 'episode_number' => $this->episode_number,
+                'status' => $this->status ? 'published' : 'unpublished'
             ];
 
             $episode = throw_unless(EpisodeRepository::createEpisode($data), "Please try again");
