@@ -31,6 +31,7 @@ class CancelRideController extends Controller
             }
 
             $ride->status = StatusEnum::CANCELLED->value;
+            $ride->stream_status = 'completed';
             $ride->save();
 
             return response()->json([
