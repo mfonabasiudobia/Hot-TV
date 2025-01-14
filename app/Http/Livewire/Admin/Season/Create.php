@@ -18,7 +18,7 @@ class Create extends BaseComponent
 
      public $title, $slug, $description, $release_date, $end_time, $schedule_date, $thumbnail;
 
-     public $recorded_video, $tvshow;
+     public $recorded_video, $tvshow, $status;
 
      public $season_number, $episode_number, $duration, $tv_show_id;
 
@@ -40,7 +40,7 @@ class Create extends BaseComponent
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'recorded_video' => 'required',
-            'tv_show_id' => 'required|exists:tv_shows,id'
+            'tv_show_id' => 'required|exists:tv_shows,id',
         ],[
             'release_date.*' => 'Invalid Release Date Selected',
             'tv_show_id.*' => 'Select TV Show to proceed'
@@ -57,7 +57,7 @@ class Create extends BaseComponent
                 'recorded_video' => $this->recorded_video,
                 'tv_show_id' => $this->tv_show_id,
                 'season_number' => $this->season_number,
-                'status'    => 'published'
+                'status' => $this->status ? 'published' : 'unpublished'
             ];
 
             $season = throw_unless(SeasonRepository::createSeason($data), "Please try again");
@@ -73,8 +73,8 @@ class Create extends BaseComponent
                 'path' => $this->recorded_video->storeAs(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug . '/'. $season->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
 
-            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $season->tvShow->slug . '/'. $season->slug));
-            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $season->tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug, $video, $season->tvShow->slug . '/'. $season->slug));
+            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value . $season->tvShow->slug, $video, $season->tvShow->slug . '/'. $season->slug));
 
             toast()->success('Cheers!, Season has been added')->pushOnNextPage();
 

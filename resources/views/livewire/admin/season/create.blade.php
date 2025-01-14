@@ -58,6 +58,12 @@
                     @error('tv_show_id') <span class="error">{{ $message }}</span> @endError
                 </div>
 
+                <div class="form-group"></div>
+
+                <div class="form-group">
+                    <x-atoms.toggle model="status" label="Status" />
+                </div>
+
                 <div class="form-group md:col-span-2" x-data="{ thumbnail : @entangle('thumbnail').defer }"
                      @set-push-file.window="if($event.detail.unique_key == 'thumbnail') thumbnail = $event.detail.path;">
                     <label>Thumbnail</label>

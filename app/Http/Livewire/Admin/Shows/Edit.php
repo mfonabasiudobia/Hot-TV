@@ -8,6 +8,9 @@ use App\Repositories\CastRepository;
 use App\Repositories\ShowCategoryRepository;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Enums\VideoDiskEnum;
+use App\Jobs\ConvertVideoForDownloadingJob;
+use App\Jobs\ConvertVideoForStreamingJob;
 
 class Edit extends BaseComponent
 {
@@ -67,15 +70,6 @@ class Edit extends BaseComponent
 
 
         try {
-            $directory = 'videos';
-            $files = Storage::disk('public')->allFiles($directory);
-
-            foreach ($files as $file){
-                if(Str::startsWith($file,$directory. "/". $this->tvShow->video->id)){
-                    Storage::disk('public')->delete($file);
-                }
-            }
-
             $data = [
                 'title' => $this->title,
                 'slug' => $this->slug,
@@ -94,6 +88,30 @@ class Edit extends BaseComponent
                 'categories' => $this->categories_id,
                 'casts' => $this->casts_id,
             ], $this->tvShow->id), "Please try again");
+
+            if($this->trailer){
+                // $directory = VideoDiskEnum::TV_SHOWS->value . $this->tvShow->slug;
+                // $files = Storage::disk('public')->allFiles($directory);
+                // Storage::disk($this->tvShow->video->disk ?? 'public')->delete($this->tvShow->video->path);
+                // Storage::disk($this->tvShow->video->disk ?? 'public')->delete(preg_replace('/\.[^.]+$/', '.m3u8', $this->tvShow->video->path));
+                // foreach ($files as $file){
+                //     Storage::disk('public')->delete($file);
+                // }
+
+                $uuid = Str::uuid();
+                $filename = $uuid . '.' . $this->trailer->getClientOriginalExtension();
+
+                $this->tvShow->video->update([
+                    'uuid' => $uuid,
+                    'title' => $this->title,
+                    'disk' => VideoDiskEnum::DISK->value,
+                    'original_name' =>  $this->trailer->getClientOriginalName(),
+                    'path' => $this->trailer->storeAs(VideoDiskEnum::TV_SHOWS->value . $this->tvShow->slug , $filename, VideoDiskEnum::DISK->value),
+                ]);
+
+                dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $this->tvShow->video, $this->tvShow->slug));
+                dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $this->tvShow->video, $this->tvShow->slug));
+            }
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 

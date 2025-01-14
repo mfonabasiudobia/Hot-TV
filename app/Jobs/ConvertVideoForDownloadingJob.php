@@ -74,7 +74,7 @@ class ConvertVideoForDownloadingJob implements ShouldQueue
                 $this->updateProgress(($index + 1) / count($formats) * 100);
             }
 
-            $exporter->save($this->basePath . $this->title . '/' . $this->video->uuid . '_download.mp4');
+            $exporter->save($this->basePath . '/' . $this->title . '/' . $this->video->uuid . '_download.mp4');
 
             \Log::info('Video converted into mp4 successfully');
             $this->video->update([
