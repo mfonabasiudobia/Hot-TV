@@ -18,7 +18,7 @@ class Create extends BaseComponent
 
      public $title, $slug, $description, $release_date, $end_time, $schedule_date, $thumbnail;
 
-     public $recorded_video, $tvshow, $status;
+     public $recorded_video, $tvshow, $status, $selectedSeasons = [];
 
      public $season_number, $episode_number, $duration, $tv_show_id;
 
@@ -28,6 +28,11 @@ class Create extends BaseComponent
 
      public function updatedTitle($title){
         $this->slug = str()->slug($title);
+     }
+
+     public function UpdateStartRange()
+     {
+        $this->selectedSeasons =  SeasonRepository::getSeasonsBytvShowId($this->tv_show_id)->pluck('season_number')->toArray();
      }
 
      public function submit(){

@@ -32,9 +32,14 @@ class Show extends BaseComponent
         ]);
 
 
-        if(request()->has(['season', 'episode'])){
+        if(request()->has(['episode']) && request()->episode !== 'null'){
             $this->fill([
                 'selectedEpisode' => EpisodeRepository::getEpisodeBySlug(request('episode'), $this->tvShow->id),
+            ]);
+        }
+
+        if(request()->has(['season']) && request()->season !== 'null'){
+            $this->fill([
                 'season_number' => request('season'),
             ]);
         }
@@ -109,13 +114,15 @@ class Show extends BaseComponent
     public function selectSeason()
     {
         $season = Season::find($this->season_number);
+
         $episodeVideo = $season && $season->video ? $season->video->stream_path : file_path($season->recorded_video);
 
         $this->dispatchBrowserEvent("change-episode", [
             'not_subscribed' => !($this->user && $this->user->subscription),
             'video_url' => $episodeVideo,
             'episode' => $season->episodes[0]->slug ?? null,
-            'season' => $season->id
+            'season' => $season->id,
+            'type' => 'season'
         ]);
     }
 
@@ -158,7 +165,7 @@ class Show extends BaseComponent
             $episodeVideo = $this->selectedEpisode && $this->selectedEpisode->video ? $this->selectedEpisode->video->stream_path : file_path($this->tvShow->video->recorded_video);
             $notSubscribed = false;
         } else {
-            $episodeVideo = $this->selectedEpisode && $this->selectedEpisode->video ? $this->selectedEpisode->video->stream_path : file_path($this->tvShow->video->recorded_video);
+            $episodeVideo = '';
             $notSubscribed = true;
         }
         // dd($episodeVideo);
@@ -166,7 +173,8 @@ class Show extends BaseComponent
             'not_subscribed' => $notSubscribed,
             'video_url' => $episodeVideo,
             'episode' => $this->selectedEpisode->slug,
-            'season' => $this->selectedEpisode->season_number
+            'season' => $this->selectedEpisode->season_number,
+            'type' => 'episode'
         ]);
     }
 

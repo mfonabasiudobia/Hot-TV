@@ -39,7 +39,9 @@
                     <select wire:model.defer='season_number' class="form-control">
                         <option>--Select Season--</option>
                         @foreach (range(1, 50) as $item)
-                            <option value="{{ $item }}">Season {{ $item }}</option>
+                            @if(! in_array($item, $selectedSeasons))
+                                <option value="{{ $item }}">Season {{ $item }}</option>
+                            @endif
                         @endforeach
                     </select>
                     @error('season_number') <span class="error">{{ $message }}</span> @endError
@@ -48,7 +50,7 @@
                 <div class="form-group">
                     <label>Select TV Show</label>
                     <div wire:ignore>
-                        <select wire:model.defer='tv_show_id' class="form-control tv-show">
+                        <select wire:model.defer='tv_show_id' class="form-control tv-show" wire:change="UpdateStartRange">
                             <option>--Select TV Show--</option>
                             @foreach (\App\Models\TvShow::get() as $item)
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>

@@ -19,7 +19,7 @@ class Edit extends BaseComponent
 
      public $season_id, $recorded_video, $tvshow, $episode, $tv_show_id;
 
-     public $season_number, $episode_number, $duration, $status;
+     public $season_number, $episode_number, $duration, $status, $selectedEpisodes = [];
 
     public $seasons = [];
 
@@ -40,6 +40,8 @@ class Edit extends BaseComponent
             'tv_show_id' => $this->episode->tv_show_id,
             'status' => $this->episode->status == 'published'
         ]);
+
+        $this->UpdateStartRange();
     }
 
     public function updatedTitle($title){
@@ -50,6 +52,11 @@ class Edit extends BaseComponent
     {
         $this->seasons = SeasonRepository::getSeasonsBytvShowId($this->tv_show_id);
     }
+
+    public function UpdateStartRange()
+     {
+        $this->selectedEpisodes =  EpisodeRepository::getEpisodesBySeason($this->tv_show_id, $this->season_id)->pluck('episode_number')->toArray();
+     }
 
     public function submit(){
         $this->validate([
