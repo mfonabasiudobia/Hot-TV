@@ -20,8 +20,8 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
 
-                    <ul class="absolute top-[56px] left-0 py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="browseMenu">
-                        <div class="flex p-4">
+                    <ul style="top: 64px;" class="absolute top-[64px] left-0 py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="browseMenu">
+                        <div class="flex">
                             <div class="border-r-2 border-white" style="border-right: 2px solid white;">
                                 <li class="relative group hover:bg-secondary hover:text-danger">
                                     <a class="px-4 py-4 block hover:text-danger" href="{{ route('tv-shows.home') }}">Tv Shows</a>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="flex flex-wrap" style="width: 700px">
                                 @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)
-                                    <div class="px-4 py-2 rounded-md" style="width: 33%;">
+                                    <div style="width: 33%;">
                                         <li class="hover:bg-secondary hover:text-danger p-4">
                                             <a class="block hover:text-danger" href="{{ route('search', ['q' => $category->name ]) }}">
                                                 {{ \Illuminate\Support\Str::limit($category->name, 15) }}
@@ -69,7 +69,7 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
 
-                    <ul id="socialMediaMenu" class="absolute top-[56px] left-0 min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
+                    <ul id="socialMediaMenu" style="top: 64px;" class="absolute top-[64px] left-0 min-w-[250px] whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
                         <div style="width: 400px;">
 
                             @foreach (json_decode(gs()->{'theme-ripple-social_links'}) as $link)
