@@ -21,7 +21,7 @@ class SubscriptionStatus extends Component
         if ($order) {
             $this->subscriptionPlan = $order->subscription->name;
         } else {
-            $this->subscriptionPlan = 'Not subscribe';
+            $this->subscriptionPlan = 'Not subscribed';
         }
     }
 

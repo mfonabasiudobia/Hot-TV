@@ -218,7 +218,35 @@
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
+    function updateQuality(newQuality) {
+        if (newQuality === 0) {
+            window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
+        } else {
+            window.hls.levels.forEach((level, levelIndex) => {
+            if (level.height === newQuality) {
+                console.log("Found quality match with " + newQuality);
+                window.hls.currentLevel = levelIndex;
+            }
+            });
+        }
+    }
+
     function playVideo(source){
+        const defaultOptions = {
+            muted : true,
+            autoplay: true,
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+            settings: ['captions', 'quality', 'speed', 'loop'],
+            quality: {
+                default: 720,
+                options: [360, 480, 720, 1080],
+                forced: true,
+                onChange: (quality) => {
+                    console.log(`Selected quality: ${quality}`);
+                }
+            }
+        };
+
         const video = document.getElementById('player');
 
         if (!Hls.isSupported()) {
@@ -265,37 +293,10 @@
             window.hls = hls;
         }
     }
-    document.addEventListener('DOMContentLoaded', () => {
-        const defaultOptions = {
-            muted : true,
-            autoplay: true,
-            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-            settings: ['captions', 'quality', 'speed', 'loop'],
-            quality: {
-                default: 720,
-                options: [360, 480, 720, 1080],
-                forced: true,
-                onChange: (quality) => {
-                    console.log(`Selected quality: ${quality}`);
-                }
-            }
-        };
 
+    document.addEventListener('DOMContentLoaded', () => {
         const source = "{{  $tvShow->video ? $tvShow->video->stream_path : file_path($tvShow->trailer) }}";
         playVideo(source)
-
-        function updateQuality(newQuality) {
-            if (newQuality === 0) {
-                window.hls.currentLevel = -1; //Enable AUTO quality if option.value = 0
-            } else {
-                window.hls.levels.forEach((level, levelIndex) => {
-                if (level.height === newQuality) {
-                    console.log("Found quality match with " + newQuality);
-                    window.hls.currentLevel = levelIndex;
-                }
-                });
-            }
-        }
     });
 </script>
 <script>

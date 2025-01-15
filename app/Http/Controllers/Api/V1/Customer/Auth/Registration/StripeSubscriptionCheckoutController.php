@@ -6,6 +6,7 @@ use App\Enums\Api\V1\ApiResponseMessageEnum;
 use App\Http\Controllers\Controller;
 use Botble\ACL\Models\User;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
+use Botble\SubscriptionPlan\Models\Subscription;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
@@ -18,7 +19,8 @@ class StripeSubscriptionCheckoutController extends Controller
         try {
             $request->validate([
                 'email' => 'required',
-                'payment_method' => 'required|in:paypal,stripe'
+                'payment_method' => 'required|in:paypal,stripe',
+                'plan_id'   =>  'required'
             ]);
 
             Stripe::setApiKey(gs()->payment_stripe_secret);
@@ -31,9 +33,9 @@ class StripeSubscriptionCheckoutController extends Controller
                 ], 404);
             }
 
-            $order = SubscriptionOrder::where('user_id', $user->id)->first();
+            $subscription = Subscription::where('id', $request->plan_id)->first();
 
-            if(!$order) {
+            if(!$subscription) {
                 return response()->json([
                     'success'   => false,
                     'message'   => ApiResponseMessageEnum::ORDER_NOT_FOUND->value,
@@ -41,7 +43,6 @@ class StripeSubscriptionCheckoutController extends Controller
             }
 
             if($request->payment_method === 'stripe') {
-                $subscription = $order->subscription;
                 $subscriptionStatus = OrderStatusEnum::PENDING->value;
 
                 $stripSessionObject['payment_method_types'] = ['card'];
