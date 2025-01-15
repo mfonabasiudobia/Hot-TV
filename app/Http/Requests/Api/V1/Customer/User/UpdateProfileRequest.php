@@ -14,7 +14,8 @@ class UpdateProfileRequest extends FormRequest
         return [
             'first_name' => 'nullable',
             'last_name' => 'nullable',
-            'email' => 'nullable'
+            'email' => 'nullable',
+            'avatar' => 'image|mimes:gif,jpg,jpeg,png|max:5120',
         ];
     }
 

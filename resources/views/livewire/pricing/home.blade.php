@@ -8,10 +8,11 @@
                     subscriptions: [
                     @foreach($plans[0]->subscriptions as $subscription)
                         @php
+
                             $isSubscribed = $user && $user->subscription && $user->subscription->subscription_id == $subscription->id;
                             $hasSubscription = $user && $user->subscription;
                             $isUpgrade = $hasSubscription && $user->subscription->subscription && $user->subscription->subscription->price < ($subscription->price ?? 0);
-                            if($user->subscription && !$user->subscription->subscription) {
+                            if($user && $user->subscription && !$user->subscription->subscription) {
                                 $isUpgrade = true;
                             }
 
