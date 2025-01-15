@@ -14,8 +14,8 @@
             </a>
 
             <ul class="hidden xl:flex items-center">
-                <li class="relative group p-5 hover:bg-secondary">
-                    <a href="javascript:void(0)" class="hover:text-danger flex items-center" id="browse">
+                <li class="relative group p-5 hover:bg-secondary cursor-pointer" id="browse">
+                    <a href="javascript:void(0)" class="flex items-center">
                         <span style="margin-right: 5px;">Browse</span>
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
@@ -23,36 +23,36 @@
                     <ul style="top: 64px;" class="absolute top-[64px] left-0 py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="browseMenu">
                         <div class="flex">
                             <div class="border-r-2 border-white" style="border-right: 2px solid white;">
-                                <li class="relative group hover:bg-secondary hover:text-danger">
-                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('tv-shows.home') }}">Tv Shows</a>
+                                <li class="relative group hover:bg-secondary">
+                                    <a class="px-4 py-4 block" href="{{ route('tv-shows.home') }}">Tv Shows</a>
                                 </li>
 
-                                <li class="hover:bg-secondary hover:text-danger">
-                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('live-channel.show') }}">
+                                <li class="hover:bg-secondary">
+                                    <a class="px-4 py-4 block" href="{{ route('live-channel.show') }}">
                                         <span class="text-danger">&bull;</span>
                                         Live Channel
                                     </a>
                                 </li>
 
-                                <li class="hover:bg-secondary hover:text-danger">
-                                    <a class="px-4 py-4 block hover:text-danger" href="{{ route('pedicab-streams.home') }}">Pedicab Streams</a>
+                                <li class="hover:bg-secondary">
+                                    <a class="px-4 py-4 block" href="{{ route('pedicab-streams.home') }}">Pedicab Streams</a>
                                 </li>
-                                <li class="hover:bg-secondary hover:text-danger">
-                                    <a href="{{ route('podcast.home') }}" class="px-4 py-4 block hover:text-danger">Podcast</a>
+                                <li class="hover:bg-secondary">
+                                    <a href="{{ route('podcast.home') }}" class="px-4 py-4 block">Podcast</a>
                                 </li>
-                                <li class="hover:bg-secondary hover:text-danger">
-                                    <a href="{{ route('gallery.home') }}" class="px-4 py-4 block hover:text-danger">Gallery</a>
+                                <li class="hover:bg-secondary">
+                                    <a href="{{ route('gallery.home') }}" class="px-4 py-4 block">Gallery</a>
                                 </li>
-                                <li class="hover:bg-secondary hover:text-danger">
-                                    <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-4 block hover:text-danger">Celebritity
+                                <li class="hover:bg-secondary">
+                                    <a href="{{ route('celebrity-shoutout.home') }}" class="px-4 py-4 block">Celebritity
                                         shoutouts</a>
                                 </li>
                             </div>
                             <div class="flex flex-wrap" style="width: 700px">
                                 @foreach (\App\Models\ShowCategory::limit(15)->get() as $category)
                                     <div style="width: 33%;">
-                                        <li class="hover:bg-secondary hover:text-danger p-4">
-                                            <a class="block hover:text-danger" href="{{ route('search', ['q' => $category->name ]) }}">
+                                        <li class="hover:bg-secondary p-4">
+                                            <a class="block" href="{{ route('search', ['q' => $category->name ]) }}">
                                                 {{ \Illuminate\Support\Str::limit($category->name, 15) }}
                                             </a>
                                         </li>
@@ -63,8 +63,8 @@
                     </ul>
                 </li>
 
-                <li class="relative group tile-group p-5 hover:bg-secondary">
-                    <a href="javascript:void(0)" class="hover:text-danger flex items-center whitespace-nowrap" id="socialMedia">
+                <li class="relative group tile-group p-5 hover:bg-secondary cursor-pointer" id="socialMedia">
+                    <a href="javascript:void(0)" class="flex items-center whitespace-nowrap">
                         <span style="margin-right: 5px;">Social Media</span>
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
@@ -73,7 +73,7 @@
                         <div style="width: 400px;">
 
                             @foreach (json_decode(gs()->{'theme-ripple-social_links'}) as $link)
-                                <div class="px-4 py-2 hover:bg-secondary hover:text-danger">
+                                <div class="px-4 py-2 hover:bg-secondary">
                                     <li class="tile">
                                         <a class="px-4 py-4 block flex" href="{{ $link[2]->value }}">
                                             <div class="mr-2"><i class="{{$link[1]->value}}"></i></div>
@@ -88,13 +88,14 @@
 
 
 
-                <li class="relative group p-5 hover:bg-secondary hover:text-danger">
-                    <a href="#" class="hover:text-danger">
+                <li class="relative group p-5 hover:bg-secondary cursor-pointer">
+                    <a href="#" class="">
                         <span>News</span>
                     </a>
                 </li>
-                <li class="p-5 hover:bg-secondary hover:text-danger">
-                    <a href="{{ route('pricing.home') }}" class="block hover:text-danger">Pricing</a>
+                <!-- {{ Request::is('*pricing*') ? 'activeItem' : '' }} -->
+                <li class="p-5 hover:bg-secondary cursor-pointer" onclick="window.location.assign(`{{ route('pricing.home') }}`)">
+                    <a href="{{ route('pricing.home') }}" class="block">Pricing</a>
                 </li>
                 <li>
                     <form action="{{ route('search') }}" class="p-2 hidden xl:flex items-center bg-[#000000] w-100 rounded-2xl  px-5 max-[1750px]:hidden  ">
@@ -120,7 +121,7 @@
                 </a>
             </li>
 
-            <li class="p-5 hover:bg-secondary hover:text-danger">
+            <li class="p-5 hover:bg-secondary cursor-pointer">
                 <div class="flex cursor-pointer">
                     <svg class="premium-filled-icon--nW2Vi header-svg-icon" style="width: 24px; fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" data-t="premium-filled-svg" aria-labelledby="premium-filled-svg" aria-hidden="true" role="img"><title id="premium-filled-svg">Premium</title><path d="M2.419 13L0 4.797 4.837 6.94 8 2l3.163 4.94L16 4.798 13.581 13z"></path></svg>
                     <div class="ml-2 flex flex-col" style="line-height: .7rem;">
@@ -130,14 +131,14 @@
                 </div>
             </li>
 
-            <li class="p-5 flex hover:bg-secondary hover:text-danger">
+            <li class="p-5 flex hover:bg-secondary cursor-pointer">
                 <a href="{{ route('tv-shows.home') }}">
                     <svg class="header-svg-icon" style="width: 24px; fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-t="watchlist-svg" aria-labelledby="watchlist-svg" aria-hidden="false" role="img"><title id="watchlist-svg">Watchlist</title><path d="M17 18.113l-3.256-2.326A2.989 2.989 0 0 0 12 15.228c-.629 0-1.232.194-1.744.559L7 18.113V4h10v14.113zM18 2H6a1 1 0 0 0-1 1v17.056c0 .209.065.412.187.581a.994.994 0 0 0 1.394.233l4.838-3.455a1 1 0 0 1 1.162 0l4.838 3.455A1 1 0 0 0 19 20.056V3a1 1 0 0 0-1-1z"></path></svg>
                 </a>
             </li>
 
-            <li class="p-5 flex hover:bg-secondary hover:text-danger">
-                <a href="javascript:void(0)" id="authDropDown">
+            <li class="p-5 flex hover:bg-secondary cursor-pointer" id="authDropDown">
+                <a href="javascript:void(0)">
                     <svg class="header-svg-icon" style="width: 24px; fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-t="user-settings-svg" aria-labelledby="user-settings-svg" aria-hidden="true" role="img"><title id="user-settings-svg">Account menu</title><path d="M12 20a6.01 6.01 0 0 1-5.966-5.355L12 12.088l5.966 2.557A6.01 6.01 0 0 1 12 20m0-16c1.654 0 3 1.346 3 3s-1.345 3-2.999 3h-.002A3.003 3.003 0 0 1 9 7c0-1.654 1.346-3 3-3m7.394 9.081l-4.572-1.959A4.997 4.997 0 0 0 17 7c0-2.757-2.243-5-5-5S7 4.243 7 7c0 1.71.865 3.22 2.178 4.122l-4.572 1.959A.999.999 0 0 0 4 14c0 4.411 3.589 8 8 8s8-3.589 8-8c0-.4-.238-.762-.606-.919"></path></svg>
                 </a>
             </li>
@@ -145,8 +146,8 @@
             <li class="relative group p-2">
 
 
-                <ul style="width: 350px; right: -55px;" class="absolute top-[40px] py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="authDropDownMenu">
-                    <li>
+                <ul style="width: 350px; right: -55px; top: 40px;" class="absolute top-[40px] py-1 whitespace-nowrap space-y-1 bg-dark min-w-[150px] text-sm z-50 hidden" id="authDropDownMenu">
+                    <li class="cursor-pointer hover:bg-secondary">
                         <a href="{{ route('register') }}" class="btn btn-xl py-4 text-left">
                             Create Account
                             <div>
@@ -154,7 +155,7 @@
                             </div>
                         </a>
                     </li>
-                    <li>
+                    <li class="cursor-pointer hover:bg-secondary">
                         <a href="{{ route('login') }}" class="btn btn-xl py-4 text-left">
                             Login
                             <div> <small> Already joined hottv? Welcome Back </small> </div>
@@ -340,7 +341,7 @@
                     </ul>
                 </li>
                 <li class="relative group tile-group">
-                    <a href="javascript:void(0)" class="hover:text-danger flex align-center justify-between" id="socialMedia">
+                    <a href="javascript:void(0)" class="flex align-center justify-between" id="socialMedia">
                         <span>Social Media</span>
                         <i class="fa-solid fa-angle-down"></i>
                     </a>
@@ -348,19 +349,19 @@
                     <ul id="socialMediaMenu" class="absolute top-[56px] min-w-[250px] p-4 whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden group-hover:block">
                         <div style="width: 400px;">
                             <li class="tile">
-                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 hover:bg-color-gray-40 flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-facebook"></i></div>
                                     <div class="text-left">Facbook</div>
                                 </a>
                             </li>
                             <li class="tile">
-                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 hover:bg-color-gray-40 flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-linkedin"></i></div>
                                     <div class="text-left">LinkedIn</div>
                                 </a>
                             </li>
                             <li class="tile">
-                                <a class="px-4 py-4 hover:bg-color-gray-400 hover:text-danger flex" href="{{ route('tv-shows.home') }}">
+                                <a class="px-4 py-4 hover:bg-color-gray-40 flex" href="{{ route('tv-shows.home') }}">
                                     <div class="mr-2"><i class="fa-brands fa-twitter"></i></div>
                                     <div class="text-left">Twitter</div>
                                 </a>
@@ -405,34 +406,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     browse.addEventListener("click", function () {
         browseMenu.style.display = 'block';
-    });
-
-    // Optional: Close the dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!browse.contains(event.target) && !browse.contains(event.target)) {
-            browseMenu.style.display = 'none';
-        }
+        browse.classList.add('activeItem');
     });
 
     socialMedia.addEventListener("click", function () {
         socialMediaMenu.style.display = 'block';
-    });
-
-    // Optional: Close the dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!socialMedia.contains(event.target) && !socialMediaMenu.contains(event.target)) {
-            socialMediaMenu.style.display = 'none';
-        }
+        socialMedia.classList.add('activeItem');
     });
 
     authDropDown.addEventListener("click", function () {
         authDropDownMenu.style.display = 'block';
+        authDropDown.classList.add('activeItem');
     });
 
     // Optional: Close the dropdown if clicked outside
     document.addEventListener("click", function (event) {
+        if (!browse.contains(event.target) && !browseMenu.contains(event.target)) {
+            browseMenu.style.display = 'none';
+            browse.classList.remove('activeItem');
+        }
+
+        if (!socialMedia.contains(event.target) && !socialMediaMenu.contains(event.target)) {
+            socialMedia.classList.remove('activeItem');
+            socialMediaMenu.style.display = 'none';
+        }
+
         if (!authDropDown.contains(event.target) && !authDropDownMenu.contains(event.target)) {
             authDropDownMenu.style.display = 'none';
+            authDropDown.classList.remove('activeItem');
         }
     });
 });
