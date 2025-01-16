@@ -20,6 +20,7 @@ use Stripe\PaymentIntent;
 use Botble\SubscriptionPlan\Models\SubscriptionOrder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Botble\SubscriptionOrder\Enums\OrderStatusEnum;
+use Stripe\Subscription;
 
 class Checkout extends BaseController
 {
@@ -91,6 +92,8 @@ class Checkout extends BaseController
         Stripe::setApiKey(gs()->payment_stripe_secret);
         try {
             $session = Session::retrieve($sessionId);
+            $stripeSubscription = Subscription::retrieve($session->subscription);
+            $nextBillingDate = $stripeSubscription && $stripeSubscription->current_period_end ? date('Y-m-d H:i:s', $stripeSubscription->current_period_end) : null;
 
             if(!$session) {
                 throw new NotFoundHttpException();
@@ -111,6 +114,7 @@ class Checkout extends BaseController
             if($order->status == OrderStatusEnum::PENDING->value || $order->status == OrderStatusEnum::PAID->value) {
                 $order->status = OrderStatusEnum::PAID->value;
                 $order->stripe_subscription_id = $session->subscription;
+                $order->next_billing_date = $nextBillingDate;
                 $order->save();
             }
 
