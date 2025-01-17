@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Botble\ACL\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Botble\Gallery\Models\Gallery;
+use Botble\Gallery\Models\GalleryMeta;
 
 class Ride extends Model
 {
-    protected $appends = ['views', 'watching'];
+    protected $appends = ['views', 'watching', 'stream_thumbnail'];
 
     protected $fillable = [
         'user_id',
@@ -25,7 +27,8 @@ class Ride extends Model
         'customer_longitude',
         'driver_latitude',
         'customer_longitude',
-        'document_id'
+        'document_id',
+        'is_stream_blocked'
     ];
 
     public function driver(): BelongsTo
@@ -76,5 +79,21 @@ class Ride extends Model
         }
 
         return number_format($views);
+    }
+
+    public function gallery()
+    {
+        return $this->hasMany(Gallery::class, 'ride_id');
+
+    }
+
+    public function getStreamThumbnailAttribute()
+    {
+        return Gallery::where('ride_id', $this->id)->first()->image ?? null;
+    }
+
+    public function ride_events()
+    {
+        return $this->hasMany(RideEvent::class);
     }
 }

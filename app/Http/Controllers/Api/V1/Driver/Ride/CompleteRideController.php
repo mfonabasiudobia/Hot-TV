@@ -9,6 +9,7 @@ use App\Http\Requests\Api\V1\Driver\Ride\DriverRideRequest;
 use App\Models\Ride;
 use App\Models\User;
 use App\Events\RideCompleted;
+use Carbon\Carbon;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -22,8 +23,16 @@ class CompleteRideController extends Controller
             $latitude = $request->input('latitude');
             $longitude = $request->input('longitude');
 
-            // $ride->driver_latitude = $latitude;
-            // $ride->driver_longitude = $longitude;
+            $rideEvent = [
+                'ride_id' => $ride->id,
+                'user_latitude' => $latitude,
+                'user_longitude' => $longitude,
+                'event_timestamp' => Carbon::now()->format('Y-m-d H:i:s'),
+                'event_type' => StatusEnum::COMPLETED->value
+            ];
+
+            $event = $ride->ride_events()->create($rideEvent);
+
             $ride->status = StatusEnum::COMPLETED->value;
             $ride->driver_id = $user->id;
             $ride->stream_status = 'completed';
