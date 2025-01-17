@@ -207,10 +207,10 @@ class StreamingController extends Controller
         $path = $thumbnail->storeAs('pedicab', $filename, env('FILESYSTEM_DISK'));
 
         $ride->thumbnail = $path;
-        $ride->thumbnail_storage = 's3';
+        $ride->thumbnail_storage = env('FILESYSTEM_DISK');
         $ride->save();
 
-        $path = Storage::disk('s3')->url($path);
+        $path = Storage::disk(env('FILESYSTEM_DISK'))->url($path);
 
         return response()->json([
             'success' => true,

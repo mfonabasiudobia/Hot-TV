@@ -35,7 +35,7 @@ class RideRequestEvent implements ShouldBroadcastNow
         $this->driver = new DriverResource($driver);
         $this->customer = new CustomerResource($customer);
 
-        \Log::info('ride.requested', ['ride' => $ride->id, 'driver' => $driver->id, 'customer' => $ride->user_id]);
+        \Log::info('ride.requested', ['ride' => $ride->id, 'driver' => $this->driver, 'customer' => $this->customer]);
     }
 
     /**
@@ -45,7 +45,8 @@ class RideRequestEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('driver.'. $this->driver->id);
+        return ['notifications'];
+        // return new PrivateChannel('driver.'. $this->driver->id);
     }
 
     public function broadcastAs()
