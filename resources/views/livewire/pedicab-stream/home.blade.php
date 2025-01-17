@@ -152,7 +152,7 @@
                     @foreach ($liveStreamsData as $item)
                         @if (!$item['is_stream_blocked'])
                             <a href="{{ route('pedicab-streams.show', $item['id']) }}"
-                                style="background-image: url('{{ $item['thumbnail'] ?? 'https://placehold.co/600x400' }}');"
+                                style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item['stream_thumbnail'] ? 'storage/' . $item['stream_thumbnail'] : 'https://placehold.co/600x400' }}')"
                                 class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
                                 <button class="absolute top-1 p-2 bg-secondary b-r-2">
@@ -193,7 +193,7 @@
                     @foreach ($endedStreamsData as $item)
                         @if (!$item['is_stream_blocked'])
                             <a href="{{ route('pedicab-streams.show', $item['id']) }}"
-                                style="background-image: url('{{ $item['thumbnail'] ?? 'https://placehold.co/600x400' }}');"
+                                style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item['stream_thumbnail'] ? 'storage/' . $item['stream_thumbnail'] : 'https://placehold.co/600x400' }}')"
                                 class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
                                 <button class="absolute top-1 p-2">

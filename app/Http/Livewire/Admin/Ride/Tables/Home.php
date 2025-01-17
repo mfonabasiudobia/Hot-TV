@@ -90,10 +90,13 @@ final class Home extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('id')
+            ->addColumn('customer', function(Ride $model) {
+                return $model->customer->username ?? 'NA';
+            })
             ->addColumn('driver_formatted', function(Ride $model) {
                 return $model->driver->username ?? 'NA';
             })
-            ->addColumn('duration')
+            // ->addColumn('duration')
             ->addColumn('ride_type')
             ->addColumn('created_at_formatted', function(Ride $model){
                 return $model->created_at;
@@ -121,7 +124,9 @@ final class Home extends PowerGridComponent
     {
         return [
             Column::make('SNO', '')->index(),
+            Column::make('ID', 'id')->index(),
 
+            Column::make('Customer', 'customer'),
             Column::make('Driver', 'driver_formatted'),
             Column::make('Duration', 'duration'),
             Column::make('Type', 'ride_type'),
@@ -170,17 +175,17 @@ final class Home extends PowerGridComponent
     {
         return [
 
-            // Button::add('view')
-            //     ->caption("<i class='las la-eye'></i>")
-            //     ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
-            //     ->target('_self')
-            //     ->route('admin.podcast.show', ['slug' => 'slug']),
+            Button::add('view')
+                ->caption("<i class='las la-eye'></i>")
+                ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+                ->target('_self')
+                ->route('admin.ride.show', ['id' => 'id']),
 
-//            Button::add('edit')
-//                ->caption("<i class='las la-pencil-alt'></i>")
-//                ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
-//                ->target('_self')
-//                ->route('admin.ride.edit', ['id' => 'id']),
+           Button::add('edit')
+               ->caption("<i class='las la-pencil-alt'></i>")
+               ->class('bg-gray-600 cursor-pointer text-white px-3 py-1 m-1 rounded text-sm')
+               ->target('_self')
+               ->route('admin.ride.edit', ['id' => 'id']),
 
 //            Button::add('destroy')
 //                ->caption("<i class='las la-trash'></i>")

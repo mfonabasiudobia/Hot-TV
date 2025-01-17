@@ -135,13 +135,13 @@ class EventController extends Controller
                 if($ride) {
                     $ride->payment_status = 'paid';
                     $ride->save();
+
+                    \Log::info('ride succeeded', [$ride]);
+                    event(new RidePaymentSucceeded($ride));
                 }else{
                     \Log::info('Ride not found using payment intent id', [$paymentIntent->id]);
                 }
 
-
-                \Log::info('ride succeeded', [$ride]);
-                event(new RidePaymentSucceeded($ride));
                 break;
             case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object;

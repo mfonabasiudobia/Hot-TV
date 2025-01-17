@@ -55,9 +55,23 @@ class StripeSubscriptionCheckoutController extends Controller
                     $stripSessionObject
                 ]);
 
-                $order->status = $subscriptionStatus;
-                $order->session_id = $session->id;
-                $order->save();
+                $order = SubscriptionOrder::where('user_id', $user->id)->first();
+                if(! $order) {
+                    $order = [
+                        'amount' => $session->amount_subtotal/100,
+                        'subscription_id' => $subscription->id,
+                        'user_id' => $user->id,
+                        'payment_method_type' => $request->payment_method,
+                        'session_id' => $session->id,
+                        'sub_total' => $session->amount_subtotal/100,
+                        'status' => $subscriptionStatus
+                    ];
+                    $order = SubscriptionOrder::create($order);
+                }else{
+                    $order->status = $subscriptionStatus;
+                    $order->session_id = $session->id;
+                    $order->save();
+                }
 
                 return response()->json([
                     'success' => true,

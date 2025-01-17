@@ -20,6 +20,8 @@ class StreamResource extends JsonResource
             "token" => $this->stream_channel_token,
             "channel" => $this->stream_channel_name,
             "customer"    =>  new UserResource($this->customer),
+            "thumbnail"    =>  $this->stream_thumbnail,
+            // "gallerymeta"    =>  $this->gallery->meta ?? null,
             "views" => $this->views,
             "watching" =>   $this->watching
         ];

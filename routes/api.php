@@ -24,6 +24,7 @@ Route::group(['prefix' => 'v1/driver', 'as' => 'v1.driver.'], function() {
     require __DIR__ . '/api/v1/driver/auth-routes.php';
     require __DIR__ . '/api/v1/driver/ride-routes.php';
     require __DIR__ . '/api/v1/driver/profile-routes.php';
+    require __DIR__ . '/api/v1/driver/user-routes.php';
 
 });
 

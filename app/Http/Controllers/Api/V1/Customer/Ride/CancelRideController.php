@@ -7,11 +7,15 @@ use App\Models\Ride;
 use App\Events\RideCancelled;
 use App\Http\Controllers\Controller;
 use App\Enums\Ride\StatusEnum;
+use Carbon\Carbon;
 
 class CancelRideController extends Controller
 {
     public function __invoke(Ride $ride)
     {
+        $latitude = request()->input('latitude');
+        $longitude = request()->input('longitude');
+
         try {
             if($ride->status === StatusEnum::ACCEPTED->value) {
                event(new RideCancelled($ride));
@@ -29,6 +33,16 @@ class CancelRideController extends Controller
                     ]
                 ]);
             }
+
+            $rideEvent = [
+                'ride_id' => $ride->id,
+                'user_latitude' => $latitude,
+                'user_longitude' => $longitude,
+                'event_timestamp' => Carbon::now()->format('Y-m-d H:i:s'),
+                'event_type' => StatusEnum::CANCELLED->value
+            ];
+
+            $event = $ride->ride_events()->create($rideEvent);
 
             $ride->status = StatusEnum::CANCELLED->value;
             $ride->stream_status = 'completed';
