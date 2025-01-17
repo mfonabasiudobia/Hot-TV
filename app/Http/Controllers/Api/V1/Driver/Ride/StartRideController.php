@@ -9,6 +9,7 @@ use App\Http\Requests\Api\V1\Driver\Ride\DriverRideRequest;
 use App\Models\Ride;
 use App\Events\RideStarted;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class StartRideController extends Controller
 {

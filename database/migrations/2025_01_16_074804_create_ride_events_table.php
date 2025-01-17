@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('ride_events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ride_id');
-            $table->string('user_latitude');
-            $table->string('user_longitude');
+            $table->string('user_latitude')->nullable();
+            $table->string('user_longitude')->nullable();
             $table->timestamp('event_timestamp');
             $table->enum('event_type', ['started', 'completed', 'accepted', 'driver_arrived', 'driver_not_found', 'cancelled', 'payment_success', 'payment_failed']);
             $table->timestamps();

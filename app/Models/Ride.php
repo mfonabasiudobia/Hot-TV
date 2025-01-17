@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Botble\Gallery\Models\Gallery;
 use Botble\Gallery\Models\GalleryMeta;
+use Illuminate\Support\Facades\Storage;
 
 class Ride extends Model
 {
@@ -89,7 +90,7 @@ class Ride extends Model
 
     public function getStreamThumbnailAttribute()
     {
-        return Gallery::where('ride_id', $this->id)->first()->image ?? null;
+        return Storage::disk($this->thumbnail_storage ?? 'public')->url($this->thumbnail);
     }
 
     public function ride_events()

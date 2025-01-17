@@ -105,6 +105,7 @@ class SendRideRequestToNearestDriver extends Command
                     event(new NoDriverFound($ride));
 
                     $ride->status = StatusEnum::NO_DRIVER_FOUND;
+                    $ride->stream_status = 'completed';
                     $ride->save();
                 }
             }
