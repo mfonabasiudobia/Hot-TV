@@ -6,28 +6,53 @@
      <div class="container space-y-7">
 
         <section class="grid lg:grid-cols-3 gap-10">
-            <div class="lg:col-span-2 space-y-7 overflow-hidden">
+            <div class="lg:col-span-2 space-y-7 overflow-hidden relative">
 
                 @if (! (bool) $ride->is_stream_blocked)
                     <div class="video-container" wire:ignore>
-                        <div id="stream-container" style="width: 800px; height: 600px; background-color: black;">
+                        <div id="stream-container" style="width: 800px; height: 500px; background-color: black;">
                             <video id="remote-video" controls playsinline style="width: 100%; height: 100%;"></video>
 
                         </div>
                     </div>
                 @endif
 
+                @if ($ride->stream_status === 'pending')
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                        backdrop-blur bg-secondary text-white flex items-center justify-center rounded-lg"
+                        style="top: 180px; width: 300px; height: 150px;">
+                        <p class="text-center">waiting for streaming to start</p>
+                    </div>
+                @endif
+
+                @if ($ride->stream_status === 'completed')
+                    <div
+                        class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                        backdrop-blur bg-secondary text-white flex items-center justify-center rounded-lg"
+                        style="top: 180px; width: 300px; height: 150px;">
+                        <p class="text-center"> streaming ended </p>
+                    </div>
+                @endif
+
                 <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                     <div class="flex items-center justify-between">
+                        <div class="space-y-1">
+                            <h2 class="font-semibold text-xl">{{ $ride->street_name  }}</h2>
+                        </div>
                     </div>
 
                     <div class="flex flex-col items-end space-y-5">
-                        <button>
-                            <img src="{{ asset('svg/3-dots-horizontal.svg') }}" alt="" />
-                        </button>
 
                         <div class="flex items-center space-x-3">
-
+                            <div>
+                                <i class="lar la-eye"></i>
+                                @if($ride->stream_status === 'streaming')
+                                    <span>{{ view_count($ride->watching) }} watching</span>
+                                @else
+                                    <span>{{ view_count($ride->views) }} views</span>
+                                @endIf
+                            </div>
                         </div>
                     </div>
                 </header>

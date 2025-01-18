@@ -149,85 +149,96 @@
 
             <section class="{{ $activeTab === 'live-streams' ? 'block' : 'hidden' }}">
                 <section class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
-                    @foreach ($liveStreamsData as $item)
-                        @if (!$item['is_stream_blocked'])
-                            <a href="{{ route('pedicab-streams.show', $item['id']) }}"
-                                style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item->stream_thumbnail ?? 'https://placehold.co/600x400' }}')"
-                                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
+                    @if (count($liveStreamsData) > 0)
+                        @foreach ($liveStreamsData as $item)
+                            @if (!$item['is_stream_blocked'])
+                                <a href="{{ route('pedicab-streams.show', $item['id']) }}"
+                                    style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item->stream_thumbnail ?? 'https://placehold.co/600x400' }}')"
+                                    class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-                                <button class="absolute top-1 p-2 bg-secondary b-r-2">
-                                    <span class="text-danger">&bull;</span>
-                                    Live
-                                </button>
+                                    <button class="absolute top-1 p-2 bg-secondary b-r-2">
+                                        <span class="text-danger">&bull;</span>
+                                        Live
+                                    </button>
 
-                                <button>
-                                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                                </button>
+                                    <button>
+                                        <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                                            class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                                    </button>
 
-                                <div
-                                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                                    <div class="flex justify-between">
-                                        <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2">
-                                            <img src="{{ $item['customer']['avatar_url'] ?? '' }}" alt=""
-                                                class="w-[34px] h-[34px] rounded-full object-cover" />
-                                            <span class="font-light">{{$item['customer']['username']}}</span>
+                                    <div
+                                        class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                                        <div class="flex justify-between">
+                                            <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
                                         </div>
 
-                                        <span class="font-light">watching: {{$item['watching']}}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        @endif
-                    @endforeach
-                </section>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <img src="{{ $item['customer']['avatar_url'] ?? '' }}" alt=""
+                                                    class="w-[34px] h-[34px] rounded-full object-cover" />
+                                                <span class="font-light">{{$item['customer']['username']}}</span>
+                                            </div>
 
+                                            <span class="font-light">watching: {{$item['watching']}}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="text-white">
+                            No Active stream Found
+                        </div>
+                    @endif
+                </section>
             </section>
 
             <section class="{{ $activeTab === 'ended-streams' ? 'block' : 'hidden' }}">
                 <section class="grid sm:grid-cols-2 md:grid-cols-4 gap-2">
-                    @foreach ($endedStreamsData as $item)
-                        @if (!$item['is_stream_blocked'])
-                            <a href="{{ route('pedicab-streams.show', $item['id']) }}"
-                                style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item->stream_thumbnail ?? 'https://placehold.co/600x400' }}')"
-                                class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
+                    @if (count($endedStreamsData) > 0)
+                        @foreach ($endedStreamsData as $item)
+                            @if (!$item['is_stream_blocked'])
+                                <a href="{{ route('pedicab-streams.show', $item['id']) }}"
+                                    style="background-size: cover; background-repeat: no-repeat; background-image: url('{{ $item->stream_thumbnail ?? 'https://placehold.co/600x400' }}')"
+                                    class="shadow-xl relative group transition-all h-[384px] bg-center rounded-xl overflow-hidden">
 
-                                <button class="absolute top-1 p-2">
-                                    @if($item['stream_status'] === 'streaming')
-                                        <i class="fas fa-eye"></i>
-                                    @else
-                                        <i class="fas fa-eye-slash"></i>
-                                    @endif
-                                </button>
+                                    <button class="absolute top-1 p-2">
+                                        @if($item['stream_status'] === 'streaming')
+                                            <i class="fas fa-eye"></i>
+                                        @else
+                                            <i class="fas fa-eye-slash"></i>
+                                        @endif
+                                    </button>
 
-                                <button>
-                                    <img src="{{ asset('svg/btn-play.svg') }}" alt=""
-                                        class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
-                                </button>
+                                    <button>
+                                        <img src="{{ asset('svg/btn-play.svg') }}" alt=""
+                                            class="invisible group-hover:visible absolute top-0 bottom-0 left-0 right-0 m-auto w-[70px] h-[70px] animate-pulse" />
+                                    </button>
 
-                                <div
-                                    class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
-                                    <div class="flex justify-between">
-                                        <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
-                                    </div>
-
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2">
-                                            <img src="{{ $item['customer']['avatar_url'] ?? ''}}" alt=""
-                                                class="w-[34px] h-[34px] rounded-full object-cover" />
-                                            <span class="font-light">{{$item['customer']['username']}}</span>
+                                    <div
+                                        class="p-5 text-white absolute -bottom-[200px] group-hover:bottom-0 left-0 w-full transition-all bg-gradient-to-t from-[#000] to-[rgba(0,0,0,0.5)] shadow-2xl space-y-3">
+                                        <div class="flex justify-between">
+                                            <h2 class="font-bold">{{$item['customer']['username']}} - {{$item['street_name']}}</h2>
                                         </div>
 
-                                        <span class="font-light">views: {{$item['views']}}</span>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-2">
+                                                <img src="{{ $item['customer']['avatar_url'] ?? ''}}" alt=""
+                                                    class="w-[34px] h-[34px] rounded-full object-cover" />
+                                                <span class="font-light">{{$item['customer']['username']}}</span>
+                                            </div>
+
+                                            <span class="font-light">views: {{$item['views']}}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        @endif
-                    @endforeach
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <p>
+                            No Stream found
+                        </p>
+                    @endif
                 </section>
 
             </section>
