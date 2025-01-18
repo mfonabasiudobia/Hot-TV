@@ -26,8 +26,12 @@
                         playsinline controls
                         data-plyr-config='{ "title": "{{ $tvShow->title }}", "debug" : "true" }'>
                     </video>
-                    <div style="top: 50%;" class="absolute left-[45%] hidden" id="notSubscribed">
-                        Not Subscribed
+                    <div
+                        id="notSubscribed"
+                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                        backdrop-blur bg-secondary text-white flex items-center justify-center rounded-lg hidden"
+                        style="width: 300px; height: 150px;">
+                        <p class="text-center">Not Subscribed</p>
                     </div>
                     <div id="registerMessage" style="display: none; text-align: center; margin-top: 20px;">
                         <h2>You have watched {{ setting('video_length') }} minute of this video.</h2>
@@ -360,7 +364,7 @@
         let notSubscribed = document.getElementById('notSubscribed')
          document.addEventListener('change-episode', (event) => {
             if(event.detail.type === 'episode' && event.detail.not_subscribed) {
-                notSubscribed.style.display = 'block'
+                notSubscribed.style.display = 'flex'
                 videoPlayer.style.opacity = .5
                 return false
             }

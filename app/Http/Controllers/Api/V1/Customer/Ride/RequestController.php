@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1\Customer\Ride;
 
+use App\Enums\Ride\StatusEnum;
 use App\Enums\Ride\DriverRideStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Customer\Ride\Request;
 use App\Models\RideDuration;
 use Illuminate\Support\Facades\Auth;
 use App\Events\RideRequestEvent;
+use App\Models\Ride;
 use App\Repositories\DriverRepository;
 
 class RequestController extends Controller
@@ -16,6 +18,22 @@ class RequestController extends Controller
     {
         $duration = $request->input('duration');
         $stream = $request->input('stream');
+
+        $ride = Ride::where('user_id', auth('api')->id())->whereIn('status', [
+            StatusEnum::ACCEPTED->value,
+            StatusEnum::REQUESTED->value,
+            StatusEnum::IN_PROGRESS->value,
+            StatusEnum::STARTED->value,
+            StatusEnum::ARRIVED->value,
+        ])->first();
+
+        if($ride) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ride Already In Progress',
+            ], 422);
+        }
+
         $rideDuration = RideDuration::where('duration', $duration)->where('stream', $stream)->first();
 
         if(!$rideDuration) {

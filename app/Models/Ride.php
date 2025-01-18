@@ -90,7 +90,7 @@ class Ride extends Model
 
     public function getStreamThumbnailAttribute()
     {
-        return Storage::disk($this->thumbnail_storage ?? 'public')->url($this->thumbnail);
+        return $this->thumbnail ? Storage::disk($this->thumbnail_storage ?? 'public')->url($this->thumbnail): null;
     }
 
     public function ride_events()
