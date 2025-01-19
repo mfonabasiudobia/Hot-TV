@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Customer\TvShow\CategoryController;
 use App\Http\Controllers\Api\V1\Customer\TvShow\DetailController;
 use App\Http\Controllers\Api\V1\Customer\TvShow\EpisodeController;
 use App\Http\Controllers\Api\V1\Customer\TvShow\ListController;
+use App\Http\Controllers\Api\V1\Customer\TvShow\StoreWatchListController;
 use App\Http\Middleware\SubscriptionStatus;
 
 Route::prefix('tv-show')
@@ -15,6 +16,13 @@ Route::prefix('tv-show')
             Route::get('list/{category?}', ListController::class)->name('listing');
             Route::get('categories', CategoryController::class)->name('categories');
             Route::get('detail/{tvShow}', DetailController::class)->name('detail')->missing(function () {
+                return response()->json([
+                    'success'   => false,
+                    'message'   => ApiResponseMessageEnum::NOT_FOUND->value,
+                ], 404);
+            });
+
+            Route::post('{id}/view', StoreWatchListController::class)->name('detail')->missing(function () {
                 return response()->json([
                     'success'   => false,
                     'message'   => ApiResponseMessageEnum::NOT_FOUND->value,
