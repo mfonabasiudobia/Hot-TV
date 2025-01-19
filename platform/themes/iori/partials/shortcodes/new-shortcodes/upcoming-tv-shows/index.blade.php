@@ -14,6 +14,7 @@
 
         <div class="swiper recommendation">
             <div class="swiper-wrapper">
+                @if(\App\Repositories\TvShowRepository::getReleasedTvShows(1)->count() > 0)
                 @foreach (\App\Repositories\TvShowRepository::getReleasedTvShows(15) as $item)
                 <a href="{{ route('tv-shows.show', ['slug' => $item->slug]) }}"
                     class="transition-all bg-black hover:bg-white p-2 rounded-xl overflow-hidden text-dark shadow-xl swiper-slide recommendation-item-wrapper group relative">
@@ -41,6 +42,9 @@
                     </button> --}}
                 </a>
                 @endforeach
+                @else
+                    <p>There are no upcoming tv shows</p>
+                @endif
             </div>
         </div>
     </div>

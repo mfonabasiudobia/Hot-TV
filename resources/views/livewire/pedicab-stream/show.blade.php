@@ -10,7 +10,7 @@
 
                 @if (! (bool) $ride->is_stream_blocked)
                     <div class="video-container" wire:ignore>
-                        <div id="stream-container" style="width: 800px; height: 500px; background-color: black;">
+                        <div id="stream-container" style="min-width: 800px; height: 500px; background-color: black;">
                             <video id="remote-video" controls playsinline style="width: 100%; height: 100%;"></video>
 
                         </div>
@@ -42,18 +42,26 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col items-end space-y-5">
+                    <div>
+                        <i class="lar la-eye"></i>
+                        @if($ride->stream_status === 'streaming')
+                            <span>{{ view_count($ride->watching) }} watching</span>
+                        @else
+                            <span>{{ view_count($ride->views) }} views</span>
+                        @endIf
+                    </div>
+                </header>
 
-                        <div class="flex items-center space-x-3">
-                            <div>
-                                <i class="lar la-eye"></i>
-                                @if($ride->stream_status === 'streaming')
-                                    <span>{{ view_count($ride->watching) }} watching</span>
-                                @else
-                                    <span>{{ view_count($ride->views) }} views</span>
-                                @endIf
-                            </div>
+                <header class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
+                    <div class="flex items-center justify-between">
+                        <div class="space-y-1">
+                            <h2 class="font-semibold text-xl">Customer: {{ $ride->customer->first_name }} {{ $ride->customer->last_name }}</h2>
                         </div>
+                    </div>
+
+                    <div>
+                        <i class="lar la-eye"></i>
+                        <span>{{ $ride->customer->email }}</span>
                     </div>
                 </header>
             </div>

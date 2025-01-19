@@ -72,6 +72,8 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
             Route::get('edit-duration/{id}', 'RideDuration\Edit')->name('edit-duration');
             Route::get('create-duration', 'RideDuration\Create')->name('create-duration');
             Route::get('/', 'Ride\Home')->name('list');
+            Route::get('/{id}/edit', 'Ride\Edit')->name('edit');
+            Route::get('/{id}', 'Ride\Show')->name('show');
         });
 
 
