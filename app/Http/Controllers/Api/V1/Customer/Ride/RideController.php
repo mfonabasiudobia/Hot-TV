@@ -17,6 +17,11 @@ class RideController extends Controller
 
         if($ride) {
             $message = 'ride.' . $ride->status;
+
+            if($ride->status === 'driver-arrived') {
+                $message = 'driver.arrived';
+            }
+
             $data = ['id' => $ride->id];
         }
 
