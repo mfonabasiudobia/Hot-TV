@@ -49,6 +49,11 @@ Route::group(['namespace' => "App\Http\Livewire"],function () {
     Route::group(['namespace' => 'Blog', 'as' => 'blog.', 'prefix' => 'blog'], function() {
         Route::get('/',"Home")->name('home');
         Route::get('{slug}',"Show")->name('show');
+
+    });
+
+    Route::group(['namespace' => 'Categories', 'as' => 'categories.', 'prefix' => 'categories'], function() {
+        Route::get('{id}',"Show")->name('show');
     });
 
     Route::group(['namespace' => 'Pricing', 'prefix' => 'pricing', 'as' => 'pricing.'], function() {

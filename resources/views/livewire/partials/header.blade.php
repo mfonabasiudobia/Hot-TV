@@ -86,12 +86,28 @@
                     </ul>
                 </li>
 
+                <li class="relative group tile-group p-5 hover:bg-secondary cursor-pointer" id="news">
 
-
-                <li class="relative group p-5 hover:bg-secondary cursor-pointer">
-                    <a href="#" class="">
-                        <span>News</span>
+                    <a href="javascript:void(0)" class="flex items-center">
+                        <span style="margin-right: 5px;">News</span>
+                        <i class="fa-solid fa-angle-down"></i>
                     </a>
+
+                    <ul id="newsMenu" style="top: 64px;" class="absolute top-[64px] left-0 min-w-[250px] whitespace-nowrap grid grid-cols-2 gap-4 bg-dark text-sm z-50 hidden">
+                        <div style="width: 400px;">
+
+                            @foreach (\Botble\Blog\Models\Category::all() as $category)
+                                <div class="px-4 py-2 hover:bg-secondary">
+                                    <li class="tile">
+                                        <a class="px-4 py-4 block flex" href="{{ route('categories.show', $category->id) }}">
+                                            <div class="mr-2"><i class="{{$category->icon}}"></i></div>
+                                            <div class="text-left">{{$category->name}}</div>
+                                        </a>
+                                    </li>
+                                </div>
+                            @endforeach
+                        </div>
+                    </ul>
                 </li>
                 <!-- {{ Request::is('*pricing*') ? 'activeItem' : '' }} -->
                 <li class="p-5 hover:bg-secondary cursor-pointer" onclick="window.location.assign(`{{ route('pricing.home') }}`)">
@@ -121,12 +137,12 @@
                 </a>
             </li>
 
-            <li class="p-5 hover:bg-secondary cursor-pointer">
-                <div class="flex cursor-pointer">
-                    <svg class="premium-filled-icon--nW2Vi header-svg-icon" style="width: 24px; fill:white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" data-t="premium-filled-svg" aria-labelledby="premium-filled-svg" aria-hidden="true" role="img"><title id="premium-filled-svg">Premium</title><path d="M2.419 13L0 4.797 4.837 6.94 8 2l3.163 4.94L16 4.798 13.581 13z"></path></svg>
-                    <div class="ml-2 flex flex-col" style="line-height: .7rem;">
-                        <small> Try Free </small>
-                        <small> Premuim </small>
+            <li class="p-4 hover:bg-secondary cursor-pointer">
+                <div class="flex items-center cursor-pointer flex-nowrap">
+                    <img src="{{ asset('images/texas-guru-logo.jpg') }}" alt="logo" class="w-4 h-4">
+                    <div style="min-width: 160px;" class=" ml-2 flex flex-col flex-nowrap" style="line-height: .7rem;">
+                        <small> POWERED BY </small>
+                        <small style="font-size: 60%;"> TEXAS GURU ENTERTAINMENT </small>
                     </div>
                 </div>
             </li>
@@ -404,6 +420,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const authDropDown = document.querySelector("#authDropDown");
     const authDropDownMenu = document.querySelector("#authDropDownMenu");
 
+    const newsDropDown = document.querySelector("#news");
+    const newsMenu = document.querySelector("#newsMenu");
+
     browse.addEventListener("click", function () {
         browseMenu.style.display = 'block';
         browse.classList.add('activeItem');
@@ -417,6 +436,11 @@ document.addEventListener("DOMContentLoaded", function () {
     authDropDown.addEventListener("click", function () {
         authDropDownMenu.style.display = 'block';
         authDropDown.classList.add('activeItem');
+    });
+
+    newsDropDown.addEventListener("click", function () {
+        newsMenu.style.display = 'block';
+        newsDropDown.classList.add('activeItem');
     });
 
     // Optional: Close the dropdown if clicked outside
@@ -434,6 +458,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!authDropDown.contains(event.target) && !authDropDownMenu.contains(event.target)) {
             authDropDownMenu.style.display = 'none';
             authDropDown.classList.remove('activeItem');
+        }
+
+        if (!newsDropDown.contains(event.target) && !newsMenu.contains(event.target)) {
+            newsMenu.style.display = 'none';
+            newsDropDown.classList.remove('activeItem');
         }
     });
 });
