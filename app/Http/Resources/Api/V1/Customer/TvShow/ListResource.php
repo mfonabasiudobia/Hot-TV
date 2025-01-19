@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\Customer\TvShow;
 
+use App\Models\Watchlist;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -25,7 +26,8 @@ class ListResource extends JsonResource
             'duration' => convert_seconds_to_time($this->episodes()->sum('duration')),
             'cast' => CastResource::collection($this->whenLoaded('casts')),
             'categories' => ShowCategoryResource::collection($this->whenLoaded('categories')),
-            "trailer" => $this->video
+            "trailer" => $this->video,
+            "added_to_watchlist" => !!Watchlist::where('user_id', auth()->id())->where('watchable_id', $this->id)->where('watchable_type', 'App\Models\TvShow')->first()
         ];
     }
 }
