@@ -10,8 +10,8 @@
 
                 @if (! (bool) $ride->is_stream_blocked)
                     <div class="video-container" wire:ignore>
-                        <div id="stream-container" style="min-width: 800px; height: 500px; background-color: black;">
-                            <video id="remote-video" controls playsinline style="width: 100%; height: 100%;"></video>
+                        <div id="stream-container" class="max-h-screen" style="min-width: 100%; min-height: 100%; background-color: black;">
+                            <video id="remote-video" controls playsinline class="max-h-screen" style="min-width: 100%; min-height: 100%;"></video>
 
                         </div>
                     </div>
@@ -117,27 +117,27 @@
                         const videoElement = document.getElementById("remote-video");
 
                         // Play Video Stream
-                        user.videoTrack.play(videoElement);
+                        // user.videoTrack.play(videoElement);
                         const mediaStream = user.videoTrack.getMediaStreamTrack();
-                        // const stream = new MediaStream([mediaStream]);
-                        // videoElement.srcObject = stream;
+                        const stream = new MediaStream([mediaStream]);
+                        videoElement.srcObject = stream;
 
-                        // const player = new Plyr(videoElement, {
-                        //     muted : true,
-                        //     autoplay: true,
-                        //     controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-                        //     settings: ['captions', 'quality', 'speed', 'loop'],
-                        // });
+                        const player = new Plyr(videoElement, {
+                            muted : true,
+                            autoplay: true,
+                            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+                            settings: ['captions', 'quality', 'loop'],
+                        });
 
-                        // player.on("play", () => {
-                        //     videoElement.play();
-                        // //     console.log(`Playing remote video for user: ${user.uid}`);
-                        // });
+                        player.on("play", () => {
+                            videoElement.play();
+                        //     console.log(`Playing remote video for user: ${user.uid}`);
+                        });
 
                         // Optional: Listen for Plyr's other events
-                        // player.on("pause", () => {
-                        //     console.log("Video paused");
-                        // });
+                        player.on("pause", () => {
+                            console.log("Video paused");
+                        });
 
                         console.log(`Playing remote video for user: ${user.uid}`);
                     }
