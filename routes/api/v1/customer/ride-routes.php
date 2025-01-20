@@ -27,8 +27,9 @@ Route::prefix('ride')
             Route::get('streaming/list', [StreamingController::class, 'index'])->name('streaming.index');
             Route::get('{ride}/streaming', [StreamingController::class, 'store'])->name('streaming.store');
             Route::get('{ride}/streaming/start', [StreamingController::class, 'start'])->name('streaming.start');
-            Route::get('{ride}/streaming/end', [StreamingController::class, 'end'])->name('streaming.end');
+            Route::get('{ride}/streaming/end', [StreamingController::class, 'stop'])->name('streaming.end');
             Route::get('{ride}/streaming/show', [StreamingController::class, 'show'])->name('streaming.show');
+            Route::get('{ride}/streaming/details', [StreamingController::class, 'recordingDetails'])->name('streaming.recordingDetails');
             Route::post('{ride}/streaming/thumbnail', [StreamingController::class, 'uploadThumbnail'])->name('streaming.thumbnail');
 
             Route::get('{ride}/streaming/joined', [StreamViewController::class, 'joined'])->name('stream.view.joined');
