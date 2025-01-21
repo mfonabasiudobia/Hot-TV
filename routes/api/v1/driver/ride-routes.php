@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Driver\Ride\Stripe\PaymentIntentController;
 use App\Http\Controllers\Api\V1\Driver\Ride\DriverStatusController;
 // use App\Http\Controllers\Api\V1\Driver\Ride\LocationController;
 use App\Http\Controllers\Api\V1\Driver\Ride\RideListController;
+use App\Http\Controllers\Api\V1\Driver\Ride\RideController;
 
 Route::prefix('ride')
     ->name('ride.')
@@ -24,6 +25,7 @@ Route::prefix('ride')
         Route::put('complete/{ride}', CompleteRideController::class)->name('complete');
         Route::put('set-online-status', [DriverStatusController::class, 'setOnline'])->name('online-status');
         // Route::post('/location', LocationController::class)->name('location.update');
+        Route::get('ongoing', [RideController::class, 'ongoing'])->name('ride.ongoing');
 
         Route::group(['prefix' => 'stripe', 'as' => 'stripe.'], function() {
             Route::get('payment-intent/{ride}', PaymentIntentController::class)->name('stripe.payment-intent');
