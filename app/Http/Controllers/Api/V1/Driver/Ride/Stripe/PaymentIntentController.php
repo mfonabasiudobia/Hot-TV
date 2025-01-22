@@ -24,8 +24,31 @@ class PaymentIntentController extends Controller
             $paymentIntent = PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
-                'payment_method_types' => ['card'], // Accept only card payments,
-                'payment_method' => $testPaymentMethod,
+                'payment_method_types' => ['cashapp'],
+                'capture_method' => 'automatic',
+                // 'confirmation_method' => 'manual'
+            ]);
+
+            $session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['cashapp'],
+                'mode' => 'payment',
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => $paymentIntent->currency,
+                            'product_data' => [
+                                'name' => 'Ride' . $ride->id,
+                            ],
+                            'unit_amount' => $paymentIntent->amount,
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'metadata' => [
+                    'ride_id' => $ride->id,
+                ],
+                'success_url' => url('payment-verification/{CHECKOUT_SESSION_ID}'),
+                // 'cancel_url' => 'https://example.com/cancel',
             ]);
 
             $ride->payment_intent_id = $paymentIntent->id;
@@ -38,6 +61,7 @@ class PaymentIntentController extends Controller
                 'data' => [
                     'intentId' => $paymentIntent->id,
                     'clientSecret' => $paymentIntent->client_secret,
+                    'session' => $session
                 ]
             ]);
 
