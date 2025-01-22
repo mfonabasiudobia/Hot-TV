@@ -126,10 +126,10 @@ class EventController extends Controller
                     }
                 }
                 break;
-            case 'payment_intent.succeeded':
-                $paymentIntent = $event->data->object;
-                \Log::info('intent', [$paymentIntent]);
-                $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
+            case 'checkout.session.completed':
+                $session = $event->data->object;
+
+                $ride = \App\Models\Ride::where('id', $session->metadata->ride_id)->first();
                 \Log::info('ride', [$ride]);
 
                 if($ride) {
