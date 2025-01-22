@@ -10,6 +10,7 @@ use App\Http\Controllers\VideoStreamOld2Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\PaypalCheckoutController;
 use App\Http\Controllers\Api\V1\Customer\Auth\Registration\StripeCheckoutController;
+use App\Http\Controllers\StripePaymentVerificationController;
 use App\Http\Livewire\DeleteTables;
 
 
@@ -41,7 +42,7 @@ Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoCon
 Route::get('upgrade-plan-stripe/{subscription}',StripeController::class )->name('upgrade-plan-stripe');
 Route::get('upgrade-plan-paypal/{subscription}',PaypalController::class )->name('upgrade-plan-paypal');
 
-
+Route::get('payment-verification/{sessionId}', StripePaymentVerificationController::class)->name('payment-verification');
 
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {

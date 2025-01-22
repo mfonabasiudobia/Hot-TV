@@ -10,8 +10,8 @@
 
                 @if (! (bool) $ride->is_stream_blocked)
                     <div class="video-container" wire:ignore>
-                        <div id="stream-container" class="max-h-screen" style="min-width: 100%; min-height: 100%; background-color: black;">
-                            <video id="remote-video" controls playsinline class="max-h-screen" style="min-width: 100%; min-height: 100%;"></video>
+                        <div id="stream-container" class="max-h-screen" style="min-width: 100%; min-height: 250px; max-height: 400px; background-color: black;">
+                            <video id="remote-video" controls playsinline class="max-h-screen" style="min-width: 100%; min-height: 250px; max-height: 400px;"></video>
 
                         </div>
                     </div>
