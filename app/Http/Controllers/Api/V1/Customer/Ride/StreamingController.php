@@ -45,16 +45,15 @@ class StreamingController extends Controller
     {
         try {
             $isPublisher = $ride->user_id == $request->user()->id;
+            $channelName = "stream-{$ride->customer->id}-{$ride->id}";
 
-            // $channelName = "stream-{$ride->customer->id}-{$ride->id}";
-            $channelName = "stream-224-708";
             $appCertificate = env('AGORA_APP_CERTIFICATE');
-            $uid =  "224"; // $isPublisher ? $request->user()->id : 1; // ride customer id
+            $uid =  $isPublisher ? $request->user()->id : 1; // ride customer id
             $role = $isPublisher ? RtcTokenBuilder::RolePublisher : RtcTokenBuilder::RoleSubscriber;
             $expireTimeInSeconds = 3600;
             $currentTimestamp = now()->getTimestamp();
             $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;
-            // dd($appCertificate);
+
             $token = RtcTokenBuilder::buildTokenWithUid($this->appId, $appCertificate, $channelName, $uid, $role, $privilegeExpireTime);
 
             $ride->stream_channel_name = $channelName;
@@ -86,24 +85,24 @@ class StreamingController extends Controller
     {
         try{
             $resourceId = $this->getResourceId($ride);
-            // dd($resourceId);
+
             if(! isset($resourceId['resourceId'])){
                 throw new \Exception('Resource Id Not found');
             }
-            // check mode single or mixed
+
             $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId['resourceId']}/mode/mix/start";
-            // dd($request->token);
+
             $data = [
-                'cname' => 'stream-224-708', // $ride->stream_channel_name,
-                'uid' => "224", // $ride->user_id,
-                'token' => $request->token,
+                'cname' => $ride->stream_channel_name,
+                'uid' => "{$ride->user_id}",
                 'clientRequest' => [
+                    // 'token' => $request->token,
                     'recordingConfig' => [
-                        "maxIdleTime"=> 1200,
+                        "maxIdleTime"=> 120,
                         "streamTypes"=> 2,
-                        "audioProfile"=> 1,
+                        // "audioProfile"=> 1,
                         "channelType"=> 1,
-                        "videoStreamType"=> 0,
+                        // "videoStreamType"=> 0,
                         "transcodingConfig"=> [
                             "height"=> 640,
                             "width"=> 360,
@@ -111,13 +110,13 @@ class StreamingController extends Controller
                             "fps"=> 15,
                             "mixedVideoLayout"=> 1,
                         ],
-                        "subscribeVideoUids" => [
-                            "224"
-                        ],
-                        "subscribeAudioUids" => [
-                            "224"
-                        ],
-                        "subscribeUidGroup" => 1
+                        // "subscribeVideoUids" => [
+                        //     "241"
+                        // ],
+                        // "subscribeAudioUids" => [
+                        //     "241"
+                        // ],
+                        // "subscribeUidGroup" => 2
                     ],
                     'storageConfig' => [
                         'vendor' => 1,
@@ -154,7 +153,7 @@ class StreamingController extends Controller
     public function stop(Ride $ride, Request $request)
     {
         try {
-            $channelName = 'stream-224-708';
+            $channelName = $ride->stream_channel_name;
             $resourceId = $request->resource_id;
             $sid = $request->sid;
 
@@ -163,8 +162,8 @@ class StreamingController extends Controller
             // dd($url);
             $data = [
                 'cname' => $channelName,
-                'uid' => "224", // $request->user()->id,
-                'clientRequest' => []
+                'uid' => $request->user()->id,
+                'clientRequest' => new \stdClass()
             ];
             // dd($data);
             $response = $this->sendAgoraRequest($url, $data);
@@ -268,8 +267,8 @@ class StreamingController extends Controller
         $request->scene = 0;
 
         $data = [
-            'cname' => 'stream-224-708', // $ride->stream_channel_name,
-            'uid' => "224", // "0",
+            'cname' => $ride->stream_channel_name,
+            'uid' => $ride->user_id, // "0",
             'clientRequest' => $request,
         ];
 
