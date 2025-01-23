@@ -8,6 +8,7 @@ use App\Models\Ride;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Illuminate\Http\Request;
+use Stripe\PaymentMethod;
 
 class PaymentIntentController extends Controller
 {
@@ -21,35 +22,44 @@ class PaymentIntentController extends Controller
 
             $testPaymentMethod = 'pm_card_visa';
 
+            $method = PaymentMethod::create([
+                'type' => 'cashapp'
+            ]);
+
             $paymentIntent = PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
                 'payment_method_types' => ['cashapp'],
-                'capture_method' => 'automatic',
-                // 'confirmation_method' => 'manual'
+                'capture_method' => 'automatic_async',
+                'payment_method' => $method->id,
+                'confirmation_method' => 'automatic',
+                'confirm' => true,
+                'return_url' => url('payment-verification/' . $ride->id),
             ]);
 
-            $session = \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['cashapp'],
-                'mode' => 'payment',
-                'line_items' => [
-                    [
-                        'price_data' => [
-                            'currency' => $paymentIntent->currency,
-                            'product_data' => [
-                                'name' => 'Ride' . $ride->id,
-                            ],
-                            'unit_amount' => $paymentIntent->amount,
-                        ],
-                        'quantity' => 1,
-                    ],
-                ],
-                'metadata' => [
-                    'ride_id' => $ride->id,
-                ],
-                'success_url' => url('payment-verification/{CHECKOUT_SESSION_ID}'),
-                // 'cancel_url' => 'https://example.com/cancel',
-            ]);
+            // $session = \Stripe\Checkout\Session::create([
+            //     'payment_method_types' => ['cashapp'],
+            //     'mode' => 'payment',
+            //     'customer_email' => $ride->customer->email,
+            //     'line_items' => [
+            //         [
+            //             'price_data' => [
+            //                 'currency' => $paymentIntent->currency,
+            //                 'product_data' => [
+            //                     'name' => 'Ride' . $ride->id,
+            //                 ],
+            //                 'unit_amount' => $paymentIntent->amount,
+            //             ],
+            //             'quantity' => 1,
+            //         ],
+            //     ],
+            //     'metadata' => [
+            //         'ride_id' => $ride->id,
+            //     ],
+            //     'success_url' => url('payment-verification/{CHECKOUT_SESSION_ID}'),
+            //     // 'cancel_url' => 'https://example.com/cancel',
+            //     // 'ui_mode' => 'embedded'
+            // ]);
 
             $ride->payment_intent_id = $paymentIntent->id;
             $ride->payment_status = 'pending';
@@ -59,9 +69,7 @@ class PaymentIntentController extends Controller
                 'success' => true,
                 'message' => ApiResponseMessageEnum::RIDE_PAYMENT_INTENT_CREATED->value,
                 'data' => [
-                    'intentId' => $paymentIntent->id,
-                    'clientSecret' => $paymentIntent->client_secret,
-                    'session' => $session
+                   'qrcode' => $paymentIntent->next_action->cashapp_handle_redirect_or_display_qr_code->qr_code ?? '',
                 ]
             ]);
 

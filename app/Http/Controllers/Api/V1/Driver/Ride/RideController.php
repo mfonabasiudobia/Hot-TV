@@ -22,7 +22,7 @@ class RideController extends Controller
                 $message = 'driver.arrived';
             }
 
-            $data = ['id' => $ride->id];
+            $data = ['ride' => $ride, 'driver' => $ride->driver, 'customer' => $ride->customer];
         }
 
         return response()->json([
