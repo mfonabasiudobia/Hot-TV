@@ -26,7 +26,7 @@ class StreamingController extends Controller
 
         $streams = Ride::with(['customer']);
 
-        if($status) $streams->where('status', $status);
+        if($status) $streams->where('stream_status', $status);
 
         $streams = $streams->paginate(10);
 

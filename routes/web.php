@@ -42,7 +42,7 @@ Route::get('/video/{section}/{id}', [VideoStreamOld2Controller::class, 'videoCon
 Route::get('upgrade-plan-stripe/{subscription}',StripeController::class )->name('upgrade-plan-stripe');
 Route::get('upgrade-plan-paypal/{subscription}',PaypalController::class )->name('upgrade-plan-paypal');
 
-Route::get('payment-verification/{sessionId}', StripePaymentVerificationController::class)->name('payment-verification');
+Route::get('payment-verification/{rideId}', StripePaymentVerificationController::class)->name('payment-verification');
 
 
 Route::group(['namespace' => "App\Http\Livewire"],function () {

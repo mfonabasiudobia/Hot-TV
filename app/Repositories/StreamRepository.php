@@ -106,8 +106,8 @@ class StreamRepository
 
     public static function getCurrentStreamingInformation(){
 
-        // $records = Stream::whereDate('schedule_date', now())->get();
-        $records = Stream::orderBy('id', 'desc')->limit(1)->get();
+        $records = Stream::whereDate('schedule_date', now())->get();
+        // $records = Stream::orderBy('id', 'desc')->limit(1)->get();
         $result = [];
         // Initialize an array to store the formatted data
         $timeArray = [];
@@ -143,7 +143,7 @@ class StreamRepository
             $start = $schedule["start"];
             $end = $schedule["end"];
 
-            // if ($currentTime >= $start && $currentTime < $end) {
+            if ($currentTime >= $start && $currentTime < $end) {
                 \Log::info('time matched........');
                   // Define your start time
                 $startTime = Carbon::createFromTimeString($infoArray[$i]["start_time"]);
@@ -160,7 +160,7 @@ class StreamRepository
                 $result['id'] = $infoArray[$i]["id"];
                 $result['seconds_passed'] = $secondsPassed;
                 break;
-            // }
+            }
         }
 
 

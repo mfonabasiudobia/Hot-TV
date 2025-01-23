@@ -127,6 +127,7 @@ class EventController extends Controller
                 }
                 break;
             case 'checkout.session.completed':
+            case 'payment_intent.succeeded':
                 $session = $event->data->object;
 
                 $ride = \App\Models\Ride::where('id', $session->metadata->ride_id)->first();
@@ -145,7 +146,7 @@ class EventController extends Controller
                 break;
             case 'payment_intent.payment_failed':
                 $paymentIntent = $event->data->object;
-                $ride = \App\Models\Ride::where('payment_intent_id', $paymentIntent->id)->first();
+                $ride = \App\Models\Ride::where('id', $paymentIntent->metadata->ride_id)->first();
 
                 if($ride) {
                     $ride->payment_status = 'paid';
@@ -154,7 +155,7 @@ class EventController extends Controller
                     \Log::info('Ride not found using payment intent id', [$paymentIntent->id]);
                 }
 
-                \Log::info('ride failed', [$ride]);
+                \Log::info('ride payment failed', [$ride]);
                 event(new RidePaymentFailed($ride));
                 break;
             case 'customer.subscription.trial_will_end':
