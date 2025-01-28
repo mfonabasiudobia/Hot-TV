@@ -77,10 +77,10 @@
                     defaultOptions.quality = {
                         default: 0, //Default - AUTO
                         options: availableQualities,
-                        forced: true,        
+                        forced: true,
                         onChange: (e) => updateQuality(e),
                     }
-                    // Add Auto Label 
+                    // Add Auto Label
                     defaultOptions.i18n = {
                         qualityLabel: {
                             0: 'Auto',
@@ -95,10 +95,10 @@
                             span.innerHTML = `AUTO`
                         }
                     })
-            
+
                     // Initialize new Plyr player with quality options
                     var player = new Plyr(video, defaultOptions);
-                });	
+                });
 
                 hls.attachMedia(video);
                 window.hls = hls;

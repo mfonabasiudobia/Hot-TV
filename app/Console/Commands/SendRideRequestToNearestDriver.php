@@ -99,6 +99,8 @@ class SendRideRequestToNearestDriver extends Command
                 // TODO: save minutes in config file
                 $requestExpiredTime = Carbon::now()->subMinutes(2);
 
+                // and there is no ride request pending from driver side or driver request time not passed
+                // check driver request status and time
                 if(Carbon::parse($ride->created_at)->lessThanOrEqualTo($requestExpiredTime)) {
                     \Log::info('no driver found', [$ride->created_at, $requestExpiredTime]);
 

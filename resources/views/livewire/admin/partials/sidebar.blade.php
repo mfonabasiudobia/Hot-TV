@@ -171,6 +171,13 @@
                     </li>
 
                     <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
+                        <a href="{{ route('admin.ride.online-drivers')  }}">
+                            <i class="las la-circle"></i>
+                            <span>Online Drivers</span>
+                        </a>
+                    </li>
+
+                    <li class="{{$status = request()->routeIs('admin.ride.*') ? 'active' : ''}}">
                         <a href="{{ route('admin.ride.list')  }}">
                             <i class="las la-circle"></i>
                             <span>Ride List</span>

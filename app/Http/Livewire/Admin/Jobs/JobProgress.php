@@ -12,7 +12,7 @@ class JobProgress extends Component
 
     protected $listeners = ['jobProgressUpdated'];
 
-    public function jobProgressUpdated($percentage)
+    public function jobProgressUpdated($jobId, $percentage)
     {
         $this->progress = $percentage;
         $this->jobId = $jobId;

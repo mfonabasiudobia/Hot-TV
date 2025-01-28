@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\User\StatusEnum;
 use App\Enums\Ride\DriverRideStatusEnum;
 use App\Enums\User\RoleEnum;
 use Botble\ACL\Models\User;
@@ -35,6 +36,7 @@ class DriverRepository
         $radius = Setting::where('key', 'ride-search-radius')->first()->value ?? 10;
 
         return User::where('online_status', true)
+                // ->where('status', StatusEnum::ACTIVATED->value)
                 ->whereDoesntHave('ride_responses', function ($query) use ($ride) {
                     $query->where('ride_id', $ride->id);
                 })

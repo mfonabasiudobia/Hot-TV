@@ -22,6 +22,10 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
             Route::get('{id}/edit',"ShowCategory\Edit")->name('edit');
         });
 
+        Route::group(['prefix'=> 'jobs', 'as' => 'jobs.'], function() {
+            Route::get('/',"Jobs\QueuedJobs")->name('list');
+        });
+
 
          Route::group(['prefix'=> 'podcast', 'as' => 'podcast.'], function() {
                 Route::get('create',"Podcast\Create")->name('create');
@@ -68,6 +72,8 @@ Route::group(['namespace' => "App\Http\Livewire\Admin", "as" => "admin."],functi
         });
 
         Route::group(['prefix' => 'ride', 'as' => 'ride.'], function() {
+            Route::get('online-drivers', 'Ride\OnlineDrivers')->name('online-drivers');
+
             Route::get('durations', 'RideDuration\Home')->name('durations');
             Route::get('edit-duration/{id}', 'RideDuration\Edit')->name('edit-duration');
             Route::get('create-duration', 'RideDuration\Create')->name('create-duration');

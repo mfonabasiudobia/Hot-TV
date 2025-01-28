@@ -16,22 +16,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StripePaymentVerificationController extends Controller
 {
-    public function __invoke($sessionId)
+    public function __invoke($rideId)
     {
-        Stripe::setApiKey(gs()->payment_stripe_secret);
-        $session = Session::retrieve($sessionId);
-        if(!$session) {
-            throw new NotFoundHttpException();
-        }
-
-        $ride = \App\Models\Ride::where('id', $session->metadata->ride_id)->first();
+        $ride = \App\Models\Ride::where('id', $rideId)->first();
         \Log::info('Ride not found using payment intent id', [$ride]);
         if($ride) {
             $ride->payment_status = 'paid';
             $ride->save();
             event(new RidePaymentSucceeded($ride));
         }else{
-            \Log::info('Ride not found using payment intent id', [$session->id]);
+            \Log::info('Ride not found using payment intent id', [$rideId]);
         }
 
     }

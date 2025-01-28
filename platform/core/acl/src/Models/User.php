@@ -70,6 +70,8 @@ class User extends BaseModel implements
         'remember_token',
     ];
 
+    // protected $appends = ['avatar_url'];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'permissions' => 'json',
@@ -112,7 +114,7 @@ class User extends BaseModel implements
     {
         return Attribute::make(
             get: function () {
-
+                // dd($this->avatar());
                 if (!empty($this->avatar()->url) ) {
                     return RvMedia::url($this->avatar()->url);
                 }
@@ -125,6 +127,25 @@ class User extends BaseModel implements
             },
         );
     }
+
+    // protected function getAvatarUrlAttribute(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: function () {
+
+    //             if (!empty($this->avatar()->url) ) {
+    //                 return RvMedia::url($this->avatar()->url);
+    //             }
+
+    //             try {
+    //                 return (new Avatar())->create($this->name)->toBase64();
+    //             } catch (Exception) {
+    //                 return RvMedia::getDefaultImage();
+    //             }
+    //         },
+    //     );
+    // }
+
     public function verification_documents(): HasMany
     {
         return $this->hasMany(VerificationDocument::class, 'user_id');
@@ -132,6 +153,7 @@ class User extends BaseModel implements
 
     public function avatar()
     {
+        // dd($this->avatar_id);
         return MediaFile::where('id', $this->avatar_id)->first();
 
 

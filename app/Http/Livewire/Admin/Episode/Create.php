@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Episode;
 
 use App\Enums\VideoDiskEnum;
 use App\Http\Livewire\BaseComponent;
+use App\Jobs\UploadVideo;
 use App\Jobs\CalculateDuration;
 use App\Jobs\ConvertVideoForDownloadingJob;
 use App\Jobs\ConvertVideoForStreamingJob;
@@ -53,7 +54,7 @@ class Create extends BaseComponent
             'release_date' => 'required|date',
             'thumbnail' => 'required',
             'recorded_video' => 'required',
-            'tv_show_id' => 'required|exists:tv_shows,id'
+            'tv_show_id' => 'required|exists:tv_shows,id',
         ],[
             'release_date.*' => 'Invalid Release Date Selected',
             'tv_show_id.*' => 'Select TV Show to proceed'
@@ -85,10 +86,15 @@ class Create extends BaseComponent
                 'original_name' =>  $this->recorded_video->getClientOriginalName(),
                 'path' => $this->recorded_video->storeAs(VideoDiskEnum::TV_SHOWS->value . $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug, $filename, VideoDiskEnum::DISK->value),
             ]);
+            // $this->recorded_video->storeAs(VideoDiskEnum::TV_SHOWS->value . $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug, $filename, VideoDiskEnum::DISK->value)
+            // dispatch(new UploadVideo($episode, $this->recorded_video, VideoDiskEnum::TV_SHOWS->value, VideoDiskEnum::DISK->value));
 
-            dispatch(new CalculateDuration($video, $episode));
-            dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
-            dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
+            // UploadVideo::withChain([
+                dispatch(new CalculateDuration($video, $episode));
+                dispatch(new ConvertVideoForDownloadingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
+                dispatch(new ConvertVideoForStreamingJob(VideoDiskEnum::TV_SHOWS->value, $video, $episode->tvShow->slug . '/'. $episode->season->slug . '/' . $episode->slug));
+            // ])->dispatch($episode, $this->recorded_video, VideoDiskEnum::TV_SHOWS->value, VideoDiskEnum::DISK->value);
+
 
             toast()->success('Cheers!, Tv Show has been added')->pushOnNextPage();
 

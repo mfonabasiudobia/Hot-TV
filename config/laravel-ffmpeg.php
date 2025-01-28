@@ -2,13 +2,13 @@
 
 return [
     'ffmpeg' => [
-        'binaries' => env('FFMPEG_BINARIES', '/usr/bin/ffmpeg'),
+        'binaries' => env('FFMPEG_BINARIES', 'C:\ProgramData\chocolatey\bin\ffmpeg.exe'),
 
         'threads' => 12,   // set to false to disable the default 'threads' filter
     ],
 
     'ffprobe' => [
-        'binaries' => env('FFPROBE_BINARIES', '/usr/bin/ffprobe'),
+        'binaries' => env('FFPROBE_BINARIES', 'C:\ProgramData\chocolatey\bin\ffprobe.exe'),
     ],
 
     'timeout' => 3600,

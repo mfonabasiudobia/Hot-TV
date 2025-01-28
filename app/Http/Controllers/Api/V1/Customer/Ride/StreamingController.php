@@ -46,15 +46,9 @@ class StreamingController extends Controller
         try {
             $isPublisher = $ride->user_id == $request->user()->id;
             $channelName = "stream-{$ride->customer->id}-{$ride->id}";
+            $uid =  $isPublisher ? $request->user()->id : 1;
 
-            $appCertificate = env('AGORA_APP_CERTIFICATE');
-            $uid =  $isPublisher ? $request->user()->id : 1; // ride customer id
-            $role = $isPublisher ? RtcTokenBuilder::RolePublisher : RtcTokenBuilder::RoleSubscriber;
-            $expireTimeInSeconds = 3600;
-            $currentTimestamp = now()->getTimestamp();
-            $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;
-
-            $token = RtcTokenBuilder::buildTokenWithUid($this->appId, $appCertificate, $channelName, $uid, $role, $privilegeExpireTime);
+            $token = $this->createToken($channelName, $isPublisher, $uid);
 
             $ride->stream_channel_name = $channelName;
             $ride->is_stream_blocked = false;
@@ -90,13 +84,15 @@ class StreamingController extends Controller
                 throw new \Exception('Resource Id Not found');
             }
 
+            $token = $this->createToken($ride->stream_channel_name, false, $ride->user_id);
+
             $url = "https://api.agora.io/v1/apps/{$this->appId}/cloud_recording/resourceid/{$resourceId['resourceId']}/mode/mix/start";
 
             $data = [
-                'cname' => $ride->stream_channel_name,
-                'uid' => "{$ride->user_id}",
+                'cname' => 'stream-224-754', // $ride->stream_channel_name,
+                'uid' => '224', // "{$ride->user_id}",
                 'clientRequest' => [
-                    // 'token' => $request->token,
+                    'token' => $token,
                     'recordingConfig' => [
                         "maxIdleTime"=> 120,
                         "streamTypes"=> 2,
@@ -106,17 +102,17 @@ class StreamingController extends Controller
                         "transcodingConfig"=> [
                             "height"=> 640,
                             "width"=> 360,
-                            "bitrate"=> 500,
+                            "bitrate"=> 1000,
                             "fps"=> 15,
                             "mixedVideoLayout"=> 1,
                         ],
-                        // "subscribeVideoUids" => [
-                        //     "241"
-                        // ],
-                        // "subscribeAudioUids" => [
-                        //     "241"
-                        // ],
-                        // "subscribeUidGroup" => 2
+                        "subscribeVideoUids" => [
+                            "{$ride->user_id}"
+                        ],
+                        "subscribeAudioUids" => [
+                            "{$ride->user_id}"
+                        ],
+                        "subscribeUidGroup" => 0
                     ],
                     'storageConfig' => [
                         'vendor' => 1,
@@ -124,12 +120,14 @@ class StreamingController extends Controller
                         'bucket' => env('AWS_BUCKET'),
                         'accessKey' => env('AWS_ACCESS_KEY_ID'),
                         'secretKey' => env('AWS_SECRET_ACCESS_KEY'),
-                        'fileNamePrefix' => ['recordings'],
+                        'fileNamePrefix' => ['recordings', 'ride' . $ride->id],
                     ],
                 ],
             ];
             // dd($data);
             $response = $this->sendAgoraRequest($url, $data);
+
+            \Log::info('agora start response', $response);
 
             $ride->stream_status = 'streaming';
             $ride->save();
@@ -153,8 +151,12 @@ class StreamingController extends Controller
     public function stop(Ride $ride, Request $request)
     {
         try {
-            $channelName = $ride->stream_channel_name;
+            $sid = $request->sid;
             $resourceId = $request->resource_id;
+
+            // $channelName = $ride->stream_channel_name;
+            $channelName = 'stream-224-789';
+
             $sid = $request->sid;
 
             // Agora Cloud Recording Stop API URL
@@ -162,7 +164,7 @@ class StreamingController extends Controller
             // dd($url);
             $data = [
                 'cname' => $channelName,
-                'uid' => $request->user()->id,
+                'uid' => '224',
                 'clientRequest' => new \stdClass()
             ];
             // dd($data);
@@ -267,8 +269,8 @@ class StreamingController extends Controller
         $request->scene = 0;
 
         $data = [
-            'cname' => $ride->stream_channel_name,
-            'uid' => $ride->user_id, // "0",
+            'cname' => 'stream-224-789      ', // $ride->stream_channel_name,
+            'uid' => '224' ,// $ride->user_id, // "0",
             'clientRequest' => $request,
         ];
 
@@ -303,5 +305,19 @@ class StreamingController extends Controller
         ])->get($url);
 
         return $response->json();
+    }
+
+    private function createToken($channelName, $isPublisher, $uid)
+    {
+        $appCertificate = env('AGORA_APP_CERTIFICATE');
+
+        $role = $isPublisher ? RtcTokenBuilder::RolePublisher : RtcTokenBuilder::RoleSubscriber;
+        $expireTimeInSeconds = 3600;
+        $currentTimestamp = now()->getTimestamp();
+        $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;
+
+        $token = RtcTokenBuilder::buildTokenWithUid($this->appId, $appCertificate, $channelName, $uid, $role, $privilegeExpireTime);
+
+        return $token;
     }
 }

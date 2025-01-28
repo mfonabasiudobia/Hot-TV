@@ -41,11 +41,15 @@ class SubscriptionsController extends BaseController
     {
         Stripe::setApiKey(gs()->payment_stripe_secret);
         $amount = $request->input('price');
+
+        // creating product on stripe
         $stripeProduct = Product::create([
             'name' => $request->input('name'),
             'active' => true,
         ]);
 
+        // creating price on stripe
+        // TODO: interval should be dynamic and could be monthly, weekly, yearly, quarterly or custom
         $stripProductPrice = Price::create([
             'currency' => 'usd',
             'unit_amount' => $amount * 100,
@@ -57,6 +61,7 @@ class SubscriptionsController extends BaseController
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
+        // creating product on paypal
         $paypalProduct = $provider->createProduct([
             'name' => $request->input('name'),
             'description' => $request->input('name'),
@@ -66,6 +71,8 @@ class SubscriptionsController extends BaseController
 
         $paypalProductId = $paypalProduct['id'];
 
+        // creating plan on paypal
+        // TODO: interval could be weekly, monthly, quarterly, yearly
         $paypalPlan = $provider->createPlan([
             'product_id' => $paypalProductId,
             'name' => $request->input('name'),

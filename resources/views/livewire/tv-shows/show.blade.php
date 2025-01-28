@@ -329,7 +329,7 @@
          const videoPlayer = document.getElementById('player');
         let lastSavedTime = 0;
          videoPlayer.addEventListener('timeupdate', function () {
-             console.log(this.currentTime);
+            //  console.log(this.currentTime);
              {{--if (this.currentTime >= {{ setting('video_length') }}) { // 60 seconds = 1 minute--}}
              {{--    this.style.display = 'none';--}}
              {{--    console.log('Video is paused');--}}
@@ -337,9 +337,9 @@
              {{--    this.pause();--}}
              {{--}--}}
 
-             const currentTime = this.currentTime;
+            //  const currentTime = this.currentTime;
 
-             const playedSeconds = Math.round(currentTime);
+            //  const playedSeconds = Math.round(currentTime);
             //  if (playedSeconds > lastSavedTime) {
             //      lastSavedTime = playedSeconds;
             //      savePlaybackProgress(Math.round(playedSeconds));

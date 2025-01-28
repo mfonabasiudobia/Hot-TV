@@ -21,7 +21,8 @@ class Show extends Component
     public function mount(Ride $ride)
     {
         $this->ride = $ride;
-        $this->channelName = $ride->stream_channel_name;
+        // $this->channelName = $ride->stream_channel_name;
+        $this->channelName = 'stream-241-742';
 
         if($this->channelName) {
             $this->token = $this->generateAgoraToken($this->channelName);
@@ -55,7 +56,7 @@ class Show extends Component
         $appCertificate = env('AGORA_APP_CERTIFICATE');
         $role = RtcTokenBuilder::RoleSubscriber;
         $uid =  $user->id ?? Str::uuid();
-
+        
         $expireTimeInSeconds = 3600;
         $currentTimestamp = now()->timestamp;
         $privilegeExpireTime = $currentTimestamp + $expireTimeInSeconds;

@@ -24,6 +24,10 @@ body {
         font-family: 'Barlow', sans-serif;
     }
 
+    .activeItem {
+        @apply bg-secondary;
+    }
+
     .error {
         @apply text-xs text-danger;
     }
@@ -217,7 +221,7 @@ body {
      ::-webkit-scrollbar {
         width: 6px; /* Set the width of the scrollbar */
     }
-        
+
     ::-webkit-scrollbar-thumb {
         background-color: #ccc; /* Color of the scrollbar thumb */
         border-radius: 3px; /* Rounded corners for the thumb */
@@ -234,7 +238,7 @@ body {
 
     /* Style the video element */
     .video-container video {
-       @apply h-auto md:h-auto; 
+       @apply h-auto md:h-auto;
     }
 
     .video-container video::poster {
@@ -250,7 +254,7 @@ body {
         background-color: #000 !important;
     }
 
-    
+
 
 
 }
